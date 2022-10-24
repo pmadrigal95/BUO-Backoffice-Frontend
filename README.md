@@ -1,2 +1,29 @@
-# BUO-Backoffice-Frontend
-Proyecto Administrativo de BUO: Revoluciona la forma de certificar tus habilidades y experiencias
+# BUO BackOffice FrontEnd
+
+## Project setup
+
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+
+```
+npm run build
+```
+
+### Lints and fixes files
+
+```
+npm run lint
+```
+
+### Customize configuration
+
+See [Configuration Reference](https://cli.vuejs.org/config/).

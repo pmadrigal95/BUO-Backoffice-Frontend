@@ -1,0 +1,241 @@
+/*
+* Font de BUO
+*/
+
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/*
+* Scroll de BUO
+*/
+html {
+    overflow-y: auto !important;
+}
+
+.v-application {
+    background-color: var(--v-background-base) !important;
+}
+
+/*
+* Progress Bar Request API
+*/
+#nprogress .bar {
+    background: #223549 !important;
+}
+
+#nprogress .spinner-icon {
+    border-top-color: #223549 !important;
+    border-left-color: #223549 !important;
+}
+
+
+.Buo-Black {
+    color: black !important;
+}
+
+/*
+* Buo app style
+*/
+.no-uppercase {
+    text-transform: unset !important;
+}
+
+.buo-word-break {
+    word-break: break-word !important;
+}
+
+.buo-none-word-break {
+    word-break: normal !important;
+}
+
+.buo-headerAbility-position {
+    width: 100% !important;
+    height: 100% !important;
+    right: 16px !important;
+}
+
+.buo-expansion-panel-header {
+    padding: 0 !important; width: 99% !important;
+}
+
+.buo-white-space {
+    height: auto !important;
+    white-space: normal !important;
+}
+
+/*
+* Custom BUO CSS
+*/
+
+/*
+* Display
+*/
+.BUO-Display-Large {
+    /* Display/Large (96) */
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 96px;
+    line-height: 125%;
+    /* or 120px */
+}
+
+.BUO-Display-Medium {
+    /* Display/Medium (52) */
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 52px;
+    line-height: 125%;
+    /* or 65px */
+}
+
+.BUO-Display-Small {
+    /* Display/Small (44) */
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 44px;
+    line-height: 125%;
+    /* or 55px */
+}
+
+.BUO-Display-XSmall {
+    /* Display/X Small (36) */
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 125%;
+    /* or 45px */
+}
+
+/**
+* Heading
+*/
+.BUO-Heading-Large {
+    /* Heading/Large (40) */
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 125%;
+    /* or 50px */
+}
+
+.BUO-Heading-Medium {
+    /* Heading/Medium (36) */
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 125%;
+    /* or 40px */
+}
+
+.BUO-Heading-Small {
+    /* Heading/Small (24) */
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 125%;
+    /* or 30px */
+}
+
+.BUO-Heading-XSmall {
+    /* Heading/X Small (20) */
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 125%;
+    /* or 25px */
+}
+
+/*
+* Paragraph
+*/
+.BUO-Paragraph-Large {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 125%;
+    /* or 22px */
+}
+
+.BUO-Paragraph-Medium {
+    /* Paragraph/Medium Regular (16) */
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 125%;
+    /* or 20px */
+}
+
+.BUO-Paragraph-Small {
+    /* Paragraph/Small Regular (14) */
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 125%;
+    /* or 17px */
+}
+
+.BUO-Paragraph-XSmall {
+    /* Paragraph/Small Regular (14) */
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 125%;
+    /* or 17px */
+}
+
+/*
+* Label
+*/
+.BUO-Label-Small {
+    /* Label/Small (14) */
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 125%;
+    /* or 17px */
+}
+
+.BUO-Label-XSmall {
+    /* Label/X Small (12) */
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 125%;
+    /* or 15px */
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #8A8A8A;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #003F5E;
+}
