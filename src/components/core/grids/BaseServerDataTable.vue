@@ -11,16 +11,25 @@
 import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper.js';
 import baseArrayHelper from '@/helpers/baseArrayHelper.js';
+import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 import httpService from '@/services/axios/httpService.js';
 
 const BaseButtonsGrid = () =>
     import('@/components/core/grids/BaseButtonsGrid.vue');
+
+const BaseCustomsButtonsGrid = () =>
+    import('@/components/core/grids/BaseCustomsButtonsGrid.vue');
+
+const BaseSimpleInputList = () =>
+    import('@/components/core/forms/BaseSimpleInputList.vue');
 
 export default {
     name: 'BaseServerDataTable',
 
     components: {
         BaseButtonsGrid,
+        BaseCustomsButtonsGrid,
+        BaseSimpleInputList,
     },
 
     props: {
@@ -147,16 +156,6 @@ export default {
             type: Function,
             default: undefined,
         },
-
-        /**
-         * Enviar información adicional al servidor
-         */
-        settingFooter: {
-            type: Object,
-            default: function () {
-                return baseLocalHelper.$_itemsPerPage;
-            },
-        },
     },
 
     data() {
@@ -180,6 +179,29 @@ export default {
           }
        */
             options: {},
+
+            /**
+             * Tamaño de la pantalla del dispositivo
+             */
+            windowSize: {
+                x: 0,
+                y: 0,
+            },
+
+            /**
+             * Determina si usar buscadores por columnas o General
+             */
+            searchByColumns: null,
+
+            /**
+             * Objecto con filtros escritos en las columnas
+             */
+            filters: {},
+
+            /**
+             * Mostrar Botón para limpiar filtros
+             */
+            cleanFilter: null,
 
             /**
              * Filas Seleccionadas
@@ -242,6 +264,11 @@ export default {
             delay: baseLocalHelper.$_clickDelay,
 
             /**
+             * Mostrar buscadores por columnas
+             */
+            showSearch: true,
+
+            /**
              * Descripción del botón
              */
             lblCancel: baseLocalHelper.$_LabelBtnGoOut,
@@ -259,7 +286,21 @@ export default {
             /**
              * Opciones por página
              */
-            //settingFooter: baseLocalHelper.$_itemsPerPage,
+            settingFooter: baseLocalHelper.$_itemsPerPage,
+
+            /**
+             * Mostrar buscadores por columnas mobil
+             */
+            mobilColumns: null,
+
+            /**
+             * Descripción a buscar
+             */
+            mobilSearch: null,
+
+            typeMobilFilter: null,
+
+            objectMobilFilter: {},
 
             show: null,
 
@@ -294,6 +335,40 @@ export default {
         },
 
         /**
+         * Filtros
+         */
+        filters: {
+            handler(val) {
+                /**
+                 * Establece el tiempo a ejecutar la función
+                 */
+                let timer = baseLocalHelper.$_DefaultTimer;
+                /**
+                 * elimina propiedades sin información
+                 */
+                for (var key in val) {
+                    val[key] == null || val[key] == '' || val[key] == undefined
+                        ? delete val[key]
+                        : '';
+                }
+
+                /**
+                 * Determina si contiene propiedades
+                 */
+                Object.entries(val).length === 0
+                    ? (this.cleanFilter = false)
+                    : ((this.cleanFilter = true),
+                      (timer = baseLocalHelper.$_InputTimer));
+
+                /**
+                 * Envio al API
+                 */
+                this.$_ParamsToAPI(timer);
+            },
+            deep: true,
+        },
+
+        /**
          * Selected
          */
         items() {
@@ -315,6 +390,35 @@ export default {
             },
             deep: true,
         },
+
+        /**
+         * limpia buscadores cuando cambia de dispositivos
+         */
+        searchByColumns(val, old) {
+            if (val != old) {
+                (this.mobilColumns = null), (this.mobilSearch = null);
+                this.$_Cleanfilter();
+                this.forceRerender();
+            }
+        },
+
+        /**
+         * Determita que estilo de filtro mostrar
+         */
+        mobilColumns(val) {
+            let result = this.$_getmobilSearch(val);
+            this.typeMobilFilter = undefined;
+            this.objectMobilFilter = {};
+            if (result != undefined) {
+                if (result?.filterSetting) {
+                    this.typeMobilFilter = 'table';
+                    this.objectMobilFilter = result?.filterSetting;
+                } else {
+                    this.typeMobilFilter = 'text';
+                }
+            }
+            this.forceRerender();
+        },
     },
 
     created() {
@@ -322,6 +426,8 @@ export default {
          * Columnas configuradas con Show
          */
         this.$_initialize(this.setting.columns);
+
+        this.cleanFilter = false;
 
         /**
          * Config para hacer multiOrdenamiento
@@ -349,6 +455,11 @@ export default {
     },
 
     mounted() {
+        /**
+         * Determinar que tipo de buscadores utilizar
+         */
+        this.onResize();
+
         /**
          * Enviar configuración al API
          */
@@ -384,13 +495,11 @@ export default {
                         .post(this.returnEndPoint(), this.returnParams())
                         .then((response) => {
                             if (response != undefined) {
-                                this.items = response.data;
-                                this.totalItems =
-                                    response.data && response.data.length > 0
-                                        ? response.data[0].Total_Registros
-                                        : 0;
+                                this.items = response.data.data;
+                                this.totalItems = response.data.recordsFiltered;
+                                this.loadingGrid = false;
+                                this.loadingPage = false;
                             }
-                            this.loadingGrid = false;
                         });
                     this.sendAPICount = 0;
                 }, time);
@@ -451,22 +560,109 @@ export default {
              * Se obtienen los parametros
              */
             const params = {
-                Pagina: this.options.page,
-                Registros: this.options.itemsPerPage,
+                page: this.options.page - 1,
+                itemsPerPage: this.options.itemsPerPage,
             };
 
             /**
              * Por si selecciona todos
              */
-            if (params.Registros === -1) {
-                params.Registros = this.totalItems;
+            if (params.itemsPerPage === -1) {
+                params.itemsPerPage = this.totalItems;
             }
 
+            /**
+             * Buscadores por columnas
+             */
+            Object.entries(this.filters).length === 0 &&
+            this.options.sortBy.length === 0
+                ? delete params.columns
+                : (params.columns = this.createdColumnsParams());
+
             if (this.extraParams) {
-                return Object.assign(params, this.extraParams);
-            } else {
-                return params;
+                /**
+                 * Retorna los params al API
+                 */
+                params.extraParams = { ...this.extraParams };
             }
+
+            /**
+             * Retorna los params al API
+             */
+            return params;
+        },
+
+        /**
+         * Método para crear las columnas de búsqueda y su ordenamiento
+         */
+        createdColumnsParams() {
+            return baseSharedFnHelper.$_fullJoin(
+                this.createdColumnsFilters(),
+                this.createdColumnsSort(),
+                'name'
+            );
+        },
+
+        /**
+         * Método para crear las columnas de búsqueda
+         */
+        createdColumnsFilters() {
+            let columns = [];
+
+            /**
+             * Elimina propiedades sin valor
+             */
+            for (let key in this.filters) {
+                if (
+                    this.filters[key] == null ||
+                    this.filters[key] == '' ||
+                    this.filters[key] == undefined
+                ) {
+                    delete this.filters[key];
+                } else {
+                    /**
+                     * Se construye Objecto requerido para el buscador
+                     */
+                    columns.push({
+                        name: key,
+                        value: this.filters[key],
+                    });
+                }
+            }
+            /**
+             * Retorna los columnas al objecto params
+             */
+            return columns;
+        },
+
+        /**
+         * Método para crear las columnas de Ordenamiento
+         */
+        createdColumnsSort() {
+            let columns = [];
+
+            for (let index = 0; index < this.options.sortBy.length; index++) {
+                /**
+                 * Se construye Objecto requerido para el Ordenamiento
+                 */
+                columns.push({
+                    name: this.options.sortBy[index],
+                    sort: this.options.sortDesc[index] ? 'desc' : 'asc',
+                });
+            }
+
+            return columns;
+        },
+
+        /**
+         * Determinar que tipo de buscadores utilizar
+         */
+        onResize() {
+            this.windowSize = { x: window.innerWidth, y: window.innerHeight };
+
+            this.windowSize.x > 595 && this.windowSize.y >= 527
+                ? (this.searchByColumns = true)
+                : (this.searchByColumns = false);
         },
 
         /**
@@ -579,6 +775,51 @@ export default {
             this.isFilter = 'filter';
             this.formTitle = baseLocalHelper.$_LabelBtnFilter;
             this.$refs.popUp.$_openModal();
+        },
+
+        /**
+         * Mostrar Mobil search
+         */
+        $_mobilSearch() {
+            this.isFilter = 'search';
+            this.formTitle = baseLocalHelper.$_LabelBtnmobilSearch;
+            this.$refs.popUp.$_openModal();
+        },
+
+        /**
+         * Método Mobil search
+         */
+        $_popUpSearch() {
+            let result = this.$_getmobilSearch(this.mobilColumns);
+
+            this.filters[result?.filterBy ? result?.filterBy : result?.value] =
+                this.mobilSearch;
+
+            this.$_ParamsToAPI();
+            this.$refs.popUp.$_openModal();
+        },
+
+        /**
+         * Cancelar Mobil search
+         */
+        $_CancelmobilSearch() {
+            this.$_Cleanfilter();
+            this.$refs.popUp.$_openModal();
+        },
+
+        /**
+         * Obtener config de la columna
+         */
+        $_getmobilSearch(value) {
+            return this.objectFilter.find((x) => x.value === value);
+        },
+
+        /**
+         * Limpiar filtros
+         */
+        $_Cleanfilter() {
+            this.filters = {};
+            this.$_ParamsToAPI();
         },
 
         /**
@@ -697,7 +938,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <div v-resize="onResize">
         <!-- @Componente:  BaseDialog-->
         <div>
             <!-- @Componente:  BaseDialog-->
@@ -727,6 +968,76 @@ export default {
                             <v-row align-content="center">
                                 <h3>{{ deleteMessage }}</h3>
                             </v-row>
+                        </div>
+                    </BaseForm>
+
+                    <!-- @Componente:  BaseForm-->
+                    <BaseForm
+                        v-if="isFilter === 'search'"
+                        :method="$_popUpSearch"
+                        :cancel="$_CancelmobilSearch"
+                        icon="mdi-magnify"
+                        :label="formTitle"
+                        :labelBtn="formTitle"
+                    >
+                        <div slot="body">
+                            <br />
+                            <v-col>
+                                <!-- @BaseSelect -->
+                                <BaseSelect
+                                    v-model="mobilColumns"
+                                    label="Columna"
+                                    :endpoint="objectFilter"
+                                    itemText="text"
+                                    itemValue="value"
+                                    :validate="['text']"
+                                />
+                            </v-col>
+                            <v-col>
+                                <v-alert
+                                    v-if="!typeMobilFilter"
+                                    text
+                                    prominent
+                                    type="error"
+                                    icon="mdi-progress-alert"
+                                >
+                                    {{ baseLocalHelper.$_MsgRowNotSelected }}
+                                </v-alert>
+
+                                <!-- @BaseInput -->
+                                <BaseInput
+                                    v-else-if="typeMobilFilter == 'text'"
+                                    label="Buscar"
+                                    :validate="['text']"
+                                    v-model="mobilSearch"
+                                    :key="componentKey"
+                                />
+
+                                <!-- @BaseInputList -->
+                                <BaseInputList
+                                    v-if="
+                                        typeMobilFilter == 'table' &&
+                                        objectMobilFilter != undefined &&
+                                        objectMobilFilter.input != undefined
+                                    "
+                                    :setting="objectMobilFilter"
+                                    v-model="mobilSearch"
+                                    :key="componentKey"
+                                />
+
+                                <!-- @BaseSimpleInputList -->
+                                <BaseSimpleInputList
+                                    v-if="
+                                        typeMobilFilter == 'table' &&
+                                        objectMobilFilter != undefined &&
+                                        objectMobilFilter.input == undefined
+                                    "
+                                    :setting="objectMobilFilter"
+                                    :denseInput="true"
+                                    v-model="mobilSearch"
+                                    :key="componentKey"
+                                />
+                            </v-col>
                         </div>
                     </BaseForm>
                 </div>
@@ -764,9 +1075,274 @@ export default {
                     >
                         <!-- @slot Use este slot para agregar botones -->
                         <div slot="btns">
+                            <BaseCustomsButtonsGrid
+                                v-if="!searchByColumns"
+                                label="Buscar"
+                                icon="mdi-magnify"
+                                :fnMethod="$_mobilSearch"
+                            />
                             <slot name="btns"></slot>
                         </div>
                     </BaseButtonsGrid>
+                </template>
+
+                <!-- @helper:  Buscador por columnas-->
+                <template v-slot:header v-if="searchByColumns">
+                    <tr>
+                        <!-- @helper:  Show / hidden columns -->
+                        <th v-if="!cleanFilter">
+                            <v-btn icon @click="showSearch = !showSearch">
+                                <v-icon color="black">mdi-magnify</v-icon>
+                            </v-btn>
+                        </th>
+                        <!-- @helper:  clean all the filters -->
+                        <th v-if="cleanFilter">
+                            <v-btn icon @click="$_Cleanfilter">
+                                <v-icon color="black"
+                                    >mdi-close-circle-outline</v-icon
+                                >
+                            </v-btn>
+                        </th>
+
+                        <th v-for="header in headers" :key="header.text">
+                            <!-- @helper:  Filter type Text -->
+                            <v-col
+                                v-if="
+                                    header.type == undefined &&
+                                    header.filterSetting == undefined
+                                "
+                            >
+                                <v-text-field
+                                    outlined
+                                    dense
+                                    v-model="
+                                        filters[
+                                            header.filterBy
+                                                ? header.filterBy
+                                                : header.value
+                                        ]
+                                    "
+                                    v-if="showSearch"
+                                    clearable
+                                ></v-text-field>
+                            </v-col>
+
+                            <!-- @helper:  Filter type Number -->
+                            <v-col v-else-if="header.type == 'number'">
+                                <v-text-field
+                                    outlined
+                                    dense
+                                    v-model="
+                                        filters[
+                                            header.filterBy
+                                                ? header.filterBy
+                                                : header.value
+                                        ]
+                                    "
+                                    v-if="showSearch"
+                                    clearable
+                                    type="number"
+                                ></v-text-field>
+                            </v-col>
+
+                            <!-- @helper:  Filter type Hidden -->
+                            <v-col v-else-if="header.type == 'hidden'">
+                                <input
+                                    type="hidden"
+                                    v-if="showSearch"
+                                    v-model="
+                                        filters[
+                                            header.filterBy
+                                                ? header.filterBy
+                                                : header.value
+                                        ]
+                                    "
+                                />
+                            </v-col>
+
+                            <!-- @helper:  Filter type Boolean -->
+                            <v-col v-else-if="header.type == 'bool'">
+                                <v-row align="center" justify="center">
+                                    <v-checkbox
+                                        dense
+                                        v-if="showSearch"
+                                        v-model="
+                                            filters[
+                                                header.filterBy
+                                                    ? header.filterBy
+                                                    : header.value
+                                            ]
+                                        "
+                                    ></v-checkbox>
+                                </v-row>
+                            </v-col>
+
+                            <!-- @helper:  Filter type bigint -->
+                            <v-col v-else-if="header.type == 'bigint'">
+                                <!-- @BaseInput -->
+                                <BaseInput
+                                    label
+                                    dense
+                                    v-model="
+                                        filters[
+                                            header.filterBy
+                                                ? header.filterBy
+                                                : header.value
+                                        ]
+                                    "
+                                    mask="###########"
+                                    clearable
+                                />
+                            </v-col>
+
+                            <!-- @helper:  Filter type int -->
+                            <v-col v-else-if="header.type == 'int'">
+                                <!-- @BaseInput -->
+                                <BaseInput
+                                    outlined
+                                    label
+                                    dense
+                                    v-model="
+                                        filters[
+                                            header.filterBy
+                                                ? header.filterBy
+                                                : header.value
+                                        ]
+                                    "
+                                    mask="##########"
+                                    clearable
+                                />
+                            </v-col>
+
+                            <!-- @helper:  Filter type smallint -->
+                            <v-col v-else-if="header.type == 'smallint'">
+                                <!-- @BaseInput -->
+                                <BaseInput
+                                    outlined
+                                    label
+                                    dense
+                                    v-model="
+                                        filters[
+                                            header.filterBy
+                                                ? header.filterBy
+                                                : header.value
+                                        ]
+                                    "
+                                    mask="#####"
+                                    clearable
+                                />
+                            </v-col>
+
+                            <!-- @helper:  Filter type tinyint -->
+                            <v-col v-else-if="header.type == 'tinyint'">
+                                <!-- @BaseInput -->
+                                <BaseInput
+                                    outlined
+                                    label
+                                    dense
+                                    clearable
+                                    v-model="
+                                        filters[
+                                            header.filterBy
+                                                ? header.filterBy
+                                                : header.value
+                                        ]
+                                    "
+                                    mask="###"
+                                />
+                            </v-col>
+
+                            <!-- @helper:  Filter type DATETIME -->
+                            <v-col v-else-if="header.type == 'datetime'">
+                                <!-- @BaseInput -->
+                                <BaseDatePicker
+                                    :dense="header.type == 'datetime'"
+                                    v-model="
+                                        filters[
+                                            header.filterBy
+                                                ? header.filterBy
+                                                : header.value
+                                        ]
+                                    "
+                                    :type="header.type"
+                                />
+                            </v-col>
+
+                            <!-- @helper:  Filter type DATE -->
+                            <v-col v-else-if="header.type == 'date'">
+                                <!-- @BaseInput -->
+                                <BaseDatePicker
+                                    :dense="header.type == 'date'"
+                                    v-model="
+                                        filters[
+                                            header.filterBy
+                                                ? header.filterBy
+                                                : header.value
+                                        ]
+                                    "
+                                    :type="header.type"
+                                />
+                            </v-col>
+
+                            <!-- @helper:  Filter type TIME -->
+                            <v-col v-else-if="header.type == 'time'">
+                                <!-- @BaseInput -->
+                                <BaseDatePicker
+                                    :dense="header.type == 'time'"
+                                    v-model="
+                                        filters[
+                                            header.filterBy
+                                                ? header.filterBy
+                                                : header.value
+                                        ]
+                                    "
+                                    :type="header.type"
+                                />
+                            </v-col>
+
+                            <!-- @helper:  Filter type BaseInputList -->
+                            <v-col
+                                v-else-if="
+                                    header.filterSetting != undefined &&
+                                    header.filterSetting.input != undefined
+                                "
+                            >
+                                <!-- @BaseInputList -->
+                                <BaseInputList
+                                    :setting="header.filterSetting"
+                                    v-model="
+                                        filters[
+                                            header.filterBy
+                                                ? header.filterBy
+                                                : header.value
+                                        ]
+                                    "
+                                    v-if="showSearch"
+                                />
+                            </v-col>
+
+                            <v-col
+                                v-else-if="
+                                    header.filterSetting != undefined &&
+                                    header.filterSetting.input == undefined
+                                "
+                            >
+                                <!-- @BaseSimpleInputList -->
+                                <BaseSimpleInputList
+                                    :setting="header.filterSetting"
+                                    :denseInput="true"
+                                    v-model="
+                                        filters[
+                                            header.filterBy
+                                                ? header.filterBy
+                                                : header.value
+                                        ]
+                                    "
+                                    v-if="showSearch"
+                                />
+                            </v-col>
+                        </th>
+                    </tr>
                 </template>
 
                 <!-- @Helper: Si existe columna 'activo' -> Boolean muestra un check -->

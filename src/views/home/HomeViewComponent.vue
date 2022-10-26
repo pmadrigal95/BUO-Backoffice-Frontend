@@ -7,6 +7,12 @@
 
 export default {
     name: 'HomeViewComponent',
+
+    mounted() {
+        this.$router.push({
+            name: 'PromotionalCodesFilterViewComponent',
+        });
+    },
 };
 </script>
 

@@ -4,6 +4,77 @@
  * @displayName BaseSharedFnHelper
  */
 
+const rightJoin = ({ leftArrray, rightArray, key }) => {
+    const map = new Map();
+    leftArrray.forEach((item) => map.set(item[key], item));
+
+    let join = [];
+
+    rightArray.forEach((rigthItem) => {
+        const leftItem = map.get(rigthItem[key]);
+        if (leftItem === undefined) {
+            join.push({ ...rigthItem });
+        } else {
+            join.push({ ...leftItem, ...rigthItem });
+        }
+    });
+
+    return join;
+};
+
+const leftJoin = ({ leftArrray, rightArray, key }) => {
+    const map = new Map();
+    rightArray.forEach((item) => map.set(item[key], item));
+
+    let join = [];
+
+    leftArrray.forEach((leftItem) => {
+        const rigthItem = map.get(leftItem[key]);
+        if (rigthItem === undefined) {
+            join.push({ ...leftItem });
+        } else {
+            join.push({ ...leftItem, ...rigthItem });
+        }
+    });
+
+    return join;
+};
+
+const fullJoin = ({ leftArrray, rightArray, key }) => {
+    const arr = [
+        ...rightJoin({
+            leftArrray: leftArrray,
+            rightArray: rightArray,
+            key: key,
+        }),
+        ...leftJoin({
+            leftArrray: leftArrray,
+            rightArray: rightArray,
+            key: key,
+        }),
+    ];
+
+    return Array.from(new Set(arr.map((a) => a[key]))).map((id) => {
+        return arr.find((a) => a[key] === id);
+    });
+};
+
+const innerJoin = ({ leftArrray, rightArray, key }) => {
+    const map = new Map();
+    leftArrray.forEach((item) => map.set(item[key], item));
+
+    let join = [];
+
+    rightArray.forEach((rigthItem) => {
+        const leftItem = map.get(rigthItem[key]);
+        if (leftItem === undefined) return;
+
+        join.push({ ...leftItem, ...rigthItem });
+    });
+
+    return join;
+};
+
 export default {
     $_getInitialDay() {
         const fechaInicio = new Date();
@@ -117,5 +188,21 @@ export default {
             result.push(object[key]);
         });
         return result;
+    },
+
+    $_fullJoin(leftArrray, rightArray, key) {
+        return fullJoin({
+            leftArrray: leftArrray,
+            rightArray: rightArray,
+            key: key,
+        });
+    },
+
+    $_innerJoin(leftArrray, rightArray, key) {
+        return innerJoin({
+            leftArrray: leftArrray,
+            rightArray: rightArray,
+            key: key,
+        });
     },
 };
