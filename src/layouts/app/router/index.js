@@ -6,13 +6,19 @@ import homeRoutes from '@/views/home/router';
 
 import promotionalCodesRoutes from '@/views/promotionalCodes/router';
 
+import analyticsRoutes from '@/views/analytics/router';
+
 const routes = [
     {
         path: '/',
         redirect: '/Home',
         name: 'TheMain',
         component: 'app',
-        children: [...homeRoutes, ...promotionalCodesRoutes],
+        children: [
+            ...homeRoutes,
+            ...promotionalCodesRoutes,
+            ...analyticsRoutes,
+        ],
     },
 ];
 

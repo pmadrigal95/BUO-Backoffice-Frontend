@@ -213,10 +213,22 @@ html {
     /* Label/X Small (12) */
     font-family: Montserrat;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 400;
     font-size: 12px;
     line-height: 125%;
     /* or 15px */
+}
+
+.BUO-Primary {
+    color: #003F5E;
+}
+
+.BUO-green900 {
+    color: #117C56;
+}
+
+.BUO-error {
+    color: #DC3127;
 }
 
 /* width */

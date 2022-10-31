@@ -160,6 +160,10 @@ export default {
         $_openModal() {
             this.$refs[this.refpopUp].$_openModal();
         },
+
+        $_checkStatus() {
+            return this.$refs[this.refpopUp].dialog;
+        },
     },
 };
 </script>

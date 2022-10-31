@@ -10,7 +10,7 @@ export default {
 
     mounted() {
         this.$router.push({
-            name: 'PromotionalCodesFilterViewComponent',
+            name: 'AnalyticsViewComponent',
         });
     },
 };
