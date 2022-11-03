@@ -15,7 +15,7 @@ import httpService from '@/services/axios/httpService';
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 const $_notAdmin = () => {
-    baseNotificationsHelper.Message(true, baseLocalHelper.$_MsgUserBadPwd);
+    baseNotificationsHelper.Message(true, baseLocalHelper.$_MsgGenericError);
 };
 
 const $_setStateValue = (state, decoded, data) => {

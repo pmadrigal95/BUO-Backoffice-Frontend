@@ -62,7 +62,7 @@ export default {
                         size="70"
                         width="2"
                         rotate="268"
-                        value="0"
+                        value="100"
                         :color="isUp ? 'green900' : 'error'"
                         >{{ value }}
                     </v-progress-circular>

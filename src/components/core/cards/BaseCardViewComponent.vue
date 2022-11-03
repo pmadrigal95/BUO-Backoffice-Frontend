@@ -95,7 +95,17 @@ export default {
                     {{ title }}
                 </v-card-title>
 
-                <slot name="card-title"></slot>
+                <v-card-title
+                    v-if="!title"
+                    class="buo-word-break"
+                    :class="[
+                        $vuetify.breakpoint.smAndDown
+                            ? 'BUO-Heading-Small'
+                            : 'BUO-Heading-Medium',
+                    ]"
+                >
+                    <slot name="card-title"></slot>
+                </v-card-title>
 
                 <v-card-subtitle
                     v-if="subtitle"
@@ -108,7 +118,15 @@ export default {
                     {{ subtitle }}
                 </v-card-subtitle>
 
-                <slot name="card-subtitle"></slot>
+                <v-card-subtitle
+                    :class="[
+                        $vuetify.breakpoint.smAndDown
+                            ? 'BUO-Paragraph-Small'
+                            : 'BUO-Paragraph-Medium',
+                    ]"
+                >
+                    <slot name="card-subtitle"></slot>
+                </v-card-subtitle>
 
                 <v-card-text>
                     <slot name="card-text"></slot>

@@ -19,7 +19,7 @@ export const mutations = {
         localStorage.setItem(baseLocalHelper.$_status, state.status);
     },
     CHANGEMODE(state, key) {
-        state[key[0]] = key[1];
+        state.status = key[1];
         localStorage.setItem(key[0], key[1]);
     },
     PUSH(state, navbar) {

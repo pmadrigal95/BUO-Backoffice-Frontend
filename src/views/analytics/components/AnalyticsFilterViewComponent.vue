@@ -5,6 +5,9 @@
  * @displayName AnalyticsFilterViewComponent
  */
 
+import { format } from 'date-fns';
+import baseLocalHelper from '@/helpers/baseLocalHelper';
+
 export default {
     name: 'AnalyticsFilterViewComponent',
 
@@ -25,6 +28,12 @@ export default {
             menuStartDate: false,
             menuEndDate: false,
         };
+    },
+
+    computed: {
+        maxDatePickerProps() {
+            return format(new Date(), baseLocalHelper.$_DateFormat);
+        },
     },
 
     methods: {
@@ -57,7 +66,7 @@ export default {
                 <v-card flat>
                     <v-card-title> Filtrar </v-card-title>
                     <v-card-text>
-                        <v-expansion-panels focusable flat>
+                        <v-expansion-panels focusable flat multiple>
                             <v-expansion-panel>
                                 <v-expansion-panel-header
                                     >Fecha Inicial</v-expansion-panel-header
@@ -127,6 +136,7 @@ export default {
                                             color="primary"
                                             @input="menuEndDate = false"
                                             :min="params.startDate"
+                                            :max="maxDatePickerProps"
                                         ></v-date-picker>
                                     </v-menu>
                                 </v-expansion-panel-content>
@@ -156,14 +166,12 @@ export default {
             </div>
         </BasePopUp>
         <v-btn
-            class="ma-1 no-uppercase rounded-lg"
-            elevation="1"
-            depressed
-            color="white"
+            color="blue800"
+            class="no-uppercase rounded-lg"
+            text
             @click="$_open"
         >
-            <span class="BUO-Primary"> Filtrar </span>
-            <v-icon small right dark color="primary"> mdi-tune </v-icon>
-        </v-btn>
+            Filtrar <v-icon right dark>mdi-tune</v-icon></v-btn
+        >
     </v-layout>
 </template>

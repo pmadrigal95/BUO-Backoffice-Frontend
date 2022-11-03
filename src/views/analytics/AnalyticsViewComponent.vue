@@ -46,7 +46,18 @@ export default {
                 this.showDates?.startDate
             ) && !baseSharedFnHelper.$_checkValueNull(this.showDates?.endDate)
                 ? `${this.showDates.startDate} al ${this.showDates.endDate}`
-                : '';
+                : null;
+        },
+
+        previewFilter() {
+            return !baseSharedFnHelper.$_checkValueNull(
+                this.showDates?.previewStartDate
+            ) &&
+                !baseSharedFnHelper.$_checkValueNull(
+                    this.showDates?.previewEndDate
+                )
+                ? `${this.showDates.previewStartDate} al ${this.showDates.previewEndDate}`
+                : null;
         },
     },
 
@@ -62,6 +73,8 @@ export default {
             return {
                 startDate: undefined,
                 endDate: undefined,
+                previewStartDate: undefined,
+                previewEndDate: undefined,
             };
         },
 
@@ -103,11 +116,20 @@ export default {
 
             this.showDates.startDate = format(
                 new Date(data.fechaInicio),
-                'dd/MM/yyyy'
+                baseLocalHelper.$_DateFormat
             );
             this.showDates.endDate = format(
                 new Date(data.fechaFinal),
-                'dd/MM/yyyy'
+                baseLocalHelper.$_DateFormat
+            );
+
+            this.showDates.previewStartDate = format(
+                new Date(data.fechaInicioAnterior),
+                baseLocalHelper.$_DateFormat
+            );
+            this.showDates.previewEndDate = format(
+                new Date(data.fechaFinalAnterior),
+                baseLocalHelper.$_DateFormat
             );
         },
 
@@ -131,6 +153,10 @@ export default {
                 });
             }
         },
+
+        $_goBack() {
+            console.log('Atras');
+        },
     },
 };
 </script>
@@ -138,17 +164,30 @@ export default {
 <template>
     <BaseCardViewComponent
         title="BUO Analytics"
-        :subtitle="Filter"
+        :btnAction="$_goBack"
         md="12"
         offset="0"
     >
-        <div slot="card-text">
+        <div slot="top-actions">
             <AnalyticsFilterViewComponent
                 ref="AnalyticsFilter"
                 :params="params"
                 :request="$_sendToApi"
             />
+        </div>
+        <div slot="card-subtitle" v-if="Filter">
             <br />
+            <div>
+                <v-icon left color="primary">mdi-calendar-import-outline</v-icon
+                ><span>{{ Filter }}</span>
+            </div>
+            <br />
+            <div>
+                <v-icon left color="primary">mdi-calendar-export-outline</v-icon
+                ><span>{{ previewFilter }}</span>
+            </div>
+        </div>
+        <div slot="card-text">
             <BaseSkeletonLoader
                 v-if="loading || !items"
                 type="card-avatar, article, actions"

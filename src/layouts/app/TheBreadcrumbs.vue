@@ -33,15 +33,6 @@ export default {
 
 <template>
     <v-breadcrumbs :key="componentKey">
-        <v-breadcrumbs-item>
-            <v-img
-                contain
-                max-width="67%"
-                max-height="100%"
-                :src="require('@/assets/app/common/buoLogo.svg')"
-                v-if="$vuetify.breakpoint.mdAndUp"
-            ></v-img>
-        </v-breadcrumbs-item>
         <v-breadcrumbs-item class="BUO-Paragraph-Medium">
             {{ key }}
         </v-breadcrumbs-item>

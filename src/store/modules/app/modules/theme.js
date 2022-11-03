@@ -12,7 +12,7 @@ export const state = {
 
 export const mutations = {
     CHANGEMODE(state, key) {
-        state[key[0]] = key[1];
+        state.app = key[1];
         localStorage.setItem(key[0], key[1]);
     },
 };
