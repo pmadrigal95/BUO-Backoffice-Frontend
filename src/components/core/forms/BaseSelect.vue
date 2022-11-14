@@ -340,6 +340,7 @@ export default {
             :dense="dense"
             outlined
             clear-icon="mdi-close-circle"
+            validate-on-blur
         >
             <template
                 v-slot:append-outer

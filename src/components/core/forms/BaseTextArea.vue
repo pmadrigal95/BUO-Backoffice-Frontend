@@ -420,5 +420,6 @@ export default {
         v-on="listeners"
         outlined
         clear-icon="mdi-close-circle"
+        validate-on-blur
     />
 </template>

@@ -11,7 +11,7 @@ export default {
     name: 'App',
     metaInfo: {
         title: 'BUO BackOffice',
-        titleTemplate: '%s | BUO BackOffice',
+        titleTemplate: '%s | BackOffice',
         htmlAttrs: { lang: 'en' },
         meta: [
             { charset: 'utf-8' },

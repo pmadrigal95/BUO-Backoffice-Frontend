@@ -487,6 +487,7 @@ export default {
                 @change="$_change"
                 outlined
                 clear-icon="mdi-close-circle"
+                validate-on-blur
             ></v-text-field>
         </div>
 
@@ -513,6 +514,7 @@ export default {
                 @change="$_change"
                 outlined
                 clear-icon="mdi-close-circle"
+                validate-on-blur
             ></v-text-field>
         </div>
     </div>
