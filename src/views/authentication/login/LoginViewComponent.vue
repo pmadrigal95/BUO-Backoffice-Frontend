@@ -72,7 +72,7 @@ export default {
 </script>
 
 <template>
-    <TheAuthentication>
+    <TheAuthentication :isImg="false">
         <div slot="RenderBody">
             <v-row class="neutral--text">
                 <v-col cols="12">
@@ -97,7 +97,7 @@ export default {
                                         : 'BUO-Paragraph-Large',
                                 ]"
                             >
-                                Iniciar sesión
+                                Iniciar sesión - Analytics
                             </div>
                         </v-col>
                         <v-row align-content="center" justify="center">

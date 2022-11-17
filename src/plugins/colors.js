@@ -18,6 +18,7 @@ export default {
         green700: '#58A389',
         green800: '#0E6345',
         green900: '#117C56',
+        buoAvatar: '#54ABB0',
     },
 
     light: {

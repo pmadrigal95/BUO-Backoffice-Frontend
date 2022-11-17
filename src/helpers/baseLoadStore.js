@@ -42,7 +42,6 @@ function createStoreDefault() {
         'authentication/SET_USER_DATA',
         'String'
     );
-    buildStore(baseLocalHelper.$_status, 'navbar/CHANGEMODE', 'Boolean', false);
     buildStore(baseLocalHelper.$_app, 'theme/CHANGEMODE', 'Boolean', false);
 }
 

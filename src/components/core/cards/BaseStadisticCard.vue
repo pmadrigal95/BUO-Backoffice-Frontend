@@ -49,6 +49,12 @@ export default {
             default: false,
         },
     },
+
+    computed: {
+        $_percentage() {
+            return `${this.percentage.toFixed(2)} %`;
+        },
+    },
 };
 </script>
 
@@ -63,7 +69,7 @@ export default {
                         width="2"
                         rotate="268"
                         value="100"
-                        :color="isUp ? 'green900' : 'error'"
+                        :color="isUp ? 'success' : 'error'"
                         >{{ value }}
                     </v-progress-circular>
                 </v-avatar>
@@ -88,11 +94,7 @@ export default {
                                             "
                                             v-bind="attrs"
                                             v-on="on"
-                                            >{{
-                                                `${Math.round(
-                                                    percentage * 100
-                                                )} %`
-                                            }}</span
+                                            >{{ $_percentage }}</span
                                         >
                                     </template>
                                     <center>

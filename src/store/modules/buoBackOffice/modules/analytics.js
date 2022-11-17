@@ -32,7 +32,7 @@ const dataRequest = (buoFilters) => {
             params: {
                 startDate: buoFilters.startDate,
                 endDate: buoFilters.endDate,
-                isAccumulated: buoFilters.isAccumulated,
+                accumulated: buoFilters.isAccumulated,
             },
         };
     }

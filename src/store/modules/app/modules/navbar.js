@@ -13,6 +13,10 @@ export const state = {
     navbar: [],
 };
 
+export const getters = {
+    status: (state) => state.status,
+};
+
 export const mutations = {
     SET_STATUS_DATA(state) {
         state.status = !state.status;

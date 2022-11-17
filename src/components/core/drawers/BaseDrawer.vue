@@ -5,121 +5,112 @@
  * @displayName BaseDrawer
  */
 
-import { mapState, mapActions } from 'vuex';
-
-import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'BaseDrawer',
 
-    props: {
-        status: {
-            requiered: true,
-        },
-    },
-
-    data: () => ({
-        icons: [
-            {
-                icon: 'https://buo-resources.s3.us-east-2.amazonaws.com/FB.png',
-                url: 'https://www.facebook.com/getbuo',
-            },
-            {
-                icon: 'https://buo-resources.s3.us-east-2.amazonaws.com/insta.png',
-                url: 'https://www.instagram.com/getbuo/',
-            },
-            {
-                icon: 'https://buo-resources.s3.us-east-2.amazonaws.com/in.png',
-                url: 'https://www.linkedin.com/company/getbuo/',
-            },
-        ],
-    }),
-
-    methods: {
-        ...mapActions('navbar', ['changeStatus']),
-
-        goToSocialMedia(url) {
-            baseSharedFnHelper.$_openNewTab(url);
-        },
+    data() {
+        return {
+            mini: true,
+            drawer: this.$vuetify.breakpoint.mdAndUp,
+        };
     },
 
     computed: {
-        ...mapState('theme', ['app']),
+        /**
+         * Nombre de Usuario
+         */
+        ...mapGetters('authentication', ['user']),
+
+        ...mapGetters('navbar', ['status']),
+    },
+
+    watch: {
+        status() {
+            this.drawer = true;
+        },
     },
 };
 </script>
 
 <template>
     <v-navigation-drawer
-        app
-        :stateless="true"
-        v-model="status"
-        :clipped="
-            $vuetify.breakpoint.mobile ? false : $vuetify.breakpoint.smAndUp
-        "
-        :right="$vuetify.breakpoint.mobile"
-        :width="270"
-        :temporary="$vuetify.breakpoint.mobile"
-        :class="[$vuetify.breakpoint.smAndDown ? 'mobileBorder' : null]"
-        color="background"
+        v-if="$vuetify.breakpoint.smAndDown"
+        absolute
+        temporary
+        height="100%"
+        v-model="drawer"
     >
-        <!-- Icono Buo -->
-        <div v-if="$vuetify.breakpoint.mobile" style="margin: 8%">
-            <v-row justify="end" align-content="end">
-                <v-layout align-end justify-end>
-                    <v-col cols="10">
-                        <v-img
-                            contain
-                            max-width="25"
-                            width="100%"
-                            :src="require('@/assets/app/common/buoLogo.svg')"
-                        ></v-img>
-                    </v-col>
-                    <v-col cols="2">
-                        <v-btn
-                            icon
-                            :color="app ? 'success' : 'primary'"
-                            @click="changeStatus"
-                        >
-                            <v-icon large>mdi-window-close</v-icon>
-                        </v-btn>
-                    </v-col>
-                </v-layout>
-            </v-row>
-        </div>
+        <v-list-item two-line class="px-2">
+            <v-list-item-avatar>
+                <v-avatar color="buoAvatar">
+                    <span
+                        class="white--text text-h5"
+                        v-if="user.photoUrl == undefined"
+                        >{{ user.name.charAt(0).toUpperCase() }}</span
+                    >
+
+                    <img v-else :src="user.photoUrl" alt="photoUrl" />
+                </v-avatar>
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+                <v-list-item-title>{{ user.name }}</v-list-item-title>
+                <v-list-item-subtitle>Administrador</v-list-item-subtitle>
+            </v-list-item-content>
+
+            <v-btn
+                icon
+                @click.stop="mini = !mini"
+                v-if="this.$vuetify.breakpoint.mdAndUp"
+            >
+                <v-icon>mdi-chevron-left</v-icon>
+            </v-btn>
+        </v-list-item>
+
+        <v-divider></v-divider>
         <!-- @slot Agregar Contenido -->
         <slot name="container"></slot>
+    </v-navigation-drawer>
+    <v-navigation-drawer
+        v-else
+        app
+        permanent
+        absolute
+        height="100%"
+        v-model="drawer"
+        :mini-variant.sync="mini"
+    >
+        <v-list-item two-line class="px-2">
+            <v-list-item-avatar>
+                <v-avatar color="buoAvatar">
+                    <span
+                        class="white--text text-h5"
+                        v-if="user.photoUrl == undefined"
+                        >{{ user.name.charAt(0).toUpperCase() }}</span
+                    >
 
-        <!-- @ Footer -->
-        <template v-slot:append v-if="$vuetify.breakpoint.mobile">
-            <v-row>
-                <v-col cols="8" offset="1">
-                    <v-btn v-for="(item, i) in icons" :key="i" icon>
-                        <v-img
-                            contain
-                            max-width="60%"
-                            width="100%"
-                            @click="goToSocialMedia(item.url)"
-                            :src="item.icon"
-                        />
-                    </v-btn>
-                </v-col>
-                <v-col cols="3">
-                    <v-btn class="ma-1" icon>
-                        <v-icon color="black">mdi-cog</v-icon>
-                    </v-btn>
-                </v-col>
-            </v-row>
-        </template>
+                    <img v-else :src="user.photoUrl" alt="photoUrl" />
+                </v-avatar>
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+                <v-list-item-title>{{ user.name }}</v-list-item-title>
+                <v-list-item-subtitle>Administrador</v-list-item-subtitle>
+            </v-list-item-content>
+
+            <v-btn
+                icon
+                @click.stop="mini = !mini"
+                v-if="this.$vuetify.breakpoint.mdAndUp"
+            >
+                <v-icon>mdi-chevron-left</v-icon>
+            </v-btn>
+        </v-list-item>
+
+        <v-divider></v-divider>
+        <!-- @slot Agregar Contenido -->
+        <slot name="container"></slot>
     </v-navigation-drawer>
 </template>
-
-<style scope>
-.pointer {
-    cursor: pointer;
-}
-
-.mobileBorder {
-    border-radius: 24px 0px 0px !important;
-}
-</style>

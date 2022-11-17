@@ -34,6 +34,12 @@ export default {
         maxDatePickerProps() {
             return format(new Date(), baseLocalHelper.$_DateFormat);
         },
+
+        $_finalDateValidated() {
+            return this.params.isAccumulated
+                ? undefined
+                : this.params.startDate;
+        },
     },
 
     watch: {
@@ -93,7 +99,7 @@ export default {
                     <v-card-title> Filtrar </v-card-title>
                     <v-card-text>
                         <v-expansion-panels focusable flat multiple>
-                            <v-expansion-panel>
+                            <v-expansion-panel v-if="!params.isAccumulated">
                                 <v-expansion-panel-header
                                     >Fecha Inicial</v-expansion-panel-header
                                 >
@@ -161,7 +167,7 @@ export default {
                                             scrollable
                                             color="primary"
                                             @input="menuEndDate = false"
-                                            :min="params.startDate"
+                                            :min="$_finalDateValidated"
                                             :max="maxDatePickerProps"
                                         ></v-date-picker>
                                     </v-menu>
