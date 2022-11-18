@@ -90,6 +90,11 @@ import BasePopUp from '@/components/core/alerts/BasePopUp.vue';
 import BaseActionPopUp from '@/components/core/alerts/BaseActionPopUp.vue';
 
 /**
+ * Alternative Dialog Actions
+ */
+import BaseNavigationDrawer from '@/components/core/alerts/BaseNavigationDrawer.vue';
+
+/**
  * Registro de Componente
  */
 Vue.component(BaseForm.name, BaseForm);
@@ -168,3 +173,8 @@ Vue.component(BasePopUp.name, BasePopUp);
  * Registro de Componente
  */
 Vue.component(BaseActionPopUp.name, BaseActionPopUp);
+
+/**
+ * Registro de Componente
+ */
+Vue.component(BaseNavigationDrawer.name, BaseNavigationDrawer);

@@ -133,6 +133,11 @@ export default {
             type: String || Number,
             default: undefined,
         },
+
+        isDrawer: {
+            type: Boolean,
+            default: true,
+        },
     },
 
     data() {
@@ -202,7 +207,7 @@ export default {
         </BaseBottomSheet>
 
         <BaseDialogNextGen
-            v-if="!$vuetify.breakpoint.mobile"
+            v-if="!$vuetify.breakpoint.mobile && !isDrawer"
             :ref="refpopUp"
             :close-delay="closeDelay"
             :dark="dark"
@@ -231,5 +236,17 @@ export default {
                 <slot name="Content"></slot>
             </div>
         </BaseDialogNextGen>
+
+        <BaseNavigationDrawer
+            v-if="!$vuetify.breakpoint.mobile && isDrawer"
+            :ref="refpopUp"
+            :persistent="persistent"
+            :width="width"
+        >
+            <div slot="Content">
+                <!-- @slot Use este slot para el contenido -->
+                <slot name="Content"></slot>
+            </div>
+        </BaseNavigationDrawer>
     </div>
 </template>

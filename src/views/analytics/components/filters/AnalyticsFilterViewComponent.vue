@@ -18,6 +18,7 @@ export default {
             params: undefined,
             menuStartDate: false,
             menuEndDate: false,
+            drawer: null,
         };
     },
 
@@ -91,11 +92,11 @@ export default {
     <v-card flat class="rounded-lg">
         <BasePopUp
             ref="popUp"
-            :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '35%'"
+            :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '600'"
             scrollable
         >
             <div slot="Content">
-                <v-card flat>
+                <v-card flat height="100%" width="100%">
                     <v-card-title> Filtrar </v-card-title>
                     <v-card-text>
                         <v-expansion-panels focusable flat multiple>
@@ -188,7 +189,7 @@ export default {
                             </v-expansion-panel>
                         </v-expansion-panels>
                     </v-card-text>
-                    <v-card-actions>
+                    <v-card-actions v-if="$vuetify.breakpoint.mobile">
                         <v-row justify="center">
                             <v-btn
                                 @click="$_cleanSendToAPI()"
@@ -208,6 +209,31 @@ export default {
                         </v-row>
                     </v-card-actions>
                 </v-card>
+                <v-footer
+                    class="rounded-t-xl"
+                    app
+                    fixed
+                    color="white"
+                    v-if="!$vuetify.breakpoint.mobile"
+                >
+                    <v-layout justify-center>
+                        <v-btn
+                            @click="$_cleanSendToAPI()"
+                            outlined
+                            color="grey500"
+                            class="ma-2 no-uppercase rounded-lg"
+                        >
+                            Limpiar
+                        </v-btn>
+                        <v-btn
+                            @click="$_sendToAPI()"
+                            color="primary"
+                            class="ma-2 no-uppercase rounded-lg"
+                        >
+                            Filtrar
+                        </v-btn>
+                    </v-layout>
+                </v-footer>
             </div>
         </BasePopUp>
         <v-card-text>

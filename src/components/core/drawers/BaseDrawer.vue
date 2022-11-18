@@ -13,7 +13,7 @@ export default {
     data() {
         return {
             mini: true,
-            drawer: this.$vuetify.breakpoint.mdAndUp,
+            drawer: null,
         };
     },
 
@@ -37,9 +37,7 @@ export default {
 <template>
     <v-navigation-drawer
         v-if="$vuetify.breakpoint.smAndDown"
-        absolute
         temporary
-        height="100%"
         v-model="drawer"
     >
         <v-list-item two-line class="px-2">
@@ -81,6 +79,7 @@ export default {
         height="100%"
         v-model="drawer"
         :mini-variant.sync="mini"
+        style="max-height: 100% !important"
     >
         <v-list-item two-line class="px-2">
             <v-list-item-avatar>
