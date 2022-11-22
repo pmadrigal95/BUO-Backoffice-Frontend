@@ -19,12 +19,10 @@ export default new Vuetify({
             light: {
                 ...colors.light,
                 ...colors.buo,
-                ...colors.pdaSolids,
             },
             dark: {
                 ...colors.dark,
                 ...colors.buo,
-                ...colors.pdaSolids,
             },
         },
     },

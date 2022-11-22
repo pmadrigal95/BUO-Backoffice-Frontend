@@ -189,7 +189,7 @@ export default {
                             </v-expansion-panel>
                         </v-expansion-panels>
                     </v-card-text>
-                    <v-card-actions v-if="$vuetify.breakpoint.mobile">
+                    <v-card-actions>
                         <v-row justify="center">
                             <v-btn
                                 @click="$_cleanSendToAPI()"
@@ -214,7 +214,6 @@ export default {
                     app
                     fixed
                     color="white"
-                    v-if="!$vuetify.breakpoint.mobile"
                 >
                     <v-layout justify-center>
                         <v-btn

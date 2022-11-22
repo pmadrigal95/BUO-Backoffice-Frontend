@@ -1,4 +1,8 @@
 /*
+* General Configuration
+*/
+
+/*
 * Font de BUO
 */
 
@@ -13,59 +17,16 @@ html {
     overflow-y: auto !important;
 }
 
+
+/*
+* Background Color App
+*/
 .v-application {
     background-color: var(--v-background-base) !important;
 }
 
 /*
-* Progress Bar Request API
-*/
-#nprogress .bar {
-    background: #223549 !important;
-}
-
-#nprogress .spinner-icon {
-    border-top-color: #223549 !important;
-    border-left-color: #223549 !important;
-}
-
-
-.Buo-Black {
-    color: black !important;
-}
-
-/*
 * Buo app style
-*/
-.no-uppercase {
-    text-transform: unset !important;
-}
-
-.buo-word-break {
-    word-break: break-word !important;
-}
-
-.buo-none-word-break {
-    word-break: normal !important;
-}
-
-.buo-headerAbility-position {
-    width: 100% !important;
-    height: 100% !important;
-    right: 16px !important;
-}
-
-.buo-expansion-panel-header {
-    padding: 0 !important; width: 99% !important;
-}
-
-.buo-white-space {
-    height: auto !important;
-    white-space: normal !important;
-}
-
-/*
-* Custom BUO CSS
 */
 
 /*
@@ -73,7 +34,7 @@ html {
 */
 .BUO-Display-Large {
     /* Display/Large (96) */
-    font-family: Montserrat;
+    font-family: 'Montserrat';
     font-style: normal;
     font-weight: 600;
     font-size: 96px;
@@ -83,7 +44,7 @@ html {
 
 .BUO-Display-Medium {
     /* Display/Medium (52) */
-    font-family: Montserrat;
+    font-family: 'Montserrat';
     font-style: normal;
     font-weight: 600;
     font-size: 52px;
@@ -93,7 +54,7 @@ html {
 
 .BUO-Display-Small {
     /* Display/Small (44) */
-    font-family: Montserrat;
+    font-family: 'Montserrat';
     font-style: normal;
     font-weight: 600;
     font-size: 44px;
@@ -103,7 +64,7 @@ html {
 
 .BUO-Display-XSmall {
     /* Display/X Small (36) */
-    font-family: Montserrat;
+    font-family: 'Montserrat';
     font-style: normal;
     font-weight: 600;
     font-size: 36px;
@@ -116,7 +77,7 @@ html {
 */
 .BUO-Heading-Large {
     /* Heading/Large (40) */
-    font-family: Montserrat;
+    font-family: 'Montserrat';
     font-style: normal;
     font-weight: 600;
     font-size: 40px;
@@ -126,7 +87,7 @@ html {
 
 .BUO-Heading-Medium {
     /* Heading/Medium (36) */
-    font-family: Montserrat;
+    font-family: 'Montserrat';
     font-style: normal;
     font-weight: 600;
     font-size: 32px;
@@ -136,7 +97,7 @@ html {
 
 .BUO-Heading-Small {
     /* Heading/Small (24) */
-    font-family: Montserrat;
+    font-family: 'Montserrat';
     font-style: normal;
     font-weight: 600;
     font-size: 24px;
@@ -146,7 +107,7 @@ html {
 
 .BUO-Heading-XSmall {
     /* Heading/X Small (20) */
-    font-family: Montserrat;
+    font-family: 'Montserrat';
     font-style: normal;
     font-weight: 600;
     font-size: 20px;
@@ -158,9 +119,20 @@ html {
 * Paragraph
 */
 .BUO-Paragraph-Large {
-    font-family: Montserrat;
+    /* Paragraph/Large Regular (18) */
+    font-family: 'Montserrat';
     font-style: normal;
-    font-weight: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 125%;
+    /* or 22px */
+}
+
+.BUO-Paragraph-Large-SemiBold {
+    /* Paragraph/Large SemiBold (18) */
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
     font-size: 18px;
     line-height: 125%;
     /* or 22px */
@@ -168,9 +140,19 @@ html {
 
 .BUO-Paragraph-Medium {
     /* Paragraph/Medium Regular (16) */
-    font-family: Montserrat;
+    font-family: 'Montserrat';
     font-style: normal;
-    font-weight: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 125%;
+    /* or 20px */
+}
+
+.BUO-Paragraph-Medium-SemiBold {
+    /* Paragraph/Medium Semibold (16) */
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
     font-size: 16px;
     line-height: 125%;
     /* or 20px */
@@ -186,32 +168,42 @@ html {
     /* or 17px */
 }
 
-.BUO-Paragraph-XSmall {
-    /* Paragraph/Small Regular (14) */
-    font-family: Montserrat;
+.BUO-Paragraph-Small-SemiBold {
+    /* Paragraph/Small Semibold (14) */
+    font-family: 'Montserrat';
     font-style: normal;
-    font-weight: normal;
-    font-size: 11px;
+    font-weight: 600;
+    font-size: 14px;
     line-height: 125%;
-    /* or 17px */
+    /* or 18px */
 }
 
 /*
 * Label
 */
 .BUO-Label-Small {
-    /* Label/Small (14) */
-    font-family: Montserrat;
+    /* Label/Small Regular (14) */
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 125%;
+    /* or 18px */
+}
+
+.BUO-Label-Small-SemiBold {
+    /* Label/Small Semibold(14) */
+    font-family: 'Montserrat';
     font-style: normal;
     font-weight: 600;
     font-size: 14px;
     line-height: 125%;
-    /* or 17px */
+    /* or 18px */
 }
 
 .BUO-Label-XSmall {
-    /* Label/X Small (12) */
-    font-family: Montserrat;
+    /* Label/XSmall Regular (12) */
+    font-family: 'Montserrat';
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
@@ -219,8 +211,84 @@ html {
     /* or 15px */
 }
 
+.BUO-Label-XSmall-SemiBold {
+    /* Label/X Small Semibold (12) */
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 125%;
+    /* or 15px */
+}
+
+/*
+* Custom BUO CSS
+*/
+
+/*
+* Avoid Upper Case
+*/
+.no-uppercase {
+    text-transform: unset !important;
+}
+
+/*
+* Segment the sentence
+*/
+.buo-word-break {
+    word-break: break-word !important;
+}
+
+/*
+* Segment the sentence
+*/
+.buo-none-word-break {
+    word-break: normal !important;
+}
+
+/*
+* Fix Vuetify UI panel componente
+*/
+.buo-headerAbility-position {
+    width: 100% !important;
+    height: 100% !important;
+    right: 16px !important;
+}
+
+/*
+* Fix Vuetify UI panel componente
+*/
+.buo-expansion-panel-header {
+    padding: 0 !important; width: 99% !important;
+}
+
+/*
+* Fix Vuetify componente
+*/
+.buo-white-space {
+    height: auto !important;
+    white-space: normal !important;
+}
+
+
+
+/*
+* Colors
+*/
+
+/*
+* Progress Bar Request API
+*/
+#nprogress .bar {
+    background: #174B89 !important;
+}
+
+.Buo-Black {
+    color: black !important;
+}
+
 .BUO-Primary {
-    color: #003F5E;
+    color: #174B89;
 }
 
 .BUO-green900 {
@@ -230,6 +298,10 @@ html {
 .BUO-error {
     color: #DC3127;
 }
+
+/*
+* Scroll Bar Css
+*/
 
 /* width */
 ::-webkit-scrollbar {
@@ -244,10 +316,10 @@ html {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #8A8A8A;
+    background: #EEF4F9;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #003F5E;
+    background: #174B89;
 }

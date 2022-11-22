@@ -39,6 +39,7 @@ export default {
         v-if="$vuetify.breakpoint.smAndDown"
         temporary
         v-model="drawer"
+        app
     >
         <v-list-item two-line class="px-2">
             <v-list-item-avatar>
