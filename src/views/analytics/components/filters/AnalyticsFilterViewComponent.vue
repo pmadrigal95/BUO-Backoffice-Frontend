@@ -5,7 +5,7 @@
  * @displayName AnalyticsFilterViewComponent
  */
 
-import { format, parse } from 'date-fns';
+import { DateTime } from 'luxon';
 import baseLocalHelper from '@/helpers/baseLocalHelper';
 
 import { mapGetters, mapActions } from 'vuex';
@@ -33,10 +33,7 @@ export default {
         },
 
         maxDatePickerProps() {
-            return format(
-                parse('', '', new Date()),
-                baseLocalHelper.$_DateFormat
-            );
+            return DateTime.now().toFormat(baseLocalHelper.$_DateFormat);
         },
 
         $_finalDateValidated() {

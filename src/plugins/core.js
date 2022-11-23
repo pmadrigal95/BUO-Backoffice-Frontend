@@ -40,11 +40,6 @@ import BaseInputList from '@/components/core/forms/BaseInputList.vue';
 import BaseSwitch from '@/components/core/forms/BaseSwitch.vue';
 
 /**
- * Input
- */
-import BaseDatePicker from '@/components/core/forms/BaseDatePicker.vue';
-
-/**
  * Modales
  */
 import BaseDialog from '@/components/core/alerts/BaseDialog.vue';
@@ -123,11 +118,6 @@ Vue.component(BaseInputList.name, BaseInputList);
  * Registro de Componente
  */
 Vue.component(BaseSwitch.name, BaseSwitch);
-
-/**
- * Registro de Componente
- */
-Vue.component(BaseDatePicker.name, BaseDatePicker);
 
 /**
  * Registro de Componente
