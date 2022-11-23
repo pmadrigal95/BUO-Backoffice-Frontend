@@ -4,7 +4,7 @@
  * @displayName BUO Analytics
  */
 
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import baseLocalHelper from '@/helpers/baseLocalHelper';
 import httpService from '@/services/axios/httpService';
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
@@ -41,7 +41,10 @@ const dataRequest = (buoFilters) => {
 };
 
 const formatDate = (dateToConvert) => {
-    return format(new Date(dateToConvert), baseLocalHelper.$_DateFormat);
+    return format(
+        parse('', '', new Date(dateToConvert)),
+        baseLocalHelper.$_DateFormat
+    );
 };
 
 export const namespaced = true;

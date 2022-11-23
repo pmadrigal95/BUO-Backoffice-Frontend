@@ -75,7 +75,7 @@ export default {
                             width="2"
                             rotate="268"
                             value="100"
-                            :color="isUp ? 'success' : 'error'"
+                            :color="isUp ? 'greenA900' : 'redError900'"
                             >{{ value }}
                         </v-progress-circular>
                     </v-avatar>
@@ -97,22 +97,24 @@ export default {
                                                 style="cursor: pointer"
                                                 :class="
                                                     isUp
-                                                        ? 'BUO-green900'
-                                                        : 'BUO-error'
+                                                        ? 'BUO-greenA900'
+                                                        : 'BUO-redError900'
                                                 "
                                                 v-bind="attrs"
                                                 v-on="on"
                                                 >{{ $_percentage }}</span
                                             >
                                         </template>
-                                        <center>
+                                        <div style="text-align: center">
                                             <strong>Periodo Anterior</strong>
                                             <br />
                                             <span>{{ previousValue }}</span>
-                                        </center>
+                                        </div>
                                     </v-tooltip>
                                     <v-icon
-                                        :color="isUp ? 'green900' : 'error'"
+                                        :color="
+                                            isUp ? 'greenA900' : 'redError900'
+                                        "
                                         >{{
                                             isUp
                                                 ? 'mdi-menu-up'

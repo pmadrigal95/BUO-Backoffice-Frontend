@@ -1,24 +1,10 @@
 export default {
-    buo: {
+    /**
+     * Vuetify
+     */
+    vuetify: {
         primary: '#003F5E',
         error: '#DC3127',
-        success: '#72bf44',
-        red: '#b1282b',
-        secondary: '#9fa8da',
-        accent: '#4FEEBA',
-        neutral: '#303030',
-        blue800: '#005D8C',
-        grey200: '#F8F8F8',
-        white: '#FFFFFF',
-        black: '#121212',
-        grey500: '#8A8A8A',
-        buoBackground: '#EEF4F9',
-        grey700: '#282828',
-        graph: '#007d81',
-        green700: '#58A389',
-        green800: '#0E6345',
-        green900: '#117C56',
-        buoAvatar: '#54ABB0',
     },
 
     /**

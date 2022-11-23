@@ -89,10 +89,10 @@ export default {
 
         /**
          * Color del Primer botón Footer
-         * Default: primary
+         * Default: blue900
          */
         color: {
-            default: 'primary',
+            default: 'blue900',
         },
 
         /**

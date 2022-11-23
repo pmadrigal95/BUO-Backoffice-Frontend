@@ -86,10 +86,10 @@ export default {
 
         /**
          * Color del Primer botón Footer
-         * Default: primary
+         * Default: blue900
          */
         color: {
-            default: 'primary',
+            default: 'blue900',
         },
 
         /**
@@ -567,13 +567,13 @@ export default {
                             <!-- @helper:  Show / hidden columns -->
                             <th v-if="!cleanFilter">
                                 <v-btn icon class="toUp">
-                                    <v-icon color="primary">mdi-magnify</v-icon>
+                                    <v-icon color="blue900">mdi-magnify</v-icon>
                                 </v-btn>
                             </th>
                             <!-- @helper:  clean all the filters -->
                             <th v-if="cleanFilter">
                                 <v-btn icon @click="$_Cleanfilter" class="toUp">
-                                    <v-icon color="primary"
+                                    <v-icon color="blue900"
                                         >mdi-close-circle-outline</v-icon
                                     >
                                 </v-btn>

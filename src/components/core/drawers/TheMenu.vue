@@ -45,7 +45,7 @@ export default {
     <BaseDrawer>
         <div slot="container">
             <v-list dense>
-                <v-list-item-group :color="app ? undefined : 'primary'">
+                <v-list-item-group :color="app ? undefined : 'blue900'">
                     <v-list-item
                         v-for="item in items"
                         :key="item.title"

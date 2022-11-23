@@ -119,7 +119,7 @@ export default {
                                 <v-col cols="12">
                                     <v-btn
                                         class="no-uppercase rounded-lg"
-                                        color="primary"
+                                        color="blue900"
                                         dark
                                         block
                                         :to="{ name: 'LoginViewComponent' }"
@@ -131,7 +131,7 @@ export default {
                                         class="no-uppercase rounded-lg"
                                         text
                                         block
-                                        color="primary"
+                                        color="blue900"
                                         @click="$_sendToAPI"
                                         >Reenviar correo</v-btn
                                     >

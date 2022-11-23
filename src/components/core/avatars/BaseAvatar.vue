@@ -39,7 +39,7 @@ export default {
                     max-width="100%"
                     contain
                 />
-                <v-avatar tile color="primary" v-else v-bind="attrs" v-on="on">
+                <v-avatar tile color="blue900" v-else v-bind="attrs" v-on="on">
                     <span class="white--text">{{ object.text.charAt(0) }}</span>
                 </v-avatar>
             </template>

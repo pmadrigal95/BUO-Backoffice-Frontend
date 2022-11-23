@@ -54,7 +54,7 @@ export default {
                 class="mx-auto"
             ></v-skeleton-loader>
             <v-dialog :value="true" hide-overlay persistent width="300">
-                <v-card color="primary" dark>
+                <v-card color="blue900" dark>
                     <v-card-text>
                         Por favor espere
                         <v-progress-linear

@@ -187,7 +187,7 @@ export default {
                 result = {
                     title: 'Eliminar',
                     icon: 'mdi-delete-outline',
-                    color: 'error',
+                    color: 'redError900',
                     item: this.item,
                     desc: `¿Estás seguro que quieres eliminar esta ${this.item}? La información de tu habilidad se perderá.`,
                 };
@@ -195,7 +195,7 @@ export default {
                 result = {
                     title: 'Pendiente',
                     icon: 'mdi-information-outline',
-                    color: 'primary',
+                    color: 'blue900',
                     item: this.item,
                     desc: 'Pendiente',
                 };
@@ -203,7 +203,7 @@ export default {
                 result = {
                     title: 'Pendiente',
                     icon: 'mdi-check-circle-outline',
-                    color: 'success',
+                    color: 'greenA700',
                     item: this.item,
                     desc: 'Pendiente',
                 };
@@ -320,7 +320,7 @@ export default {
                             <v-col cols="12">
                                 <v-layout align-center justify-center>
                                     <v-btn
-                                        color="primary"
+                                        color="blue900"
                                         dark
                                         block
                                         outlined

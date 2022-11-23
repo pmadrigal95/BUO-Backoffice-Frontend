@@ -46,7 +46,7 @@ export default {
     },
     destroyed() {
         this.$vuetify.theme.themes.light.background =
-            this.$vuetify.theme.themes.light.buoBackground;
+            this.$vuetify.theme.themes.light.clouds;
     },
 
     methods: {

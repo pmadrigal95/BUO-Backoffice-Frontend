@@ -181,9 +181,9 @@ export default {
             :width="width"
         >
             <v-card max-height="100%" max-width="100%" flat class="rounded-b-0">
-                <v-layout justify-end>
+                <v-toolbar dense flat class="fixed-bar" v-if="!persistent">
+                    <v-spacer></v-spacer>
                     <v-btn
-                        v-if="!persistent"
                         class="no-uppercase rounded-lg"
                         text
                         color="blue800"
@@ -191,7 +191,7 @@ export default {
                     >
                         Cerrar
                     </v-btn>
-                </v-layout>
+                </v-toolbar>
 
                 <v-divider></v-divider>
 
@@ -203,3 +203,12 @@ export default {
         </v-dialog>
     </div>
 </template>
+
+<style scoped>
+.fixed-bar {
+    position: sticky;
+    position: -webkit-sticky; /* for Safari */
+    top: 0;
+    z-index: 2;
+}
+</style>

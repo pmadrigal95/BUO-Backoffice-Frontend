@@ -16,7 +16,7 @@ export default {
         app
         width="auto"
         dark
-        color="primary"
+        color="blue900"
         :class="[$vuetify.breakpoint.smAndDown ? 'mobileBorderFooter' : null]"
     >
         <v-row style="margin-top: 1px !important">

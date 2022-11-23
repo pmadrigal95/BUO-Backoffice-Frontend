@@ -34,10 +34,10 @@ export default {
 
         /**
          * Color del Primer botón
-         * Default: primary
+         * Default: blue900
          */
         color: {
-            default: 'primary',
+            default: 'blue900',
         },
 
         /**

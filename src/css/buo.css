@@ -287,15 +287,11 @@ html {
     color: black !important;
 }
 
-.BUO-Primary {
-    color: #174B89;
-}
-
-.BUO-green900 {
+.BUO-greenA900 {
     color: #72bf44;
 }
 
-.BUO-error {
+.BUO-redError900 {
     color: #DC3127;
 }
 

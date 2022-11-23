@@ -64,11 +64,11 @@ export default {
 
         /**
          * color
-         * Default primary
+         * Default blue900
          */
         color: {
             type: String,
-            default: 'primary',
+            default: 'blue900',
         },
 
         /**

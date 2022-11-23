@@ -136,7 +136,7 @@ export default {
             <v-tooltip top v-if="items[0]">
                 <template v-slot:activator="{ on }">
                     <v-btn
-                        :color="app ? 'success' : 'primary'"
+                        :color="app ? 'greenA700' : 'blue900'"
                         icon
                         @click="$_Refresh"
                         v-on="on"
@@ -149,7 +149,7 @@ export default {
             <v-tooltip top v-if="items[1]">
                 <template v-slot:activator="{ on }">
                     <v-btn
-                        :color="app ? 'success' : 'primary'"
+                        :color="app ? 'greenA700' : 'blue900'"
                         icon
                         @click="$_Filter"
                         v-on="on"

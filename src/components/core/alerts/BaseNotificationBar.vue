@@ -66,15 +66,13 @@ export default {
             prominent
             colored-border
             dark
-            :type="notification.error ? 'error' : 'success'"
-            :icon="
-                notification.error
-                    ? 'mdi-sticker-alert-outline'
-                    : 'mdi-sticker-check-outline'
-            "
+            :color="notification.error ? 'redError900' : 'greenA700'"
+            :icon="notification.error ? 'mdi-alert-circle' : 'mdi-check-circle'"
             >{{ notification.message }}
             <template v-slot:append>
-                <v-icon :color="notification.error ? 'error' : 'success'">
+                <v-icon
+                    :color="notification.error ? 'redError900' : 'greenA700'"
+                >
                     mdi-close-circle-outline
                 </v-icon>
             </template>

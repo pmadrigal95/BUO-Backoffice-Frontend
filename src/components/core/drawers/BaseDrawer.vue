@@ -43,7 +43,7 @@ export default {
     >
         <v-list-item two-line class="px-2">
             <v-list-item-avatar>
-                <v-avatar color="buoAvatar">
+                <v-avatar color="yellowWarning900">
                     <span
                         class="white--text text-h5"
                         v-if="user.photoUrl == undefined"
@@ -62,7 +62,7 @@ export default {
             <v-btn
                 icon
                 @click.stop="mini = !mini"
-                v-if="this.$vuetify.breakpoint.mdAndUp"
+                v-if="$vuetify.breakpoint.mdAndUp"
             >
                 <v-icon>mdi-chevron-left</v-icon>
             </v-btn>
@@ -84,7 +84,7 @@ export default {
     >
         <v-list-item two-line class="px-2">
             <v-list-item-avatar>
-                <v-avatar color="buoAvatar">
+                <v-avatar color="yellowWarning900">
                     <span
                         class="white--text text-h5"
                         v-if="user.photoUrl == undefined"

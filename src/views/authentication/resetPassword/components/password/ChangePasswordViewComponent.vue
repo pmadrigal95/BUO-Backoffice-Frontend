@@ -114,7 +114,7 @@ export default {
                                 <v-col cols="12">
                                     <v-btn
                                         class="no-uppercase rounded-lg"
-                                        color="primary"
+                                        color="blue900"
                                         dark
                                         block
                                         :to="{ name: 'LoginViewComponent' }"

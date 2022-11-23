@@ -46,7 +46,7 @@ export default {
                                 alt=""
                                 v-if="item.src != null"
                             />
-                            <v-avatar tile color="primary" v-else>
+                            <v-avatar tile color="blue900" v-else>
                                 <span class="white--text text-h5">{{
                                     item.text.charAt(0)
                                 }}</span>

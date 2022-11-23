@@ -361,7 +361,7 @@ export default {
                 <template v-slot:progress>
                     <slot name="progress">
                         <v-progress-linear
-                            color="primary"
+                            color="blue900"
                             indeterminate
                             absolute
                             height="2"
@@ -394,7 +394,7 @@ export default {
                             v-bind="datePickerProps"
                             @input="showTimePicker"
                             full-width
-                            color="primary"
+                            color="blue900"
                         ></v-date-picker>
                     </v-tab-item>
                     <v-tab-item key="timer">
@@ -420,7 +420,7 @@ export default {
                     >
                     <v-btn
                         class="ma-2 no-uppercase rounded-lg"
-                        color="primary"
+                        color="blue900"
                         text
                         @click="okHandler"
                         >{{ okText ? okText : 'Seleccionar' }}</v-btn

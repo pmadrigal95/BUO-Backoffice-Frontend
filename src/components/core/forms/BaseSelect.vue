@@ -154,7 +154,7 @@ export default {
 
         colorAppendOuterIcon: {
             type: String,
-            default: 'success',
+            default: 'greenA700',
         },
 
         messageAppendOuterIcon: {

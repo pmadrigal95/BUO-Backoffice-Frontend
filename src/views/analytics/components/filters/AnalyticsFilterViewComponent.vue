@@ -5,7 +5,7 @@
  * @displayName AnalyticsFilterViewComponent
  */
 
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import baseLocalHelper from '@/helpers/baseLocalHelper';
 
 import { mapGetters, mapActions } from 'vuex';
@@ -33,7 +33,10 @@ export default {
         },
 
         maxDatePickerProps() {
-            return format(new Date(), baseLocalHelper.$_DateFormat);
+            return format(
+                parse('', '', new Date()),
+                baseLocalHelper.$_DateFormat
+            );
         },
 
         $_finalDateValidated() {
@@ -129,7 +132,7 @@ export default {
                                             v-model="params.startDate"
                                             no-title
                                             scrollable
-                                            color="primary"
+                                            color="blue900"
                                             @input="menuStartDate = false"
                                             :max="params.endDate"
                                         ></v-date-picker>
@@ -166,7 +169,7 @@ export default {
                                             v-model="params.endDate"
                                             no-title
                                             scrollable
-                                            color="primary"
+                                            color="blue900"
                                             @input="menuEndDate = false"
                                             :min="$_finalDateValidated"
                                             :max="maxDatePickerProps"
@@ -189,7 +192,7 @@ export default {
                             </v-expansion-panel>
                         </v-expansion-panels>
                     </v-card-text>
-                    <v-card-actions>
+                    <v-card-actions v-if="$vuetify.breakpoint.mobile">
                         <v-row justify="center">
                             <v-btn
                                 @click="$_cleanSendToAPI()"
@@ -200,8 +203,9 @@ export default {
                                 Limpiar
                             </v-btn>
                             <v-btn
+                                dark
                                 @click="$_sendToAPI()"
-                                color="primary"
+                                color="blue900"
                                 class="ma-2 no-uppercase rounded-lg"
                             >
                                 Filtrar
@@ -210,10 +214,12 @@ export default {
                     </v-card-actions>
                 </v-card>
                 <v-footer
+                    v-if="$vuetify.breakpoint.mdAndUp"
                     class="rounded-t-xl"
                     app
                     fixed
                     color="white"
+                    dark
                 >
                     <v-layout justify-center>
                         <v-btn
@@ -226,7 +232,7 @@ export default {
                         </v-btn>
                         <v-btn
                             @click="$_sendToAPI()"
-                            color="primary"
+                            color="blue900"
                             class="ma-2 no-uppercase rounded-lg"
                         >
                             Filtrar

@@ -18,11 +18,17 @@ export default new Vuetify({
         themes: {
             light: {
                 ...colors.light,
-                ...colors.buo,
+                ...colors.vuetify,
+                ...colors.brand,
+                ...colors.neutrals,
+                ...colors.status,
             },
             dark: {
                 ...colors.dark,
-                ...colors.buo,
+                ...colors.vuetify,
+                ...colors.brand,
+                ...colors.neutrals,
+                ...colors.status,
             },
         },
     },
