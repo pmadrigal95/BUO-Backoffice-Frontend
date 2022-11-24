@@ -4,8 +4,6 @@
  * @displayName BUO Analytics
  */
 
-import { DateTime } from 'luxon';
-import baseLocalHelper from '@/helpers/baseLocalHelper';
 import httpService from '@/services/axios/httpService';
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 
@@ -41,9 +39,7 @@ const dataRequest = (buoFilters) => {
 };
 
 const formatDate = (dateToConvert) => {
-    return DateTime.fromJSDate(new Date(dateToConvert)).toFormat(
-        baseLocalHelper.$_DateFormat
-    );
+    return new Date(dateToConvert).toISOString().substring(0, 10);
 };
 
 export const namespaced = true;
