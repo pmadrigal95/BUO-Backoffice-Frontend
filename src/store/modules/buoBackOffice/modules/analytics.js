@@ -28,8 +28,8 @@ const dataRequest = (buoFilters) => {
             endpoint: 'analytics/dashboardByDate',
             method: 'post',
             params: {
-                startDate: buoFilters.startDate,
-                endDate: buoFilters.endDate,
+                startDate: new Date(buoFilters.startDate),
+                endDate: new Date(buoFilters.endDate),
                 accumulated: buoFilters.isAccumulated,
             },
         };
@@ -39,7 +39,7 @@ const dataRequest = (buoFilters) => {
 };
 
 const formatDate = (dateToConvert) => {
-    return new Date(dateToConvert).toISOString().substring(0, 10);
+    return baseSharedFnHelper.$_parseArrayToDateISOString(dateToConvert);
 };
 
 export const namespaced = true;
@@ -111,19 +111,24 @@ export const actions = {
         commit('$_SET_BUO_LOADING', false);
         httpService[request.method](request.endpoint, request.params).then(
             (response) => {
-                // Encontro la entidad
-                commit('$_SET_BUO_ANALYTICS', response.data.indicadorDtoList);
-                commit('$_SET_BUO_FILTERS', {
-                    startDate: formatDate(response.data.fechaInicio),
-                    endDate: formatDate(response.data.fechaFinal),
-                    previewStartDate: formatDate(
-                        response.data.fechaInicioAnterior
-                    ),
-                    previewEndDate: formatDate(
-                        response.data.fechaFinalAnterior
-                    ),
-                    isAccumulated: state.buoFilters.isAccumulated,
-                });
+                if (response) {
+                    // Encontro la entidad
+                    commit(
+                        '$_SET_BUO_ANALYTICS',
+                        response.data.indicadorDtoList
+                    );
+                    commit('$_SET_BUO_FILTERS', {
+                        startDate: formatDate(response.data.fechaInicio),
+                        endDate: formatDate(response.data.fechaFinal),
+                        previewStartDate: formatDate(
+                            response.data.fechaInicioAnterior
+                        ),
+                        previewEndDate: formatDate(
+                            response.data.fechaFinalAnterior
+                        ),
+                        isAccumulated: state.buoFilters.isAccumulated,
+                    });
+                }
             }
         );
     },

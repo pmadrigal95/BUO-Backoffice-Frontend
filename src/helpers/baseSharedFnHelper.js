@@ -205,4 +205,31 @@ export default {
             key: key,
         });
     },
+
+    /**
+     * Fn Dates
+     */
+
+    $_parseArrayToDateISOString(array) {
+        if (Array.isArray(array) && array.length === 3) {
+            return `${array[0]}-${array[1] > 9 ? array[1] : '0' + array[1]}-${
+                array[2] > 9 ? array[2] : '0' + array[2]
+            }`;
+        }
+    },
+
+    $_getCurrentDateISOString() {
+        const date = new Date();
+
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+
+        // This arrangement can be altered based on how we want the date's format to appear.
+        let currentDate = `${year}-${month > 9 ? month : '0' + month}-${
+            day > 9 ? day : '0' + day
+        }`;
+
+        return currentDate;
+    },
 };

@@ -17,7 +17,7 @@ export default {
 
         // Sets the width for the component.
         width: {
-            type: String || Number,
+            type: [String, Number],
             default: '600',
         },
     },

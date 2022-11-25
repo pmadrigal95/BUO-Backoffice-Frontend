@@ -7,8 +7,14 @@
 
 import { mapGetters, mapActions } from 'vuex';
 
+const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
+
 export default {
     name: 'AnalyticsFilterViewComponent',
+
+    components: {
+        BaseDatePicker,
+    },
 
     data() {
         return {
@@ -27,12 +33,6 @@ export default {
 
         $_mode() {
             return this.buoFilters.isAccumulated ? 'Acumulado' : 'Períodos';
-        },
-
-        maxDatePickerProps() {
-            const date = new Date();
-            date.setDate(date.getDate() - 1);
-            return date.toISOString().substring(0, 10);
         },
 
         $_finalDateValidated() {
@@ -104,35 +104,13 @@ export default {
                                     >Fecha Inicial</v-expansion-panel-header
                                 >
                                 <v-expansion-panel-content>
-                                    <v-menu
-                                        v-model="menuStartDate"
-                                        :close-on-content-click="false"
-                                        transition="scale-transition"
-                                        offset-y
-                                        min-width="auto"
-                                    >
-                                        <template
-                                            v-slot:activator="{ on, attrs }"
-                                        >
-                                            <br />
-                                            <BaseInput
-                                                v-model="params.startDate"
-                                                label="Buscar"
-                                                append-icon="mdi-magnify"
-                                                readonly
-                                                v-bind="attrs"
-                                                v-on="on"
-                                            ></BaseInput>
-                                        </template>
-                                        <v-date-picker
-                                            v-model="params.startDate"
-                                            no-title
-                                            scrollable
-                                            color="blue900"
-                                            @input="menuStartDate = false"
-                                            :max="params.endDate"
-                                        ></v-date-picker>
-                                    </v-menu>
+                                    <br />
+                                    <BaseDatePicker
+                                        label="Buscar"
+                                        appendIcon="mdi-magnify"
+                                        :max="params.endDate"
+                                        v-model="params.startDate"
+                                    />
                                 </v-expansion-panel-content>
                             </v-expansion-panel>
 
@@ -141,36 +119,14 @@ export default {
                                     >Fecha Final</v-expansion-panel-header
                                 >
                                 <v-expansion-panel-content>
-                                    <v-menu
-                                        v-model="menuEndDate"
-                                        :close-on-content-click="false"
-                                        transition="scale-transition"
-                                        offset-y
-                                        min-width="auto"
-                                    >
-                                        <template
-                                            v-slot:activator="{ on, attrs }"
-                                        >
-                                            <br />
-                                            <BaseInput
-                                                v-model="params.endDate"
-                                                label="Buscar"
-                                                append-icon="mdi-magnify"
-                                                readonly
-                                                v-bind="attrs"
-                                                v-on="on"
-                                            ></BaseInput>
-                                        </template>
-                                        <v-date-picker
-                                            v-model="params.endDate"
-                                            no-title
-                                            scrollable
-                                            color="blue900"
-                                            @input="menuEndDate = false"
-                                            :min="$_finalDateValidated"
-                                            :max="maxDatePickerProps"
-                                        ></v-date-picker>
-                                    </v-menu>
+                                    <br />
+                                    <BaseDatePicker
+                                        label="Buscar"
+                                        appendIcon="mdi-magnify"
+                                        reqCurrentMaxDate
+                                        :min="$_finalDateValidated"
+                                        v-model="params.endDate"
+                                    />
                                 </v-expansion-panel-content>
                             </v-expansion-panel>
 

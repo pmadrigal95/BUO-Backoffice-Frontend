@@ -13,7 +13,7 @@ export default {
     props: {
         // Milliseconds to wait before closing component.
         closeDelay: {
-            type: Number || String,
+            type: [Number, String],
             default: 0,
         },
 
@@ -61,7 +61,7 @@ export default {
 
         // Sets the maximum width for the component.
         maxWidth: {
-            type: String || Number,
+            type: [String, Number],
             default: undefined,
         },
 
@@ -73,7 +73,7 @@ export default {
 
         // 	Milliseconds to wait before opening component.
         openDelay: {
-            type: Number || String,
+            type: [Number, String],
             default: 0,
         },
 
@@ -106,7 +106,7 @@ export default {
 
         // Sets the overlay opacity.
         overlayOpacity: {
-            type: String || Number,
+            type: [String, Number],
             default: undefined,
         },
 
@@ -130,7 +130,7 @@ export default {
 
         // Sets the width for the component.
         width: {
-            type: String || Number,
+            type: [String, Number],
             default: undefined,
         },
 
