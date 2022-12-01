@@ -31,6 +31,11 @@ export default {
                     module: 'AnalyticsViewComponent',
                 },
                 {
+                    title: 'Códigos promocionales',
+                    icon: 'mdi-qrcode-edit',
+                    module: 'PromotionalCodesFilterViewComponent',
+                },
+                {
                     title: 'Cerrar sesión',
                     icon: 'mdi-logout-variant',
                     module: 'LoginViewComponent',
