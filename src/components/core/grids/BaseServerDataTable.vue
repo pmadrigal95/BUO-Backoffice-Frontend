@@ -495,8 +495,8 @@ export default {
                         .post(this.returnEndPoint(), this.returnParams())
                         .then((response) => {
                             if (response != undefined) {
-                                this.items = response.data.data;
-                                this.totalItems = response.data.recordsFiltered;
+                                this.items = response.data.content;
+                                this.totalItems = response.data.totalElements;
                                 this.loadingGrid = false;
                                 this.loadingPage = false;
                             }

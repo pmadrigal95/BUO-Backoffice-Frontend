@@ -25,30 +25,12 @@ export default {
          */
         setting() {
             return {
-                endpoint: 'organizacion/getAll',
+                endpoint: 'codigoPromocion/findBy',
                 columns: [
                     {
                         text: 'Código',
                         align: 'start',
-                        value: 'id',
-                        show: false,
-                    },
-                    {
-                        text: 'Nombre',
-                        align: 'start',
-                        value: 'nombre',
-                        show: true,
-                    },
-                    {
-                        text: 'Descripcion',
-                        align: 'start',
-                        value: 'descripcion',
-                        show: false,
-                    },
-                    {
-                        text: 'Estado',
-                        align: 'start',
-                        value: 'nombreEstado',
+                        value: 'codigo',
                         show: true,
                     },
                 ],
@@ -56,15 +38,23 @@ export default {
             };
         },
     },
+
+    methods: {
+        $_fnNew() {
+            alert('Soy nuevo!');
+        },
+    },
 };
 </script>
 
 <template>
     <BaseCardViewComponent title="Códigos Promocionales">
-        <div slot="body">
+        <div slot="card-text">
+            <!--Componente Editor -->
             <BaseServerDataTable
                 ref="PromotionalCodesFilter"
                 :setting="setting"
+                :fnNew="$_fnNew"
             />
         </div>
     </BaseCardViewComponent>
