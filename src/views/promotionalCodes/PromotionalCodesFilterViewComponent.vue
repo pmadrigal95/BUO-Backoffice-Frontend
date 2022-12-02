@@ -43,6 +43,10 @@ export default {
         $_fnNew() {
             alert('Soy nuevo!');
         },
+
+        $_fnEdit(row) {
+            alert(`Hola soy: ${row.selected.id}`);
+        },
     },
 };
 </script>
@@ -55,6 +59,7 @@ export default {
                 ref="PromotionalCodesFilter"
                 :setting="setting"
                 :fnNew="$_fnNew"
+                :fnEdit="$_fnEdit"
             />
         </div>
     </BaseCardViewComponent>
