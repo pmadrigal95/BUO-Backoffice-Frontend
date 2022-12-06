@@ -316,7 +316,9 @@ export default {
          */
         options: {
             handler() {
-                this.$_ParamsToAPI();
+                if (this.loadingGrid == false) {
+                    this.$_ParamsToAPI();
+                }
             },
             deep: true,
         },
@@ -343,6 +345,7 @@ export default {
                  * Establece el tiempo a ejecutar la función
                  */
                 let timer = baseLocalHelper.$_DefaultTimer;
+                this.options.page = 1;
                 /**
                  * elimina propiedades sin información
                  */
@@ -1001,7 +1004,7 @@ export default {
                                     type="error"
                                     icon="mdi-progress-alert"
                                 >
-                                    {{ baseLocalHelper.$_MsgRowNotSelected }}
+                                    Debe seleccionar al menos un registro
                                 </v-alert>
 
                                 <!-- @BaseInput -->
@@ -1043,349 +1046,396 @@ export default {
                 </div>
             </BaseDialog>
 
-            <!-- @Componente:  v-data-table-->
-            <v-data-table
-                :headers="headers"
-                :items="items"
-                v-model="selected"
-                :single-select="
-                    this.setting.singleSelect != undefined
-                        ? this.setting.singleSelect
-                        : true
-                "
-                :item-key="this.setting.key"
-                show-select
-                @click:row="$_setSelected"
-                :options.sync="options"
-                :server-items-length="totalItems"
-                :loading="loadingGrid"
-                :footer-props="settingFooter"
-                :dense="dense"
-            >
-                <template v-slot:top>
-                    <!-- @Componente:  BaseButtonsGrid-->
-                    <BaseButtonsGrid
-                        :fnRefresh="$_ParamsToAPI"
-                        :fnFilter="$_filter"
-                        :fnNew="fnNew"
-                        :fnEdit="fnEdit != undefined ? $_edit : undefined"
-                        :fnDelete="
-                            fnDelete != undefined ? $_DeleteModal : undefined
+            <v-card flat class="rounded-lg">
+                <v-card-text>
+                    <!-- @Componente:  v-data-table-->
+                    <v-data-table
+                        :headers="headers"
+                        :items="items"
+                        v-model="selected"
+                        :single-select="
+                            this.setting.singleSelect != undefined
+                                ? this.setting.singleSelect
+                                : true
                         "
+                        :item-key="this.setting.key"
+                        show-select
+                        @click:row="$_setSelected"
+                        :options.sync="options"
+                        :server-items-length="totalItems"
+                        :loading="loadingGrid"
+                        :footer-props="settingFooter"
+                        :dense="dense"
                     >
-                        <!-- @slot Use este slot para agregar botones -->
-                        <div slot="btns">
-                            <BaseCustomsButtonsGrid
-                                v-if="!searchByColumns"
-                                label="Buscar"
-                                icon="mdi-magnify"
-                                :fnMethod="$_mobilSearch"
-                            />
-                            <slot name="btns"></slot>
-                        </div>
-                    </BaseButtonsGrid>
-                </template>
-
-                <!-- @helper:  Buscador por columnas-->
-                <template v-slot:header v-if="searchByColumns">
-                    <tr>
-                        <!-- @helper:  Show / hidden columns -->
-                        <th v-if="!cleanFilter">
-                            <v-btn icon @click="showSearch = !showSearch">
-                                <v-icon color="black">mdi-magnify</v-icon>
-                            </v-btn>
-                        </th>
-                        <!-- @helper:  clean all the filters -->
-                        <th v-if="cleanFilter">
-                            <v-btn icon @click="$_Cleanfilter">
-                                <v-icon color="black"
-                                    >mdi-close-circle-outline</v-icon
-                                >
-                            </v-btn>
-                        </th>
-
-                        <th v-for="header in headers" :key="header.text">
-                            <!-- @helper:  Filter type Text -->
-                            <v-col
-                                v-if="
-                                    header.type == undefined &&
-                                    header.filterSetting == undefined
+                        <template v-slot:top>
+                            <!-- @Componente:  BaseButtonsGrid-->
+                            <BaseButtonsGrid
+                                :fnRefresh="$_ParamsToAPI"
+                                :fnFilter="$_filter"
+                                :fnNew="fnNew"
+                                :fnEdit="
+                                    fnEdit != undefined ? $_edit : undefined
                                 "
+                                :fnDelete="
+                                    fnDelete != undefined
+                                        ? $_DeleteModal
+                                        : undefined
+                                "
+                                :rowCount="selected.length"
                             >
-                                <v-text-field
-                                    outlined
-                                    dense
-                                    v-model="
-                                        filters[
-                                            header.filterBy
-                                                ? header.filterBy
-                                                : header.value
-                                        ]
-                                    "
-                                    v-if="showSearch"
-                                    clearable
-                                ></v-text-field>
-                            </v-col>
+                                <!-- @slot Use este slot para agregar botones -->
+                                <div slot="btns">
+                                    <BaseCustomsButtonsGrid
+                                        v-if="!searchByColumns"
+                                        label="Buscar"
+                                        icon="mdi-magnify"
+                                        :fnMethod="$_mobilSearch"
+                                    />
+                                    <slot name="btns"></slot>
+                                </div>
+                            </BaseButtonsGrid>
+                        </template>
 
-                            <!-- @helper:  Filter type Number -->
-                            <v-col v-else-if="header.type == 'number'">
-                                <v-text-field
-                                    outlined
-                                    dense
-                                    v-model="
-                                        filters[
-                                            header.filterBy
-                                                ? header.filterBy
-                                                : header.value
-                                        ]
-                                    "
-                                    v-if="showSearch"
-                                    clearable
-                                    type="number"
-                                ></v-text-field>
-                            </v-col>
-
-                            <!-- @helper:  Filter type Hidden -->
-                            <v-col v-else-if="header.type == 'hidden'">
-                                <input
-                                    type="hidden"
-                                    v-if="showSearch"
-                                    v-model="
-                                        filters[
-                                            header.filterBy
-                                                ? header.filterBy
-                                                : header.value
-                                        ]
-                                    "
-                                />
-                            </v-col>
-
-                            <!-- @helper:  Filter type Boolean -->
-                            <v-col v-else-if="header.type == 'bool'">
-                                <v-row align="center" justify="center">
-                                    <v-checkbox
-                                        dense
-                                        v-if="showSearch"
-                                        v-model="
-                                            filters[
-                                                header.filterBy
-                                                    ? header.filterBy
-                                                    : header.value
-                                            ]
+                        <!-- @helper:  Buscador por columnas-->
+                        <template v-slot:header v-if="searchByColumns">
+                            <tr>
+                                <!-- @helper:  Show / hidden columns -->
+                                <th v-if="!cleanFilter">
+                                    <v-btn
+                                        :class="
+                                            showSearch ? 'btnSearch' : undefined
                                         "
-                                    ></v-checkbox>
-                                </v-row>
-                            </v-col>
+                                        icon
+                                        @click="showSearch = !showSearch"
+                                    >
+                                        <v-icon color="black"
+                                            >mdi-magnify</v-icon
+                                        >
+                                    </v-btn>
+                                </th>
+                                <!-- @helper:  clean all the filters -->
+                                <th v-if="cleanFilter">
+                                    <v-btn
+                                        :class="
+                                            showSearch ? 'btnSearch' : undefined
+                                        "
+                                        icon
+                                        @click="$_Cleanfilter"
+                                    >
+                                        <v-icon color="black"
+                                            >mdi-close-circle-outline</v-icon
+                                        >
+                                    </v-btn>
+                                </th>
 
-                            <!-- @helper:  Filter type bigint -->
-                            <v-col v-else-if="header.type == 'bigint'">
-                                <!-- @BaseInput -->
-                                <BaseInput
-                                    label
-                                    dense
-                                    v-model="
-                                        filters[
-                                            header.filterBy
-                                                ? header.filterBy
-                                                : header.value
-                                        ]
-                                    "
-                                    mask="###########"
-                                    clearable
-                                />
-                            </v-col>
+                                <th
+                                    v-for="header in headers"
+                                    :key="header.text"
+                                >
+                                    <!-- @helper:  Filter type Text -->
+                                    <v-col
+                                        v-if="
+                                            header.type == undefined &&
+                                            header.filterSetting == undefined
+                                        "
+                                    >
+                                        <v-text-field
+                                            outlined
+                                            dense
+                                            v-model="
+                                                filters[
+                                                    header.filterBy
+                                                        ? header.filterBy
+                                                        : header.value
+                                                ]
+                                            "
+                                            v-if="showSearch"
+                                            clearable
+                                        ></v-text-field>
+                                    </v-col>
 
-                            <!-- @helper:  Filter type int -->
-                            <v-col v-else-if="header.type == 'int'">
-                                <!-- @BaseInput -->
-                                <BaseInput
-                                    outlined
-                                    label
-                                    dense
-                                    v-model="
-                                        filters[
-                                            header.filterBy
-                                                ? header.filterBy
-                                                : header.value
-                                        ]
-                                    "
-                                    mask="##########"
-                                    clearable
-                                />
-                            </v-col>
+                                    <!-- @helper:  Filter type Number -->
+                                    <v-col v-else-if="header.type == 'number'">
+                                        <v-text-field
+                                            outlined
+                                            dense
+                                            v-model="
+                                                filters[
+                                                    header.filterBy
+                                                        ? header.filterBy
+                                                        : header.value
+                                                ]
+                                            "
+                                            v-if="showSearch"
+                                            clearable
+                                            type="number"
+                                        ></v-text-field>
+                                    </v-col>
 
-                            <!-- @helper:  Filter type smallint -->
-                            <v-col v-else-if="header.type == 'smallint'">
-                                <!-- @BaseInput -->
-                                <BaseInput
-                                    outlined
-                                    label
-                                    dense
-                                    v-model="
-                                        filters[
-                                            header.filterBy
-                                                ? header.filterBy
-                                                : header.value
-                                        ]
-                                    "
-                                    mask="#####"
-                                    clearable
-                                />
-                            </v-col>
+                                    <!-- @helper:  Filter type Hidden -->
+                                    <v-col v-else-if="header.type == 'hidden'">
+                                        <input
+                                            type="hidden"
+                                            v-if="showSearch"
+                                            v-model="
+                                                filters[
+                                                    header.filterBy
+                                                        ? header.filterBy
+                                                        : header.value
+                                                ]
+                                            "
+                                        />
+                                    </v-col>
 
-                            <!-- @helper:  Filter type tinyint -->
-                            <v-col v-else-if="header.type == 'tinyint'">
-                                <!-- @BaseInput -->
-                                <BaseInput
-                                    outlined
-                                    label
-                                    dense
-                                    clearable
-                                    v-model="
-                                        filters[
-                                            header.filterBy
-                                                ? header.filterBy
-                                                : header.value
-                                        ]
-                                    "
-                                    mask="###"
-                                />
-                            </v-col>
+                                    <!-- @helper:  Filter type Boolean -->
+                                    <v-col v-else-if="header.type == 'bool'">
+                                        <v-row
+                                            align-content="center"
+                                            justify="center"
+                                        >
+                                            <v-checkbox
+                                                dense
+                                                v-if="showSearch"
+                                                v-model="
+                                                    filters[
+                                                        header.filterBy
+                                                            ? header.filterBy
+                                                            : header.value
+                                                    ]
+                                                "
+                                            ></v-checkbox>
+                                        </v-row>
+                                    </v-col>
 
-                            <!-- @helper:  Filter type DATETIME -->
-                            <v-col v-else-if="header.type == 'datetime'">
-                                <!-- @BaseInput -->
-                                <BaseDatePicker
-                                    :dense="header.type == 'datetime'"
-                                    v-model="
-                                        filters[
-                                            header.filterBy
-                                                ? header.filterBy
-                                                : header.value
-                                        ]
-                                    "
-                                    :type="header.type"
-                                />
-                            </v-col>
+                                    <!-- @helper:  Filter type bigint -->
+                                    <v-col v-else-if="header.type == 'bigint'">
+                                        <!-- @BaseInput -->
+                                        <BaseInput
+                                            label
+                                            dense
+                                            v-model="
+                                                filters[
+                                                    header.filterBy
+                                                        ? header.filterBy
+                                                        : header.value
+                                                ]
+                                            "
+                                            mask="###########"
+                                            clearable
+                                        />
+                                    </v-col>
 
-                            <!-- @helper:  Filter type DATE -->
-                            <v-col v-else-if="header.type == 'date'">
-                                <!-- @BaseInput -->
-                                <BaseDatePicker
-                                    :dense="header.type == 'date'"
-                                    v-model="
-                                        filters[
-                                            header.filterBy
-                                                ? header.filterBy
-                                                : header.value
-                                        ]
-                                    "
-                                    :type="header.type"
-                                />
-                            </v-col>
+                                    <!-- @helper:  Filter type int -->
+                                    <v-col v-else-if="header.type == 'int'">
+                                        <!-- @BaseInput -->
+                                        <BaseInput
+                                            outlined
+                                            label
+                                            dense
+                                            v-model="
+                                                filters[
+                                                    header.filterBy
+                                                        ? header.filterBy
+                                                        : header.value
+                                                ]
+                                            "
+                                            mask="##########"
+                                            clearable
+                                        />
+                                    </v-col>
 
-                            <!-- @helper:  Filter type TIME -->
-                            <v-col v-else-if="header.type == 'time'">
-                                <!-- @BaseInput -->
-                                <BaseDatePicker
-                                    :dense="header.type == 'time'"
-                                    v-model="
-                                        filters[
-                                            header.filterBy
-                                                ? header.filterBy
-                                                : header.value
-                                        ]
-                                    "
-                                    :type="header.type"
-                                />
-                            </v-col>
+                                    <!-- @helper:  Filter type smallint -->
+                                    <v-col
+                                        v-else-if="header.type == 'smallint'"
+                                    >
+                                        <!-- @BaseInput -->
+                                        <BaseInput
+                                            outlined
+                                            label
+                                            dense
+                                            v-model="
+                                                filters[
+                                                    header.filterBy
+                                                        ? header.filterBy
+                                                        : header.value
+                                                ]
+                                            "
+                                            mask="#####"
+                                            clearable
+                                        />
+                                    </v-col>
 
-                            <!-- @helper:  Filter type BaseInputList -->
-                            <v-col
-                                v-else-if="
-                                    header.filterSetting != undefined &&
-                                    header.filterSetting.input != undefined
-                                "
-                            >
-                                <!-- @BaseInputList -->
-                                <BaseInputList
-                                    :setting="header.filterSetting"
-                                    v-model="
-                                        filters[
-                                            header.filterBy
-                                                ? header.filterBy
-                                                : header.value
-                                        ]
-                                    "
-                                    v-if="showSearch"
-                                />
-                            </v-col>
+                                    <!-- @helper:  Filter type tinyint -->
+                                    <v-col v-else-if="header.type == 'tinyint'">
+                                        <!-- @BaseInput -->
+                                        <BaseInput
+                                            outlined
+                                            label
+                                            dense
+                                            clearable
+                                            v-model="
+                                                filters[
+                                                    header.filterBy
+                                                        ? header.filterBy
+                                                        : header.value
+                                                ]
+                                            "
+                                            mask="###"
+                                        />
+                                    </v-col>
 
-                            <v-col
-                                v-else-if="
-                                    header.filterSetting != undefined &&
-                                    header.filterSetting.input == undefined
-                                "
-                            >
-                                <!-- @BaseSimpleInputList -->
-                                <BaseSimpleInputList
-                                    :setting="header.filterSetting"
-                                    :denseInput="true"
-                                    v-model="
-                                        filters[
-                                            header.filterBy
-                                                ? header.filterBy
-                                                : header.value
-                                        ]
-                                    "
-                                    v-if="showSearch"
-                                />
-                            </v-col>
-                        </th>
-                    </tr>
-                </template>
+                                    <!-- @helper:  Filter type DATETIME -->
+                                    <v-col
+                                        v-else-if="header.type == 'datetime'"
+                                    >
+                                        <!-- @BaseInput -->
+                                        <BaseDatePicker
+                                            :dense="header.type == 'datetime'"
+                                            v-model="
+                                                filters[
+                                                    header.filterBy
+                                                        ? header.filterBy
+                                                        : header.value
+                                                ]
+                                            "
+                                            :type="header.type"
+                                        />
+                                    </v-col>
 
-                <!-- @Helper: Si existe columna 'activo' -> Boolean muestra un check -->
-                <template v-slot:item.activo="{ item }">
-                    <v-simple-checkbox
-                        v-model="item.activo"
-                        disabled
-                    ></v-simple-checkbox>
-                </template>
-            </v-data-table>
+                                    <!-- @helper:  Filter type DATE -->
+                                    <v-col v-else-if="header.type == 'date'">
+                                        <!-- @BaseInput -->
+                                        <BaseDatePicker
+                                            :dense="header.type == 'date'"
+                                            v-model="
+                                                filters[
+                                                    header.filterBy
+                                                        ? header.filterBy
+                                                        : header.value
+                                                ]
+                                            "
+                                            :type="header.type"
+                                        />
+                                    </v-col>
 
-            <!-- @helper:  Botones Footer -->
-            <v-layout align-end justify-end v-if="showFooter">
-                <v-btn
-                    class="ma-2"
-                    :color="color"
-                    dark
-                    @click="$_SelectedFooter"
-                    >{{ labelBtn }}</v-btn
-                >
+                                    <!-- @helper:  Filter type TIME -->
+                                    <v-col v-else-if="header.type == 'time'">
+                                        <!-- @BaseInput -->
+                                        <BaseDatePicker
+                                            :dense="header.type == 'time'"
+                                            v-model="
+                                                filters[
+                                                    header.filterBy
+                                                        ? header.filterBy
+                                                        : header.value
+                                                ]
+                                            "
+                                            :type="header.type"
+                                        />
+                                    </v-col>
 
-                <v-btn class="ma-2" @click="$_CancelFooter" v-if="showCancel">{{
-                    lblCancel
-                }}</v-btn>
-                <!-- @slot Agregar botones después del Btn principal -->
-                <slot name="btns"></slot>
-            </v-layout>
+                                    <!-- @helper:  Filter type BaseInputList -->
+                                    <v-col
+                                        v-else-if="
+                                            header.filterSetting != undefined &&
+                                            header.filterSetting.input !=
+                                                undefined
+                                        "
+                                    >
+                                        <!-- @BaseInputList -->
+                                        <BaseInputList
+                                            :setting="header.filterSetting"
+                                            v-model="
+                                                filters[
+                                                    header.filterBy
+                                                        ? header.filterBy
+                                                        : header.value
+                                                ]
+                                            "
+                                            v-if="showSearch"
+                                        />
+                                    </v-col>
+
+                                    <v-col
+                                        v-else-if="
+                                            header.filterSetting != undefined &&
+                                            header.filterSetting.input ==
+                                                undefined
+                                        "
+                                    >
+                                        <!-- @BaseSimpleInputList -->
+                                        <BaseSimpleInputList
+                                            :setting="header.filterSetting"
+                                            :denseInput="true"
+                                            v-model="
+                                                filters[
+                                                    header.filterBy
+                                                        ? header.filterBy
+                                                        : header.value
+                                                ]
+                                            "
+                                            v-if="showSearch"
+                                        />
+                                    </v-col>
+                                </th>
+                            </tr>
+                        </template>
+                    </v-data-table>
+                </v-card-text>
+
+                <v-card-actions v-if="showFooter">
+                    <!-- @helper:  Botones Footer -->
+                    <v-layout align-end justify-end>
+                        <v-btn
+                            class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                            outlined
+                            small
+                            @click="$_CancelFooter"
+                            v-if="showCancel"
+                            >{{ lblCancel }}</v-btn
+                        >
+
+                        <v-btn
+                            class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                            :color="color"
+                            dark
+                            small
+                            @click="$_SelectedFooter"
+                            >{{ labelBtn }}</v-btn
+                        >
+
+                        <!-- @slot Agregar botones después del Btn principal -->
+                        <slot name="btns"></slot>
+                    </v-layout>
+                </v-card-actions>
+            </v-card>
         </div>
     </div>
 </template>
 
 <style lang="sass">
-$break-large: 600px
-
 .v-data-table thead th
-    font-size: 1rem !important
+    font-family: 'Montserrat' !important
+    font-style: normal !important
+    font-weight: 600 !important
+    font-size: 14px !important
+    line-height: 125% !important
+
+.v-data-table tbody td
+    font-family: 'Montserrat' !important
+    font-style: normal !important
+    font-weight: 400 !important
+    font-size: 14px !important
+    line-height: 125% !important
+
+$break-large: 600px
 
 @media screen and (min-width: $break-large)
 .theme--light.v-data-table tbody tr.v-data-table__selected
-    color: #ffffff
-    background: #223549 !important
+    color: #FFFFFF
+    background: #005D8C !important
     .theme--light.v-icon
-        color: #ffffff !important
+        color: #FFFFFF !important
 
 .v-data-table .v-data-table__mobile-table-row
     display: initial
@@ -1393,4 +1443,7 @@ $break-large: 600px
 .theme--dark.v-data-table
     background-color: transparent !important
     color: #FFFFFF
+
+.btnSearch
+    bottom: 1vh
 </style>
