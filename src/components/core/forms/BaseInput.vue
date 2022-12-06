@@ -400,15 +400,17 @@ export default {
                     ];
                     break;
 
-                case 'TelCR':
+                case 'range':
                     this.normalRules = [
                         (v) =>
                             v === undefined ||
                             v === null ||
                             v === '' ||
                             (v?.length <= this.max && v?.length >= this.min) ||
-                            baseLocalHelper.$_MsgFieldAllowedExtInvalid(
-                                this.label != undefined ? this.label : ''
+                            baseLocalHelper.$_MsgFieldRangeInvalid(
+                                this.label != undefined ? this.label : '',
+                                this.max,
+                                this.min
                             ),
                     ];
                     break;

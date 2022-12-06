@@ -164,6 +164,13 @@ export default {
     /**
      * Descripción: Validación
      */
+    $_MsgFieldRangeInvalid(val, max, min) {
+        return `La extensión del campo ${val} no cumple el rango permitido de ${min} a ${max} caracteres.`;
+    },
+
+    /**
+     * Descripción: Validación
+     */
     $_MsgFieldAllowedValueInvalid(val) {
         return `El campo ${val} posee caracteres no válidos.`;
     },
