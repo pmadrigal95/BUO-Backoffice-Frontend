@@ -87,7 +87,7 @@ export default {
         <!-- Sizes your content based upon application components -->
         <v-main>
             <!-- Provides the application the proper gutter -->
-            <v-container class="scroll-y">
+            <v-container fluid class="scroll-y">
                 <slot name="RenderBody"></slot>
                 <v-btn
                     v-scroll="onScroll"
@@ -97,7 +97,7 @@ export default {
                     fixed
                     bottom
                     right
-                    :color="app ? 'blue900' : 'greenA700'"
+                    :color="app ? 'greenC900' : 'blue900'"
                     @click="toTop"
                 >
                     <v-icon>mdi-chevron-up</v-icon>

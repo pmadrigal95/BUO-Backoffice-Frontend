@@ -33,6 +33,28 @@ export default {
     $_LabelBtnFilter: 'Filtro',
 
     /**
+     * Descripción: Btn Configuración
+     */
+    $_LabelBtnConfig: 'Configuración',
+
+    /**
+     * Registros seleccionados
+     */
+
+    $_RowCount(count) {
+        let result;
+
+        if (count && count > 0) {
+            result =
+                count === 1
+                    ? `${count} Seleccionado`
+                    : `${count} Seleccionados`;
+        }
+
+        return result;
+    },
+
+    /**
      * Descripción: Btn Cancelar
      */
     $_LabelBtnGoOut: 'Cancelar',
