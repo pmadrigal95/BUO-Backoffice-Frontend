@@ -26,6 +26,7 @@ export default {
         BaseServerDataTable,
         BaseDatePicker,
     },
+
     data() {
         return {
             params: this.$_Object(),
@@ -35,8 +36,10 @@ export default {
             ],
         };
     },
+
     computed: {
         ...mapGetters('authentication', ['user']),
+
         setting() {
             return {
                 endpoint: 'codigoPromocion/findBy',
@@ -75,7 +78,7 @@ export default {
         $_Object() {
             return {
                 id: undefined,
-                usuarioId: this.user.userId,
+                usuarioId: undefined,
                 codigo: undefined,
                 fechaExpiracion: undefined,
                 productoId: 2,
@@ -88,7 +91,17 @@ export default {
             };
         },
 
+        $_getUserId() {
+            return this.user.userId;
+        },
+
+        $_setUserIdToParams() {
+            this.params.usuarioId = this.$_getUserId();
+        },
+
         $_fnNew() {
+            this.$_setUserIdToParams();
+
             httpService
                 .post('codigoPromocion/save', this.params)
                 .then((response) => {
@@ -99,25 +112,38 @@ export default {
                     }
                 });
         },
+
         $_fnEdit(row) {
+            this.$_setUserIdToParams();
+
             alert(`Hola soy: ${row.selected.id}`);
         },
+
         $_fnDelete() {
-            httpService
-                .post('codigoPromocion/deactivate', this.params)
+            const request = {
+                userId: this.$_getUserId(),
+            };
+
+            console.log(request);
+
+            /*httpService
+                .post('codigoPromocion/deactivate', request)
                 .then((response) => {
                     if (response != undefined) {
                         console.log(response);
                     }
-                });
+                });*/
         },
+
         $_open() {
             this.$refs['popUp'].$_openModal();
         },
+
         $_fnCleanLicense() {
             this.params.fechaExpiracion = undefined;
             this.params.usoMaximo = undefined;
         },
+
         $_fnCleanBuyFree() {
             this.params.montoDescuento = undefined;
             this.params.porcentajeDescuento = undefined;
@@ -210,6 +236,7 @@ export default {
                 </v-card>
             </div>
         </BasePopUp>
+
         <BaseCardViewComponent title="Códigos Promocionales" v-if="user">
             <div slot="card-text">
                 <!--Componente Editor -->
