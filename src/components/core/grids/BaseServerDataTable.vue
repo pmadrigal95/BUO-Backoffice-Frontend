@@ -945,106 +945,126 @@ export default {
         <!-- @Componente:  BaseDialog-->
         <div>
             <!-- @Componente:  BaseDialog-->
-            <BaseDialog ref="popUp" :tittle="formTitle">
+            <BasePopUp
+                ref="popUp"
+                :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '50%'"
+                :isDrawer="false"
+                scrollable
+            >
                 <div slot="Content">
-                    <v-container fluid v-if="isFilter === 'filter'">
-                        <v-row>
-                            <v-col v-for="(item, i) in objectFilter" :key="i">
-                                <!-- @Componente:  BaseSwitch-->
-                                <BaseSwitch
-                                    v-model="item.show"
-                                    :label="item.text"
-                                />
-                            </v-col>
-                        </v-row>
-                    </v-container>
+                    <v-card flat>
+                        <v-card-title>{{ formTitle }}</v-card-title>
+                        <v-card-text>
+                            <v-container fluid v-if="isFilter === 'filter'">
+                                <v-row>
+                                    <v-col
+                                        v-for="(item, i) in objectFilter"
+                                        :key="i"
+                                    >
+                                        <!-- @Componente:  BaseSwitch-->
+                                        <BaseSwitch
+                                            v-model="item.show"
+                                            :label="item.text"
+                                        />
+                                    </v-col>
+                                </v-row>
+                            </v-container>
 
-                    <!-- @Componente:  BaseForm-->
-                    <BaseForm
-                        v-if="isFilter === 'delete'"
-                        :method="$_Delete"
-                        icon="mdi-delete"
-                        labelBtn="Eliminar"
-                    >
-                        <div slot="body">
-                            <br />
-                            <v-row align-content="center">
-                                <h3>{{ deleteMessage }}</h3>
-                            </v-row>
-                        </div>
-                    </BaseForm>
+                            <!-- @Componente:  BaseForm-->
+                            <BaseForm
+                                v-if="isFilter === 'delete'"
+                                :method="$_Delete"
+                                icon="mdi-delete"
+                                labelBtn="Eliminar"
+                            >
+                                <div slot="body">
+                                    <br />
+                                    <v-row align-content="center">
+                                        <h3>{{ deleteMessage }}</h3>
+                                    </v-row>
+                                </div>
+                            </BaseForm>
 
-                    <!-- @Componente:  BaseForm-->
-                    <BaseForm
-                        v-if="isFilter === 'search'"
-                        :method="$_popUpSearch"
-                        :cancel="$_CancelmobilSearch"
-                        icon="mdi-magnify"
-                        :label="formTitle"
-                        :labelBtn="formTitle"
-                    >
-                        <div slot="body">
-                            <br />
-                            <v-col>
-                                <!-- @BaseSelect -->
-                                <BaseSelect
-                                    v-model="mobilColumns"
-                                    label="Columna"
-                                    :endpoint="objectFilter"
-                                    itemText="text"
-                                    itemValue="value"
-                                    :validate="['text']"
-                                />
-                            </v-col>
-                            <v-col>
-                                <v-alert
-                                    v-if="!typeMobilFilter"
-                                    text
-                                    prominent
-                                    type="error"
-                                    icon="mdi-progress-alert"
-                                >
-                                    Debe seleccionar al menos un registro
-                                </v-alert>
+                            <!-- @Componente:  BaseForm-->
+                            <BaseForm
+                                v-if="isFilter === 'search'"
+                                :method="$_popUpSearch"
+                                :cancel="$_CancelmobilSearch"
+                                icon="mdi-magnify"
+                                :label="formTitle"
+                                :labelBtn="formTitle"
+                            >
+                                <div slot="body">
+                                    <br />
+                                    <v-col>
+                                        <!-- @BaseSelect -->
+                                        <BaseSelect
+                                            v-model="mobilColumns"
+                                            label="Columna"
+                                            :endpoint="objectFilter"
+                                            itemText="text"
+                                            itemValue="value"
+                                            :validate="['text']"
+                                        />
+                                    </v-col>
+                                    <v-col>
+                                        <v-alert
+                                            v-if="!typeMobilFilter"
+                                            text
+                                            prominent
+                                            type="error"
+                                            icon="mdi-progress-alert"
+                                        >
+                                            Debe seleccionar al menos un
+                                            registro
+                                        </v-alert>
 
-                                <!-- @BaseInput -->
-                                <BaseInput
-                                    v-else-if="typeMobilFilter == 'text'"
-                                    label="Buscar"
-                                    :validate="['text']"
-                                    v-model="mobilSearch"
-                                    :key="componentKey"
-                                />
+                                        <!-- @BaseInput -->
+                                        <BaseInput
+                                            v-else-if="
+                                                typeMobilFilter == 'text'
+                                            "
+                                            label="Buscar"
+                                            :validate="['text']"
+                                            v-model="mobilSearch"
+                                            :key="componentKey"
+                                        />
 
-                                <!-- @BaseInputList -->
-                                <BaseInputList
-                                    v-if="
-                                        typeMobilFilter == 'table' &&
-                                        objectMobilFilter != undefined &&
-                                        objectMobilFilter.input != undefined
-                                    "
-                                    :setting="objectMobilFilter"
-                                    v-model="mobilSearch"
-                                    :key="componentKey"
-                                />
+                                        <!-- @BaseInputList -->
+                                        <BaseInputList
+                                            v-if="
+                                                typeMobilFilter == 'table' &&
+                                                objectMobilFilter !=
+                                                    undefined &&
+                                                objectMobilFilter.input !=
+                                                    undefined
+                                            "
+                                            :setting="objectMobilFilter"
+                                            v-model="mobilSearch"
+                                            :key="componentKey"
+                                        />
 
-                                <!-- @BaseSimpleInputList -->
-                                <BaseSimpleInputList
-                                    v-if="
-                                        typeMobilFilter == 'table' &&
-                                        objectMobilFilter != undefined &&
-                                        objectMobilFilter.input == undefined
-                                    "
-                                    :setting="objectMobilFilter"
-                                    :denseInput="true"
-                                    v-model="mobilSearch"
-                                    :key="componentKey"
-                                />
-                            </v-col>
-                        </div>
-                    </BaseForm>
+                                        <!-- @BaseSimpleInputList -->
+                                        <BaseSimpleInputList
+                                            v-if="
+                                                typeMobilFilter == 'table' &&
+                                                objectMobilFilter !=
+                                                    undefined &&
+                                                objectMobilFilter.input ==
+                                                    undefined
+                                            "
+                                            :setting="objectMobilFilter"
+                                            :denseInput="true"
+                                            v-model="mobilSearch"
+                                            :key="componentKey"
+                                        />
+                                    </v-col>
+                                </div>
+                            </BaseForm>
+                        </v-card-text>
+                    </v-card>
                 </div>
-            </BaseDialog>
+            </BasePopUp>
 
             <v-card flat class="rounded-lg">
                 <v-card-text>
