@@ -3,7 +3,12 @@
  * Descripción: Pantalla Filtro Codigo Promocionales
  *
  * @displayName PromotionalCodesFilterViewComponent
+ *
  */
+
+import { mapGetters } from 'vuex';
+
+import httpService from '@/services/axios/httpService';
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
@@ -24,7 +29,6 @@ export default {
     data() {
         return {
             params: this.$_Object(),
-            select: { product: 'Prueba PDA', value: '2' },
             products: [
                 { product: 'Tokens', value: 1 },
                 { product: 'Prueba PDA', value: 2 },
@@ -32,6 +36,7 @@ export default {
         };
     },
     computed: {
+        ...mapGetters('authentication', ['user']),
         setting() {
             return {
                 endpoint: 'codigoPromocion/findBy',
@@ -70,29 +75,52 @@ export default {
         $_Object() {
             return {
                 id: undefined,
-                code: undefined,
-                dateExpiry: undefined,
-                product: 2,
-                discontAmount: undefined,
-                discontRate: undefined,
-                maxUse: undefined,
-                license: undefined,
-                buyFree: undefined,
-                condition: undefined,
+                usuarioId: this.user.userId,
+                codigo: undefined,
+                fechaExpiracion: undefined,
+                productoId: 2,
+                montoDescuento: undefined,
+                porcentajeDescuento: undefined,
+                usoMaximo: undefined,
+                esLicencia: undefined,
+                compraGratis: undefined,
+                estadoId: undefined,
             };
         },
 
         $_fnNew() {
-            alert('Soy nuevo!');
+            httpService
+                .post('codigoPromocion/save', this.params)
+                .then((response) => {
+                    if (response != undefined) {
+                        alert(response);
+                    } else {
+                        alert('error');
+                    }
+                });
         },
         $_fnEdit(row) {
             alert(`Hola soy: ${row.selected.id}`);
         },
-        $_fnDelete(id) {
-            alert(`Hola soy: ${id}`);
+        $_fnDelete() {
+            httpService
+                .post('codigoPromocion/deactivate', this.params)
+                .then((response) => {
+                    if (response != undefined) {
+                        console.log(response);
+                    }
+                });
         },
         $_open() {
             this.$refs['popUp'].$_openModal();
+        },
+        $_fnCleanLicense() {
+            this.params.fechaExpiracion = undefined;
+            this.params.usoMaximo = undefined;
+        },
+        $_fnCleanBuyFree() {
+            this.params.montoDescuento = undefined;
+            this.params.porcentajeDescuento = undefined;
         },
     },
 };
@@ -108,7 +136,7 @@ export default {
         >
             <div slot="Content">
                 <v-card flat height="100%" width="100%">
-                    <v-card-title>Realizar Código Promocional</v-card-title>
+                    <v-card-title>Código Promocional</v-card-title>
                     <v-card-text>
                         <BaseForm :method="$_fnNew">
                             <div slot="body">
@@ -116,14 +144,14 @@ export default {
                                     <v-col cols="12" md="12">
                                         <BaseInput
                                             label="Código"
-                                            v-model="params.code"
+                                            v-model="params.codigo"
                                             :max="6"
                                             :min="3"
                                             :validate="['range']"
                                         />
                                         <BaseSelect
                                             label="Producto"
-                                            v-model="params.product"
+                                            v-model="params.productoId"
                                             :endpoint="products"
                                             itemText="product"
                                             itemValue="value"
@@ -131,43 +159,45 @@ export default {
                                         ></BaseSelect>
                                         <BaseSwitch
                                             label="Es Licencia"
-                                            v-model="params.license"
+                                            v-model="params.esLicencia"
+                                            @change="$_fnCleanLicense"
                                         ></BaseSwitch>
                                         <BaseDatePicker
                                             label="Fecha de expiración"
                                             appendIcon="mdi-magnify"
-                                            v-model="params.dateExpiry"
-                                            v-if="!params.license"
+                                            v-model="params.fechaExpiracion"
+                                            v-if="!params.esLicencia"
                                         />
                                         <BaseInput
                                             label="Uso Máximo"
-                                            v-model="params.maxUse"
+                                            v-model="params.usoMaximo"
                                             type="number"
                                             :validate="['number']"
-                                            v-if="params.license"
+                                            v-if="params.esLicencia"
                                         />
                                         <BaseSwitch
                                             label="Compra Gratis"
-                                            v-model="params.buyFree"
+                                            v-model="params.compraGratis"
+                                            @change="$_fnCleanBuyFree"
                                         ></BaseSwitch>
                                         <BaseInput
                                             label="Monto Descuento"
-                                            v-model="params.discontAmount"
+                                            v-model="params.montoDescuento"
                                             type="number"
                                             :validate="['number']"
-                                            v-if="!params.buyFree"
+                                            v-if="!params.compraGratis"
                                         />
                                         <BaseInput
                                             label="Porcentaje Descuento"
                                             type="number"
-                                            v-model="params.discontRate"
+                                            v-model="params.porcentajeDescuento"
                                             :validate="['number']"
-                                            v-if="!params.buyFree"
+                                            v-if="!params.compraGratis"
                                         />
                                         <BaseSwitch
-                                            v-model="params.condition"
+                                            v-model="params.estadoId"
                                             :label="
-                                                params.condition
+                                                params.estadoId
                                                     ? 'Activo'
                                                     : 'Inactivo'
                                             "
@@ -180,7 +210,7 @@ export default {
                 </v-card>
             </div>
         </BasePopUp>
-        <BaseCardViewComponent title="Códigos Promocionales">
+        <BaseCardViewComponent title="Códigos Promocionales" v-if="user">
             <div slot="card-text">
                 <!--Componente Editor -->
                 <BaseServerDataTable
