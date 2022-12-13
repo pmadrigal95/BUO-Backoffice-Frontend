@@ -211,7 +211,7 @@ export default {
      */
 
     $_parseArrayToDateISOString(array) {
-        if (Array.isArray(array) && array.length === 3) {
+        if (Array.isArray(array) && array.length >= 3) {
             return `${array[0]}-${array[1] > 9 ? array[1] : '0' + array[1]}-${
                 array[2] > 9 ? array[2] : '0' + array[2]
             }`;

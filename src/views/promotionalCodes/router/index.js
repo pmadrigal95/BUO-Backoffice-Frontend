@@ -3,9 +3,9 @@
  */
 const routes = [
     {
-        path: '/PromotionalCodes/Filter',
-        name: 'PromotionalCodesFilterViewComponent',
-        component: 'promotionalCodes/PromotionalCodesFilterViewComponent',
+        path: '/PromotionalCodes',
+        name: 'PromotionalCodesViewComponent',
+        component: 'promotionalCodes/PromotionalCodesViewComponent',
         meta: {
             module: 'Códigos Promocionales',
         },

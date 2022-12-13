@@ -33,7 +33,7 @@ export default {
                 {
                     title: 'Códigos promocionales',
                     icon: 'mdi-qrcode-edit',
-                    module: 'PromotionalCodesFilterViewComponent',
+                    module: 'PromotionalCodesViewComponent',
                 },
                 {
                     title: 'Cerrar sesión',
