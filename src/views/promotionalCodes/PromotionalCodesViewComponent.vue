@@ -100,63 +100,13 @@ export default {
             };
         },
 
-        $_getUserId() {
-            return this.user.userId;
+        $_open() {
+            this.$_cleanSendToAPI();
+            this.$refs['popUp'].$_openModal();
         },
 
         $_setUserIdToParams() {
             this.params.usuarioId = this.$_getUserId();
-        },
-
-        $_cleanSendToAPI() {
-            this.params = this.$_Object();
-        },
-
-        $_setConditionUserToParams() {
-            this.params.estadoId = this.statusUser ? 2 : 1;
-        },
-
-        $_getConditionUserToParams() {
-            this.statusUser = this.params.estadoId == 1 ? false : true;
-        },
-
-        $_postToApi(action, body) {
-            this.loading = true;
-            httpService.post(action, body).then((response) => {
-                if (response != undefined) {
-                    this.$refs.PromotionalCodesFilter.$_ParamsToAPI();
-                    this.$_cleanSendToAPI();
-                }
-                this.loading = false;
-            });
-        },
-
-        $_formatDate(dateToConvert) {
-            return baseSharedFnHelper.$_parseArrayToDateISOString(
-                dateToConvert
-            );
-        },
-
-        $_getToPromotionalCode(id) {
-            this.$_open();
-            this.loading = true;
-            httpService.get(`codigoPromocion/${id}`).then((response) => {
-                if (response != undefined) {
-                    this.params = response.data;
-                    if (!this.params.esLicencia) {
-                        this.params.fechaExpiracion = this.$_formatDate(
-                            this.params.fechaExpiracion
-                        );
-                    }
-                    this.$_getConditionUserToParams();
-                }
-                this.loading = false;
-            });
-        },
-
-        $_open() {
-            this.$_cleanSendToAPI();
-            this.$refs['popUp'].$_openModal();
         },
 
         $_cleanLicense() {
@@ -169,6 +119,102 @@ export default {
             this.params.porcentajeDescuento = undefined;
         },
 
+        /**
+         * Function for clean the object after to send a request to api.
+         */
+
+        $_cleanSendToAPI() {
+            this.params = this.$_Object();
+        },
+
+        $_formatDateExpiry(esLicencia, fechaExpiracion) {
+            if (!esLicencia) {
+                this.params.fechaExpiracion =
+                    baseSharedFnHelper.$_parseArrayToDateISOString(
+                        fechaExpiracion
+                    );
+            }
+        },
+
+        /**
+         * Function to get the information about promotional code.
+         * @param {*} id
+         */
+
+        $_getToPromotionalCode(id) {
+            this.$_open();
+            this.loading = true;
+            httpService.get(`codigoPromocion/${id}`).then((response) => {
+                if (response != undefined) {
+                    this.params = response.data;
+                    this.$_formatDateExpiry(
+                        this.params.esLicencia,
+                        this.params.fechaExpiracion
+                    );
+                    this.$_getConditionUserToParams();
+                }
+                this.loading = false;
+            });
+        },
+
+        /**
+         * Genery function for send request to api.
+         * @param {*} action
+         * @param {*} body
+         */
+
+        $_postToApi(action, body) {
+            this.loading = true;
+            console.log(body);
+            httpService.post(action, body).then((response) => {
+                if (response != undefined) {
+                    this.$refs.PromotionalCodeFilter.$_ParamsToAPI();
+                    this.$_cleanSendToAPI();
+                }
+                this.loading = false;
+            });
+        },
+
+        /**
+         * Functions for change de status user for request to api.
+         */
+
+        $_setConditionUserToParams() {
+            this.params.estadoId = this.statusUser ? 2 : 1;
+        },
+
+        $_getConditionUserToParams() {
+            this.statusUser = this.params.estadoId == 1 ? false : true;
+        },
+
+        /**
+         * Function for add or edit a promotional code to api.
+         */
+
+        $_fnNew() {
+            this.$_setUserIdToParams();
+            this.$_setConditionUserToParams();
+            this.$_postToApi('codigoPromocion/save', this.params);
+        },
+
+        /**
+         * Function for edit a promotional code.
+         */
+
+        $_fnEdit(row) {
+            this.$_setUserIdToParams();
+            const promotionalCodeId = row.selected.id;
+            this.$_getToPromotionalCode(promotionalCodeId);
+        },
+
+        /**
+         * Functions required for delete promotional code.
+         */
+
+        $_getUserId() {
+            return this.user.userId;
+        },
+
         $_createBodyRequestDelete(row) {
             const request = {
                 userId: this.$_getUserId(),
@@ -177,20 +223,8 @@ export default {
             return request;
         },
 
-        $_fnNew() {
-            this.$_setUserIdToParams();
-            this.$_setConditionUserToParams();
-            this.$_postToApi('codigoPromocion/save', this.params);
-        },
-
-        $_fnEdit(row) {
-            this.$_setUserIdToParams();
-            const promotionalCodeId = row.selected.id;
-            this.$_getToPromotionalCode(promotionalCodeId);
-        },
-
         $_fnDelete(row) {
-            const request = this.$_fnCreateBodyRequestDelete(row);
+            const request = this.$_createBodyRequestDelete(row);
             this.$_postToApi('codigoPromocion/deactivate', request);
         },
     },
@@ -230,6 +264,7 @@ export default {
                                             :endpoint="products"
                                             itemText="product"
                                             itemValue="value"
+                                            :validate="['text']"
                                             readonly
                                         ></BaseSelect>
                                         <BaseSwitch
@@ -242,6 +277,7 @@ export default {
                                             appendIcon="mdi-magnify"
                                             v-model="params.fechaExpiracion"
                                             v-if="!params.esLicencia"
+                                            :validate="['text']"
                                         />
                                         <BaseInput
                                             label="Uso Máximo"
@@ -311,6 +347,7 @@ export default {
                                         <BaseSwitch
                                             v-model="statusUser"
                                             :label="setStatusDisplay"
+                                            @change="$_setConditionUserToParams"
                                         ></BaseSwitch>
                                     </v-col>
                                 </v-row>

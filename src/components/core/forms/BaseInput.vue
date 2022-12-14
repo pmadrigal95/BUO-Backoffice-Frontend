@@ -403,9 +403,11 @@ export default {
                 case 'range':
                     this.normalRules = [
                         (v) =>
-                            v === undefined ||
-                            v === null ||
-                            v === '' ||
+                            !!v ||
+                            baseLocalHelper.$_MsgFieldRequired(
+                                this.label != undefined ? this.label : ''
+                            ),
+                        (v) =>
                             (v?.length <= this.max && v?.length >= this.min) ||
                             baseLocalHelper.$_MsgFieldRangeInvalid(
                                 this.label != undefined ? this.label : '',
