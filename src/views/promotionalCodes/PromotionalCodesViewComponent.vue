@@ -32,13 +32,10 @@ export default {
     data() {
         return {
             params: this.$_Object(),
-            products: [
-                { product: 'Tokens', value: 1 },
-                { product: 'Prueba PDA', value: 2 },
-            ],
             hasPercentageDiscount: undefined,
-            statusUser: false,
+            promotionalCodeStatus: true,
             loading: false,
+            componentKey: 0,
         };
     },
 
@@ -46,7 +43,16 @@ export default {
         ...mapGetters('authentication', ['user']),
 
         setStatusDisplay() {
-            return this.statusUser ? 'Activo' : 'Inactivo';
+            return `Estado ${
+                this.promotionalCodeStatus ? 'Activo' : 'Inactivo'
+            }`;
+        },
+
+        productList() {
+            return [
+                { product: 'Tokens', value: 1 },
+                { product: 'Prueba PDA', value: 2 },
+            ];
         },
 
         setting() {
@@ -84,6 +90,10 @@ export default {
     },
 
     methods: {
+        forceRerender() {
+            this.componentKey += 1;
+        },
+
         $_Object() {
             return {
                 id: 0,
@@ -101,6 +111,7 @@ export default {
         },
 
         $_open() {
+            this.forceRerender();
             this.$_cleanSendToAPI();
             this.$refs['popUp'].$_openModal();
         },
@@ -169,7 +180,7 @@ export default {
             httpService.post(action, body).then((response) => {
                 if (response != undefined) {
                     this.$refs.PromotionalCodeFilter.$_ParamsToAPI();
-                    this.$_cleanSendToAPI();
+                    this.$refs.popUp.$_checkStatus() && this.$_open();
                 }
                 this.loading = false;
             });
@@ -180,11 +191,12 @@ export default {
          */
 
         $_setConditionUserToParams() {
-            this.params.estadoId = this.statusUser ? 2 : 1;
+            this.params.estadoId = this.promotionalCodeStatus ? 2 : 1;
         },
 
         $_getConditionUserToParams() {
-            this.statusUser = this.params.estadoId == 1 ? false : true;
+            this.promotionalCodeStatus =
+                this.params.estadoId == 1 ? false : true;
         },
 
         /**
@@ -202,7 +214,6 @@ export default {
          */
 
         $_fnEdit(row) {
-            this.$_setUserIdToParams();
             const promotionalCodeId = row.selected.id;
             this.$_getToPromotionalCode(promotionalCodeId);
         },
@@ -237,7 +248,6 @@ export default {
             ref="popUp"
             :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '600'"
             scrollable
-            :isDrawer="true"
         >
             <div slot="Content">
                 <v-card flat height="100%" width="100%">
@@ -247,11 +257,12 @@ export default {
                             v-if="loading"
                             type="article, actions"
                         />
-                        <BaseForm :method="$_fnNew" v-else>
+                        <BaseForm :method="$_fnNew" v-else :key="componentKey">
                             <div slot="body">
                                 <v-row>
                                     <v-col cols="12" md="12">
                                         <BaseInput
+                                            mask="XXXXXX"
                                             label="Código"
                                             v-model="params.codigo"
                                             :max="6"
@@ -261,11 +272,10 @@ export default {
                                         <BaseSelect
                                             label="Producto"
                                             v-model="params.productoId"
-                                            :endpoint="products"
+                                            :endpoint="productList"
                                             itemText="product"
                                             itemValue="value"
                                             :validate="['text']"
-                                            readonly
                                         ></BaseSelect>
                                         <BaseSwitch
                                             label="Es Licencia"
@@ -277,6 +287,7 @@ export default {
                                             appendIcon="mdi-magnify"
                                             v-model="params.fechaExpiracion"
                                             v-if="!params.esLicencia"
+                                            reqCurrentMinDate
                                             :validate="['text']"
                                         />
                                         <BaseInput
@@ -300,11 +311,12 @@ export default {
                                                 <v-card-text>
                                                     <v-radio
                                                         label="Porcentaje Descuento"
-                                                        value="true"
+                                                        :value="true"
                                                         @change="$_cleanBuyFree"
                                                         class="mb-5"
                                                     ></v-radio>
                                                     <BaseInput
+                                                        mask="###"
                                                         label="Porcentaje Descuento"
                                                         type="number"
                                                         v-model="
@@ -313,8 +325,7 @@ export default {
                                                         :validate="['number']"
                                                         v-if="
                                                             !params.compraGratis &&
-                                                            hasPercentageDiscount ===
-                                                                'true'
+                                                            hasPercentageDiscount
                                                         "
                                                     />
                                                 </v-card-text>
@@ -323,11 +334,12 @@ export default {
                                                 <v-card-text>
                                                     <v-radio
                                                         label="Monto Descuento"
-                                                        value="false"
+                                                        :value="false"
                                                         @change="$_cleanBuyFree"
                                                         class="mb-2"
                                                     ></v-radio>
                                                     <BaseInput
+                                                        mask="###"
                                                         label="Monto Descuento"
                                                         v-model="
                                                             params.montoDescuento
@@ -336,8 +348,7 @@ export default {
                                                         :validate="['number']"
                                                         v-if="
                                                             !params.compraGratis &&
-                                                            hasPercentageDiscount ===
-                                                                'false'
+                                                            !hasPercentageDiscount
                                                         "
                                                     />
                                                 </v-card-text>
@@ -345,7 +356,7 @@ export default {
                                         </v-radio-group>
 
                                         <BaseSwitch
-                                            v-model="statusUser"
+                                            v-model="promotionalCodeStatus"
                                             :label="setStatusDisplay"
                                             @change="$_setConditionUserToParams"
                                         ></BaseSwitch>

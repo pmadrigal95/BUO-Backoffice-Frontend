@@ -177,6 +177,14 @@ export default {
             type: Function,
             default: undefined,
         },
+
+        /**
+         * validate-on-blur
+         */
+        validateOnBlur: {
+            type: Boolean,
+            default: true,
+        },
     },
 
     data() {
@@ -491,7 +499,7 @@ export default {
                 @change="$_change"
                 outlined
                 clear-icon="mdi-close-circle"
-                validate-on-blur
+                :validate-on-blur="validateOnBlur"
             ></v-text-field>
         </div>
 
@@ -518,7 +526,7 @@ export default {
                 @change="$_change"
                 outlined
                 clear-icon="mdi-close-circle"
-                validate-on-blur
+                :validate-on-blur="validateOnBlur"
             ></v-text-field>
         </div>
     </div>
