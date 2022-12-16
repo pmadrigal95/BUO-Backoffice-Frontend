@@ -72,15 +72,65 @@ export default {
                         show: true,
                     },
                     {
+                        text: 'Compra Gratis',
+                        align: 'start',
+                        type: 'bool',
+                        value: 'compraGratis',
+                        show: false,
+                    },
+                    {
                         text: 'Monto Descuento',
                         align: 'start',
                         value: 'montoDescuento',
-                        show: true,
+                        show: false,
+                    },
+                    {
+                        text: 'Porcentaje Descuento',
+                        align: 'start',
+                        value: 'porcentajeDescuento',
+                        show: false,
+                    },
+                    {
+                        text: 'Tiene Licencia',
+                        type: 'bool',
+                        align: 'start',
+                        value: 'esLicencia',
+                        show: false,
+                    },
+                    {
+                        text: 'Fecha Expiración',
+                        align: 'start',
+                        value: 'fechaExpiracionFormato',
+                        show: false,
+                    },
+                    {
+                        text: 'Uso Máximo',
+                        align: 'start',
+                        value: 'usoMaximo',
+                        show: false,
+                    },
+                    {
+                        text: 'Uso Actual',
+                        align: 'start',
+                        value: 'usoActual',
+                        show: false,
                     },
                     {
                         text: 'Estado',
                         align: 'start',
                         value: 'nombreEstado',
+                        show: true,
+                    },
+                    {
+                        text: 'Fecha Creación',
+                        align: 'start',
+                        value: 'fechaCreacionFormato',
+                        show: false,
+                    },
+                    {
+                        text: 'Creado Por',
+                        align: 'start',
+                        value: 'nombreUsuario',
                         show: true,
                     },
                 ],
@@ -100,6 +150,7 @@ export default {
                 usuarioId: undefined,
                 codigo: undefined,
                 fechaExpiracion: undefined,
+                fechaExpiracionFormato: undefined,
                 productoId: 2,
                 montoDescuento: undefined,
                 porcentajeDescuento: undefined,
@@ -121,13 +172,30 @@ export default {
         },
 
         $_cleanLicense() {
-            this.params.fechaExpiracion = undefined;
-            this.params.usoMaximo = undefined;
+            typeof this.params.esLicencia === undefined ? false : true;
+            if (this.params.esLicencia) {
+                this.params.fechaExpiracion = undefined;
+                this.params.fechaExpiracionFormato = undefined;
+            } else {
+                this.params.usoMaximo = undefined;
+            }
         },
 
         $_cleanBuyFree() {
-            this.params.montoDescuento = undefined;
-            this.params.porcentajeDescuento = undefined;
+            if (this.params.compraGratis) {
+                this.params.montoDescuento = undefined;
+                this.params.porcentajeDescuento = undefined;
+            } else if (
+                this.params.montoDescuento > 0 &&
+                !this.hasPercentageDiscount
+            ) {
+                this.params.porcentajeDescuento = undefined;
+            } else if (
+                this.params.porcentajeDescuento > 0 &&
+                this.hasPercentageDiscount
+            ) {
+                this.params.montoDescuento = undefined;
+            }
         },
 
         /**
@@ -138,8 +206,8 @@ export default {
             this.params = this.$_Object();
         },
 
-        $_formatDateExpiry(esLicencia, fechaExpiracion) {
-            if (!esLicencia) {
+        $_formatDateExpiry(fechaExpiracion) {
+            if (fechaExpiracion != null) {
                 this.params.fechaExpiracion =
                     baseSharedFnHelper.$_parseArrayToDateISOString(
                         fechaExpiracion
@@ -158,10 +226,7 @@ export default {
             httpService.get(`codigoPromocion/${id}`).then((response) => {
                 if (response != undefined) {
                     this.params = response.data;
-                    this.$_formatDateExpiry(
-                        this.params.esLicencia,
-                        this.params.fechaExpiracion
-                    );
+                    this.$_formatDateExpiry(this.params.fechaExpiracion);
                     this.$_getConditionUserToParams();
                 }
                 this.loading = false;
@@ -176,7 +241,6 @@ export default {
 
         $_postToApi(action, body) {
             this.loading = true;
-            console.log(body);
             httpService.post(action, body).then((response) => {
                 if (response != undefined) {
                     this.$refs.PromotionalCodeFilter.$_ParamsToAPI();
@@ -206,6 +270,8 @@ export default {
         $_fnNew() {
             this.$_setUserIdToParams();
             this.$_setConditionUserToParams();
+            this.$_cleanLicense();
+            this.$_cleanBuyFree();
             this.$_postToApi('codigoPromocion/save', this.params);
         },
 
@@ -257,7 +323,12 @@ export default {
                             v-if="loading"
                             type="article, actions"
                         />
-                        <BaseForm :method="$_fnNew" v-else :key="componentKey">
+                        <BaseForm
+                            :method="$_fnNew"
+                            v-else
+                            :key="componentKey"
+                            :cancel="$_open"
+                        >
                             <div slot="body">
                                 <v-row>
                                     <v-col cols="12" md="12">
@@ -316,13 +387,15 @@ export default {
                                                         class="mb-5"
                                                     ></v-radio>
                                                     <BaseInput
-                                                        mask="###"
                                                         label="Porcentaje Descuento"
-                                                        type="number"
                                                         v-model="
                                                             params.porcentajeDescuento
                                                         "
-                                                        :validate="['number']"
+                                                        :max="99"
+                                                        :min="1"
+                                                        :validate="[
+                                                            'percentage',
+                                                        ]"
                                                         v-if="
                                                             !params.compraGratis &&
                                                             hasPercentageDiscount
@@ -336,16 +409,15 @@ export default {
                                                         label="Monto Descuento"
                                                         :value="false"
                                                         @change="$_cleanBuyFree"
-                                                        class="mb-2"
+                                                        class="mb-5"
                                                     ></v-radio>
                                                     <BaseInput
-                                                        mask="###"
+                                                        :min="0"
                                                         label="Monto Descuento"
                                                         v-model="
                                                             params.montoDescuento
                                                         "
-                                                        type="number"
-                                                        :validate="['number']"
+                                                        :validate="['number02']"
                                                         v-if="
                                                             !params.compraGratis &&
                                                             !hasPercentageDiscount

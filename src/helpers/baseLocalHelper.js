@@ -193,6 +193,20 @@ export default {
     /**
      * Descripción: Validación
      */
+    $_MsgFieldRangeNumberInvalid(val, max, min) {
+        return `El campo ${val} no cumple el rango permitido de ${min} a ${max}.`;
+    },
+
+    /**
+     * Descripción: Validación
+     */
+    $_MsgFieldRangeNumberMinInvalid(val, min) {
+        return `El campo ${val} debe ser mayor a ${min}`;
+    },
+
+    /**
+     * Descripción: Validación
+     */
     $_MsgFieldAllowedValueInvalid(val) {
         return `El campo ${val} posee caracteres no válidos.`;
     },

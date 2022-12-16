@@ -303,8 +303,8 @@ export default {
                                 this.label != undefined ? this.label : ''
                             ),
                         (v) =>
-                            /^\d{1,13}(\.)?\d{0,5}$/.test(v) ||
-                            baseLocalHelper.$_MsgFieldAllowedValueInvalid(
+                            /^\d{1,10}(\.)?\d{0,5}$/.test(v) ||
+                            baseLocalHelper.$_MsgFieldRangeNumberInvalid(
                                 this.label != undefined ? this.label : ''
                             ),
                     ];
@@ -318,19 +318,52 @@ export default {
                                 this.label != undefined ? this.label : ''
                             ),
                         (v) =>
-                            /^\d{1,13}(\.)?\d{0,3}$/.test(v) ||
-                            baseLocalHelper.$_MsgFieldAllowedValueInvalid(
+                            /^\d{1,10}(\.)?\d{0,3}$/.test(v) ||
+                            baseLocalHelper.$_MsgFieldRangeNumberInvalid(
                                 this.label != undefined ? this.label : ''
                             ),
                     ];
                     break;
 
-                case 'number2':
+                case 'number02':
                     this.normalRules = [
                         (v) =>
-                            /^\d{1,15}(\.)?\d{0,5}$/.test(v) ||
+                            !!v ||
+                            baseLocalHelper.$_MsgFieldRequired(
+                                this.label != undefined ? this.label : ''
+                            ),
+                        (v) =>
+                            /^\d{1,10}(\.)?\d{0,2}$/.test(v) ||
                             baseLocalHelper.$_MsgFieldAllowedValueInvalid(
                                 this.label != undefined ? this.label : ''
+                            ),
+                        (v) =>
+                            v > this.min ||
+                            baseLocalHelper.$_MsgFieldRangeNumberMinInvalid(
+                                this.label != undefined ? this.label : '',
+                                this.min
+                            ),
+                    ];
+                    break;
+
+                case 'percentage':
+                    this.normalRules = [
+                        (v) =>
+                            !!v ||
+                            baseLocalHelper.$_MsgFieldRequired(
+                                this.label != undefined ? this.label : ''
+                            ),
+                        (v) =>
+                            /^\d{1,3}(\.)?\d{0,2}$/.test(v) ||
+                            baseLocalHelper.$_MsgFieldAllowedValueInvalid(
+                                this.label != undefined ? this.label : ''
+                            ),
+                        (v) =>
+                            (v <= this.max && v >= this.min) ||
+                            baseLocalHelper.$_MsgFieldRangeNumberInvalid(
+                                this.label != undefined ? this.label : '',
+                                this.max,
+                                this.min
                             ),
                     ];
                     break;
