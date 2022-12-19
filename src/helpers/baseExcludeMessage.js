@@ -10,6 +10,7 @@ const exclusionList = [
     '/user/authenticate',
     'external_wallet/profile',
     'user/createShareableLink',
+    '/findBy',
 ];
 
 const logOutExclusion = ['/user/authenticate'];

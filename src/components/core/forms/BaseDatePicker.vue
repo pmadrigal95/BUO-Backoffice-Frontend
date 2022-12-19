@@ -389,6 +389,14 @@ export default {
             type: Boolean,
             default: false,
         },
+
+        /**
+         * reqCurrentMaxDate
+         */
+        reqCurrentMinDate: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
@@ -409,6 +417,12 @@ export default {
             return this.reqCurrentMaxDate
                 ? baseSharedFnHelper.$_getCurrentDateISOString()
                 : this.max;
+        },
+
+        $_reqCurrentMinDate() {
+            return this.reqCurrentMinDate
+                ? baseSharedFnHelper.$_getCurrentDateISOString()
+                : this.min;
         },
     },
 
@@ -436,6 +450,7 @@ export default {
                 :append-icon="appendIcon"
                 :validate="validate"
                 readonly
+                :validateOnBlur="false"
                 v-bind="attrs"
                 v-on="on"
             ></BaseInput>
@@ -460,7 +475,7 @@ export default {
             :locale="locale"
             :locale-first-day-of-year="localeFirstDayOfYear"
             :max="$_reqCurrentMaxDate"
-            :min="min"
+            :min="$_reqCurrentMinDate"
             :month-format="monthFormat"
             :multiple="multiple"
             :no-title="noTitle"

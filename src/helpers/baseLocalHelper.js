@@ -33,6 +33,28 @@ export default {
     $_LabelBtnFilter: 'Filtro',
 
     /**
+     * Descripción: Btn Configuración
+     */
+    $_LabelBtnConfig: 'Configuración',
+
+    /**
+     * Registros seleccionados
+     */
+
+    $_RowCount(count) {
+        let result;
+
+        if (count && count > 0) {
+            result =
+                count === 1
+                    ? `${count} Seleccionado`
+                    : `${count} Seleccionados`;
+        }
+
+        return result;
+    },
+
+    /**
      * Descripción: Btn Cancelar
      */
     $_LabelBtnGoOut: 'Cancelar',
@@ -159,6 +181,27 @@ export default {
      */
     $_MsgFieldMaxlengthInvalid(val, max) {
         return `La extensión del campo ${val} sobrepasa el máximo valor permitido: ${max} caracteres.`;
+    },
+
+    /**
+     * Descripción: Validación
+     */
+    $_MsgFieldRangeInvalid(val, max, min) {
+        return `La extensión del campo ${val} no cumple el rango permitido de ${min} a ${max} caracteres.`;
+    },
+
+    /**
+     * Descripción: Validación
+     */
+    $_MsgFieldRangeNumberInvalid(val, max, min) {
+        return `El campo ${val} no cumple el rango permitido de ${min} a ${max}.`;
+    },
+
+    /**
+     * Descripción: Validación
+     */
+    $_MsgFieldRangeNumberMinInvalid(val, min) {
+        return `El campo ${val} debe ser mayor a ${min}`;
     },
 
     /**

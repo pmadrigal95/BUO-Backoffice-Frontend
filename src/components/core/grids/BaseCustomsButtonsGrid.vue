@@ -42,7 +42,7 @@ export default {
          */
         color: {
             type: String,
-            default: 'default',
+            default: 'blue900',
         },
     },
 
@@ -60,12 +60,12 @@ export default {
 <template>
     <v-btn
         :color="color"
-        class="ma-1 no-uppercase rounded-lg"
-        depressed
+        class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+        outlined
         small
         @click="$_Method"
     >
-        <v-icon left>{{ icon }}</v-icon>
         {{ label }}
+        <v-icon right>{{ icon }}</v-icon>
     </v-btn>
 </template>
