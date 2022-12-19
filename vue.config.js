@@ -16,7 +16,7 @@ module.exports = {
     productionSourceMap: false,
     publicPath:
         process.env.NODE_ENV === 'production'
-            ? '/analytics'
+            ? '/backoffice'
             : '/' /* Pendiente cargar desde contexto */,
     transpileDependencies: ['vuetify'],
 };
