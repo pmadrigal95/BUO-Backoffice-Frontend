@@ -936,6 +936,17 @@ export default {
                 this.selected = [];
             }
         },
+
+        $_setStatusColor(id) {
+            switch (id) {
+                case 1:
+                    return 'redError900';
+                case 2:
+                    return 'greenA900';
+                default:
+                    return 'grey400';
+            }
+        },
     },
 };
 </script>
@@ -1399,6 +1410,41 @@ export default {
                                     </v-col>
                                 </th>
                             </tr>
+                        </template>
+
+                        <template
+                            v-for="(header, bool) in headers"
+                            :slot="`item.${header.value}`"
+                            slot-scope="{ item }"
+                        >
+                            <v-icon
+                                v-if="header.type == 'bool'"
+                                :key="bool"
+                                :color="
+                                    item[header.value]
+                                        ? 'greenA900'
+                                        : 'redError900'
+                                "
+                            >
+                                mdi-{{
+                                    item[header.value]
+                                        ? 'checkbox-marked-circle'
+                                        : 'close-circle'
+                                }}
+                            </v-icon>
+
+                            <div v-else :key="header.value">
+                                <div v-if="header.value != 'nombreEstado'">
+                                    {{ item[header.value] }}
+                                </div>
+                                <v-chip
+                                    v-else
+                                    :color="$_setStatusColor(item['estadoId'])"
+                                    outlined
+                                >
+                                    {{ item[header.value] }}
+                                </v-chip>
+                            </div>
                         </template>
                     </v-data-table>
                 </v-card-text>
