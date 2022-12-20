@@ -310,6 +310,25 @@ export default {
         };
     },
 
+    computed: {
+        $_boolList() {
+            return [
+                {
+                    id: 'true',
+                    value: 'Si',
+                    icon: 'mdi-checkbox-marked-circle',
+                    color: 'greenA900',
+                },
+                {
+                    id: 'false',
+                    value: 'No',
+                    icon: 'mdi-close-circle',
+                    color: 'redError900',
+                },
+            ];
+        },
+    },
+
     watch: {
         /**
          * Peticiones al API
@@ -967,8 +986,10 @@ export default {
                         <v-card-title>{{ formTitle }}</v-card-title>
                         <v-card-text>
                             <v-container fluid v-if="isFilter === 'filter'">
-                                <v-row>
+                                <v-row justify="center">
                                     <v-col
+                                        cols="12"
+                                        md="4"
                                         v-for="(item, i) in objectFilter"
                                         :key="i"
                                     >
@@ -1182,6 +1203,7 @@ export default {
                                             "
                                             v-if="showSearch"
                                             clearable
+                                            clear-icon="mdi-close-circle"
                                         ></v-text-field>
                                     </v-col>
 
@@ -1199,6 +1221,7 @@ export default {
                                             "
                                             v-if="showSearch"
                                             clearable
+                                            clear-icon="mdi-close-circle"
                                             type="number"
                                         ></v-text-field>
                                     </v-col>
@@ -1220,22 +1243,44 @@ export default {
 
                                     <!-- @helper:  Filter type Boolean -->
                                     <v-col v-else-if="header.type == 'bool'">
-                                        <v-row
-                                            align-content="center"
-                                            justify="center"
+                                        <v-autocomplete
+                                            dense
+                                            clearable
+                                            outlined
+                                            clear-icon="mdi-close-circle"
+                                            v-model="
+                                                filters[
+                                                    header.filterBy
+                                                        ? header.filterBy
+                                                        : header.value
+                                                ]
+                                            "
+                                            :items="$_boolList"
+                                            item-value="id"
                                         >
-                                            <v-checkbox
-                                                dense
-                                                v-if="showSearch"
-                                                v-model="
-                                                    filters[
-                                                        header.filterBy
-                                                            ? header.filterBy
-                                                            : header.value
-                                                    ]
-                                                "
-                                            ></v-checkbox>
-                                        </v-row>
+                                            <template v-slot:selection="data">
+                                                <v-icon
+                                                    :color="data.item.color"
+                                                    :input-value="data.item"
+                                                >
+                                                    {{ data.item.icon }}
+                                                </v-icon>
+                                            </template>
+
+                                            <template v-slot:item="data">
+                                                <v-layout
+                                                    justify-center
+                                                    align-center
+                                                >
+                                                    <v-icon
+                                                        :color="data.item.color"
+                                                        :input-value="data.item"
+                                                    >
+                                                        {{ data.item.icon }}
+                                                    </v-icon>
+                                                </v-layout>
+                                            </template>
+                                        </v-autocomplete>
                                     </v-col>
 
                                     <!-- @helper:  Filter type bigint -->
