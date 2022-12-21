@@ -97,7 +97,7 @@ export default {
                                         : 'BUO-Paragraph-Large',
                                 ]"
                             >
-                                Iniciar sesión - Analytics
+                                Iniciar sesión - Backoffice
                             </div>
                         </v-col>
                         <v-row align-content="center" justify="center">
