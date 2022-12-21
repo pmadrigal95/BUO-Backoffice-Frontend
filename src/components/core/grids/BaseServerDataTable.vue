@@ -317,13 +317,13 @@ export default {
                     id: 'true',
                     value: 'Si',
                     icon: 'mdi-checkbox-marked-circle',
-                    color: 'greenA900',
+                    color: 'greenA800',
                 },
                 {
                     id: 'false',
                     value: 'No',
                     icon: 'mdi-close-circle',
-                    color: 'redError900',
+                    color: 'grey500',
                 },
             ];
         },
@@ -959,9 +959,9 @@ export default {
         $_setStatusColor(id) {
             switch (id) {
                 case 1:
-                    return 'redError900';
+                    return 'grey500';
                 case 2:
-                    return 'greenA900';
+                    return 'greenA800';
                 default:
                     return 'grey400';
             }
@@ -1466,9 +1466,7 @@ export default {
                                 v-if="header.type == 'bool'"
                                 :key="bool"
                                 :color="
-                                    item[header.value]
-                                        ? 'greenA900'
-                                        : 'redError900'
+                                    item[header.value] ? 'greenA800' : 'grey500'
                                 "
                             >
                                 mdi-{{
@@ -1486,6 +1484,7 @@ export default {
                                     v-else
                                     :color="$_setStatusColor(item['estadoId'])"
                                     outlined
+                                    small
                                 >
                                     {{ item[header.value] }}
                                 </v-chip>
