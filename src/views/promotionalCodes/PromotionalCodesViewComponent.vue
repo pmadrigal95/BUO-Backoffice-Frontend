@@ -156,7 +156,7 @@ export default {
                 porcentajeDescuento: undefined,
                 usoMaximo: undefined,
                 esLicencia: false,
-                compraGratis: false,
+                compraGratis: true,
                 estadoId: true,
             };
         },
@@ -179,6 +179,11 @@ export default {
             } else {
                 this.params.usoMaximo = undefined;
             }
+        },
+
+        $_setDefaultBuyFreeToParams() {
+            this.params.compraGratis = true;
+            this.$_cleanBuyFree();
         },
 
         $_cleanBuyFree() {
@@ -226,6 +231,9 @@ export default {
             httpService.get(`codigoPromocion/${id}`).then((response) => {
                 if (response != undefined) {
                     this.params = response.data;
+                    if (!this.params.compraGratis) {
+                        this.$_setDefaultBuyFreeToParams();
+                    }
                     this.$_formatDateExpiry(this.params.fechaExpiracion);
                     this.$_getConditionUserToParams();
                 }
@@ -372,6 +380,7 @@ export default {
                                             label="Compra Gratis"
                                             v-model="params.compraGratis"
                                             @change="$_cleanBuyFree"
+                                            disabled
                                         ></BaseSwitch>
                                         <v-radio-group
                                             v-model="hasPercentageDiscount"
