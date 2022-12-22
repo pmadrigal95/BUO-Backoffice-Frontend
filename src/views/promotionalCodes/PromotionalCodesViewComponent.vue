@@ -73,29 +73,29 @@ export default {
                     },
                     {
                         text: 'Compra Gratis',
-                        align: 'start',
+                        align: 'center',
                         type: 'bool',
                         value: 'compraGratis',
-                        show: false,
+                        show: true,
                     },
                     {
                         text: 'Monto Descuento',
-                        align: 'start',
+                        align: 'end',
                         value: 'montoDescuento',
                         show: false,
                     },
                     {
                         text: 'Porcentaje Descuento',
-                        align: 'start',
+                        align: 'end',
                         value: 'porcentajeDescuento',
                         show: false,
                     },
                     {
-                        text: 'Tiene Licencia',
+                        text: 'Licencia',
                         type: 'bool',
-                        align: 'start',
+                        align: 'center',
                         value: 'esLicencia',
-                        show: false,
+                        show: true,
                     },
                     {
                         text: 'Fecha Expiración',
@@ -105,13 +105,13 @@ export default {
                     },
                     {
                         text: 'Uso Máximo',
-                        align: 'start',
+                        align: 'end',
                         value: 'usoMaximo',
                         show: false,
                     },
                     {
                         text: 'Uso Actual',
-                        align: 'start',
+                        align: 'end',
                         value: 'usoActual',
                         show: false,
                     },
@@ -131,7 +131,7 @@ export default {
                         text: 'Creado Por',
                         align: 'start',
                         value: 'nombreUsuario',
-                        show: true,
+                        show: false,
                     },
                 ],
                 key: 'id',
@@ -156,7 +156,7 @@ export default {
                 porcentajeDescuento: undefined,
                 usoMaximo: undefined,
                 esLicencia: false,
-                compraGratis: false,
+                compraGratis: true,
                 estadoId: true,
             };
         },
@@ -179,6 +179,11 @@ export default {
             } else {
                 this.params.usoMaximo = undefined;
             }
+        },
+
+        $_setDefaultBuyFreeToParams() {
+            this.params.compraGratis = true;
+            this.$_cleanBuyFree();
         },
 
         $_cleanBuyFree() {
@@ -226,6 +231,9 @@ export default {
             httpService.get(`codigoPromocion/${id}`).then((response) => {
                 if (response != undefined) {
                     this.params = response.data;
+                    if (!this.params.compraGratis) {
+                        this.$_setDefaultBuyFreeToParams();
+                    }
                     this.$_formatDateExpiry(this.params.fechaExpiracion);
                     this.$_getConditionUserToParams();
                 }
@@ -372,6 +380,7 @@ export default {
                                             label="Compra Gratis"
                                             v-model="params.compraGratis"
                                             @change="$_cleanBuyFree"
+                                            disabled
                                         ></BaseSwitch>
                                         <v-radio-group
                                             v-model="hasPercentageDiscount"

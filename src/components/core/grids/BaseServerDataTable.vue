@@ -310,6 +310,25 @@ export default {
         };
     },
 
+    computed: {
+        $_boolList() {
+            return [
+                {
+                    id: 'true',
+                    value: 'Si',
+                    icon: 'mdi-checkbox-marked-circle',
+                    color: 'greenA800',
+                },
+                {
+                    id: 'false',
+                    value: 'No',
+                    icon: 'mdi-close-circle',
+                    color: 'grey500',
+                },
+            ];
+        },
+    },
+
     watch: {
         /**
          * Peticiones al API
@@ -936,6 +955,17 @@ export default {
                 this.selected = [];
             }
         },
+
+        $_setStatusColor(id) {
+            switch (id) {
+                case 1:
+                    return 'grey500';
+                case 2:
+                    return 'greenA800';
+                default:
+                    return 'grey400';
+            }
+        },
     },
 };
 </script>
@@ -945,106 +975,128 @@ export default {
         <!-- @Componente:  BaseDialog-->
         <div>
             <!-- @Componente:  BaseDialog-->
-            <BaseDialog ref="popUp" :tittle="formTitle">
+            <BasePopUp
+                ref="popUp"
+                :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '50%'"
+                :isDrawer="false"
+                scrollable
+            >
                 <div slot="Content">
-                    <v-container fluid v-if="isFilter === 'filter'">
-                        <v-row>
-                            <v-col v-for="(item, i) in objectFilter" :key="i">
-                                <!-- @Componente:  BaseSwitch-->
-                                <BaseSwitch
-                                    v-model="item.show"
-                                    :label="item.text"
-                                />
-                            </v-col>
-                        </v-row>
-                    </v-container>
+                    <v-card flat>
+                        <v-card-title>{{ formTitle }}</v-card-title>
+                        <v-card-text>
+                            <v-container fluid v-if="isFilter === 'filter'">
+                                <v-row justify="center">
+                                    <v-col
+                                        cols="12"
+                                        md="4"
+                                        v-for="(item, i) in objectFilter"
+                                        :key="i"
+                                    >
+                                        <!-- @Componente:  BaseSwitch-->
+                                        <BaseSwitch
+                                            v-model="item.show"
+                                            :label="item.text"
+                                        />
+                                    </v-col>
+                                </v-row>
+                            </v-container>
 
-                    <!-- @Componente:  BaseForm-->
-                    <BaseForm
-                        v-if="isFilter === 'delete'"
-                        :method="$_Delete"
-                        icon="mdi-delete"
-                        labelBtn="Eliminar"
-                    >
-                        <div slot="body">
-                            <br />
-                            <v-row align-content="center">
-                                <h3>{{ deleteMessage }}</h3>
-                            </v-row>
-                        </div>
-                    </BaseForm>
+                            <!-- @Componente:  BaseForm-->
+                            <BaseForm
+                                v-if="isFilter === 'delete'"
+                                :method="$_Delete"
+                                icon="mdi-delete"
+                                labelBtn="Eliminar"
+                            >
+                                <div slot="body">
+                                    <br />
+                                    <v-row align-content="center">
+                                        <h3>{{ deleteMessage }}</h3>
+                                    </v-row>
+                                </div>
+                            </BaseForm>
 
-                    <!-- @Componente:  BaseForm-->
-                    <BaseForm
-                        v-if="isFilter === 'search'"
-                        :method="$_popUpSearch"
-                        :cancel="$_CancelmobilSearch"
-                        icon="mdi-magnify"
-                        :label="formTitle"
-                        :labelBtn="formTitle"
-                    >
-                        <div slot="body">
-                            <br />
-                            <v-col>
-                                <!-- @BaseSelect -->
-                                <BaseSelect
-                                    v-model="mobilColumns"
-                                    label="Columna"
-                                    :endpoint="objectFilter"
-                                    itemText="text"
-                                    itemValue="value"
-                                    :validate="['text']"
-                                />
-                            </v-col>
-                            <v-col>
-                                <v-alert
-                                    v-if="!typeMobilFilter"
-                                    text
-                                    prominent
-                                    type="error"
-                                    icon="mdi-progress-alert"
-                                >
-                                    Debe seleccionar al menos un registro
-                                </v-alert>
+                            <!-- @Componente:  BaseForm-->
+                            <BaseForm
+                                v-if="isFilter === 'search'"
+                                :method="$_popUpSearch"
+                                :cancel="$_CancelmobilSearch"
+                                icon="mdi-magnify"
+                                :label="formTitle"
+                                :labelBtn="formTitle"
+                            >
+                                <div slot="body">
+                                    <br />
+                                    <v-col>
+                                        <!-- @BaseSelect -->
+                                        <BaseSelect
+                                            v-model="mobilColumns"
+                                            label="Columna"
+                                            :endpoint="objectFilter"
+                                            itemText="text"
+                                            itemValue="value"
+                                            :validate="['text']"
+                                        />
+                                    </v-col>
+                                    <v-col>
+                                        <v-alert
+                                            v-if="!typeMobilFilter"
+                                            text
+                                            prominent
+                                            type="error"
+                                            icon="mdi-progress-alert"
+                                        >
+                                            Debe seleccionar al menos un
+                                            registro
+                                        </v-alert>
 
-                                <!-- @BaseInput -->
-                                <BaseInput
-                                    v-else-if="typeMobilFilter == 'text'"
-                                    label="Buscar"
-                                    :validate="['text']"
-                                    v-model="mobilSearch"
-                                    :key="componentKey"
-                                />
+                                        <!-- @BaseInput -->
+                                        <BaseInput
+                                            v-else-if="
+                                                typeMobilFilter == 'text'
+                                            "
+                                            label="Buscar"
+                                            :validate="['text']"
+                                            v-model="mobilSearch"
+                                            :key="componentKey"
+                                        />
 
-                                <!-- @BaseInputList -->
-                                <BaseInputList
-                                    v-if="
-                                        typeMobilFilter == 'table' &&
-                                        objectMobilFilter != undefined &&
-                                        objectMobilFilter.input != undefined
-                                    "
-                                    :setting="objectMobilFilter"
-                                    v-model="mobilSearch"
-                                    :key="componentKey"
-                                />
+                                        <!-- @BaseInputList -->
+                                        <BaseInputList
+                                            v-if="
+                                                typeMobilFilter == 'table' &&
+                                                objectMobilFilter !=
+                                                    undefined &&
+                                                objectMobilFilter.input !=
+                                                    undefined
+                                            "
+                                            :setting="objectMobilFilter"
+                                            v-model="mobilSearch"
+                                            :key="componentKey"
+                                        />
 
-                                <!-- @BaseSimpleInputList -->
-                                <BaseSimpleInputList
-                                    v-if="
-                                        typeMobilFilter == 'table' &&
-                                        objectMobilFilter != undefined &&
-                                        objectMobilFilter.input == undefined
-                                    "
-                                    :setting="objectMobilFilter"
-                                    :denseInput="true"
-                                    v-model="mobilSearch"
-                                    :key="componentKey"
-                                />
-                            </v-col>
-                        </div>
-                    </BaseForm>
+                                        <!-- @BaseSimpleInputList -->
+                                        <BaseSimpleInputList
+                                            v-if="
+                                                typeMobilFilter == 'table' &&
+                                                objectMobilFilter !=
+                                                    undefined &&
+                                                objectMobilFilter.input ==
+                                                    undefined
+                                            "
+                                            :setting="objectMobilFilter"
+                                            :denseInput="true"
+                                            v-model="mobilSearch"
+                                            :key="componentKey"
+                                        />
+                                    </v-col>
+                                </div>
+                            </BaseForm>
+                        </v-card-text>
+                    </v-card>
                 </div>
-            </BaseDialog>
+            </BasePopUp>
 
             <v-card flat class="rounded-lg">
                 <v-card-text>
@@ -1151,6 +1203,7 @@ export default {
                                             "
                                             v-if="showSearch"
                                             clearable
+                                            clear-icon="mdi-close-circle"
                                         ></v-text-field>
                                     </v-col>
 
@@ -1168,6 +1221,7 @@ export default {
                                             "
                                             v-if="showSearch"
                                             clearable
+                                            clear-icon="mdi-close-circle"
                                             type="number"
                                         ></v-text-field>
                                     </v-col>
@@ -1189,22 +1243,44 @@ export default {
 
                                     <!-- @helper:  Filter type Boolean -->
                                     <v-col v-else-if="header.type == 'bool'">
-                                        <v-row
-                                            align-content="center"
-                                            justify="center"
+                                        <v-autocomplete
+                                            dense
+                                            clearable
+                                            outlined
+                                            clear-icon="mdi-close-circle"
+                                            v-model="
+                                                filters[
+                                                    header.filterBy
+                                                        ? header.filterBy
+                                                        : header.value
+                                                ]
+                                            "
+                                            :items="$_boolList"
+                                            item-value="id"
                                         >
-                                            <v-checkbox
-                                                dense
-                                                v-if="showSearch"
-                                                v-model="
-                                                    filters[
-                                                        header.filterBy
-                                                            ? header.filterBy
-                                                            : header.value
-                                                    ]
-                                                "
-                                            ></v-checkbox>
-                                        </v-row>
+                                            <template v-slot:selection="data">
+                                                <v-icon
+                                                    :color="data.item.color"
+                                                    :input-value="data.item"
+                                                >
+                                                    {{ data.item.icon }}
+                                                </v-icon>
+                                            </template>
+
+                                            <template v-slot:item="data">
+                                                <v-layout
+                                                    justify-center
+                                                    align-center
+                                                >
+                                                    <v-icon
+                                                        :color="data.item.color"
+                                                        :input-value="data.item"
+                                                    >
+                                                        {{ data.item.icon }}
+                                                    </v-icon>
+                                                </v-layout>
+                                            </template>
+                                        </v-autocomplete>
                                     </v-col>
 
                                     <!-- @helper:  Filter type bigint -->
@@ -1379,6 +1455,40 @@ export default {
                                     </v-col>
                                 </th>
                             </tr>
+                        </template>
+
+                        <template
+                            v-for="(header, bool) in headers"
+                            :slot="`item.${header.value}`"
+                            slot-scope="{ item }"
+                        >
+                            <v-icon
+                                v-if="header.type == 'bool'"
+                                :key="bool"
+                                :color="
+                                    item[header.value] ? 'greenA800' : 'grey500'
+                                "
+                            >
+                                mdi-{{
+                                    item[header.value]
+                                        ? 'checkbox-marked-circle'
+                                        : 'close-circle'
+                                }}
+                            </v-icon>
+
+                            <div v-else :key="header.value">
+                                <div v-if="header.value != 'nombreEstado'">
+                                    {{ item[header.value] }}
+                                </div>
+                                <v-chip
+                                    v-else
+                                    :color="$_setStatusColor(item['estadoId'])"
+                                    outlined
+                                    small
+                                >
+                                    {{ item[header.value] }}
+                                </v-chip>
+                            </div>
                         </template>
                     </v-data-table>
                 </v-card-text>
