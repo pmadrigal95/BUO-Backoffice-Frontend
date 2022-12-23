@@ -4,7 +4,11 @@
  *
  * @displayName LoginViewComponent
  */
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+
+import googleSDK from '@/services/socialMedia/google-SDK';
+
+import facebookSDK from '@/services/socialMedia/facebook-SDK';
 
 import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 
@@ -13,13 +17,26 @@ import baseArrayHelper from '@/helpers/baseArrayHelper.js';
 const TheAuthentication = () =>
     import('@/layouts/authentication/TheAuthentication.vue');
 
+const BaseCustomIconButton = () =>
+    import('@/components/core/buttons/BaseCustomIconButton');
+
 export default {
     name: 'LoginViewComponent',
 
-    metaInfo: { title: 'Authentication' },
+    metaInfo: {
+        title: 'Authentication',
+        script: [
+            {
+                src: googleSDK.$_Script,
+                async: true,
+                defer: true,
+            },
+        ],
+    },
 
     components: {
         TheAuthentication,
+        BaseCustomIconButton,
     },
 
     data() {
@@ -31,8 +48,22 @@ export default {
         };
     },
 
+    computed: {
+        ...mapGetters('authentication', ['loadingAuthentication']),
+    },
+
     created() {
         localStorage.removeItem(baseLocalHelper.$_jwtToken);
+    },
+
+    mounted() {
+        //TODO: Update to on tap
+        setTimeout(function () {
+            if (window.google) {
+                googleSDK.$_googleRenderButton('googleAccess');
+                googleSDK.$_googlePrompt();
+            }
+        }, 1500);
     },
 
     methods: {
@@ -66,6 +97,10 @@ export default {
 
         $_goToRoute(route) {
             this.$router.push({ name: route });
+        },
+
+        $_facebookAuth() {
+            facebookSDK.$_facebookAuth();
         },
     },
 };
@@ -156,6 +191,26 @@ export default {
                                                     </a>
                                                 </div>
                                             </v-col>
+                                        </v-row>
+                                    </div>
+                                    <div slot="btns">
+                                        <h5
+                                            class="text-center neutral--text mt-4 mb-3 BUO-Paragraph-Medium"
+                                        >
+                                            o inicia sesión con
+                                        </h5>
+                                        <br />
+                                        <v-row
+                                            justify="center"
+                                            align-content="center"
+                                        >
+                                            <div
+                                                class="ma-1"
+                                                id="googleAccess"
+                                            ></div>
+                                            <BaseCustomIconButton
+                                                :fn="$_facebookAuth"
+                                            />
                                         </v-row>
                                     </div>
                                 </BaseForm>

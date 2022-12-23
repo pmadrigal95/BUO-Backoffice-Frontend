@@ -43,10 +43,16 @@ export const state = {
     user: undefined,
     alert: true,
     module: 'HomeViewComponent',
+    loadingAuthentication: false,
 };
 
 export const getters = {
     user: (state) => state.user,
+
+    /**
+     * Loanding Process
+     */
+    loadingAuthentication: (state) => state.loadingAuthentication,
 };
 
 export const mutations = {
@@ -66,16 +72,34 @@ export const mutations = {
     CACHEROUTES(state, to) {
         state.module = to;
     },
+
+    $_SET_LOADING(state, value) {
+        state.loadingAuthentication = value;
+    },
 };
 
 export const actions = {
     login({ commit }, credentials) {
+        commit('$_SET_LOADING', true);
         httpService
             .post('/user/authenticate', credentials.credentials)
             .then((response) => {
                 if (response != undefined) {
                     commit('SET_USER_DATA', response.data.jwtToken);
                 }
+                commit('$_SET_LOADING', false);
+            });
+    },
+
+    loginSocialMedia({ commit }, credentials) {
+        commit('$_SET_LOADING', true);
+        httpService
+            .post('/user/authenticate_federated', credentials)
+            .then((response) => {
+                if (response != undefined) {
+                    commit('SET_USER_DATA', response.data.jwtToken);
+                }
+                commit('$_SET_LOADING', false);
             });
     },
 
