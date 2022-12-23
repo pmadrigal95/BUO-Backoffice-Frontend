@@ -3,7 +3,7 @@
  */
 const routes = [
     {
-        path: '/PromotionalCodes/Editor/:Id?',
+        path: '/PromotionalCodes/Editor/:id?',
         name: 'PromotionalCodesEditorViewComponent',
         component: 'promotionalCodes/PromotionalCodesEditorViewComponent',
         meta: {

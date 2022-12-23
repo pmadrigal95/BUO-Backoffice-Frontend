@@ -60,6 +60,7 @@ export default {
         this.$vuetify.theme.themes.light.background =
             this.$vuetify.theme.themes.light.white;
     },
+
     destroyed() {
         this.$vuetify.theme.themes.light.background =
             this.$vuetify.theme.themes.light.clouds;
@@ -88,8 +89,8 @@ export default {
          */
 
         $_getObject() {
-            let id = this.$router.currentRoute.params.Id;
-            if (id > 0) {
+            const id = this.$router.currentRoute.params.id;
+            if (id) {
                 this.$_getToPromotionalCode(id);
             }
         },
@@ -164,16 +165,19 @@ export default {
 
         $_getToPromotionalCode(id) {
             this.loading = true;
+
             httpService.get(`codigoPromocion/${id}`).then((response) => {
                 if (response != undefined) {
                     this.params = response.data;
+
                     if (!this.params.compraGratis) {
                         this.$_setDefaultBuyFreeToParams();
                     }
-                    this.promotionalCodeStatus = this.params.estadoId == 1 ? false : true;
+
                     this.$_formatDateExpiry(this.params.fechaExpiracion);
                     this.$_getConditionUserToParams();
                 }
+
                 this.loading = false;
             });
         },
@@ -203,16 +207,11 @@ export default {
         },
 
         $_getConditionUserToParams() {
-            this.promotionalCodeStatus =
-                this.params.estadoId == 1 ? false : true;
+            this.promotionalCodeStatus = this.params.estadoId != 1;
         },
 
         $_setUserIdToParams() {
-            this.params.usuarioId = this.$_getUserId();
-        },
-
-        $_getUserId() {
-            return this.user.userId;
+            this.params.usuarioId = this.user.userId;
         },
 
         /**
@@ -226,15 +225,6 @@ export default {
             this.$_cleanBuyFree();
             this.$_postToApi('codigoPromocion/save', this.params);
         },
-
-        /**
-         * Function for edit a promotional code.
-         */
-
-        $_fnEdit(row) {
-            const promotionalCodeId = row.selected.id;
-            this.$_getToPromotionalCode(promotionalCodeId);
-        },
     },
 };
 </script>
@@ -247,113 +237,106 @@ export default {
         offset="3"
     >
         <div slot="card-text">
-            <v-card flat height="100%" width="100%">
-                <v-card-text>
-                    <BaseSkeletonLoader
-                        v-if="loading"
-                        type="article, actions"
+            <BaseSkeletonLoader v-if="loading" type="article, actions" />
+            <BaseForm :method="$_fnNew" :cancel="$_returnToFilter" v-else>
+                <div slot="body">
+                    <BaseInput
+                        mask="XXXXXX"
+                        label="Código"
+                        v-model="params.codigo"
+                        :max="6"
+                        :min="3"
+                        :validate="['range']"
                     />
-                    <BaseForm :method="$_fnNew" :cancel="$_returnToFilter">
-                        <div slot="body">
-                            <BaseInput
-                                mask="XXXXXX"
-                                label="Código"
-                                v-model="params.codigo"
-                                :max="6"
-                                :min="3"
-                                :validate="['range']"
-                            />
-                            <BaseSelect
-                                label="Producto"
-                                v-model="params.productoId"
-                                :endpoint="productList"
-                                itemText="product"
-                                itemValue="value"
-                                :validate="['text']"
-                            ></BaseSelect>
-                            <BaseSwitch
-                                label="Es Licencia"
-                                v-model="params.esLicencia"
-                                @change="$_cleanLicense"
-                            ></BaseSwitch>
-                            <BaseDatePicker
-                                label="Fecha de expiración"
-                                appendIcon="mdi-magnify"
-                                v-model="params.fechaExpiracion"
-                                v-if="!params.esLicencia"
-                                reqCurrentMinDate
-                                :validate="['text']"
-                            />
-                            <BaseInput
-                                label="Uso Máximo"
-                                v-model="params.usoMaximo"
-                                type="number"
-                                :validate="['number']"
-                                v-if="params.esLicencia"
-                            />
-                            <BaseSwitch
-                                label="Compra Gratis"
-                                v-model="params.compraGratis"
-                                @change="$_cleanBuyFree"
-                                disabled
-                            ></BaseSwitch>
-                            <v-radio-group
-                                v-model="hasPercentageDiscount"
-                                mandatory
-                                v-if="!params.compraGratis"
-                            >
-                                <v-card class="mb-5" outlined>
-                                    <v-card-text>
-                                        <v-radio
-                                            label="Porcentaje Descuento"
-                                            :value="true"
-                                            @change="$_cleanBuyFree"
-                                            class="mb-5"
-                                        ></v-radio>
-                                        <BaseInput
-                                            label="Porcentaje Descuento"
-                                            v-model="params.porcentajeDescuento"
-                                            :max="99"
-                                            :min="1"
-                                            :validate="['percentage']"
-                                            v-if="
-                                                !params.compraGratis &&
-                                                hasPercentageDiscount
-                                            "
-                                        />
-                                    </v-card-text>
-                                </v-card>
-                                <v-card outlined>
-                                    <v-card-text>
-                                        <v-radio
-                                            label="Monto Descuento"
-                                            :value="false"
-                                            @change="$_cleanBuyFree"
-                                            class="mb-5"
-                                        ></v-radio>
-                                        <BaseInput
-                                            :min="0"
-                                            label="Monto Descuento"
-                                            v-model="params.montoDescuento"
-                                            :validate="['number02']"
-                                            v-if="
-                                                !params.compraGratis &&
-                                                !hasPercentageDiscount
-                                            "
-                                        />
-                                    </v-card-text>
-                                </v-card>
-                            </v-radio-group>
+                    <BaseSelect
+                        label="Producto"
+                        v-model="params.productoId"
+                        :endpoint="productList"
+                        itemText="product"
+                        itemValue="value"
+                        :validate="['text']"
+                    ></BaseSelect>
+                    <BaseSwitch
+                        label="Es Licencia"
+                        v-model="params.esLicencia"
+                        @change="$_cleanLicense"
+                    ></BaseSwitch>
+                    <BaseDatePicker
+                        label="Fecha de expiración"
+                        appendIcon="mdi-magnify"
+                        v-model="params.fechaExpiracion"
+                        v-if="!params.esLicencia"
+                        reqCurrentMinDate
+                        :validate="['text']"
+                    />
+                    <BaseInput
+                        label="Uso Máximo"
+                        v-model="params.usoMaximo"
+                        type="number"
+                        :validate="['number']"
+                        v-if="params.esLicencia"
+                    />
+                    <BaseSwitch
+                        label="Compra Gratis"
+                        v-model="params.compraGratis"
+                        @change="$_cleanBuyFree"
+                        disabled
+                    ></BaseSwitch>
+                    <v-radio-group
+                        v-model="hasPercentageDiscount"
+                        mandatory
+                        v-if="!params.compraGratis"
+                    >
+                        <v-card class="mb-5" outlined>
+                            <v-card-text>
+                                <v-radio
+                                    label="Porcentaje Descuento"
+                                    :value="true"
+                                    @change="$_cleanBuyFree"
+                                    class="mb-5"
+                                ></v-radio>
+                                <BaseInput
+                                    label="Porcentaje Descuento"
+                                    v-model="params.porcentajeDescuento"
+                                    :max="99"
+                                    :min="1"
+                                    :validate="['percentage']"
+                                    v-if="
+                                        !params.compraGratis &&
+                                        hasPercentageDiscount
+                                    "
+                                />
+                            </v-card-text>
+                        </v-card>
+                        <v-card outlined>
+                            <v-card-text>
+                                <v-radio
+                                    label="Monto Descuento"
+                                    :value="false"
+                                    @change="$_cleanBuyFree"
+                                    class="mb-5"
+                                ></v-radio>
+                                <BaseInput
+                                    :min="0"
+                                    label="Monto Descuento"
+                                    v-model="params.montoDescuento"
+                                    :validate="['number02']"
+                                    v-if="
+                                        !params.compraGratis &&
+                                        !hasPercentageDiscount
+                                    "
+                                />
+                            </v-card-text>
+                        </v-card>
+                    </v-radio-group>
 
-                            <BaseSwitch
-                                v-model="promotionalCodeStatus"
-                                :label="setStatusDisplay"
-                                @change="$_setConditionUserToParams"
-                            ></BaseSwitch>
-                        </div>
-                    </BaseForm>
-                </v-card-text>
-            </v-card>
+                    <BaseSwitch
+                        v-model="promotionalCodeStatus"
+                        :label="setStatusDisplay"
+                        @change="$_setConditionUserToParams"
+                    ></BaseSwitch>
+                </div>
+            </BaseForm>
         </div>
     </BaseCardViewComponent>
 </template>

@@ -131,7 +131,7 @@ export default {
         $_fnEditPromotionalCode(row) {
             this.$router.push({
                 name: 'PromotionalCodesEditorViewComponent',
-                params: { Id: row.selected.id },
+                params: { id: row.selected.id },
             });
         },
 
