@@ -119,6 +119,35 @@ export default {
 
     methods: {
         /**
+         * Functions required for delete promotional code.
+         */
+
+        $_getUserId() {
+            return this.user.userId;
+        },
+
+        $_createBodyRequestDelete(row) {
+            const request = {
+                userId: this.$_getUserId(),
+                id: row[0].id,
+            };
+            return request;
+        },
+
+        $_fnDeletePromotionalCode(row) {
+            const body = this.$_createBodyRequestDelete(row);
+            this.loading = true;
+            httpService
+                .post('codigoPromocion/deactivate', body)
+                .then((response) => {
+                    if (response != undefined) {
+                        this.$refs.PromotionalCodeFilter.$_ParamsToAPI();
+                    }
+                    this.loading = false;
+                });
+        },
+
+        /**
          * Function to show a view to edit or add promocional code.
          */
 
@@ -134,61 +163,12 @@ export default {
                 params: { id: row.selected.id },
             });
         },
-
-        /**
-         * Genery function for send request to api.
-         * @param {*} action
-         * @param {*} body
-         */
-
-        $_postToApi(action, body) {
-            this.loading = true;
-            httpService.post(action, body).then((response) => {
-                if (response != undefined) {
-                    this.$refs.PromotionalCodeFilter.$_ParamsToAPI();
-                }
-                this.loading = false;
-            });
-        },
-
-        /**
-         * Function for clean the object after to send a request to api.
-         */
-
-        $_cleanSendToAPI() {
-            this.params = this.$_Object();
-        },
-
-        /**
-         * Functions required for delete promotional code.
-         */
-
-        $_setUserIdToParams() {
-            this.params.usuarioId = this.$_getUserId();
-        },
-
-        $_getUserId() {
-            return this.user.userId;
-        },
-
-        $_createBodyRequestDelete(row) {
-            const request = {
-                userId: this.$_getUserId(),
-                id: row[0].id,
-            };
-            return request;
-        },
-
-        $_fnDeletePromotionalCode(row) {
-            const request = this.$_createBodyRequestDelete(row);
-            this.$_postToApi('codigoPromocion/deactivate', request);
-        },
     },
 };
 </script>
 
 <template>
-    <BaseCardViewComponent title="Códigos Promocionales" v-if="user">
+    <BaseCardViewComponent title="Códigos Promocionales">
         <div slot="card-text">
             <BaseServerDataTable
                 ref="PromotionalCodeFilter"

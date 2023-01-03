@@ -8,9 +8,9 @@
 
 import { mapGetters } from 'vuex';
 
-import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
-
 import httpService from '@/services/axios/httpService';
+
+import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
@@ -39,10 +39,9 @@ export default {
 
         setStatusDisplay() {
             return `Estado ${
-                this.promotionalCodeStatus ? 'Activo' : 'Inactivo'
+                this.params.estadoId === 1 ? 'Activo' : 'Inactivo'
             }`;
         },
-
         productList() {
             return [
                 { product: 'Tokens', value: 1 },
@@ -67,6 +66,17 @@ export default {
     },
 
     methods: {
+        /**
+         * Function that receives the object to know if it should be edited or added
+         */
+
+        $_getObject() {
+            const id = this.$router.currentRoute.params.id;
+            if (id) {
+                this.$_getToPromotionalCode(id);
+            }
+        },
+
         $_Object() {
             return {
                 id: 0,
@@ -85,17 +95,6 @@ export default {
         },
 
         /**
-         * Function that receives the object to know if it should be edited or added
-         */
-
-        $_getObject() {
-            const id = this.$router.currentRoute.params.id;
-            if (id) {
-                this.$_getToPromotionalCode(id);
-            }
-        },
-
-        /**
          * Function to return the PromotionalCodesFilterViewComponent
          */
         $_returnToFilter() {
@@ -107,6 +106,14 @@ export default {
         /**
          * Function for format the object
          */
+        $_formatDateExpiry(fechaExpiracion) {
+            if (fechaExpiracion != null) {
+                this.params.fechaExpiracion =
+                    baseSharedFnHelper.$_parseArrayToDateISOString(
+                        fechaExpiracion
+                    );
+            }
+        },
 
         $_cleanLicense() {
             typeof this.params.esLicencia === undefined ? false : true;
@@ -141,23 +148,6 @@ export default {
             }
         },
 
-        $_formatDateExpiry(fechaExpiracion) {
-            if (fechaExpiracion != null) {
-                this.params.fechaExpiracion =
-                    baseSharedFnHelper.$_parseArrayToDateISOString(
-                        fechaExpiracion
-                    );
-            }
-        },
-
-        /**
-         * Function for clean the object after to send a request to api.
-         */
-
-        $_cleanSendToAPI() {
-            this.params = this.$_Object();
-        },
-
         /**
          * Function to get the information about promotional code.
          * @param {*} id
@@ -183,6 +173,23 @@ export default {
         },
 
         /**
+         * Functions for change de status user for request to api.
+         */
+
+        $_getConditionUserToParams() {
+            this.promotionalCodeStatus =
+                this.params.estadoId != 1 ? true : false;
+        },
+
+        $_setConditionUserToParams() {
+            this.params.estadoId = this.promotionalCodeStatus ? 2 : 1;
+        },
+
+        $_setUserIdToParams() {
+            this.params.usuarioId = this.user.userId;
+        },
+
+        /**
          * Genery function for send request to api.
          * @param {*} action
          * @param {*} body
@@ -190,28 +197,13 @@ export default {
 
         $_postToApi(action, body) {
             this.loading = true;
+            console.log(body);
             httpService.post(action, body).then((response) => {
                 if (response != undefined) {
                     this.$_returnToFilter();
                 }
                 this.loading = false;
             });
-        },
-
-        /**
-         * Functions for change de status user for request to api.
-         */
-
-        $_setConditionUserToParams() {
-            this.params.estadoId = this.promotionalCodeStatus ? 2 : 1;
-        },
-
-        $_getConditionUserToParams() {
-            this.promotionalCodeStatus = this.params.estadoId != 1;
-        },
-
-        $_setUserIdToParams() {
-            this.params.usuarioId = this.user.userId;
         },
 
         /**
@@ -238,7 +230,11 @@ export default {
     >
         <div slot="card-text">
             <BaseSkeletonLoader v-if="loading" type="article, actions" />
-            <BaseForm :method="$_fnNew" :cancel="$_returnToFilter" v-else>
+            <BaseForm
+                :method="$_fnNew"
+                :cancel="$_returnToFilter"
+                v-if="$_getObject"
+            >
                 <div slot="body">
                     <BaseInput
                         mask="XXXXXX"
@@ -248,6 +244,7 @@ export default {
                         :min="3"
                         :validate="['range']"
                     />
+
                     <BaseSelect
                         label="Producto"
                         v-model="params.productoId"
@@ -256,11 +253,13 @@ export default {
                         itemValue="value"
                         :validate="['text']"
                     ></BaseSelect>
+
                     <BaseSwitch
                         label="Es Licencia"
                         v-model="params.esLicencia"
                         @change="$_cleanLicense"
                     ></BaseSwitch>
+
                     <BaseDatePicker
                         label="Fecha de expiración"
                         appendIcon="mdi-magnify"
@@ -269,6 +268,7 @@ export default {
                         reqCurrentMinDate
                         :validate="['text']"
                     />
+
                     <BaseInput
                         label="Uso Máximo"
                         v-model="params.usoMaximo"
@@ -276,12 +276,14 @@ export default {
                         :validate="['number']"
                         v-if="params.esLicencia"
                     />
+
                     <BaseSwitch
                         label="Compra Gratis"
                         v-model="params.compraGratis"
                         @change="$_cleanBuyFree"
                         disabled
                     ></BaseSwitch>
+
                     <v-radio-group
                         v-model="hasPercentageDiscount"
                         mandatory
