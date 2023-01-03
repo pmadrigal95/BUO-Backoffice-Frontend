@@ -24,6 +24,8 @@ const facebookAppId = process.env.VUE_APP_FACEBOOK_APP_ID;
 
 const sdkScript = 'https://connect.facebook.net/en_US/all.js';
 
+let isLoaded = false;
+
 /**
  * Facebook Config Object
  */
@@ -64,7 +66,10 @@ const getLoginStatus = () => {
 };
 
 const initFacebook = () => {
-    FB.init(instance);
+    if (!isLoaded) {
+        FB.init(instance);
+        isLoaded = true;
+    }
 };
 
 const logInWithFacebook = async () => {
