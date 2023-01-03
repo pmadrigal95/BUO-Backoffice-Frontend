@@ -82,7 +82,7 @@ export default {
             });
         }
 
-        cacheRoute(value);
+        cacheRoute({ name: value, params: to.params });
 
         next();
     },

@@ -33,7 +33,7 @@ const $_setStateValue = (state, decoded, data) => {
 
     localStorage.setItem(baseLocalHelper.$_jwtToken, data);
 
-    router.push({ name: state.module });
+    router.push({ name: state.module.name, params: state.module.params });
 };
 
 export const namespaced = true;
@@ -42,7 +42,7 @@ export const state = {
     jwtToken: undefined,
     user: undefined,
     alert: true,
-    module: 'HomeViewComponent',
+    module: { name: 'HomeViewComponent' },
     loadingAuthentication: false,
 };
 
