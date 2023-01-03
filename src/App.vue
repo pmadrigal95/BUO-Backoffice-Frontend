@@ -4,6 +4,8 @@
  *
  * @displayName App
  */
+import facebookSDK from '@/services/socialMedia/facebook-SDK.js';
+
 const TheNotificationContainer = () =>
     import('@/components/core/alerts/TheNotificationContainer.vue');
 
@@ -18,6 +20,13 @@ export default {
             {
                 name: 'viewport',
                 content: 'width=device-width, initial-scale=1',
+            },
+        ],
+        script: [
+            {
+                src: facebookSDK.$_Script,
+                async: true,
+                defer: true,
             },
         ],
     },

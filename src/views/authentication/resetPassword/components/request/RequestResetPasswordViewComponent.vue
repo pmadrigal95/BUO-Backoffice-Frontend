@@ -16,6 +16,9 @@ const BaseCardViewComponent = () =>
 const BaseNotificationCardTemplate = () =>
     import('@/components/core/cards/BaseNotificationCardTemplate');
 
+const BaseReCaptchaForm = () =>
+    import('@/components/core/forms/BaseReCaptchaForm');
+
 export default {
     name: 'RequestResetPasswordViewComponent',
 
@@ -31,6 +34,7 @@ export default {
         TheAuthentication,
         BaseCardViewComponent,
         BaseNotificationCardTemplate,
+        BaseReCaptchaForm,
     },
 
     methods: {
@@ -76,7 +80,7 @@ export default {
                                 v-if="loading"
                                 type="article, actions"
                             />
-                            <BaseForm
+                            <BaseReCaptchaForm
                                 :method="$_sendToAPI"
                                 labelBtn="Enviar"
                                 :login="true"
@@ -93,7 +97,7 @@ export default {
                                         </v-col>
                                     </v-row>
                                 </div>
-                            </BaseForm>
+                            </BaseReCaptchaForm>
                         </div>
                     </BaseCardViewComponent>
                 </div>

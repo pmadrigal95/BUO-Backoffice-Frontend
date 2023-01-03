@@ -4,14 +4,7 @@
  * @displayName BaseExcludeMessage
  */
 
-const exclusionList = [
-    'cualificacion/findAllByCategoriaIdIn',
-    'cualificacion/findAllByDefinicion/',
-    '/user/authenticate',
-    'external_wallet/profile',
-    'user/createShareableLink',
-    '/findBy',
-];
+const exclusionList = ['misc/validateCaptcha', '/user/authenticate', '/findBy'];
 
 const logOutExclusion = ['/user/authenticate'];
 
