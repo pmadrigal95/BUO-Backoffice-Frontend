@@ -194,7 +194,7 @@ export default {
      * Descripción: Validación
      */
     $_MsgFieldRangeNumberInvalid(val, max, min) {
-        return `El campo ${val} no cumple el rango permitido de ${min} a ${max}.`;
+        return `El campo ${val} no cumple el rango permitido entre ${min} a ${max}.`;
     },
 
     /**

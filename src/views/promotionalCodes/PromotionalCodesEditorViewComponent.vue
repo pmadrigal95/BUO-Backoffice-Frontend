@@ -39,9 +39,10 @@ export default {
 
         setStatusDisplay() {
             return `Estado ${
-                this.params.estadoId === 1 ? 'Activo' : 'Inactivo'
+                this.promotionalCodeStatus ? 'Activo' : 'Inactivo'
             }`;
         },
+        
         productList() {
             return [
                 { product: 'Tokens', value: 1 },
@@ -116,7 +117,9 @@ export default {
         },
 
         $_cleanLicense() {
-            typeof this.params.esLicencia === undefined ? false : true;
+            this.params.esLicencia =
+                this.params.esLicencia === null ? false : true;
+
             if (this.params.esLicencia) {
                 this.params.fechaExpiracion = undefined;
                 this.params.fechaExpiracionFormato = undefined;
@@ -127,11 +130,16 @@ export default {
 
         $_setDefaultBuyFreeToParams() {
             this.params.compraGratis = true;
+            this.hasPercentageDiscount = false;
             this.$_cleanBuyFree();
         },
 
+        $_resetParamBuyFree() {
+            this.params.compraGratis =
+                typeof this.params.compraGratis === undefined ? false : true;
+        },
+
         $_cleanBuyFree() {
-            typeof this.params.compraGratis === undefined ? false : true;
             if (this.params.compraGratis) {
                 this.params.montoDescuento = undefined;
                 this.params.porcentajeDescuento = undefined;
@@ -162,6 +170,7 @@ export default {
 
                     if (!this.params.compraGratis) {
                         this.$_setDefaultBuyFreeToParams();
+                        this.$_resetHasPercentageDiscount();
                     }
 
                     this.$_formatDateExpiry(this.params.fechaExpiracion);
@@ -176,12 +185,20 @@ export default {
          * Functions for change de status user for request to api.
          */
 
+        $_resetHasPercentageDiscount() {
+            this.hasPercentageDiscount =
+                this.params.porcentajeDescuento === null ? false : true;
+        },
+
         $_getConditionUserToParams() {
-            this.promotionalCodeStatus =
-                this.params.estadoId != 1 ? true : false;
+            if (this.params.estadoId === 1) {
+                this.promotionalCodeStatus = false;
+            }
         },
 
         $_setConditionUserToParams() {
+            this.promotionalCodeStatus =
+                this.promotionalCodeStatus === null ? false : true;
             this.params.estadoId = this.promotionalCodeStatus ? 2 : 1;
         },
 
@@ -197,7 +214,6 @@ export default {
 
         $_postToApi(action, body) {
             this.loading = true;
-            console.log(body);
             httpService.post(action, body).then((response) => {
                 if (response != undefined) {
                     this.$_returnToFilter();
@@ -265,6 +281,7 @@ export default {
                         appendIcon="mdi-magnify"
                         v-model="params.fechaExpiracion"
                         v-if="!params.esLicencia"
+                        @change="$_cleanLicense"
                         reqCurrentMinDate
                         :validate="['text']"
                     />
@@ -272,15 +289,15 @@ export default {
                     <BaseInput
                         label="Uso Máximo"
                         v-model="params.usoMaximo"
+                        v-if="params.esLicencia"
                         type="number"
                         :validate="['number']"
-                        v-if="params.esLicencia"
+                        @change="$_cleanLicense"
                     />
-
                     <BaseSwitch
                         label="Compra Gratis"
                         v-model="params.compraGratis"
-                        @change="$_cleanBuyFree"
+                        @change="$_resetParamBuyFree"
                         disabled
                     ></BaseSwitch>
 
@@ -301,7 +318,7 @@ export default {
                                     label="Porcentaje Descuento"
                                     v-model="params.porcentajeDescuento"
                                     :max="99"
-                                    :min="1"
+                                    :min="0"
                                     :validate="['percentage']"
                                     v-if="
                                         !params.compraGratis &&

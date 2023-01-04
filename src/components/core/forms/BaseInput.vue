@@ -359,7 +359,7 @@ export default {
                                 this.label != undefined ? this.label : ''
                             ),
                         (v) =>
-                            (v <= this.max && v >= this.min) ||
+                            (v <= this.max && v > this.min) ||
                             baseLocalHelper.$_MsgFieldRangeNumberInvalid(
                                 this.label != undefined ? this.label : '',
                                 this.max,
