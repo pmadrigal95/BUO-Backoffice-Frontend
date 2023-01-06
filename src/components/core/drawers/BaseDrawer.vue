@@ -24,6 +24,42 @@ export default {
         ...mapGetters('authentication', ['user']),
 
         ...mapGetters('navbar', ['status']),
+
+        usernameDisplay() {
+            const usernameSplit = this.user.name
+                ? this.user.name.split(' ')
+                : undefined;
+
+            let username;
+
+            if (usernameSplit && usernameSplit.length > 0) {
+                username =
+                    usernameSplit.length === 1
+                        ? usernameSplit[0]
+                        : `${usernameSplit[0]} ${usernameSplit[1].charAt(0)}.`;
+            }
+
+            return username;
+        },
+
+        initials() {
+            const usernameSplit = this.user.name
+                ? this.user.name.split(' ')
+                : undefined;
+
+            let username;
+
+            if (usernameSplit && usernameSplit.length > 0) {
+                username =
+                    usernameSplit.length === 1
+                        ? usernameSplit[0]
+                        : `${usernameSplit[0].charAt(
+                              0
+                          )}${usernameSplit[1].charAt(0)}`;
+            }
+
+            return username;
+        },
     },
 
     watch: {
@@ -36,59 +72,21 @@ export default {
 
 <template>
     <v-navigation-drawer
-        v-if="$vuetify.breakpoint.smAndDown"
-        temporary
-        v-model="drawer"
         app
-    >
-        <v-list-item two-line class="px-2">
-            <v-list-item-avatar>
-                <v-avatar color="yellowWarning900">
-                    <span
-                        class="white--text text-h5"
-                        v-if="user.photoUrl == undefined"
-                        >{{ user.name.charAt(0).toUpperCase() }}</span
-                    >
-
-                    <img v-else :src="user.photoUrl" alt="photoUrl" />
-                </v-avatar>
-            </v-list-item-avatar>
-
-            <v-list-item-content>
-                <v-list-item-title>{{ user.name }}</v-list-item-title>
-                <v-list-item-subtitle>Administrador</v-list-item-subtitle>
-            </v-list-item-content>
-
-            <v-btn
-                icon
-                @click.stop="mini = !mini"
-                v-if="$vuetify.breakpoint.mdAndUp"
-            >
-                <v-icon>mdi-chevron-left</v-icon>
-            </v-btn>
-        </v-list-item>
-
-        <v-divider></v-divider>
-        <!-- @slot Agregar Contenido -->
-        <slot name="container"></slot>
-    </v-navigation-drawer>
-    <v-navigation-drawer
-        v-else
-        app
-        permanent
-        absolute
         height="100%"
         v-model="drawer"
-        :mini-variant.sync="mini"
+        :permanent="$vuetify.breakpoint.mdAndUp"
+        :absolute="$vuetify.breakpoint.mdAndUp"
         style="max-height: 100% !important"
+        :temporary="$vuetify.breakpoint.smAndDown"
     >
-        <v-list-item two-line class="px-2">
+        <v-list-item two-line class="px-2" v-if="user">
             <v-list-item-avatar>
                 <v-avatar color="yellowWarning900">
                     <span
-                        class="white--text text-h5"
+                        class="white--text BUO-Paragraph-Medium-SemiBold"
                         v-if="user.photoUrl == undefined"
-                        >{{ user.name.charAt(0).toUpperCase() }}</span
+                        >{{ initials }}</span
                     >
 
                     <img v-else :src="user.photoUrl" alt="photoUrl" />
@@ -96,17 +94,13 @@ export default {
             </v-list-item-avatar>
 
             <v-list-item-content>
-                <v-list-item-title>{{ user.name }}</v-list-item-title>
-                <v-list-item-subtitle>Administrador</v-list-item-subtitle>
+                <v-list-item-title class="BUO-Paragraph-Medium-SemiBold">{{
+                    usernameDisplay
+                }}</v-list-item-title>
+                <v-list-item-subtitle class="BUO-Label-XSmall"
+                    >BUO Backoffice</v-list-item-subtitle
+                >
             </v-list-item-content>
-
-            <v-btn
-                icon
-                @click.stop="mini = !mini"
-                v-if="this.$vuetify.breakpoint.mdAndUp"
-            >
-                <v-icon>mdi-chevron-left</v-icon>
-            </v-btn>
         </v-list-item>
 
         <v-divider></v-divider>

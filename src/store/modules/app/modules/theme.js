@@ -10,6 +10,10 @@ export const state = {
     app: false,
 };
 
+export const getters = {
+    app: (state) => state.app,
+};
+
 export const mutations = {
     CHANGEMODE(state, key) {
         state.app = key[1];
