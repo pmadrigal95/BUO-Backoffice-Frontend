@@ -6,12 +6,17 @@
 
 import store from '@/store';
 
+import { AES, enc } from 'crypto-js';
+
 import baseLocalHelper from '@/helpers/baseLocalHelper';
 
 function returnObject(key, value, type) {
     switch (type) {
-        case 'String':
-            return value;
+        case 'String': {
+            const bytes = AES.decrypt(value, baseLocalHelper.$_encryptKey);
+            const originalValue = bytes.toString(enc.Utf8);
+            return originalValue;
+        }
         case 'Boolean':
             return [key, String(value) == 'true'];
         case 'Array':

@@ -4,6 +4,8 @@
  * @displayName authentication
  */
 
+import { AES } from 'crypto-js';
+
 import router from '@/router';
 
 import jwt_decode from 'jwt-decode';
@@ -29,7 +31,10 @@ const $_redirect = (module) => {
 const $_setStateValue = (state, decoded, data) => {
     state.jwtToken = data;
 
-    localStorage.setItem(baseLocalHelper.$_jwtToken, data);
+    localStorage.setItem(
+        baseLocalHelper.$_jwtToken,
+        AES.encrypt(data, baseLocalHelper.$_encryptKey).toString()
+    );
 
     state.user = {
         email: decoded?.sub,
@@ -91,7 +96,6 @@ export const mutations = {
 
         localStorage.removeItem(baseLocalHelper.$_permissionList);
         localStorage.removeItem(baseLocalHelper.$_jwtToken);
-        facebookSDK.$_facebookLogOut();
     },
 };
 

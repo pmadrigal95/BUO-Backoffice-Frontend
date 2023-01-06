@@ -15,9 +15,11 @@ import baseLocalHelper from '@/helpers/baseLocalHelper';
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 const $_getUserId = () => {
-    const decoded = jwt_decode(
-        localStorage.getItem(baseLocalHelper.$_jwtToken)
-    );
+    const jwtToken = localStorage.getItem(baseLocalHelper.$_jwtToken);
+    const bytes = AES.decrypt(jwtToken, baseLocalHelper.$_encryptKey);
+    const result = bytes.toString(enc.Utf8);
+
+    const decoded = jwt_decode(result);
     return decoded.userId;
 };
 
