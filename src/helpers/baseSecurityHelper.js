@@ -20,7 +20,8 @@ const $_requestData = (callback) => {
 };
 
 const logout = () => {
-    store.dispatch('authentication/logout', true, { root: true });
+    store.dispatch('authentication/$_user_clean', { root: true });
+    store.dispatch('security/$_security_clean', { root: true });
 };
 
 const $_getPermissionList = (callback) => {
@@ -93,11 +94,14 @@ export default {
         return getFirstItem(key);
     },
 
-    $_logout() {
-        baseNotificationsHelper.Message(
-            true,
-            baseLocalHelper.$_MsgUserSessionExpired
-        );
+    $_logout(message = false) {
+        if (message) {
+            baseNotificationsHelper.Message(
+                true,
+                baseLocalHelper.$_MsgUserSessionExpired
+            );
+        }
+
         logout();
     },
 };

@@ -16,13 +16,6 @@ import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 import facebookSDK from '@/services/socialMedia/facebook-SDK.js';
 
-//import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
-
-/*const $_notAdmin = () => {
-    localStorage.removeItem(baseLocalHelper.$_jwtToken);
-    baseNotificationsHelper.Message(true, baseLocalHelper.$_MsgGenericError);
-};*/
-
 const $_redirect = (module) => {
     if (router.currentRoute.name === 'LoginViewComponent') {
         const result = baseSecurityHelper.$_getFirstItem();
@@ -91,9 +84,22 @@ export const mutations = {
     $_SET_LOADING(state, value) {
         state.loadingAuthentication = value;
     },
+
+    $_CLEAN_USER_DATA(state) {
+        state.jwtToken = undefined;
+        state.user = undefined;
+
+        localStorage.removeItem(baseLocalHelper.$_permissionList);
+        localStorage.removeItem(baseLocalHelper.$_jwtToken);
+        facebookSDK.$_facebookLogOut();
+    },
 };
 
 export const actions = {
+    $_user_clean({ commit }) {
+        commit('$_CLEAN_USER_DATA');
+    },
+
     login({ commit }, credentials) {
         commit('$_SET_LOADING', true);
         httpService

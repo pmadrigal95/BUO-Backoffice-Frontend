@@ -14,6 +14,8 @@ import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 
 import baseArrayHelper from '@/helpers/baseArrayHelper.js';
 
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
 const TheAuthentication = () =>
     import('@/layouts/authentication/TheAuthentication.vue');
 
@@ -53,8 +55,7 @@ export default {
     },
 
     created() {
-        localStorage.removeItem(baseLocalHelper.$_permissionList);
-        localStorage.removeItem(baseLocalHelper.$_jwtToken);
+        baseSecurityHelper.$_logout();
     },
 
     mounted() {

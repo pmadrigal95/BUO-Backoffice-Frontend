@@ -90,7 +90,7 @@ export const actions = {
                         commit('SET_PERMISSIONS_DATA', response.data);
                         callback();
                     } else {
-                        baseSecurityHelper.$_logout();
+                        baseSecurityHelper.$_logout(true);
                     }
                 });
         } else {
