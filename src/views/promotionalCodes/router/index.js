@@ -7,7 +7,7 @@ const routes = [
         name: 'PromotionalCodesViewComponent',
         component: 'promotionalCodes/PromotionalCodesViewComponent',
         meta: {
-            module: 'Códigos Promocionales',
+            module: 'PromotionalCodesViewComponent',
         },
     },
 ];

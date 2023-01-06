@@ -4,7 +4,12 @@
  * @displayName BaseExcludeMessage
  */
 
-const exclusionList = ['misc/validateCaptcha', '/user/authenticate', '/findBy'];
+const exclusionList = [
+    '/findBy',
+    'menuUsuario',
+    '/user/authenticate',
+    'misc/validateCaptcha',
+];
 
 const logOutExclusion = ['/user/authenticate'];
 
@@ -13,7 +18,6 @@ export default {
         return !exclusionList.find((element) => {
             return value.includes(element) ? true : false;
         });
-        //return !exclusionList.includes(value);
     },
 
     $_validLogin(value) {

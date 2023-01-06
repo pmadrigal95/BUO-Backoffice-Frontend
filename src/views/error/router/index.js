@@ -8,15 +8,15 @@ const routes = [
         name: '404',
         component: 'error/NotFoundViewComponent',
         meta: {
-            module: 'Error',
+            module: 'NotFoundViewComponent',
         },
     },
     {
         path: '/403',
-        name: 'Network-issue',
+        name: '403',
         component: 'error/NetworkIssueViewComponent',
         meta: {
-            module: 'Error',
+            module: 'NetworkIssueViewComponent',
         },
     },
     {

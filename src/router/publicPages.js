@@ -1,6 +1,6 @@
 const publicPages = [
     '404',
-    'Network-issue',
+    '403',
     'LoginViewComponent',
     'ResetPasswordViewComponent',
 ];

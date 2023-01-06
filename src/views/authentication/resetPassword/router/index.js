@@ -7,7 +7,7 @@ const routes = [
         name: 'ResetPasswordViewComponent',
         component: 'authentication/resetPassword/ResetPasswordViewComponent',
         meta: {
-            module: 'Reset',
+            module: 'ResetPasswordViewComponent',
         },
     },
 ];

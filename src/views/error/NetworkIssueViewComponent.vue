@@ -5,10 +5,21 @@
  * @displayName NetworkIssueViewComponent
  */
 
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
 export default {
     name: 'NetworkIssueViewComponent',
 
     metaInfo: { title: 'Error 403' },
+
+    methods: {
+        $_goToModule() {
+            const result = baseSecurityHelper.$_getFirstItem();
+            this.$router.push({
+                name: result ? result : 'LoginViewComponent',
+            });
+        },
+    },
 };
 </script>
 
@@ -54,7 +65,7 @@ export default {
 
             <center>
                 <v-btn
-                    :to="{ name: 'HomeViewComponent' }"
+                    @click="$_goToModule"
                     outlined
                     text
                     block

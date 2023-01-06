@@ -306,4 +306,10 @@ export default {
     $_status: 'statusBackOffice',
 
     $_app: 'appBackOffice',
+
+    $_permissionList: 'permissionListBackOffice',
+
+    $_encryptKey: '$_buoAppBackOffice',
+
+    $_security: 1,
 };

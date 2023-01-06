@@ -5,10 +5,21 @@
  * @displayName NotFoundViewComponent
  */
 
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
 export default {
     name: 'NotFoundViewComponent',
 
     metaInfo: { title: 'Error 404' },
+
+    methods: {
+        $_goToModule() {
+            const result = baseSecurityHelper.$_getFirstItem();
+            this.$router.push({
+                name: result ? result : 'LoginViewComponent',
+            });
+        },
+    },
 };
 </script>
 
@@ -53,7 +64,7 @@ export default {
 
             <center>
                 <v-btn
-                    :to="{ name: 'HomeViewComponent' }"
+                    @click="$_goToModule"
                     outlined
                     text
                     block

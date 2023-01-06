@@ -75,6 +75,28 @@ const innerJoin = ({ leftArrray, rightArray, key }) => {
     return join;
 };
 
+const findNestedObj = (obj, key, value) => {
+    try {
+        JSON.stringify(obj, (_, nestedValue) => {
+            if (nestedValue && nestedValue[key] === value) throw nestedValue;
+            return nestedValue;
+        });
+    } catch (result) {
+        return result;
+    }
+};
+
+const findContraryNestedObj = (obj, key, value) => {
+    try {
+        JSON.stringify(obj, (_, nestedValue) => {
+            if (nestedValue && nestedValue[key] != value) throw nestedValue;
+            return nestedValue;
+        });
+    } catch (result) {
+        return result;
+    }
+};
+
 export default {
     $_getInitialDay() {
         const fechaInicio = new Date();
@@ -231,5 +253,17 @@ export default {
         }`;
 
         return currentDate;
+    },
+
+    /**
+     * Busqueda Recursiva
+     */
+
+    $_findNestedObj(obj, key, value) {
+        return findNestedObj(obj, key, value);
+    },
+
+    $_findContraryNestedObj(obj, key, value) {
+        return findContraryNestedObj(obj, key, value);
     },
 };

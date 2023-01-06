@@ -4,21 +4,40 @@
  * @displayName authentication
  */
 
-import jwt_decode from 'jwt-decode';
-
 import router from '@/router';
 
-import baseLocalHelper from '@/helpers/baseLocalHelper';
+import jwt_decode from 'jwt-decode';
 
 import httpService from '@/services/axios/httpService';
 
-import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
+import baseLocalHelper from '@/helpers/baseLocalHelper';
 
-const $_notAdmin = () => {
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
+import facebookSDK from '@/services/socialMedia/facebook-SDK.js';
+
+//import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
+
+/*const $_notAdmin = () => {
+    localStorage.removeItem(baseLocalHelper.$_jwtToken);
     baseNotificationsHelper.Message(true, baseLocalHelper.$_MsgGenericError);
+};*/
+
+const $_redirect = (module) => {
+    if (router.currentRoute.name === 'LoginViewComponent') {
+        const result = baseSecurityHelper.$_getFirstItem();
+        router.push({
+            name: result ? result : module.name,
+            params: module.params,
+        });
+    }
 };
 
 const $_setStateValue = (state, decoded, data) => {
+    state.jwtToken = data;
+
+    localStorage.setItem(baseLocalHelper.$_jwtToken, data);
+
     state.user = {
         email: decoded?.sub,
         userId: decoded?.userId,
@@ -29,11 +48,7 @@ const $_setStateValue = (state, decoded, data) => {
         companyLogo: decoded?.companyLogo,
     };
 
-    state.jwtToken = data;
-
-    localStorage.setItem(baseLocalHelper.$_jwtToken, data);
-
-    router.push({ name: state.module });
+    baseSecurityHelper.$_security($_redirect.bind(null, state.module));
 };
 
 export const namespaced = true;
@@ -42,7 +57,7 @@ export const state = {
     jwtToken: undefined,
     user: undefined,
     alert: true,
-    module: 'HomeViewComponent',
+    module: { name: 'HomeViewComponent' },
     loadingAuthentication: false,
 };
 
@@ -58,14 +73,14 @@ export const getters = {
 export const mutations = {
     SET_USER_DATA(state, data) {
         let decoded = jwt_decode(data);
-        decoded && decoded.isAdmin
-            ? $_setStateValue(state, decoded, data)
-            : $_notAdmin();
+        $_setStateValue(state, decoded, data);
     },
 
     LOGOUT(state, error) {
         if (error) localStorage.setItem(baseLocalHelper.$_alert, state.alert);
         localStorage.removeItem(baseLocalHelper.$_jwtToken);
+        localStorage.removeItem(baseLocalHelper.$_permissionList);
+        facebookSDK.$_facebookLogOut();
         location.reload();
     },
 

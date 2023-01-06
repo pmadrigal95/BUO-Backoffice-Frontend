@@ -7,7 +7,7 @@ const routes = [
         name: 'HomeViewComponent',
         component: 'home/HomeViewComponent',
         meta: {
-            module: 'Inicio',
+            module: 'HomeViewComponent',
         },
     },
 ];

@@ -7,7 +7,7 @@ const routes = [
         name: 'AnalyticsViewComponent',
         component: 'analytics/AnalyticsViewComponent',
         meta: {
-            module: 'Analytics',
+            module: 'AnalyticsViewComponent',
         },
     },
 ];

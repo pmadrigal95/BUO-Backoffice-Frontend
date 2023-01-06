@@ -12,6 +12,8 @@ import httpService from '@/services/axios/httpService';
 
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
@@ -41,6 +43,14 @@ export default {
 
     computed: {
         ...mapGetters('authentication', ['user']),
+
+        write() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                this.$router.currentRoute.meta.module,
+                baseSecurityHelper.$_write
+            );
+            return result;
+        },
 
         setStatusDisplay() {
             return `Estado ${
@@ -454,9 +464,9 @@ export default {
                 <BaseServerDataTable
                     ref="PromotionalCodeFilter"
                     :setting="setting"
-                    :fnNew="$_open"
-                    :fnEdit="$_fnEdit"
-                    :fnDelete="$_fnDelete"
+                    :fnNew="write ? $_open : undefined"
+                    :fnEdit="write ? $_fnEdit : undefined"
+                    :fnDelete="write ? $_fnDelete : undefined"
                 />
             </div>
         </BaseCardViewComponent>

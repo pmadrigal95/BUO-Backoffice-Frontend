@@ -8,9 +8,10 @@ import Vue from 'vue';
 import store from '@/store';
 import paths from '@/router/path';
 import VueRouter from 'vue-router';
-import baseLocalHelper from '@/helpers/baseLocalHelper';
-import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 import publicPages from '@/router/publicPages.js';
+import baseLocalHelper from '@/helpers/baseLocalHelper';
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 /**
  * Variables
@@ -33,15 +34,60 @@ const instance = new VueRouter({
     },
 });
 
-function deleteAlert() {
+const deleteAlert = () => {
     localStorage.removeItem(baseLocalHelper.$_alert);
-}
+};
 
-function cacheRoute(value) {
+const cacheRoute = (value) => {
     store.commit('authentication/CACHEROUTES', value, {
         root: true,
     });
-}
+};
+
+const $_getPermissionList = (route, next) => {
+    baseSecurityHelper.$_security(validatePermission.bind(null, route, next));
+};
+
+const validatePermission = (route, next) => {
+    const result = baseSecurityHelper.$_ReadPermission(route);
+    return result
+        ? next()
+        : next({
+              name: '403',
+          });
+};
+
+const validateAuth = (to, next) => {
+    const loggedIn = localStorage.getItem(baseLocalHelper.$_jwtToken);
+
+    const alert = localStorage.getItem(baseLocalHelper.$_alert);
+
+    const authRequired = !publicPages.includes(to.name);
+
+    let value = to.name != 'LoginViewComponent' ? to.name : 'HomeViewComponent';
+
+    if (authRequired && !loggedIn) {
+        if (alert) {
+            baseNotificationsHelper.Message(
+                true,
+                baseLocalHelper.$_MsgUserSessionExpired
+            );
+        }
+
+        deleteAlert();
+
+        // not logged in so redirect to login page with the return url
+        return next({
+            name: 'LoginViewComponent',
+        });
+    }
+
+    cacheRoute({ name: value, params: to.params });
+
+    if (authRequired && loggedIn) {
+        $_getPermissionList(to.meta.module, next);
+    }
+};
 
 export default {
     /**
@@ -55,35 +101,7 @@ export default {
      * Redirect to login page if user is not logged in and trying to access a restricted page
      */
     $_authGuard(to, from, next) {
-        const loggedIn = localStorage.getItem(baseLocalHelper.$_jwtToken);
-
-        const alert = localStorage.getItem(baseLocalHelper.$_alert);
-
-        const authRequired = !publicPages.includes(to.name);
-
-        let value =
-            to.name != 'LoginViewComponent' ? to.name : 'HomeViewComponent';
-
-        if (authRequired && !loggedIn) {
-            if (alert) {
-                baseNotificationsHelper.Message(
-                    true,
-                    baseLocalHelper.$_MsgUserSessionExpired
-                );
-            } else {
-                value = 'HomeViewComponent';
-            }
-
-            deleteAlert();
-
-            // not logged in so redirect to login page with the return url
-            return next({
-                name: 'LoginViewComponent',
-            });
-        }
-
-        cacheRoute(value);
-
+        validateAuth(to, next);
         next();
     },
 };

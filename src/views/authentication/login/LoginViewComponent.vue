@@ -53,6 +53,7 @@ export default {
     },
 
     created() {
+        localStorage.removeItem(baseLocalHelper.$_permissionList);
         localStorage.removeItem(baseLocalHelper.$_jwtToken);
     },
 

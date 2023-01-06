@@ -7,7 +7,7 @@ const routes = [
         name: 'LoginViewComponent',
         component: 'authentication/login/LoginViewComponent',
         meta: {
-            module: 'Authentication',
+            module: 'LoginViewComponent',
         },
     },
 ];

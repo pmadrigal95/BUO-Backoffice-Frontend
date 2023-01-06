@@ -108,7 +108,6 @@ export const actions = {
 
         const request = dataRequest(state.buoFilters);
 
-        commit('$_SET_BUO_LOADING', false);
         httpService[request.method](request.endpoint, request.params).then(
             (response) => {
                 if (response) {
@@ -129,6 +128,7 @@ export const actions = {
                         isAccumulated: state.buoFilters.isAccumulated,
                     });
                 }
+                commit('$_SET_BUO_LOADING', false);
             }
         );
     },
