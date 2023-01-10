@@ -8,8 +8,6 @@ import 'nprogress/nprogress.css';
 import vuetify from '@/plugins/vuetify';
 import baseLoadStore from '@/helpers/baseLoadStore';
 
-Vue.config.productionTip = false;
-
 new Vue({
     router,
     store,

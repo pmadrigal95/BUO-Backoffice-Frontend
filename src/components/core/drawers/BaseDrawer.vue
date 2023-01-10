@@ -149,6 +149,7 @@ export default {
             <BaseInput
                 @keyup="filter"
                 @click:clear="clean"
+                placeholder="Buscar"
                 dense
                 rounded
                 clearable
