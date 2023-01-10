@@ -31,7 +31,7 @@ const $_redirect = (module) => {
 const $_setStateValue = (state, decoded, data) => {
     state.jwtToken = data;
 
-    localStorage.setItem(
+    sessionStorage.setItem(
         baseLocalHelper.$_jwtToken,
         AES.encrypt(data, baseLocalHelper.$_encryptKey).toString()
     );
@@ -75,9 +75,9 @@ export const mutations = {
     },
 
     LOGOUT(state, error) {
-        if (error) localStorage.setItem(baseLocalHelper.$_alert, state.alert);
-        localStorage.removeItem(baseLocalHelper.$_jwtToken);
-        localStorage.removeItem(baseLocalHelper.$_permissionList);
+        if (error) sessionStorage.setItem(baseLocalHelper.$_alert, state.alert);
+        sessionStorage.removeItem(baseLocalHelper.$_jwtToken);
+        sessionStorage.removeItem(baseLocalHelper.$_permissionList);
         facebookSDK.$_facebookLogOut();
         location.reload();
     },
@@ -94,8 +94,8 @@ export const mutations = {
         state.jwtToken = undefined;
         state.user = undefined;
 
-        localStorage.removeItem(baseLocalHelper.$_permissionList);
-        localStorage.removeItem(baseLocalHelper.$_jwtToken);
+        sessionStorage.removeItem(baseLocalHelper.$_permissionList);
+        sessionStorage.removeItem(baseLocalHelper.$_jwtToken);
     },
 };
 

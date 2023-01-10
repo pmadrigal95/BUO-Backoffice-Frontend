@@ -7,7 +7,7 @@
 
 import baseLocalHelper from '@/helpers/baseLocalHelper';
 
-import { mapState, mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 const TheToolbar = () => import('@/layouts/app/TheToolbar');
 
@@ -40,7 +40,7 @@ export default {
     },
 
     computed: {
-        ...mapState('theme', ['app']),
+        ...mapGetters('theme', ['app']),
     },
 
     mounted() {
@@ -78,7 +78,6 @@ export default {
 </script>
 
 <template>
-    <!--:style="{ background: app ? '#121212' : '#EEF4F9' }"-->
     <div id="app" v-resize="onResize">
         <TheMenu />
 

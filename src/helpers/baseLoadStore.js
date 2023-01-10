@@ -28,7 +28,7 @@ function returnObject(key, value, type) {
 }
 
 function buildStore(key, method, type, defaultValue) {
-    const value = localStorage.getItem(key);
+    const value = sessionStorage.getItem(key);
 
     value != null && value != undefined
         ? store.commit(method, returnObject(key, value, type), {

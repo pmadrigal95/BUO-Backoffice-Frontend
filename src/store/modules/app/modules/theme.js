@@ -17,7 +17,7 @@ export const getters = {
 export const mutations = {
     CHANGEMODE(state, key) {
         state.app = key[1];
-        localStorage.setItem(key[0], key[1]);
+        sessionStorage.setItem(key[0], key[1]);
     },
 };
 

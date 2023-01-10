@@ -297,7 +297,7 @@ export default {
         'items-per-page-options': [5, 10, 15, 20],
     },
 
-    // Configuración Vuex - LocalStorage
+    // Configuración Vuex - sessionStorage
 
     $_jwtToken: 'jwtTokenBackOffice',
 

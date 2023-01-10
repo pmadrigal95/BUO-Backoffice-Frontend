@@ -41,7 +41,7 @@ const instance = axios.create({
  * Inyecta Authorization Bearer cuando lo tenga
  */
 function jwtInterceptor(request) {
-    const jwtToken = localStorage.getItem(baseLocalHelper.$_jwtToken);
+    const jwtToken = sessionStorage.getItem(baseLocalHelper.$_jwtToken);
     if (jwtToken) {
         const bytes = AES.decrypt(jwtToken, baseLocalHelper.$_encryptKey);
         const result = bytes.toString(enc.Utf8);

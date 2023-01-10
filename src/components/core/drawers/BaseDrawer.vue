@@ -5,15 +5,19 @@
  * @displayName BaseDrawer
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+
+import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 
 export default {
     name: 'BaseDrawer',
 
     data() {
         return {
-            mini: true,
+            mini: false,
             drawer: null,
+            search: undefined,
+            count: 0,
         };
     },
 
@@ -66,6 +70,34 @@ export default {
         status() {
             this.drawer = true;
         },
+
+        '$vuetify.breakpoint.smAndDown'(value) {
+            if (value) this.mini = false;
+        },
+    },
+
+    methods: {
+        ...mapActions('security', ['$_security_filter']),
+
+        filter() {
+            const time = baseLocalHelper.$_DefaultTimer;
+            this.count++;
+
+            /**
+             * Ejecuta una petición, en determinado tiempo
+             */
+            if (this.count === 1) {
+                setTimeout(() => {
+                    this.$_security_filter(this.search);
+                    this.count = 0;
+                }, time);
+            }
+        },
+
+        clean() {
+            this.search = undefined;
+            this.filter();
+        },
     },
 };
 </script>
@@ -75,6 +107,7 @@ export default {
         app
         height="100%"
         v-model="drawer"
+        :mini-variant.sync="mini"
         :permanent="$vuetify.breakpoint.mdAndUp"
         :absolute="$vuetify.breakpoint.mdAndUp"
         style="max-height: 100% !important"
@@ -101,10 +134,40 @@ export default {
                     >BUO Backoffice</v-list-item-subtitle
                 >
             </v-list-item-content>
+            <v-btn
+                icon
+                @click.stop="mini = !mini"
+                v-if="$vuetify.breakpoint.mdAndUp"
+            >
+                <v-icon>mdi-chevron-left</v-icon>
+            </v-btn>
         </v-list-item>
 
         <v-divider></v-divider>
+
+        <div class="inputSearch" v-if="!mini">
+            <BaseInput
+                @keyup="filter"
+                @click:clear="clean"
+                dense
+                rounded
+                clearable
+                v-model="search"
+                prepend-inner-icon="mdi-magnify"
+            />
+        </div>
+
         <!-- @slot Agregar Contenido -->
         <slot name="container"></slot>
     </v-navigation-drawer>
 </template>
+
+<style>
+.inputSearch {
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 15px;
+    margin-bottom: -30px;
+}
+</style>

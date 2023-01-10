@@ -45,7 +45,6 @@ export default {
         return {
             entity: this.$_Object(),
             showPassword: false,
-            loading: false,
             lblbtnLogin: baseLocalHelper.$_LabelBtnSigIn,
         };
     },
@@ -85,12 +84,10 @@ export default {
         ...mapActions('authentication', ['login']),
 
         $_authenticate() {
-            this.loading = true;
             let object = baseArrayHelper.SetObject({}, this.entity);
             this.login({
                 credentials: object,
             });
-            this.loading = false;
         },
 
         $_Password() {
@@ -141,7 +138,7 @@ export default {
                             <v-col cols="12" sm="12" md="10">
                                 <!-- @ Use Loanding... -->
                                 <BaseSkeletonLoader
-                                    v-if="loading"
+                                    v-if="loadingAuthentication"
                                     type="article, actions"
                                 />
                                 <BaseForm

@@ -11,7 +11,7 @@ import analyticsRoutes from '@/views/analytics/router';
 const routes = [
     {
         path: '/',
-        redirect: '/Home',
+        redirect: '/Authentication',
         name: 'TheMain',
         component: 'app',
         children: [

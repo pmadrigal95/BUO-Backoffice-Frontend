@@ -35,7 +35,7 @@ const instance = new VueRouter({
 });
 
 const deleteAlert = () => {
-    localStorage.removeItem(baseLocalHelper.$_alert);
+    sessionStorage.removeItem(baseLocalHelper.$_alert);
 };
 
 const cacheRoute = (value) => {
@@ -58,9 +58,9 @@ const validatePermission = (route, next) => {
 };
 
 const validateAuth = (to, next) => {
-    const loggedIn = localStorage.getItem(baseLocalHelper.$_jwtToken);
+    const loggedIn = sessionStorage.getItem(baseLocalHelper.$_jwtToken);
 
-    const alert = localStorage.getItem(baseLocalHelper.$_alert);
+    const alert = sessionStorage.getItem(baseLocalHelper.$_alert);
 
     const authRequired = !publicPages.includes(to.name);
 

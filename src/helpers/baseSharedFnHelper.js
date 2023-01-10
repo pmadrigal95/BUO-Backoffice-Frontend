@@ -97,6 +97,22 @@ const findContraryNestedObj = (obj, key, value) => {
     }
 };
 
+const findNestedObjLike = (obj, key, value) => {
+    try {
+        JSON.stringify(obj, (_, nestedValue) => {
+            if (
+                nestedValue &&
+                nestedValue[key]?.toLowerCase().indexOf(value.toLowerCase()) >
+                    -1
+            )
+                throw nestedValue;
+            return nestedValue;
+        });
+    } catch (result) {
+        return result;
+    }
+};
+
 export default {
     $_getInitialDay() {
         const fechaInicio = new Date();
@@ -265,5 +281,9 @@ export default {
 
     $_findContraryNestedObj(obj, key, value) {
         return findContraryNestedObj(obj, key, value);
+    },
+
+    $_findNestedObjLike(obj, key, value) {
+        return findNestedObjLike(obj, key, value);
     },
 };
