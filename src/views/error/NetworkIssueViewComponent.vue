@@ -59,7 +59,7 @@ export default {
                             : 'BUO-Paragraph-Medium text-center',
                     ]"
                 >
-                    Esta no es la pagina que buscas!
+                    Esta no es la página que buscas!
                 </v-card-text>
             </v-col>
 
