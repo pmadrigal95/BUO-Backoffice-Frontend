@@ -70,7 +70,7 @@ export default {
                 </v-row>
             </div>
         </BasePopUp>
-        <v-row dens>
+        <v-row dense>
             <v-col v-for="(item, i) in list" :key="i" cols="12" md="6">
                 <BaseStadisticCard
                     :title="item.titulo"
