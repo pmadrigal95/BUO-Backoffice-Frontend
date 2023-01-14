@@ -6,9 +6,13 @@
  *
  */
 
+//TODO: Implementar logica cuando la compra no es gratis!
+
 import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
+
+import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 
@@ -27,9 +31,7 @@ export default {
 
     data() {
         return {
-            params: this.$_Object(),
-            hasPercentageDiscount: undefined,
-            promotionalCodeStatus: true,
+            entity: this.$_Object(),
             loading: false,
         };
     },
@@ -37,26 +39,28 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user']),
 
-        setStatusDisplay() {
-            return `Estado ${
-                this.promotionalCodeStatus ? 'Activo' : 'Inactivo'
-            }`;
-        },
-        
         productList() {
             return [
                 { product: 'Tokens', value: 1 },
                 { product: 'Prueba PDA', value: 2 },
             ];
         },
+
+        statusList() {
+            return [
+                { product: 'Activo', value: 2 },
+                { product: 'Inactivo', value: 1 },
+            ];
+        },
     },
 
     created() {
+        /**
+         * Determinar si Es nuevo / editor
+         */
         this.$_getObject();
-    },
 
-    mounted() {
-        this.$vuetify.theme.dark = false;
+        //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
             this.$vuetify.theme.themes.light.white;
     },
@@ -68,31 +72,74 @@ export default {
 
     methods: {
         /**
-         * Function that receives the object to know if it should be edited or added
+         * Entity Object
          */
-
-        $_getObject() {
-            const id = this.$router.currentRoute.params.id;
-            if (id) {
-                this.$_getToPromotionalCode(id);
-            }
-        },
-
         $_Object() {
             return {
                 id: 0,
                 usuarioId: undefined,
                 codigo: undefined,
                 fechaExpiracion: undefined,
-                fechaExpiracionFormato: undefined,
                 productoId: 2,
                 montoDescuento: undefined,
                 porcentajeDescuento: undefined,
                 usoMaximo: undefined,
-                esLicencia: false,
+                esLicencia: undefined,
                 compraGratis: true,
-                estadoId: true,
+                estadoId: 2,
             };
+        },
+
+        /**
+         * Determinar si Es nuevo / editor
+         */
+        $_getObject() {
+            let data = this.$router.currentRoute.params.Id;
+            if (data) {
+                //HttpServices a la vista para obtener Vista
+                this.loading = true;
+                httpService.get(`codigoPromocion/${data}`).then((response) => {
+                    this.loading = false;
+                    if (response != undefined) {
+                        // Encontro la entidad
+                        this.entity = BaseArrayHelper.SetObject(
+                            {},
+                            response.data
+                        );
+
+                        this.entity.fechaExpiracion =
+                            baseSharedFnHelper.$_parseArrayToDateISOString(
+                                this.entity.fechaExpiracion
+                            );
+                    }
+                });
+            }
+        },
+
+        $_isLicense() {
+            if (this.entity.esLicencia) {
+                this.entity.fechaExpiracion = undefined;
+            } else {
+                this.entity.usoMaximo = undefined;
+            }
+        },
+
+        $_sendToApi() {
+            this.loading = true;
+
+            this.$_isLicense();
+            let object = BaseArrayHelper.SetObject({}, this.entity);
+
+            httpService
+                .post('codigoPromocion/save', object)
+                .then((response) => {
+                    this.loading = false;
+
+                    if (response != undefined) {
+                        //Logica JS luego de la acción exitosa!!!
+                        this.$_returnToFilter();
+                    }
+                });
         },
 
         /**
@@ -103,136 +150,6 @@ export default {
                 name: 'PromotionalCodesFilterViewComponent',
             });
         },
-
-        /**
-         * Function for format the object
-         */
-        $_formatDateExpiry(fechaExpiracion) {
-            if (fechaExpiracion != null) {
-                this.params.fechaExpiracion =
-                    baseSharedFnHelper.$_parseArrayToDateISOString(
-                        fechaExpiracion
-                    );
-            }
-        },
-
-        $_cleanLicense() {
-            this.params.esLicencia =
-                this.params.esLicencia === null ? false : true;
-
-            if (this.params.esLicencia) {
-                this.params.fechaExpiracion = undefined;
-                this.params.fechaExpiracionFormato = undefined;
-            } else {
-                this.params.usoMaximo = undefined;
-            }
-        },
-
-        $_setDefaultBuyFreeToParams() {
-            this.params.compraGratis = true;
-            this.hasPercentageDiscount = false;
-            this.$_cleanBuyFree();
-        },
-
-        $_resetParamBuyFree() {
-            this.params.compraGratis =
-                typeof this.params.compraGratis === undefined ? false : true;
-        },
-
-        $_cleanBuyFree() {
-            if (this.params.compraGratis) {
-                this.params.montoDescuento = undefined;
-                this.params.porcentajeDescuento = undefined;
-            } else if (
-                this.params.montoDescuento > 0 &&
-                !this.hasPercentageDiscount
-            ) {
-                this.params.porcentajeDescuento = undefined;
-            } else if (
-                this.params.porcentajeDescuento > 0 &&
-                this.hasPercentageDiscount
-            ) {
-                this.params.montoDescuento = undefined;
-            }
-        },
-
-        /**
-         * Function to get the information about promotional code.
-         * @param {*} id
-         */
-
-        $_getToPromotionalCode(id) {
-            this.loading = true;
-
-            httpService.get(`codigoPromocion/${id}`).then((response) => {
-                if (response != undefined) {
-                    this.params = response.data;
-
-                    if (!this.params.compraGratis) {
-                        this.$_setDefaultBuyFreeToParams();
-                        this.$_resetHasPercentageDiscount();
-                    }
-
-                    this.$_formatDateExpiry(this.params.fechaExpiracion);
-                    this.$_getConditionUserToParams();
-                }
-
-                this.loading = false;
-            });
-        },
-
-        /**
-         * Functions for change de status user for request to api.
-         */
-
-        $_resetHasPercentageDiscount() {
-            this.hasPercentageDiscount =
-                this.params.porcentajeDescuento === null ? false : true;
-        },
-
-        $_getConditionUserToParams() {
-            if (this.params.estadoId === 1) {
-                this.promotionalCodeStatus = false;
-            }
-        },
-
-        $_setConditionUserToParams() {
-            this.promotionalCodeStatus =
-                this.promotionalCodeStatus === null ? false : true;
-            this.params.estadoId = this.promotionalCodeStatus ? 2 : 1;
-        },
-
-        $_setUserIdToParams() {
-            this.params.usuarioId = this.user.userId;
-        },
-
-        /**
-         * Genery function for send request to api.
-         * @param {*} action
-         * @param {*} body
-         */
-
-        $_postToApi(action, body) {
-            this.loading = true;
-            httpService.post(action, body).then((response) => {
-                if (response != undefined) {
-                    this.$_returnToFilter();
-                }
-                this.loading = false;
-            });
-        },
-
-        /**
-         * Function for add or edit a promotional code to api.
-         */
-
-        $_fnNew() {
-            this.$_setUserIdToParams();
-            this.$_setConditionUserToParams();
-            this.$_cleanLicense();
-            this.$_cleanBuyFree();
-            this.$_postToApi('codigoPromocion/save', this.params);
-        },
     },
 };
 </script>
@@ -240,120 +157,78 @@ export default {
 <template>
     <BaseCardViewComponent
         title="Códigos Promocionales"
+        :btnAction="$_returnToFilter"
         class="mx-auto"
         md="6"
         offset="3"
     >
         <div slot="card-text">
             <BaseSkeletonLoader v-if="loading" type="article, actions" />
-            <BaseForm
-                :method="$_fnNew"
-                :cancel="$_returnToFilter"
-                v-if="$_getObject"
-            >
+            <BaseForm :method="$_sendToApi" :cancel="$_returnToFilter" v-else>
                 <div slot="body">
-                    <BaseInput
-                        mask="XXXXXX"
-                        label="Código"
-                        v-model="params.codigo"
-                        :max="6"
-                        :min="3"
-                        :validate="['range']"
-                    />
+                    <v-row>
+                        <v-col cols="12">
+                            <BaseInput
+                                mask="XXXXXX"
+                                label="Código"
+                                v-model="entity.codigo"
+                                :max="6"
+                                :min="3"
+                                :validate="['range']"
+                            />
+                        </v-col>
+                        <v-col cols="12">
+                            <BaseSelect
+                                label="Producto"
+                                v-model="entity.productoId"
+                                :endpoint="productList"
+                                itemText="product"
+                                itemValue="value"
+                                :validate="['text']"
+                            />
+                        </v-col>
+                        <v-col cols="12">
+                            <BaseSwitch
+                                label="Es Licencia"
+                                v-model="entity.esLicencia"
+                            />
+                        </v-col>
+                        <v-col cols="12">
+                            <BaseInput
+                                label="Uso Máximo"
+                                v-model="entity.usoMaximo"
+                                v-if="entity.esLicencia"
+                                type="number"
+                                :validate="['number']"
+                            />
 
-                    <BaseSelect
-                        label="Producto"
-                        v-model="params.productoId"
-                        :endpoint="productList"
-                        itemText="product"
-                        itemValue="value"
-                        :validate="['text']"
-                    ></BaseSelect>
-
-                    <BaseSwitch
-                        label="Es Licencia"
-                        v-model="params.esLicencia"
-                        @change="$_cleanLicense"
-                    ></BaseSwitch>
-
-                    <BaseDatePicker
-                        label="Fecha de expiración"
-                        appendIcon="mdi-magnify"
-                        v-model="params.fechaExpiracion"
-                        v-if="!params.esLicencia"
-                        @change="$_cleanLicense"
-                        reqCurrentMinDate
-                        :validate="['text']"
-                    />
-
-                    <BaseInput
-                        label="Uso Máximo"
-                        v-model="params.usoMaximo"
-                        v-if="params.esLicencia"
-                        type="number"
-                        :validate="['number']"
-                        @change="$_cleanLicense"
-                    />
-                    <BaseSwitch
-                        label="Compra Gratis"
-                        v-model="params.compraGratis"
-                        @change="$_resetParamBuyFree"
-                        disabled
-                    ></BaseSwitch>
-
-                    <v-radio-group
-                        v-model="hasPercentageDiscount"
-                        mandatory
-                        v-if="!params.compraGratis"
-                    >
-                        <v-card class="mb-5" outlined>
-                            <v-card-text>
-                                <v-radio
-                                    label="Porcentaje Descuento"
-                                    :value="true"
-                                    @change="$_cleanBuyFree"
-                                    class="mb-5"
-                                ></v-radio>
-                                <BaseInput
-                                    label="Porcentaje Descuento"
-                                    v-model="params.porcentajeDescuento"
-                                    :max="99"
-                                    :min="0"
-                                    :validate="['percentage']"
-                                    v-if="
-                                        !params.compraGratis &&
-                                        hasPercentageDiscount
-                                    "
-                                />
-                            </v-card-text>
-                        </v-card>
-                        <v-card outlined>
-                            <v-card-text>
-                                <v-radio
-                                    label="Monto Descuento"
-                                    :value="false"
-                                    @change="$_cleanBuyFree"
-                                    class="mb-5"
-                                ></v-radio>
-                                <BaseInput
-                                    :min="0"
-                                    label="Monto Descuento"
-                                    v-model="params.montoDescuento"
-                                    :validate="['number02']"
-                                    v-if="
-                                        !params.compraGratis &&
-                                        !hasPercentageDiscount
-                                    "
-                                />
-                            </v-card-text>
-                        </v-card>
-                    </v-radio-group>
-
-                    <BaseSwitch
-                        v-model="promotionalCodeStatus"
-                        :label="setStatusDisplay"
-                        @change="$_setConditionUserToParams"
-                    ></BaseSwitch>
+                            <BaseDatePicker
+                                v-else
+                                label="Fecha de expiración"
+                                appendIcon="mdi-magnify"
+                                v-model="entity.fechaExpiracion"
+                                reqCurrentMinDate
+                                :validate="['text']"
+                            />
+                        </v-col>
+                        <v-col cols="12">
+                            <BaseSwitch
+                                disabled
+                                label="Compra Gratis"
+                                v-model="entity.compraGratis"
+                            />
+                        </v-col>
+                        <v-col cols="12">
+                            <BaseSelect
+                                label="Estado"
+                                v-model="entity.estadoId"
+                                :endpoint="statusList"
+                                itemText="product"
+                                itemValue="value"
+                                :validate="['text']"
+                            />
+                        </v-col>
+                    </v-row>
                 </div>
             </BaseForm>
         </div>
