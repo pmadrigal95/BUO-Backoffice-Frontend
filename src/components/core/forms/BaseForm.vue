@@ -186,10 +186,11 @@ export default {
                 ><!-- @slot Agregar botones después del Btn principal -->
                 <slot name="Beforebtns"></slot>
                 <v-btn
-                    class="no-uppercase rounded-lg"
+                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                     :color="color"
                     dark
                     block
+                    depressed
                     @click="$_submit"
                     >{{ labelBtn }}</v-btn
                 >
@@ -202,9 +203,10 @@ export default {
             <slot name="Beforebtns"></slot>
 
             <v-btn
-                class="ma-2 no-uppercase rounded-lg"
+                class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                 :color="color"
                 dark
+                depressed
                 @click="$_submit"
             >
                 <v-icon left>{{ icon }}</v-icon>
@@ -212,7 +214,8 @@ export default {
             </v-btn>
 
             <v-btn
-                class="ma-2 no-uppercase rounded-lg"
+                class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                outlined
                 @click="$_Cancel"
                 v-if="showCancel"
             >
