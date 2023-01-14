@@ -51,6 +51,8 @@ export default {
 
     computed: {
         ...mapGetters('authentication', ['loadingAuthentication']),
+
+        ...mapGetters('security', ['loadingSecurity']),
     },
 
     created() {
@@ -138,7 +140,9 @@ export default {
                             <v-col cols="12" sm="12" md="10">
                                 <!-- @ Use Loanding... -->
                                 <BaseSkeletonLoader
-                                    v-if="loadingAuthentication"
+                                    v-if="
+                                        loadingAuthentication || loadingSecurity
+                                    "
                                     type="article, actions"
                                 />
                                 <BaseForm
