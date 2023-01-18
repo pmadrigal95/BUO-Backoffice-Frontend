@@ -113,6 +113,17 @@ const findNestedObjLike = (obj, key, value) => {
     }
 };
 
+const commify = (n) => {
+    let parts = n.toString().split('.');
+    const numberPart = parts[0];
+    const decimalPart = parts[1];
+    const thousands = /\B(?=(\d{3})+(?!\d))/g;
+    return (
+        numberPart.replace(thousands, ',') +
+        (decimalPart ? '.' + decimalPart : '')
+    );
+};
+
 export default {
     $_getInitialDay() {
         const fechaInicio = new Date();
@@ -285,5 +296,9 @@ export default {
 
     $_findNestedObjLike(obj, key, value) {
         return findNestedObjLike(obj, key, value);
+    },
+
+    $_formatNumber(number) {
+        return commify(number);
     },
 };

@@ -1,15 +1,9 @@
 /**
- * HOME ROUTES
+ * ANALYTICS ROUTES
  */
-const routes = [
-    {
-        path: '/Analytics',
-        name: 'AnalyticsViewComponent',
-        component: 'analytics/AnalyticsViewComponent',
-        meta: {
-            module: 'AnalyticsViewComponent',
-        },
-    },
-];
+
+import indicatorsRoutes from '@/views/analytics/indicators/router';
+
+const routes = [...indicatorsRoutes];
 
 export default routes;

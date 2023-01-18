@@ -71,7 +71,7 @@ export default {
                     >
                         <v-btn
                             color="blue800"
-                            class="no-uppercase rounded-lg"
+                            class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                             text
                             @click="$_return"
                         >

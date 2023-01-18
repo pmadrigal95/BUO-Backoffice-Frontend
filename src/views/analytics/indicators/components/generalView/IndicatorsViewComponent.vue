@@ -21,7 +21,7 @@ export default {
         /**
          * Nombre de Usuario
          */
-        ...mapGetters('analytics', ['buoAnalytics']),
+        ...mapGetters('analyticsIndicators', ['buoAnalytics']),
 
         list() {
             return this.buoAnalytics.filter((x) => x.indicadorId != 8);
@@ -34,7 +34,7 @@ export default {
 
     methods: {
         $_open() {
-            this.$refs['popUp'].$_openModal();
+            this.codeList.length > 1 && this.$refs['popUp'].$_openModal();
         },
     },
 };
@@ -55,9 +55,10 @@ export default {
                         v-for="(item, i) in codeList.slice(1)"
                         :key="i"
                         cols="12"
-                        md="6"
+                        md="4"
                     >
                         <BaseStadisticCard
+                            color="clouds"
                             :title="item.titulo"
                             :subtitle="item.subtitulo"
                             :icon="item.imagenUrl"
@@ -70,8 +71,9 @@ export default {
                 </v-row>
             </div>
         </BasePopUp>
-        <v-row dense>
-            <v-col v-for="(item, i) in list" :key="i" cols="12" md="6">
+
+        <v-row>
+            <v-col v-for="(item, i) in list" :key="i" cols="12" md="4">
                 <BaseStadisticCard
                     :title="item.titulo"
                     :subtitle="item.subtitulo"
@@ -82,7 +84,7 @@ export default {
                     :isUp="item.indicador"
                 />
             </v-col>
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="4">
                 <BaseStadisticCard
                     :fn="$_open"
                     :title="codeList[0].titulo"

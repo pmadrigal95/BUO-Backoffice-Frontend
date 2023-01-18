@@ -29,7 +29,7 @@ export default {
         /**
          * analytics
          */
-        ...mapGetters('analytics', ['buoFilters']),
+        ...mapGetters('analyticsIndicators', ['buoFilters']),
 
         $_mode() {
             return this.buoFilters.isAccumulated ? 'Acumulado' : 'Períodos';
@@ -60,7 +60,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('analytics', [
+        ...mapActions('analyticsIndicators', [
             '$_request_buo_analytics',
             '$_change_buo_analytics_mode',
             '$_set_buo_analytics_filters',

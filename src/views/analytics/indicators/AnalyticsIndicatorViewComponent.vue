@@ -11,10 +11,14 @@ const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
 const AnalyticsFilterViewComponent = () =>
-    import('@/views/analytics/components/filters/AnalyticsFilterViewComponent');
+    import(
+        '@/views/analytics/indicators/components/filters/AnalyticsFilterViewComponent'
+    );
 
 const IndicatorsViewComponent = () =>
-    import('@/views/analytics/components/generalView/IndicatorsViewComponent');
+    import(
+        '@/views/analytics/indicators/components/generalView/IndicatorsViewComponent'
+    );
 
 export default {
     name: 'AnalyticsViewComponent',
@@ -31,15 +35,18 @@ export default {
         /**
          * analytics
          */
-        ...mapGetters('analytics', ['buoAnalytics', 'loadingbuoAnalytics']),
+        ...mapGetters('analyticsIndicators', [
+            'buoAnalytics',
+            'loadingbuoAnalytics',
+        ]),
     },
 
     created() {
-        this.$_request_buo_analytics();
+        !this.buoAnalytics && this.$_request_buo_analytics();
     },
 
     methods: {
-        ...mapActions('analytics', ['$_request_buo_analytics']),
+        ...mapActions('analyticsIndicators', ['$_request_buo_analytics']),
     },
 };
 </script>
