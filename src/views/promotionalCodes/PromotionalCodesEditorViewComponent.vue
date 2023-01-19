@@ -166,12 +166,12 @@ export default {
             <BaseSkeletonLoader v-if="loading" type="article, actions" />
             <BaseForm :method="$_sendToApi" :cancel="$_returnToFilter" v-else>
                 <div slot="body">
-                    <v-row>
+                    <v-row dense>
                         <v-col cols="12">
                             <BaseInput
                                 mask="XXXXXX"
                                 label="Código"
-                                v-model="entity.codigo"
+                                v-model.trim="entity.codigo"
                                 :max="6"
                                 :min="3"
                                 :validate="['range']"
@@ -196,7 +196,7 @@ export default {
                         <v-col cols="12">
                             <BaseInput
                                 label="Uso Máximo"
-                                v-model="entity.usoMaximo"
+                                v-model.number="entity.usoMaximo"
                                 v-if="entity.esLicencia"
                                 type="number"
                                 :validate="['number']"
