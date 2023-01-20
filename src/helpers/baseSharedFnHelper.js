@@ -124,6 +124,21 @@ const commify = (n) => {
     );
 };
 
+const addOrDiffDays = (date, days) => {
+    date.setDate(date.getDate() + days);
+    return date;
+};
+
+const reviewNumberDate = (number) => {
+    return number > 9 ? number : `0${number}`;
+};
+
+const formatDate = (date) => {
+    return `${date.getFullYear()}-${reviewNumberDate(
+        date.getMonth() + 1
+    )}-${reviewNumberDate(date.getDate())}`;
+};
+
 export default {
     $_getInitialDay() {
         const fechaInicio = new Date();
@@ -255,6 +270,10 @@ export default {
         });
     },
 
+    $_formatNumber(number) {
+        return commify(number);
+    },
+
     /**
      * Fn Dates
      */
@@ -282,6 +301,16 @@ export default {
         return currentDate;
     },
 
+    $_formatDate(date) {
+        return formatDate(date);
+    },
+
+    $_addOrDiffDays(date, days, requiredFormat = true) {
+        return requiredFormat
+            ? formatDate(addOrDiffDays(date, days))
+            : addOrDiffDays(date, days);
+    },
+
     /**
      * Busqueda Recursiva
      */
@@ -296,9 +325,5 @@ export default {
 
     $_findNestedObjLike(obj, key, value) {
         return findNestedObjLike(obj, key, value);
-    },
-
-    $_formatNumber(number) {
-        return commify(number);
     },
 };

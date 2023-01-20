@@ -3,11 +3,20 @@
  */
 const routes = [
     {
-        path: '/Analytics/Users',
-        name: 'AnalyticsUserViewComponent',
-        component: 'analytics/users/AnalyticsUserViewComponent',
+        path: '/Analytics/Users/Created',
+        name: 'AnalyticsUserCreatedViewComponent',
+        component: 'analytics/users/AnalyticsUserCreatedViewComponent',
         meta: {
-            module: 'AnalyticsUserViewComponent',
+            module: 'AnalyticsUserCreatedViewComponent',
+        },
+    },
+
+    {
+        path: '/Analytics/Users/Accumulated',
+        name: 'AnalyticsUserAccumulatedViewComponent',
+        component: 'analytics/users/AnalyticsUserAccumulatedViewComponent',
+        meta: {
+            module: 'AnalyticsUserAccumulatedViewComponent',
         },
     },
 ];

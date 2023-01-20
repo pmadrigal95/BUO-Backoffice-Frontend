@@ -15,6 +15,11 @@ export default {
             type: Object,
             requiered: true,
         },
+
+        fn: {
+            type: Function,
+            requiered: true,
+        },
     },
 
     components: {
@@ -24,6 +29,11 @@ export default {
     methods: {
         $_open() {
             this.$refs['popUp'].$_openModal();
+        },
+
+        $_sendToApi() {
+            this.fn();
+            this.$_open();
         },
     },
 };
@@ -40,21 +50,55 @@ export default {
                 <v-card flat height="100%" width="100%">
                     <v-card-title> Filtrar </v-card-title>
                     <v-card-text>
-                        <v-expansion-panels focusable flat multiple>
-                            <v-expansion-panel>
-                                <v-expansion-panel-header
-                                    >Fecha Inicial</v-expansion-panel-header
-                                >
-                                <v-expansion-panel-content>
-                                    <BaseDatePicker
-                                        label="Buscar"
-                                        appendIcon="mdi-magnify"
-                                        :max="entity.filter.endDate"
-                                        v-model="entity.filter.startDate"
-                                    />
-                                </v-expansion-panel-content>
-                            </v-expansion-panel>
-                        </v-expansion-panels>
+                        <BaseSkeletonLoader
+                            v-if="entity.loading"
+                            type="article, actions"
+                        />
+                        <BaseForm
+                            labelBtn="Filtrar"
+                            icon="mdi-tune"
+                            :method="$_sendToApi"
+                            :cancel="$_open"
+                            v-else
+                        >
+                            <div slot="body">
+                                <v-expansion-panels focusable flat multiple>
+                                    <v-expansion-panel>
+                                        <v-expansion-panel-header
+                                            >Fecha
+                                            Inicial</v-expansion-panel-header
+                                        >
+                                        <v-expansion-panel-content class="mt-4">
+                                            <BaseDatePicker
+                                                label="Buscar"
+                                                appendIcon="mdi-magnify"
+                                                :max="entity.filter.endDate"
+                                                v-model="
+                                                    entity.filter.startDate
+                                                "
+                                                :validate="['text']"
+                                            />
+                                        </v-expansion-panel-content>
+                                    </v-expansion-panel>
+                                    <v-expansion-panel>
+                                        <v-expansion-panel-header
+                                            >Fecha
+                                            Final</v-expansion-panel-header
+                                        >
+                                        <v-expansion-panel-content class="mt-4">
+                                            <BaseDatePicker
+                                                label="Buscar"
+                                                appendIcon="mdi-magnify"
+                                                reqCurrentMaxDate
+                                                :min="entity.filter.startDate"
+                                                v-model="entity.filter.endDate"
+                                                :validate="['text']"
+                                            />
+                                        </v-expansion-panel-content>
+                                    </v-expansion-panel>
+                                </v-expansion-panels>
+                            </div>
+                        </BaseForm>
                     </v-card-text>
                 </v-card>
             </div>
@@ -70,7 +114,7 @@ export default {
                     Filtrar
                     <v-icon right>mdi-tune</v-icon>
                 </v-btn>
-                <v-btn icon color="blue800">
+                <v-btn icon color="blue800" @click="fn">
                     <v-icon small>mdi-autorenew</v-icon>
                 </v-btn>
             </v-row>
