@@ -1,8 +1,8 @@
 <script>
 /**
- * Descripción: Pantalla Filtro Codigo Promocionales
+ * Descripción: Pantalla Filtro Empresas
  *
- * @displayName PromotionalCodesFilterViewComponent
+ * @displayName CompanyFilterViewComponent
  *
  */
 
@@ -19,7 +19,7 @@ const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
 export default {
-    name: 'PromotionalCodesFilterViewComponent',
+    name: 'CompanyFilterViewComponent',
 
     components: {
         BaseCardViewComponent,
@@ -34,63 +34,52 @@ export default {
          */
         setting() {
             return {
-                endpoint: 'codigoPromocion/findBy',
+                endpoint: 'organizacion/findBy',
                 columns: [
                     {
-                        text: 'Código',
+                        text: 'Nombre',
                         align: 'start',
-                        value: 'codigo',
+                        value: 'nombre',
                         show: true,
                     },
                     {
-                        text: 'Nombre Producto',
+                        text: 'Nombre Contacto',
                         align: 'start',
-                        value: 'nombreProducto',
+                        value: 'nombreContacto',
                         show: true,
                     },
                     {
-                        text: 'Compra Gratis',
-                        align: 'center',
-                        type: 'bool',
-                        value: 'compraGratis',
+                        text: 'Correo Contacto',
+                        align: 'start',
+                        value: 'correoContacto',
                         show: true,
                     },
                     {
-                        text: 'Monto Descuento',
-                        align: 'end',
-                        value: 'montoDescuento',
+                        text: 'Token Usuario',
+                        align: 'start',
+                        value: 'tokenUsuario',
                         show: false,
                     },
                     {
-                        text: 'Porcentaje Descuento',
-                        align: 'end',
-                        value: 'porcentajeDescuento',
-                        show: false,
-                    },
-                    {
-                        text: 'Licencia',
+                        text: 'Certifica Inmediato',
                         type: 'bool',
                         align: 'center',
-                        value: 'esLicencia',
+                        value: 'certificaInmediato',
                         show: true,
                     },
                     {
-                        text: 'Fecha Expiración',
-                        align: 'start',
-                        value: 'fechaExpiracionFormato',
+                        text: 'Mostrar Puestos Genéricos',
+                        type: 'bool',
+                        align: 'center',
+                        value: 'mostrarPuestosGenericos',
                         show: false,
                     },
                     {
-                        text: 'Uso Máximo',
-                        align: 'end',
-                        value: 'usoMaximo',
-                        show: false,
-                    },
-                    {
-                        text: 'Uso Actual',
-                        align: 'end',
-                        value: 'usoActual',
-                        show: false,
+                        text: 'Es Cliente Demo',
+                        type: 'bool',
+                        align: 'center',
+                        value: 'esClienteDemo',
+                        show: true,
                     },
                     {
                         text: 'Estado',
@@ -99,15 +88,27 @@ export default {
                         show: true,
                     },
                     {
-                        text: 'Fecha Creación',
+                        text: 'Industria',
                         align: 'start',
-                        value: 'fechaCreacionFormato',
+                        value: 'nombreIndustria',
                         show: false,
                     },
                     {
-                        text: 'Creado Por',
+                        text: 'País',
                         align: 'start',
-                        value: 'nombreUsuario',
+                        value: 'nombrePais',
+                        show: false,
+                    },
+                    {
+                        text: 'Ciudad',
+                        align: 'start',
+                        value: 'ciudad',
+                        show: false,
+                    },
+                    {
+                        text: 'Descripción',
+                        align: 'start',
+                        value: 'descripcion',
                         show: false,
                     },
                 ],
@@ -137,17 +138,17 @@ export default {
         },
 
         /**
-         * Delete Function
+         * Desactive Function
          */
-        $_fnDeletePromotionalCode(row) {
+        $_fnDesactiveCompany(row) {
             httpService
                 .post(
-                    'codigoPromocion/deactivate',
+                    'organizacion/deactivate',
                     this.$_createBodyRequestDelete(row)
                 )
                 .then((response) => {
                     if (response != undefined) {
-                        this.$refs.PromotionalCodeFilter.$_ParamsToAPI();
+                        this.$refs.CompanyFilter.$_ParamsToAPI();
                     }
                 });
         },
@@ -155,9 +156,9 @@ export default {
         /**
          * Pantalla Editor
          */
-        $_promotionalCodesEditor(params) {
+        $_companyEditor(params) {
             this.$router.push({
-                name: 'PromotionalCodesEditorViewComponent',
+                name: 'CompanyEditorViewComponent',
                 params: params && { Id: params.selected[this.setting.key] },
             });
         },
@@ -166,14 +167,14 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="Códigos Promocionales">
+    <BaseCardViewComponent title="Empresas">
         <div slot="card-text">
             <BaseServerDataTable
-                ref="PromotionalCodeFilter"
+                ref="CompanyFilter"
                 :setting="setting"
-                :fnNew="write ? $_promotionalCodesEditor : undefined"
-                :fnEdit="write ? $_promotionalCodesEditor : undefined"
-                :fnDelete="write ? $_fnDeletePromotionalCode : undefined"
+                :fnNew="write ? $_companyEditor : undefined"
+                :fnEdit="write ? $_companyEditor : undefined"
+                :fnDelete="write ? $_fnDesactiveCompany : undefined"
             />
         </div>
     </BaseCardViewComponent>

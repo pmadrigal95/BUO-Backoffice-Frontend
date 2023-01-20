@@ -1,5 +1,5 @@
 /**
- * HOME ROUTES
+ * PROMOTIONAL CODES ROUTES
  */
 const routes = [
     {
