@@ -108,7 +108,13 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="Usuarios" md="12" offset="0">
+    <BaseCardViewComponent
+        :title="`Usuarios ${
+            this.endpoint.charAt(0).toUpperCase() + this.endpoint.slice(1)
+        }`"
+        md="12"
+        offset="0"
+    >
         <div slot="card-text">
             <AnalyticsUserFilterComponent :entity="entity" :fn="$_sendToApi" />
             <AnalyticsUserChartComponent :entity="entity" />
