@@ -36,6 +36,7 @@ export default {
             return [
                 { product: 'Activo', value: 2 },
                 { product: 'Inactivo', value: 1 },
+                { product: 'Empresa no registrada', value: 8 },
             ];
         },
     },
@@ -74,7 +75,8 @@ export default {
                 correoContacto: undefined,
                 mostrarPuestosGenericos: false,
                 esClienteDemo: false,
-                tokenUsuario: 0,
+                tokenUsuario: undefined,
+                usuarioId: undefined,
             };
         },
 
@@ -90,6 +92,7 @@ export default {
                     this.loading = false;
                     if (response != undefined) {
                         // Encontro la entidad
+                        console.log(response.data);
                         this.entity = BaseArrayHelper.SetObject(
                             {},
                             response.data
@@ -99,19 +102,26 @@ export default {
             }
         },
 
+        $_fnSetToUser() {
+            this.entity.usuarioId = this.user.userId;
+        },
+
         $_sendToApi() {
             this.loading = true;
 
+            this.$_fnSetToUser();
+
             let object = BaseArrayHelper.SetObject({}, this.entity);
 
-            httpService.post('organizacion/save', object).then((response) => {
-                this.loading = false;
-
-                if (response != undefined) {
-                    //Logica JS luego de la acción exitosa!!!
-                    this.$_returnToFilter();
-                }
-            });
+            httpService
+                .post('organizacion/saveForm', object)
+                .then((response) => {
+                    this.loading = false;
+                    if (response != undefined) {
+                        //Logica JS luego de la acción exitosa!!!
+                        this.$_returnToFilter();
+                    }
+                });
         },
 
         /**
@@ -155,7 +165,7 @@ export default {
                                 itemText="nombre"
                                 itemValue="id"
                                 v-model="entity.industriaId"
-                                :validate="['text']"
+                                :validate="['optionalText']"
                             />
                         </v-col>
 
@@ -174,7 +184,7 @@ export default {
                             <BaseInput
                                 label="Ciudad"
                                 v-model.trim="entity.ciudad"
-                                :validate="['text']"
+                                :validate="['optionalText']"
                             />
                         </v-col>
 
@@ -206,7 +216,7 @@ export default {
                             <BaseTextArea
                                 label="Descripción general de la actividad"
                                 v-model.trim="entity.descripcion"
-                                :validate="['text']"
+                                :validate="['optionalText']"
                                 :max="200"
                                 counter="200"
                             />
