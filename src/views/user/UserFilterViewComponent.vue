@@ -18,6 +18,7 @@ const BaseCardViewComponent = () =>
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
+
 export default {
     name: 'UserFilterViewComponent',
 
@@ -121,6 +122,10 @@ export default {
             );
             return result;
         },
+    },
+
+    created() {
+       //alert(this.empresa);
     },
 
     methods: {

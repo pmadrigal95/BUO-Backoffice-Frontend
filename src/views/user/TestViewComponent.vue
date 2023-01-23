@@ -8,8 +8,7 @@
 const userFilter = () => import('@/views/user/UserFilterViewComponent');
 
 export default {
-    name: 'testViewComponent',
-
+    name: 'TestViewComponent',
     components: {
         userFilter,
     },
@@ -17,5 +16,5 @@ export default {
 </script>
 
 <template>
-      <userFilter :empresa="1"></userFilter>
+    <userFilter :empresa="1"></userFilter>
 </template>
