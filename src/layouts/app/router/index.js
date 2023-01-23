@@ -8,6 +8,8 @@ import promotionalCodesRoutes from '@/views/promotionalCodes/router';
 
 import companyRoutes from '@/views/company/router';
 
+import userRoutes from '@/views/user/router';
+
 import analyticsRoutes from '@/views/analytics/router';
 
 const routes = [
@@ -21,6 +23,7 @@ const routes = [
             ...promotionalCodesRoutes,
             ...analyticsRoutes,
             ...companyRoutes,
+            ...userRoutes,
         ],
     },
 ];
