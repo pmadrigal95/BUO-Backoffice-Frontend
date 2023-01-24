@@ -46,7 +46,7 @@ export default {
                         text: 'Nombre Contacto',
                         align: 'start',
                         value: 'nombreContacto',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Correo Contacto',
@@ -59,6 +59,18 @@ export default {
                         align: 'start',
                         value: 'tokenUsuario',
                         show: false,
+                    },
+                    {
+                        text: 'Usuarios',
+                        align: 'end',
+                        value: 'totalUsuarios',
+                        show: true,
+                    },
+                    {
+                        text: 'Wallets Activas',
+                        align: 'end',
+                        value: 'walletsActivas',
+                        show: true,
                     },
                     {
                         text: 'Certifica Inmediato',
@@ -75,7 +87,7 @@ export default {
                         show: false,
                     },
                     {
-                        text: 'Es Cliente Demo',
+                        text: 'Demo',
                         type: 'bool',
                         align: 'center',
                         value: 'esClienteDemo',
@@ -111,6 +123,7 @@ export default {
                         value: 'descripcion',
                         show: false,
                     },
+
                 ],
                 key: 'id',
             };
