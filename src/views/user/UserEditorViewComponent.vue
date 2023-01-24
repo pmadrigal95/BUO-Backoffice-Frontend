@@ -1,8 +1,8 @@
 <script>
 /**
- * Descripción: Pantalla Editor Empresas
+ * Descripción: Pantalla Editor Usuarios
  *
- * @displayName CompanyEditorViewComponent
+ * @displayName UserEditorViewComponent
  *
  */
 
@@ -16,7 +16,7 @@ const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
 export default {
-    name: 'CompanyEditorViewComponent',
+    name: 'UserEditorViewComponent',
 
     components: {
         BaseCardViewComponent,
@@ -31,13 +31,6 @@ export default {
 
     computed: {
         ...mapGetters('authentication', ['user']),
-
-        statusList() {
-            return [
-                { product: 'Activo', value: 2 },
-                { product: 'Inactivo', value: 1 },
-            ];
-        },
     },
 
     created() {
@@ -128,7 +121,8 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="Acerca de la Empresa"
+        title="Agrega a tus colaboradores"
+        subtitle="Agrega colaboradores a tu empresa"
         :btnAction="$_returnToFilter"
         class="mx-auto"
         md="6"
@@ -229,17 +223,6 @@ export default {
                             <BaseSwitch
                                 label="Es cliente demo"
                                 v-model="entity.esClienteDemo"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseSelect
-                                label="Estado"
-                                v-model="entity.estadoId"
-                                :endpoint="statusList"
-                                itemText="product"
-                                itemValue="value"
-                                :validate="['text']"
                             />
                         </v-col>
                     </v-row>

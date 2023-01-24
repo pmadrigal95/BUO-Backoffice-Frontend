@@ -18,7 +18,6 @@ const BaseCardViewComponent = () =>
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
-
 export default {
     name: 'UserFilterViewComponent',
 
@@ -125,7 +124,7 @@ export default {
     },
 
     created() {
-       //alert(this.empresa);
+        //alert(this.empresa);
     },
 
     methods: {
@@ -158,7 +157,7 @@ export default {
          */
         $_userEditor(params) {
             this.$router.push({
-                name: 'TestViewComponent',
+                name: 'UserEditorViewComponent',
                 params: params && { Id: params.selected[this.setting.key] },
             });
         },
