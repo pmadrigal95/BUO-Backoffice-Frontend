@@ -80,6 +80,13 @@ export default {
                         show: true,
                     },
                     {
+                        text: 'Wallet Activo',
+                        type: 'bool',
+                        align: 'center',
+                        value: 'walletActivo',
+                        show: true,
+                    },
+                    {
                         text: 'Identificación',
                         align: 'center',
                         value: 'identificacion',
