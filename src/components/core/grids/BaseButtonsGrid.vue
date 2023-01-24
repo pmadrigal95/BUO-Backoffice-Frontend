@@ -26,6 +26,15 @@ export default {
          * Función Filtrar Columnas
          * Default undefined
          */
+        fnConfig: {
+            type: Function,
+            default: undefined,
+        },
+
+        /**
+         * Función Filtrar Columnas
+         * Default undefined
+         */
         fnFilter: {
             type: Function,
             default: undefined,
@@ -102,6 +111,10 @@ export default {
             ? this.items.push(true)
             : this.items.push(false);
 
+        this.fnConfig != undefined
+            ? this.items.push(true)
+            : this.items.push(false);
+
         this.fnFilter != undefined
             ? this.items.push(true)
             : this.items.push(false);
@@ -127,6 +140,10 @@ export default {
             this.fnRefresh();
         },
 
+        $_Config() {
+            this.fnConfig();
+        },
+
         $_Filter() {
             this.fnFilter();
         },
@@ -147,7 +164,7 @@ export default {
 </script>
 
 <template>
-    <v-row align-content="center" style="padding: 16px 10px 24px">
+    <v-row align-content="center" class="py-6 px-3">
         <v-layout
             :justify-space-between="rows"
             :justify-end="!rows"
@@ -155,12 +172,16 @@ export default {
         >
             <div
                 style="display: flex; flex-wrap: wrap; align-content: center"
-                class="BUO-Label-Small ma-2"
+                class="BUO-Label-Small ma-2 d-flex justify-start mb-6"
                 v-if="rows && $vuetify.breakpoint.mdAndUp"
             >
                 {{ rows }}
             </div>
-            <div>
+            <div
+                :class="[
+                    $vuetify.breakpoint.mdAndUp && 'd-flex justify-end mb-6',
+                ]"
+            >
                 <v-tooltip top v-if="items[0]">
                     <template v-slot:activator="{ on }">
                         <v-btn icon :color="app ? 'clouds' : 'black'" v-on="on">
@@ -174,7 +195,7 @@ export default {
                 <v-tooltip top v-if="items[1]">
                     <template v-slot:activator="{ on }">
                         <v-btn icon :color="app ? 'clouds' : 'black'" v-on="on">
-                            <v-icon @click="$_Filter" small>mdi-cog</v-icon>
+                            <v-icon @click="$_Config" small>mdi-cog</v-icon>
                         </v-btn>
                     </template>
                     <span>{{ lblConfig }}</span>
@@ -183,6 +204,17 @@ export default {
                     class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                     :color="app ? 'clouds' : 'blue900'"
                     v-if="items[2]"
+                    @click="$_Filter"
+                    outlined
+                    small
+                >
+                    {{ lblFilter }}
+                    <v-icon right>mdi-tune</v-icon>
+                </v-btn>
+                <v-btn
+                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    :color="app ? 'clouds' : 'blue900'"
+                    v-if="items[3]"
                     @click="$_New"
                     outlined
                     small
@@ -193,7 +225,7 @@ export default {
                 <v-btn
                     class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                     :color="app ? 'clouds' : 'blue900'"
-                    v-if="items[3]"
+                    v-if="items[4]"
                     @click="$_Edit"
                     outlined
                     small
@@ -205,7 +237,7 @@ export default {
                 <v-btn
                     class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                     :color="app ? 'clouds' : 'blue900'"
-                    v-if="items[4]"
+                    v-if="items[5]"
                     @click="$_Delete"
                     outlined
                     small

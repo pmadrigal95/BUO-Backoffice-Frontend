@@ -1,7 +1,6 @@
 <script>
 /**
  * Descripción: Input with DataTable in Dialog, method to Add new Data
- * Utilizar en filtros en las columnas de las tablas!
  *
  * @displayName BaseSimpleInputList
  */
