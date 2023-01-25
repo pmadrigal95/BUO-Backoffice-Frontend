@@ -52,7 +52,7 @@ export default {
                         text: 'Correo Contacto',
                         align: 'start',
                         value: 'correoContacto',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Token Usuario',
@@ -77,7 +77,7 @@ export default {
                         type: 'bool',
                         align: 'center',
                         value: 'certificaInmediato',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Mostrar Puestos Genéricos',
