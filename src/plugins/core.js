@@ -30,11 +30,6 @@ import BaseTextArea from '@/components/core/forms/BaseTextArea.vue';
 import BaseSelect from '@/components/core/forms/BaseSelect.vue';
 
 /**
- * InputList
- */
-import BaseInputList from '@/components/core/forms/BaseInputList.vue';
-
-/**
  * Input
  */
 import BaseSwitch from '@/components/core/forms/BaseSwitch.vue';
@@ -108,11 +103,6 @@ Vue.component(BaseTextArea.name, BaseTextArea);
  * Registro de Componente
  */
 Vue.component(BaseSelect.name, BaseSelect);
-
-/**
- * Registro de Componente
- */
-Vue.component(BaseInputList.name, BaseInputList);
 
 /**
  * Registro de Componente
