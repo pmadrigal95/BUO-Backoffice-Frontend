@@ -47,18 +47,24 @@ export default {
                         text: 'Nombre',
                         align: 'start',
                         value: 'nombre',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Primer Apellido',
                         align: 'start',
                         value: 'primerApellido',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Segundo Apellido',
                         align: 'start',
                         value: 'segundoApellido',
+                        show: false,
+                    },
+                    {
+                        text: 'Nombre Completo',
+                        align: 'start',
+                        value: 'nombreCompleto',
                         show: true,
                     },
                     {
@@ -71,7 +77,7 @@ export default {
                         text: 'País',
                         align: 'start',
                         value: 'nombrePais',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Estado',

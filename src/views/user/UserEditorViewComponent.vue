@@ -15,6 +15,9 @@ import BaseArrayHelper from '@/helpers/baseArrayHelper';
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
+const BaseInputDataTable = () =>
+    import('@/components/core/forms/BaseInputDataTable.vue');
+
 const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
 
 export default {
@@ -23,6 +26,7 @@ export default {
     components: {
         BaseCardViewComponent,
         BaseDatePicker,
+        BaseInputDataTable,
     },
 
     data() {
@@ -40,6 +44,106 @@ export default {
                 { product: 'Activo', value: 2 },
                 { product: 'Inactivo', value: 1 },
             ];
+        },
+
+        /**
+         * Configuracion BaseInputDataTable
+
+         */
+        setting() {
+            return {
+                endpoint: 'organizacion/findBy',
+                columns: [
+                    {
+                        text: 'Nombre',
+                        align: 'start',
+                        value: 'nombre',
+                        show: true,
+                    },
+                    {
+                        text: 'Nombre Contacto',
+                        align: 'start',
+                        value: 'nombreContacto',
+                        show: false,
+                    },
+                    {
+                        text: 'Correo Contacto',
+                        align: 'start',
+                        value: 'correoContacto',
+                        show: false,
+                    },
+                    {
+                        text: 'Token Usuario',
+                        align: 'start',
+                        value: 'tokenUsuario',
+                        show: false,
+                    },
+                    {
+                        text: 'Usuarios',
+                        align: 'end',
+                        value: 'totalUsuarios',
+                        show: true,
+                    },
+                    {
+                        text: 'Wallets Activas',
+                        align: 'end',
+                        value: 'walletsActivas',
+                        show: true,
+                    },
+                    {
+                        text: 'Certifica Inmediato',
+                        type: 'bool',
+                        align: 'center',
+                        value: 'certificaInmediato',
+                        show: false,
+                    },
+                    {
+                        text: 'Mostrar Puestos Genéricos',
+                        type: 'bool',
+                        align: 'center',
+                        value: 'mostrarPuestosGenericos',
+                        show: false,
+                    },
+                    {
+                        text: 'Demo',
+                        type: 'bool',
+                        align: 'center',
+                        value: 'esClienteDemo',
+                        show: true,
+                    },
+                    {
+                        text: 'Estado',
+                        align: 'center',
+                        value: 'nombreEstado',
+                        show: true,
+                    },
+                    {
+                        text: 'Industria',
+                        align: 'start',
+                        value: 'nombreIndustria',
+                        show: false,
+                    },
+                    {
+                        text: 'País',
+                        align: 'start',
+                        value: 'nombrePais',
+                        show: false,
+                    },
+                    {
+                        text: 'Ciudad',
+                        align: 'start',
+                        value: 'ciudad',
+                        show: false,
+                    },
+                    {
+                        text: 'Descripción',
+                        align: 'start',
+                        value: 'descripcion',
+                        show: false,
+                    },
+                ],
+                key: 'id',
+            };
         },
     },
 
@@ -77,6 +181,7 @@ export default {
                 generoId: undefined,
                 fechaNacimiento: undefined,
                 telefono: undefined,
+                nombreOrganizacion: undefined,
                 organizacionId: undefined,
                 estadoId: 2,
                 usuarioModificaId: undefined,
@@ -242,13 +347,17 @@ export default {
                                 :validate="['optionalText']"
                             />
                         </v-col>
+
                         <v-col cols="12">
-                            <BaseInput
+                            <BaseInputDataTable
                                 label="Organización"
-                                v-model.number="entity.organizacionId"
-                                :validate="['optionalNumber']"
+                                :setting="setting"
+                                :editText="entity.nombreOrganizacion"
+                                v-model="entity.organizacionId"
+                                :validateEditor="['text']"
                             />
                         </v-col>
+
                         <v-col cols="12">
                             <BaseSelect
                                 label="Estado"
