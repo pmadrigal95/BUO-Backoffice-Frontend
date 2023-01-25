@@ -82,24 +82,6 @@ export default {
                             {},
                             response.data
                         );
-
-                        this.entity.chartData.datasets[0].backgroundColor =
-                            'rgb(0,63,94, 0.5)';
-                        this.entity.chartData.datasets[0].backgroundColor =
-                            'rgb(0,63,94, 0.5)';
-                        this.entity.chartData.datasets[0].fill = true;
-
-                        this.entity.chartData.datasets[1].backgroundColor =
-                            'rgb(255,230,178, 0.5)';
-                        this.entity.chartData.datasets[1].backgroundColor =
-                            'rgb(230,116,80, 0.5)';
-                        this.entity.chartData.datasets[1].fill = true;
-
-                        this.entity.chartData.datasets[2].backgroundColor =
-                            'rgb(109,198,41, 0.5)';
-                        this.entity.chartData.datasets[2].backgroundColor =
-                            'rgb(0,170,112, 0.5)';
-                        this.entity.chartData.datasets[2].fill = true;
                     }
                 });
         },

@@ -75,11 +75,11 @@ export default {
     },
 
     created() {
-        /*this.chartData.datasets.forEach((element) => {
+        this.chartData.datasets.forEach((element) => {
             element.backgroundColor = this.poolColors(1);
             element.borderColor = this.poolColors(1);
             element.fill = true;
-        });*/
+        });
     },
 
     methods: {

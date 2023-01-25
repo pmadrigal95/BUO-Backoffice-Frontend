@@ -121,6 +121,7 @@ export default {
 
 <template>
     <v-switch
+        inset
         :append-icon="appendIcon"
         :color="color"
         :dark="dark"

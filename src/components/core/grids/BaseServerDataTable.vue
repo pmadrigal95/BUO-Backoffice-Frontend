@@ -978,6 +978,7 @@ export default {
                                             <!-- @helper:  Filter type Text -->
                                             <v-text-field
                                                 v-if="header.type == undefined"
+                                                label="Buscar"
                                                 v-model="
                                                     temporalFilters[
                                                         header.value
@@ -991,6 +992,7 @@ export default {
 
                                             <!-- @helper:  Filter type Number -->
                                             <v-text-field
+                                                label="Buscar"
                                                 v-else-if="
                                                     header.type == 'number'
                                                 "
@@ -1008,6 +1010,7 @@ export default {
 
                                             <!-- @helper:  Filter type Boolean -->
                                             <v-autocomplete
+                                                label="Buscar"
                                                 v-else-if="
                                                     header.type == 'bool'
                                                 "
@@ -1055,6 +1058,7 @@ export default {
 
                                             <!-- @helper:  Filter type bigint -->
                                             <BaseInput
+                                                label="Buscar"
                                                 v-else-if="
                                                     header.type == 'bigint'
                                                 "
@@ -1063,7 +1067,6 @@ export default {
                                                         header.value
                                                     ]
                                                 "
-                                                label
                                                 dense
                                                 mask="###########"
                                                 clearable
@@ -1071,6 +1074,7 @@ export default {
 
                                             <!-- @helper:  Filter type int -->
                                             <BaseInput
+                                                label="Buscar"
                                                 v-else-if="header.type == 'int'"
                                                 v-model="
                                                     temporalFilters[
@@ -1078,7 +1082,6 @@ export default {
                                                     ]
                                                 "
                                                 outlined
-                                                label
                                                 dense
                                                 mask="##########"
                                                 clearable
@@ -1104,6 +1107,7 @@ export default {
                                             <!-- @helper:  Filter type tinyint -->
                                             <!-- @BaseInput -->
                                             <BaseInput
+                                                label="Buscar"
                                                 v-else-if="
                                                     header.type == 'tinyint'
                                                 "
@@ -1113,7 +1117,6 @@ export default {
                                                     ]
                                                 "
                                                 outlined
-                                                label
                                                 dense
                                                 clearable
                                                 mask="###"

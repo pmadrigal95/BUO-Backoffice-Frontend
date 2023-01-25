@@ -1,9 +1,8 @@
 <script>
 /**
  * Descripción: Input with DataTable in Dialog, method to Add new Data
- * Utilizar en filtros en las columnas de las tablas!
  *
- * @displayName BaseSimpleInputList
+ * @displayName BaseInputDataTable
  */
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
@@ -19,14 +18,9 @@ const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable.vue');
 
 export default {
-    name: 'BaseSimpleInputList',
+    name: 'BaseInputDataTable',
 
     inheritAttrs: false,
-
-    components: {
-        BaseLocalDataTable,
-        BaseServerDataTable,
-    },
 
     /**
      * Comunicación de Componentes
@@ -89,7 +83,7 @@ export default {
 
         /**
          * Como validar el input
-         * ['text'] ['email'] [ @validacionPersonalizada ]
+         * ['text'] [ @validacionPersonalizada ]
          */
         validateEditor: {
             type: Array,
@@ -103,6 +97,27 @@ export default {
             type: Object,
             default: undefined,
         },
+
+        /**
+         * readonly
+         */
+        readonly: {
+            type: Boolean,
+            default: false,
+        },
+
+        /**
+         * validate-on-blur
+         */
+        validateOnBlur: {
+            type: Boolean,
+            default: false,
+        },
+    },
+
+    components: {
+        BaseLocalDataTable,
+        BaseServerDataTable,
     },
 
     data() {
@@ -132,22 +147,12 @@ export default {
             /**
              * Identificador del input
              */
-            refInput: 'BaseSimpleInputList_',
+            refInput: 'BaseInputDataTable_',
 
             /**
              * Identificador del Dialog
              */
             refpopUp: 'popUp_',
-
-            /**
-             * Identificador del Dialog
-             */
-            refForm: 'form_',
-
-            /**
-             * tamaño del Dialog
-             */
-            width: null,
 
             normalRules: [],
         };
@@ -197,7 +202,6 @@ export default {
         /**
          * definición del Modal
          */
-        //this.label = this.label != undefined ? this.label : 'Filtro';
         if (this.validateEditor != undefined) {
             switch (this.validateEditor[0]) {
                 case 'text':
@@ -209,62 +213,6 @@ export default {
                             ),
                     ];
                     break;
-
-                case 'number':
-                    this.normalRules = [
-                        (v) =>
-                            !!v ||
-                            baseLocalHelper.$_MsgFieldRequired(
-                                this.label != undefined ? this.label : ''
-                            ),
-                        (v) =>
-                            /^\d{1,15}(\.)?\d{0,5}$/.test(v) ||
-                            baseLocalHelper.$_MsgFieldAllowedValueInvalid(
-                                this.label != undefined ? this.label : ''
-                            ),
-                    ];
-                    break;
-
-                case 'email':
-                    this.normalRules = [
-                        (v) =>
-                            !!v ||
-                            baseLocalHelper.$_MsgFieldRequired(
-                                this.label != undefined ? this.label : ''
-                            ),
-                        (v) =>
-                            /.+@.+\..+/.test(v) ||
-                            baseLocalHelper.$_MsgFieldAllowedValueInvalid(
-                                this.label != undefined ? this.label : ''
-                            ),
-                    ];
-                    break;
-
-                case 'DNI':
-                    this.normalRules = [
-                        (v) =>
-                            !!v ||
-                            baseLocalHelper.$_MsgFieldRequired(
-                                this.label != undefined ? this.label : ''
-                            ),
-
-                        (v) =>
-                            /^[1-9][0-9-]+$/.test(v) ||
-                            baseLocalHelper.$_MsgFieldAllowedValueInvalid(
-                                this.label != undefined ? this.label : ''
-                            ),
-
-                        (v) =>
-                            (v &&
-                                v.length <= this.max &&
-                                v &&
-                                v.length >= this.min) ||
-                            baseLocalHelper.$_MsgFieldAllowedExtInvalid(
-                                this.label != undefined ? this.label : ''
-                            ),
-                    ];
-                    break;
-
                 default:
                     this.normalRules = this.validateEditor;
             }
@@ -323,17 +271,17 @@ export default {
          * Abrir modal GRID
          */
         $_openModalGrid() {
-            this.$_openModal();
-            if (
-                typeof this.setting?.controller === 'string' ||
-                typeof this.setting?.endpoint === 'string'
-            ) {
-                this.show = 'Server';
-            } else {
-                this.show = 'Local';
+            if (!this.readonly) {
+                this.$_openModal();
+                if (
+                    typeof this.setting?.controller === 'string' ||
+                    typeof this.setting?.endpoint === 'string'
+                ) {
+                    this.show = 'Server';
+                } else {
+                    this.show = 'Local';
+                }
             }
-            this.width =
-                this.setting?.width != null ? this.setting?.width : 1200;
         },
 
         /**
@@ -366,7 +314,7 @@ export default {
                 baseNotificationsHelper.Message(
                     true,
                     baseLocalHelper.$_MsgComponentSettingInvalid(
-                        'BaseSimpleInputList'
+                        'BaseInputDataTable'
                     )
                 );
             }
@@ -408,7 +356,7 @@ export default {
                     this.setting.method =
                         this.setting.method != undefined
                             ? this.setting.method
-                            : 'GridWithList';
+                            : 'findBy';
 
                     this.setting.service =
                         this.setting.service != undefined
@@ -450,8 +398,12 @@ export default {
 
 <template>
     <div>
-        <!-- @BaseDialog -->
-        <BaseDialog :ref="refpopUp" :width="width" :tittle="label">
+        <BasePopUp
+            :ref="refpopUp"
+            :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '65%'"
+            :isDrawer="false"
+            scrollable
+        >
             <div slot="Content">
                 <!-- @BaseLocalDataTable-->
                 <BaseLocalDataTable
@@ -473,7 +425,7 @@ export default {
                     :extraParams="extraParams"
                 />
             </div>
-        </BaseDialog>
+        </BasePopUp>
 
         <v-text-field
             :rules="normalRules"
@@ -490,11 +442,14 @@ export default {
             readonly
             clearable
             :label="label"
-            prepend-inner-icon="mdi-magnify"
-            @click:prepend-inner="$_openModalGrid"
+            append-icon="mdi-magnify"
+            @click:append="$_openModalGrid"
             @click="$_openModalGrid"
             v-model="text"
             :dense="denseInput"
+            outlined
+            clear-icon="mdi-close-circle"
+            :validate-on-blur="validateOnBlur"
         />
     </div>
 </template>
