@@ -15,11 +15,14 @@ import BaseArrayHelper from '@/helpers/baseArrayHelper';
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
+const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
+
 export default {
     name: 'UserEditorViewComponent',
 
     components: {
         BaseCardViewComponent,
+        BaseDatePicker,
     },
 
     data() {
@@ -31,6 +34,13 @@ export default {
 
     computed: {
         ...mapGetters('authentication', ['user']),
+
+        statusList() {
+            return [
+                { product: 'Activo', value: 2 },
+                { product: 'Inactivo', value: 1 },
+            ];
+        },
     },
 
     created() {
@@ -57,17 +67,19 @@ export default {
             return {
                 id: 0,
                 nombre: undefined,
-                descripcion: undefined,
-                estadoId: 2,
-                certificaInmediato: false,
-                industriaId: undefined,
+                primerApellido: undefined,
+                segundoApellido: undefined,
+                identificacion: undefined,
                 paisId: undefined,
                 ciudad: undefined,
-                nombreContacto: undefined,
-                correoContacto: undefined,
-                mostrarPuestosGenericos: false,
-                esClienteDemo: false,
-                tokenUsuario: 0,
+                correo: undefined,
+                username: undefined,
+                generoId: undefined,
+                fechaNacimiento: undefined,
+                telefono: undefined,
+                organizacionId: undefined,
+                estadoId: 2,
+                usuarioModificaId: undefined,
             };
         },
 
@@ -79,7 +91,7 @@ export default {
             if (data) {
                 //HttpServices a la vista para obtener Vista
                 this.loading = true;
-                httpService.get(`organizacion/${data}`).then((response) => {
+                httpService.get(`user/${data}`).then((response) => {
                     this.loading = false;
                     if (response != undefined) {
                         // Encontro la entidad
@@ -92,12 +104,16 @@ export default {
             }
         },
 
+        $_setToUser() {
+            this.entity.usuarioModificaId = this.user.userId;
+        },
+
         $_sendToApi() {
             this.loading = true;
-
+            this.$_setToUser();
             let object = BaseArrayHelper.SetObject({}, this.entity);
 
-            httpService.post('organizacion/save', object).then((response) => {
+            httpService.post('user/saveUserForm', object).then((response) => {
                 this.loading = false;
 
                 if (response != undefined) {
@@ -112,7 +128,7 @@ export default {
          */
         $_returnToFilter() {
             this.$router.push({
-                name: 'CompanyFilterViewComponent',
+                name: 'UserFilterViewComponent',
             });
         },
     },
@@ -122,7 +138,6 @@ export default {
 <template>
     <BaseCardViewComponent
         title="Agrega a tus colaboradores"
-        subtitle="Agrega colaboradores a tu empresa"
         :btnAction="$_returnToFilter"
         class="mx-auto"
         md="6"
@@ -135,20 +150,33 @@ export default {
                     <v-row dense>
                         <v-col cols="12">
                             <BaseInput
-                                label="Nombre de la Empresa"
+                                label="Nombre"
                                 v-model.trim="entity.nombre"
                                 :validate="['text']"
                             />
                         </v-col>
 
                         <v-col cols="12">
-                            <BaseSelect
-                                label="Industría"
-                                endpoint="industria/getAllActive"
-                                itemText="nombre"
-                                itemValue="id"
-                                v-model="entity.industriaId"
+                            <BaseInput
+                                label="Primer apellido"
+                                v-model.trim="entity.primerApellido"
                                 :validate="['text']"
+                            />
+                        </v-col>
+
+                        <v-col cols="12">
+                            <BaseInput
+                                label="Segundo apellido"
+                                v-model.trim="entity.segundoApellido"
+                                :validate="['optionalText']"
+                            />
+                        </v-col>
+
+                        <v-col cols="12">
+                            <BaseInput
+                                label="Identificación"
+                                v-model.number="entity.identificacion"
+                                :validate="['optionalText']"
                             />
                         </v-col>
 
@@ -159,70 +187,76 @@ export default {
                                 itemText="nombre"
                                 itemValue="id"
                                 v-model="entity.paisId"
-                                :validate="['text']"
+                                :validate="['optionalText']"
                             />
                         </v-col>
 
                         <v-col cols="12">
                             <BaseInput
                                 label="Ciudad"
-                                v-model.trim="entity.ciudad"
-                                :validate="['text']"
+                                v-model.number="entity.ciudad"
+                                :validate="['optionalText']"
                             />
                         </v-col>
 
                         <v-col cols="12">
                             <BaseInput
-                                label="Nombre del representante"
-                                v-model.trim="entity.nombreContacto"
-                                :validate="['text']"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Correo del representante"
-                                v-model.trim="entity.correoContacto"
+                                label="Correo electrónico"
+                                v-model.trim="entity.correo"
                                 :validate="['email']"
                             />
                         </v-col>
 
                         <v-col cols="12">
                             <BaseInput
-                                label="Cantidad Tokens"
-                                v-model.number="entity.tokenUsuario"
+                                label="Username"
+                                v-model.number="entity.username"
+                                :validate="['text']"
+                            />
+                        </v-col>
+
+                        <v-col cols="12">
+                            <BaseSelect
+                                label="Género"
+                                endpoint="genero/list"
+                                itemText="nombre"
+                                itemValue="id"
+                                v-model="entity.generoId"
+                                :validate="['optionalText']"
+                            />
+                        </v-col>
+
+                        <v-col cols="12">
+                            <BaseDatePicker
+                                label="Fecha de nacimiento"
+                                appendIcon="mdi-magnify"
+                                v-model="entity.fechaNacimiento"
+                                :validate="['optionalText']"
+                            />
+                        </v-col>
+
+                        <v-col cols="12">
+                            <BaseInput
+                                label="Número de teléfono"
+                                v-model.number="entity.telefono"
+                                :validate="['optionalText']"
+                            />
+                        </v-col>
+                        <v-col cols="12">
+                            <BaseInput
+                                label="Organización"
+                                v-model.number="entity.organizacionId"
                                 :validate="['optionalNumber']"
                             />
                         </v-col>
-
                         <v-col cols="12">
-                            <BaseTextArea
-                                label="Descripción general de la actividad"
-                                v-model.trim="entity.descripcion"
+                            <BaseSelect
+                                label="Estado"
+                                v-model="entity.estadoId"
+                                :endpoint="statusList"
+                                itemText="product"
+                                itemValue="value"
                                 :validate="['text']"
-                                :max="200"
-                                counter="200"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseSwitch
-                                label="Es Certificado Inmediato"
-                                v-model="entity.certificaInmediato"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseSwitch
-                                label="Mostrar puestos genéricos"
-                                v-model="entity.mostrarPuestosGenericos"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseSwitch
-                                label="Es cliente demo"
-                                v-model="entity.esClienteDemo"
                             />
                         </v-col>
                     </v-row>
