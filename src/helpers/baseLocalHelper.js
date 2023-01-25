@@ -82,7 +82,7 @@ export default {
     /**
      * Descripción: Btn Buscar
      */
-    $_LabelBtnmobilSearch: 'Buscar',
+    $_LabelBtnmobilSearch: 'Filtrar',
 
     /**
      * Descripción: Cargando

@@ -205,7 +205,7 @@ export default {
                             <BaseDatePicker
                                 v-else
                                 label="Fecha de expiración"
-                                appendIcon="mdi-magnify"
+                                appendIcon="mdi-calendar-month"
                                 v-model="entity.fechaExpiracion"
                                 reqCurrentMinDate
                                 :validate="['text']"

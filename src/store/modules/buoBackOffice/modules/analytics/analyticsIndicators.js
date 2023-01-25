@@ -1,7 +1,7 @@
 /**
- * Descripción: Gestor de Analytics
+ * Descripción: Gestor de Analytics Indicators
  *
- * @displayName BUO Analytics
+ * @displayName BUO Analytics Indicators
  */
 
 import httpService from '@/services/axios/httpService';

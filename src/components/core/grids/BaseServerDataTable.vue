@@ -8,6 +8,7 @@
  * @displayName BaseServerDataTable
  */
 
+import BaseArrayHelper from '@/helpers/baseArrayHelper';
 import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper.js';
 import baseArrayHelper from '@/helpers/baseArrayHelper.js';
@@ -17,19 +18,11 @@ import httpService from '@/services/axios/httpService.js';
 const BaseButtonsGrid = () =>
     import('@/components/core/grids/BaseButtonsGrid.vue');
 
-const BaseCustomsButtonsGrid = () =>
-    import('@/components/core/grids/BaseCustomsButtonsGrid.vue');
-
-const BaseSimpleInputList = () =>
-    import('@/components/core/forms/BaseSimpleInputList.vue');
-
 export default {
     name: 'BaseServerDataTable',
 
     components: {
         BaseButtonsGrid,
-        BaseCustomsButtonsGrid,
-        BaseSimpleInputList,
     },
 
     props: {
@@ -181,22 +174,14 @@ export default {
             options: {},
 
             /**
-             * Tamaño de la pantalla del dispositivo
+             * Objecto con filtros escritos en las columnas
              */
-            windowSize: {
-                x: 0,
-                y: 0,
-            },
-
-            /**
-             * Determina si usar buscadores por columnas o General
-             */
-            searchByColumns: null,
+            filters: {},
 
             /**
              * Objecto con filtros escritos en las columnas
              */
-            filters: {},
+            temporalFilters: {},
 
             /**
              * Mostrar Botón para limpiar filtros
@@ -266,7 +251,7 @@ export default {
             /**
              * Mostrar buscadores por columnas
              */
-            showSearch: true,
+            showSearch: false,
 
             /**
              * Descripción del botón
@@ -288,24 +273,6 @@ export default {
              */
             settingFooter: baseLocalHelper.$_itemsPerPage,
 
-            /**
-             * Mostrar buscadores por columnas mobil
-             */
-            mobilColumns: null,
-
-            /**
-             * Descripción a buscar
-             */
-            mobilSearch: null,
-
-            typeMobilFilter: null,
-
-            objectMobilFilter: {},
-
-            show: null,
-
-            componentKey: 0,
-
             booleanClick: true,
         };
     },
@@ -326,6 +293,10 @@ export default {
                     color: 'grey500',
                 },
             ];
+        },
+
+        $_filterList() {
+            return this.headers.filter((x) => x.show && x.type != 'hidden');
         },
     },
 
@@ -412,35 +383,6 @@ export default {
             },
             deep: true,
         },
-
-        /**
-         * limpia buscadores cuando cambia de dispositivos
-         */
-        searchByColumns(val, old) {
-            if (val != old) {
-                (this.mobilColumns = null), (this.mobilSearch = null);
-                this.$_Cleanfilter();
-                this.forceRerender();
-            }
-        },
-
-        /**
-         * Determita que estilo de filtro mostrar
-         */
-        mobilColumns(val) {
-            let result = this.$_getmobilSearch(val);
-            this.typeMobilFilter = undefined;
-            this.objectMobilFilter = {};
-            if (result != undefined) {
-                if (result?.filterSetting) {
-                    this.typeMobilFilter = 'table';
-                    this.objectMobilFilter = result?.filterSetting;
-                } else {
-                    this.typeMobilFilter = 'text';
-                }
-            }
-            this.forceRerender();
-        },
     },
 
     created() {
@@ -478,20 +420,12 @@ export default {
 
     mounted() {
         /**
-         * Determinar que tipo de buscadores utilizar
-         */
-        this.onResize();
-
-        /**
          * Enviar configuración al API
          */
         this.$_ParamsToAPI(baseLocalHelper.$_DefaultTimer);
     },
 
     methods: {
-        forceRerender() {
-            this.componentKey += 1;
-        },
         /**
          * Lógica Server Side
          */
@@ -547,7 +481,7 @@ export default {
                 const method =
                     this.setting.method != undefined
                         ? this.setting.method
-                        : 'Grid';
+                        : 'findBy';
 
                 /**
                  * Obtener Servicio
@@ -677,17 +611,6 @@ export default {
         },
 
         /**
-         * Determinar que tipo de buscadores utilizar
-         */
-        onResize() {
-            this.windowSize = { x: window.innerWidth, y: window.innerHeight };
-
-            this.windowSize.x > 595 && this.windowSize.y >= 527
-                ? (this.searchByColumns = true)
-                : (this.searchByColumns = false);
-        },
-
-        /**
          * obtener objecto seleccionado
          */
         $_SetParams(array, index) {
@@ -793,55 +716,49 @@ export default {
         /**
          * Mostrar columnas a Filtrar
          */
+        $_config() {
+            this.isFilter = 'config';
+            this.formTitle = baseLocalHelper.$_LabelBtnConfig;
+            this.$refs.popUp.$_openModal();
+        },
+
+        /**
+         * Mostrar Filtros
+         */
         $_filter() {
-            this.isFilter = 'filter';
-            this.formTitle = baseLocalHelper.$_LabelBtnFilter;
-            this.$refs.popUp.$_openModal();
+            if (this.$vuetify.breakpoint.mdAndUp) {
+                this.showSearch = !this.showSearch;
+            } else {
+                this.isFilter = 'Filter';
+                this.formTitle = baseLocalHelper.$_LabelBtnmobilSearch;
+
+                this.temporalFilters = BaseArrayHelper.SetObject(
+                    {},
+                    this.filters
+                );
+
+                this.$refs.popUp.$_openModal();
+            }
         },
 
-        /**
-         * Mostrar Mobil search
-         */
-        $_mobilSearch() {
-            this.isFilter = 'search';
-            this.formTitle = baseLocalHelper.$_LabelBtnmobilSearch;
-            this.$refs.popUp.$_openModal();
-        },
-
-        /**
-         * Método Mobil search
-         */
-        $_popUpSearch() {
-            let result = this.$_getmobilSearch(this.mobilColumns);
-
-            this.filters[result?.filterBy ? result?.filterBy : result?.value] =
-                this.mobilSearch;
-
-            this.$_ParamsToAPI();
+        $_setFilter() {
+            this.filters = BaseArrayHelper.SetObject({}, this.temporalFilters);
             this.$refs.popUp.$_openModal();
         },
 
         /**
          * Cancelar Mobil search
          */
-        $_CancelmobilSearch() {
-            this.$_Cleanfilter();
+        $_cleanTempFilters() {
+            this.$_cleanFilters();
             this.$refs.popUp.$_openModal();
-        },
-
-        /**
-         * Obtener config de la columna
-         */
-        $_getmobilSearch(value) {
-            return this.objectFilter.find((x) => x.value === value);
         },
 
         /**
          * Limpiar filtros
          */
-        $_Cleanfilter() {
+        $_cleanFilters() {
             this.filters = {};
-            this.$_ParamsToAPI();
         },
 
         /**
@@ -958,10 +875,14 @@ export default {
 
         $_setStatusColor(id) {
             switch (id) {
-                case 1:
+                case 1 || 3 || 8 || 10:
                     return 'grey500';
-                case 2:
+                case 2 || 5 || 9:
                     return 'greenA800';
+                case 4:
+                    return 'blue800';
+                case 6 || 7:
+                    return 'redError900';
                 default:
                     return 'grey400';
             }
@@ -971,306 +892,142 @@ export default {
 </script>
 
 <template>
-    <div v-resize="onResize">
+    <v-card flat class="rounded-lg">
         <!-- @Componente:  BaseDialog-->
-        <div>
-            <!-- @Componente:  BaseDialog-->
-            <BasePopUp
-                ref="popUp"
-                :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '50%'"
-                :isDrawer="false"
-                scrollable
-            >
-                <div slot="Content">
-                    <v-card flat>
-                        <v-card-title>{{ formTitle }}</v-card-title>
-                        <v-card-text>
-                            <v-container fluid v-if="isFilter === 'filter'">
-                                <v-row justify="center">
-                                    <v-col
-                                        cols="12"
-                                        md="4"
-                                        v-for="(item, i) in objectFilter"
+        <BasePopUp
+            ref="popUp"
+            :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '65%'"
+            :isDrawer="false"
+            scrollable
+        >
+            <div slot="Content">
+                <v-card flat>
+                    <v-card-title>{{ formTitle }}</v-card-title>
+                    <v-card-text>
+                        <v-container fluid v-if="isFilter === 'config'">
+                            <v-row justify="center">
+                                <v-col
+                                    cols="12"
+                                    md="4"
+                                    v-for="(item, i) in objectFilter"
+                                    :key="i"
+                                >
+                                    <!-- @Componente:  BaseSwitch-->
+                                    <BaseSwitch
+                                        v-model="item.show"
+                                        :label="item.text"
+                                    />
+                                </v-col>
+                            </v-row>
+                        </v-container>
+
+                        <!-- @Componente:  BaseForm-->
+                        <BaseForm
+                            v-if="isFilter === 'delete'"
+                            :method="$_Delete"
+                            icon="mdi-delete"
+                            labelBtn="Eliminar"
+                        >
+                            <div slot="body">
+                                <br />
+                                <v-row align-content="center">
+                                    <h3>{{ deleteMessage }}</h3>
+                                </v-row>
+                            </div>
+                        </BaseForm>
+
+                        <!-- @Componente:  BaseForm-->
+                        <!-- Filtro por columnas version mobile-->
+                        <BaseForm
+                            v-if="isFilter === 'Filter'"
+                            :method="$_setFilter"
+                            :cancel="$_cleanTempFilters"
+                            icon="mdi-tune"
+                            :label="formTitle"
+                            :labelBtn="formTitle"
+                        >
+                            <div slot="body">
+                                <v-expansion-panels flat multiple>
+                                    <v-expansion-panel
+                                        v-for="(header, i) in $_filterList"
                                         :key="i"
                                     >
-                                        <!-- @Componente:  BaseSwitch-->
-                                        <BaseSwitch
-                                            v-model="item.show"
-                                            :label="item.text"
-                                        />
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-
-                            <!-- @Componente:  BaseForm-->
-                            <BaseForm
-                                v-if="isFilter === 'delete'"
-                                :method="$_Delete"
-                                icon="mdi-delete"
-                                labelBtn="Eliminar"
-                            >
-                                <div slot="body">
-                                    <br />
-                                    <v-row align-content="center">
-                                        <h3>{{ deleteMessage }}</h3>
-                                    </v-row>
-                                </div>
-                            </BaseForm>
-
-                            <!-- @Componente:  BaseForm-->
-                            <BaseForm
-                                v-if="isFilter === 'search'"
-                                :method="$_popUpSearch"
-                                :cancel="$_CancelmobilSearch"
-                                icon="mdi-magnify"
-                                :label="formTitle"
-                                :labelBtn="formTitle"
-                            >
-                                <div slot="body">
-                                    <br />
-                                    <v-col>
-                                        <!-- @BaseSelect -->
-                                        <BaseSelect
-                                            v-model="mobilColumns"
-                                            label="Columna"
-                                            :endpoint="objectFilter"
-                                            itemText="text"
-                                            itemValue="value"
-                                            :validate="['text']"
-                                        />
-                                    </v-col>
-                                    <v-col>
-                                        <v-alert
-                                            v-if="!typeMobilFilter"
-                                            text
-                                            prominent
-                                            type="error"
-                                            icon="mdi-progress-alert"
+                                        <v-expansion-panel-header
+                                            class="buo-expansion-panel-header"
                                         >
-                                            Debe seleccionar al menos un
-                                            registro
-                                        </v-alert>
+                                            <div
+                                                v-if="
+                                                    !temporalFilters[
+                                                        header.value
+                                                    ]
+                                                "
+                                            >
+                                                {{ header.text }}
+                                            </div>
+                                            <v-badge
+                                                v-else
+                                                color="greenC900"
+                                                bordered
+                                                dot
+                                                offset-x="10"
+                                                offset-y="11"
+                                                >{{ header.text }}
+                                            </v-badge>
+                                        </v-expansion-panel-header>
+                                        <v-expansion-panel-content>
+                                            <!-- @helper:  Filter type Text -->
+                                            <v-text-field
+                                                v-if="header.type == undefined"
+                                                label="Buscar"
+                                                v-model="
+                                                    temporalFilters[
+                                                        header.value
+                                                    ]
+                                                "
+                                                outlined
+                                                dense
+                                                clearable
+                                                clear-icon="mdi-close-circle"
+                                            ></v-text-field>
 
-                                        <!-- @BaseInput -->
-                                        <BaseInput
-                                            v-else-if="
-                                                typeMobilFilter == 'text'
-                                            "
-                                            label="Buscar"
-                                            :validate="['text']"
-                                            v-model="mobilSearch"
-                                            :key="componentKey"
-                                        />
+                                            <!-- @helper:  Filter type Number -->
+                                            <v-text-field
+                                                label="Buscar"
+                                                v-else-if="
+                                                    header.type == 'number'
+                                                "
+                                                v-model="
+                                                    temporalFilters[
+                                                        header.value
+                                                    ]
+                                                "
+                                                outlined
+                                                dense
+                                                clearable
+                                                clear-icon="mdi-close-circle"
+                                                type="number"
+                                            ></v-text-field>
 
-                                        <!-- @BaseInputList -->
-                                        <BaseInputList
-                                            v-if="
-                                                typeMobilFilter == 'table' &&
-                                                objectMobilFilter !=
-                                                    undefined &&
-                                                objectMobilFilter.input !=
-                                                    undefined
-                                            "
-                                            :setting="objectMobilFilter"
-                                            v-model="mobilSearch"
-                                            :key="componentKey"
-                                        />
-
-                                        <!-- @BaseSimpleInputList -->
-                                        <BaseSimpleInputList
-                                            v-if="
-                                                typeMobilFilter == 'table' &&
-                                                objectMobilFilter !=
-                                                    undefined &&
-                                                objectMobilFilter.input ==
-                                                    undefined
-                                            "
-                                            :setting="objectMobilFilter"
-                                            :denseInput="true"
-                                            v-model="mobilSearch"
-                                            :key="componentKey"
-                                        />
-                                    </v-col>
-                                </div>
-                            </BaseForm>
-                        </v-card-text>
-                    </v-card>
-                </div>
-            </BasePopUp>
-
-            <v-card flat class="rounded-lg">
-                <v-card-text>
-                    <!-- @Componente:  v-data-table-->
-                    <v-data-table
-                        :headers="headers"
-                        :items="items"
-                        v-model="selected"
-                        :single-select="
-                            this.setting.singleSelect != undefined
-                                ? this.setting.singleSelect
-                                : true
-                        "
-                        :item-key="this.setting.key"
-                        show-select
-                        @click:row="$_setSelected"
-                        :options.sync="options"
-                        :server-items-length="totalItems"
-                        :loading="loadingGrid"
-                        :footer-props="settingFooter"
-                        :dense="dense"
-                    >
-                        <template v-slot:top>
-                            <!-- @Componente:  BaseButtonsGrid-->
-                            <BaseButtonsGrid
-                                :fnRefresh="$_ParamsToAPI"
-                                :fnFilter="$_filter"
-                                :fnNew="fnNew"
-                                :fnEdit="
-                                    fnEdit != undefined ? $_edit : undefined
-                                "
-                                :fnDelete="
-                                    fnDelete != undefined
-                                        ? $_DeleteModal
-                                        : undefined
-                                "
-                                :rowCount="selected.length"
-                            >
-                                <!-- @slot Use este slot para agregar botones -->
-                                <div slot="btns">
-                                    <BaseCustomsButtonsGrid
-                                        v-if="!searchByColumns"
-                                        label="Buscar"
-                                        icon="mdi-magnify"
-                                        :fnMethod="$_mobilSearch"
-                                    />
-                                    <slot name="btns"></slot>
-                                </div>
-                            </BaseButtonsGrid>
-                        </template>
-
-                        <!-- @helper:  Buscador por columnas-->
-                        <template v-slot:header v-if="searchByColumns">
-                            <tr>
-                                <!-- @helper:  Show / hidden columns -->
-                                <th v-if="!cleanFilter">
-                                    <v-btn
-                                        :class="
-                                            showSearch ? 'btnSearch' : undefined
-                                        "
-                                        icon
-                                        @click="showSearch = !showSearch"
-                                    >
-                                        <v-icon color="black"
-                                            >mdi-magnify</v-icon
-                                        >
-                                    </v-btn>
-                                </th>
-                                <!-- @helper:  clean all the filters -->
-                                <th v-if="cleanFilter">
-                                    <v-btn
-                                        :class="
-                                            showSearch ? 'btnSearch' : undefined
-                                        "
-                                        icon
-                                        @click="$_Cleanfilter"
-                                    >
-                                        <v-icon color="black"
-                                            >mdi-close-circle-outline</v-icon
-                                        >
-                                    </v-btn>
-                                </th>
-
-                                <th
-                                    v-for="header in headers"
-                                    :key="header.text"
-                                >
-                                    <!-- @helper:  Filter type Text -->
-                                    <v-col
-                                        v-if="
-                                            header.type == undefined &&
-                                            header.filterSetting == undefined
-                                        "
-                                    >
-                                        <v-text-field
-                                            outlined
-                                            dense
-                                            v-model="
-                                                filters[
-                                                    header.filterBy
-                                                        ? header.filterBy
-                                                        : header.value
-                                                ]
-                                            "
-                                            v-if="showSearch"
-                                            clearable
-                                            clear-icon="mdi-close-circle"
-                                        ></v-text-field>
-                                    </v-col>
-
-                                    <!-- @helper:  Filter type Number -->
-                                    <v-col v-else-if="header.type == 'number'">
-                                        <v-text-field
-                                            outlined
-                                            dense
-                                            v-model="
-                                                filters[
-                                                    header.filterBy
-                                                        ? header.filterBy
-                                                        : header.value
-                                                ]
-                                            "
-                                            v-if="showSearch"
-                                            clearable
-                                            clear-icon="mdi-close-circle"
-                                            type="number"
-                                        ></v-text-field>
-                                    </v-col>
-
-                                    <!-- @helper:  Filter type Hidden -->
-                                    <v-col v-else-if="header.type == 'hidden'">
-                                        <input
-                                            type="hidden"
-                                            v-if="showSearch"
-                                            v-model="
-                                                filters[
-                                                    header.filterBy
-                                                        ? header.filterBy
-                                                        : header.value
-                                                ]
-                                            "
-                                        />
-                                    </v-col>
-
-                                    <!-- @helper:  Filter type Boolean -->
-                                    <v-col v-else-if="header.type == 'bool'">
-                                        <v-autocomplete
-                                            dense
-                                            clearable
-                                            outlined
-                                            clear-icon="mdi-close-circle"
-                                            v-model="
-                                                filters[
-                                                    header.filterBy
-                                                        ? header.filterBy
-                                                        : header.value
-                                                ]
-                                            "
-                                            :items="$_boolList"
-                                            item-value="id"
-                                        >
-                                            <template v-slot:selection="data">
-                                                <v-icon
-                                                    :color="data.item.color"
-                                                    :input-value="data.item"
-                                                >
-                                                    {{ data.item.icon }}
-                                                </v-icon>
-                                            </template>
-
-                                            <template v-slot:item="data">
-                                                <v-layout
-                                                    justify-center
-                                                    align-center
+                                            <!-- @helper:  Filter type Boolean -->
+                                            <v-autocomplete
+                                                label="Buscar"
+                                                v-else-if="
+                                                    header.type == 'bool'
+                                                "
+                                                v-model="
+                                                    temporalFilters[
+                                                        header.value
+                                                    ]
+                                                "
+                                                dense
+                                                clearable
+                                                outlined
+                                                clear-icon="mdi-close-circle"
+                                                :items="$_boolList"
+                                                item-value="id"
+                                            >
+                                                <template
+                                                    v-slot:selection="data"
                                                 >
                                                     <v-icon
                                                         :color="data.item.color"
@@ -1278,249 +1035,373 @@ export default {
                                                     >
                                                         {{ data.item.icon }}
                                                     </v-icon>
-                                                </v-layout>
-                                            </template>
-                                        </v-autocomplete>
-                                    </v-col>
+                                                </template>
 
-                                    <!-- @helper:  Filter type bigint -->
-                                    <v-col v-else-if="header.type == 'bigint'">
-                                        <!-- @BaseInput -->
-                                        <BaseInput
-                                            label
-                                            dense
-                                            v-model="
-                                                filters[
-                                                    header.filterBy
-                                                        ? header.filterBy
-                                                        : header.value
-                                                ]
-                                            "
-                                            mask="###########"
-                                            clearable
-                                        />
-                                    </v-col>
+                                                <template v-slot:item="data">
+                                                    <v-layout
+                                                        justify-center
+                                                        align-center
+                                                    >
+                                                        <v-icon
+                                                            :color="
+                                                                data.item.color
+                                                            "
+                                                            :input-value="
+                                                                data.item
+                                                            "
+                                                        >
+                                                            {{ data.item.icon }}
+                                                        </v-icon>
+                                                    </v-layout>
+                                                </template>
+                                            </v-autocomplete>
 
-                                    <!-- @helper:  Filter type int -->
-                                    <v-col v-else-if="header.type == 'int'">
-                                        <!-- @BaseInput -->
-                                        <BaseInput
-                                            outlined
-                                            label
-                                            dense
-                                            v-model="
-                                                filters[
-                                                    header.filterBy
-                                                        ? header.filterBy
-                                                        : header.value
-                                                ]
-                                            "
-                                            mask="##########"
-                                            clearable
-                                        />
-                                    </v-col>
+                                            <!-- @helper:  Filter type bigint -->
+                                            <BaseInput
+                                                label="Buscar"
+                                                v-else-if="
+                                                    header.type == 'bigint'
+                                                "
+                                                v-model="
+                                                    temporalFilters[
+                                                        header.value
+                                                    ]
+                                                "
+                                                dense
+                                                mask="###########"
+                                                clearable
+                                            />
 
-                                    <!-- @helper:  Filter type smallint -->
-                                    <v-col
-                                        v-else-if="header.type == 'smallint'"
-                                    >
-                                        <!-- @BaseInput -->
-                                        <BaseInput
-                                            outlined
-                                            label
-                                            dense
-                                            v-model="
-                                                filters[
-                                                    header.filterBy
-                                                        ? header.filterBy
-                                                        : header.value
-                                                ]
-                                            "
-                                            mask="#####"
-                                            clearable
-                                        />
-                                    </v-col>
+                                            <!-- @helper:  Filter type int -->
+                                            <BaseInput
+                                                label="Buscar"
+                                                v-else-if="header.type == 'int'"
+                                                v-model="
+                                                    temporalFilters[
+                                                        header.value
+                                                    ]
+                                                "
+                                                outlined
+                                                dense
+                                                mask="##########"
+                                                clearable
+                                            />
 
-                                    <!-- @helper:  Filter type tinyint -->
-                                    <v-col v-else-if="header.type == 'tinyint'">
-                                        <!-- @BaseInput -->
-                                        <BaseInput
-                                            outlined
-                                            label
-                                            dense
-                                            clearable
-                                            v-model="
-                                                filters[
-                                                    header.filterBy
-                                                        ? header.filterBy
-                                                        : header.value
-                                                ]
-                                            "
-                                            mask="###"
-                                        />
-                                    </v-col>
+                                            <!-- @helper:  Filter type smallint -->
+                                            <BaseInput
+                                                v-else-if="
+                                                    header.type == 'smallint'
+                                                "
+                                                v-model="
+                                                    temporalFilters[
+                                                        header.value
+                                                    ]
+                                                "
+                                                outlined
+                                                label
+                                                dense
+                                                mask="#####"
+                                                clearable
+                                            />
 
-                                    <!-- @helper:  Filter type DATETIME -->
-                                    <v-col
-                                        v-else-if="header.type == 'datetime'"
-                                    >
-                                        <!-- @BaseInput -->
-                                        <BaseDatePicker
-                                            :dense="header.type == 'datetime'"
-                                            v-model="
-                                                filters[
-                                                    header.filterBy
-                                                        ? header.filterBy
-                                                        : header.value
-                                                ]
-                                            "
-                                            :type="header.type"
-                                        />
-                                    </v-col>
-
-                                    <!-- @helper:  Filter type DATE -->
-                                    <v-col v-else-if="header.type == 'date'">
-                                        <!-- @BaseInput -->
-                                        <BaseDatePicker
-                                            :dense="header.type == 'date'"
-                                            v-model="
-                                                filters[
-                                                    header.filterBy
-                                                        ? header.filterBy
-                                                        : header.value
-                                                ]
-                                            "
-                                            :type="header.type"
-                                        />
-                                    </v-col>
-
-                                    <!-- @helper:  Filter type TIME -->
-                                    <v-col v-else-if="header.type == 'time'">
-                                        <!-- @BaseInput -->
-                                        <BaseDatePicker
-                                            :dense="header.type == 'time'"
-                                            v-model="
-                                                filters[
-                                                    header.filterBy
-                                                        ? header.filterBy
-                                                        : header.value
-                                                ]
-                                            "
-                                            :type="header.type"
-                                        />
-                                    </v-col>
-
-                                    <!-- @helper:  Filter type BaseInputList -->
-                                    <v-col
-                                        v-else-if="
-                                            header.filterSetting != undefined &&
-                                            header.filterSetting.input !=
-                                                undefined
-                                        "
-                                    >
-                                        <!-- @BaseInputList -->
-                                        <BaseInputList
-                                            :setting="header.filterSetting"
-                                            v-model="
-                                                filters[
-                                                    header.filterBy
-                                                        ? header.filterBy
-                                                        : header.value
-                                                ]
-                                            "
-                                            v-if="showSearch"
-                                        />
-                                    </v-col>
-
-                                    <v-col
-                                        v-else-if="
-                                            header.filterSetting != undefined &&
-                                            header.filterSetting.input ==
-                                                undefined
-                                        "
-                                    >
-                                        <!-- @BaseSimpleInputList -->
-                                        <BaseSimpleInputList
-                                            :setting="header.filterSetting"
-                                            :denseInput="true"
-                                            v-model="
-                                                filters[
-                                                    header.filterBy
-                                                        ? header.filterBy
-                                                        : header.value
-                                                ]
-                                            "
-                                            v-if="showSearch"
-                                        />
-                                    </v-col>
-                                </th>
-                            </tr>
-                        </template>
-
-                        <template
-                            v-for="(header, bool) in headers"
-                            :slot="`item.${header.value}`"
-                            slot-scope="{ item }"
-                        >
-                            <v-icon
-                                v-if="header.type == 'bool'"
-                                :key="bool"
-                                :color="
-                                    item[header.value] ? 'greenA800' : 'grey500'
-                                "
-                            >
-                                mdi-{{
-                                    item[header.value]
-                                        ? 'checkbox-marked-circle'
-                                        : 'close-circle'
-                                }}
-                            </v-icon>
-
-                            <div v-else :key="header.value">
-                                <div v-if="header.value != 'nombreEstado'">
-                                    {{ item[header.value] }}
-                                </div>
-                                <v-chip
-                                    v-else
-                                    :color="$_setStatusColor(item['estadoId'])"
-                                    outlined
-                                    small
-                                >
-                                    {{ item[header.value] }}
-                                </v-chip>
+                                            <!-- @helper:  Filter type tinyint -->
+                                            <!-- @BaseInput -->
+                                            <BaseInput
+                                                label="Buscar"
+                                                v-else-if="
+                                                    header.type == 'tinyint'
+                                                "
+                                                v-model="
+                                                    temporalFilters[
+                                                        header.value
+                                                    ]
+                                                "
+                                                outlined
+                                                dense
+                                                clearable
+                                                mask="###"
+                                            />
+                                        </v-expansion-panel-content>
+                                    </v-expansion-panel>
+                                </v-expansion-panels>
                             </div>
-                        </template>
-                    </v-data-table>
-                </v-card-text>
+                        </BaseForm>
+                    </v-card-text>
+                </v-card>
+            </div>
+        </BasePopUp>
+        <v-card-text>
+            <!-- @Componente:  v-data-table-->
+            <v-data-table
+                :headers="headers"
+                :items="items"
+                v-model="selected"
+                :single-select="
+                    this.setting.singleSelect != undefined
+                        ? this.setting.singleSelect
+                        : true
+                "
+                :item-key="this.setting.key"
+                show-select
+                @click:row="$_setSelected"
+                :options.sync="options"
+                :server-items-length="totalItems"
+                :loading="loadingGrid"
+                :footer-props="settingFooter"
+                :dense="dense"
+            >
+                <template v-slot:top>
+                    <!-- @Componente:  BaseButtonsGrid-->
+                    <BaseButtonsGrid
+                        :fnRefresh="$_ParamsToAPI"
+                        :fnConfig="$_config"
+                        :fnFilter="$_filter"
+                        :fnNew="fnNew"
+                        :fnEdit="fnEdit != undefined ? $_edit : undefined"
+                        :fnDelete="
+                            fnDelete != undefined ? $_DeleteModal : undefined
+                        "
+                        :rowCount="selected.length"
+                    >
+                        <!-- @slot Use este slot para agregar botones -->
+                        <div slot="btns">
+                            <slot name="btns"></slot>
+                        </div>
+                    </BaseButtonsGrid>
+                </template>
 
-                <v-card-actions v-if="showFooter">
-                    <!-- @helper:  Botones Footer -->
-                    <v-layout align-end justify-end>
-                        <v-btn
-                            class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                <!-- @helper:  Buscador por columnas-->
+                <template v-slot:header v-if="$vuetify.breakpoint.mdAndUp">
+                    <tr v-if="showSearch">
+                        <!-- @helper:  Show / hidden columns -->
+                        <th v-if="!cleanFilter">
+                            <v-btn
+                                :class="showSearch ? 'btnSearch' : undefined"
+                                icon
+                            >
+                                <v-icon color="black">mdi-magnify</v-icon>
+                            </v-btn>
+                        </th>
+                        <!-- @helper:  clean all the filters -->
+                        <th v-if="cleanFilter">
+                            <v-btn
+                                :class="showSearch ? 'btnSearch' : undefined"
+                                icon
+                                @click="$_cleanFilters"
+                            >
+                                <v-icon color="black"
+                                    >mdi-close-circle-outline</v-icon
+                                >
+                            </v-btn>
+                        </th>
+
+                        <th v-for="header in headers" :key="header.text">
+                            <!-- @helper:  Filter type Text -->
+                            <div
+                                v-if="header.type == undefined"
+                                class="px-1 py-2"
+                            >
+                                <v-text-field
+                                    outlined
+                                    dense
+                                    v-model="filters[header.value]"
+                                    v-if="showSearch"
+                                    clearable
+                                    clear-icon="mdi-close-circle"
+                                ></v-text-field>
+                            </div>
+
+                            <!-- @helper:  Filter type Number -->
+                            <div
+                                v-else-if="header.type == 'number'"
+                                class="px-1 py-2"
+                            >
+                                <v-text-field
+                                    outlined
+                                    dense
+                                    v-model="filters[header.value]"
+                                    v-if="showSearch"
+                                    clearable
+                                    clear-icon="mdi-close-circle"
+                                    type="number"
+                                ></v-text-field>
+                            </div>
+
+                            <!-- @helper:  Filter type Hidden -->
+                            <div v-else-if="header.type == 'hidden'">
+                                <input
+                                    type="hidden"
+                                    v-if="showSearch"
+                                    v-model="filters[header.value]"
+                                />
+                            </div>
+
+                            <!-- @helper:  Filter type Boolean -->
+                            <div
+                                v-else-if="header.type == 'bool'"
+                                class="px-1 py-2"
+                            >
+                                <v-autocomplete
+                                    dense
+                                    clearable
+                                    outlined
+                                    clear-icon="mdi-close-circle"
+                                    v-model="filters[header.value]"
+                                    :items="$_boolList"
+                                    item-value="id"
+                                    v-if="showSearch"
+                                >
+                                    <template v-slot:selection="data">
+                                        <v-icon
+                                            :color="data.item.color"
+                                            :input-value="data.item"
+                                        >
+                                            {{ data.item.icon }}
+                                        </v-icon>
+                                    </template>
+
+                                    <template v-slot:item="data">
+                                        <v-layout justify-center align-center>
+                                            <v-icon
+                                                :color="data.item.color"
+                                                :input-value="data.item"
+                                            >
+                                                {{ data.item.icon }}
+                                            </v-icon>
+                                        </v-layout>
+                                    </template>
+                                </v-autocomplete>
+                            </div>
+
+                            <!-- @helper:  Filter type bigint -->
+                            <div
+                                v-else-if="header.type == 'bigint'"
+                                class="px-1 py-2"
+                            >
+                                <!-- @BaseInput -->
+                                <BaseInput
+                                    label
+                                    dense
+                                    v-model="filters[header.value]"
+                                    mask="###########"
+                                    clearable
+                                />
+                            </div>
+
+                            <!-- @helper:  Filter type int -->
+                            <div
+                                v-else-if="header.type == 'int'"
+                                class="px-1 py-2"
+                            >
+                                <!-- @BaseInput -->
+                                <BaseInput
+                                    outlined
+                                    label
+                                    dense
+                                    v-model="filters[header.value]"
+                                    mask="##########"
+                                    clearable
+                                />
+                            </div>
+
+                            <!-- @helper:  Filter type smallint -->
+                            <div
+                                v-else-if="header.type == 'smallint'"
+                                class="px-1 py-2"
+                            >
+                                <!-- @BaseInput -->
+                                <BaseInput
+                                    outlined
+                                    label
+                                    dense
+                                    v-model="filters[header.value]"
+                                    mask="#####"
+                                    clearable
+                                />
+                            </div>
+
+                            <!-- @helper:  Filter type tinyint -->
+                            <div
+                                v-else-if="header.type == 'tinyint'"
+                                class="px-1 py-2"
+                            >
+                                <!-- @BaseInput -->
+                                <BaseInput
+                                    outlined
+                                    label
+                                    dense
+                                    clearable
+                                    v-model="filters[header.value]"
+                                    mask="###"
+                                />
+                            </div>
+                        </th>
+                    </tr>
+                </template>
+
+                <!--
+                            Display de componentes Boolean && Status
+                        -->
+                <template
+                    v-for="(header, bool) in headers"
+                    :slot="`item.${header.value}`"
+                    slot-scope="{ item }"
+                >
+                    <v-icon
+                        v-if="header.type == 'bool'"
+                        :key="bool"
+                        :color="item[header.value] ? 'greenA800' : 'grey500'"
+                    >
+                        mdi-{{
+                            item[header.value]
+                                ? 'checkbox-marked-circle'
+                                : 'close-circle'
+                        }}
+                    </v-icon>
+
+                    <div v-else :key="header.value">
+                        <div v-if="header.value != 'nombreEstado'">
+                            {{ item[header.value] }}
+                        </div>
+                        <v-chip
+                            v-else
+                            :color="$_setStatusColor(item['estadoId'])"
                             outlined
                             small
-                            @click="$_CancelFooter"
-                            v-if="showCancel"
-                            >{{ lblCancel }}</v-btn
                         >
+                            {{ item[header.value] }}
+                        </v-chip>
+                    </div>
+                </template>
+            </v-data-table>
+        </v-card-text>
 
-                        <v-btn
-                            class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                            :color="color"
-                            dark
-                            small
-                            @click="$_SelectedFooter"
-                            >{{ labelBtn }}</v-btn
-                        >
+        <v-card-actions v-if="showFooter">
+            <!-- @helper:  Botones Footer -->
+            <v-layout align-end justify-end>
+                <v-btn
+                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    outlined
+                    small
+                    @click="$_CancelFooter"
+                    v-if="showCancel"
+                    >{{ lblCancel }}</v-btn
+                >
 
-                        <!-- @slot Agregar botones después del Btn principal -->
-                        <slot name="btns"></slot>
-                    </v-layout>
-                </v-card-actions>
-            </v-card>
-        </div>
-    </div>
+                <v-btn
+                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    :color="color"
+                    dark
+                    small
+                    @click="$_SelectedFooter"
+                    >{{ labelBtn }}</v-btn
+                >
+
+                <!-- @slot Agregar botones después del Btn principal -->
+                <slot name="btns"></slot>
+            </v-layout>
+        </v-card-actions>
+    </v-card>
 </template>
 
 <style lang="sass">

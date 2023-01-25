@@ -1,7 +1,7 @@
-import * as analytics from '@/store/modules/buoBackOffice/modules/analytics';
+import * as analyticsIndicators from '@/store/modules/buoBackOffice/modules/analytics/analyticsIndicators';
 
 const $_modules = {
-    analytics,
+    analyticsIndicators,
 };
 
 export default $_modules;

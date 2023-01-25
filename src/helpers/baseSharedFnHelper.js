@@ -113,6 +113,32 @@ const findNestedObjLike = (obj, key, value) => {
     }
 };
 
+const commify = (n) => {
+    let parts = n.toString().split('.');
+    const numberPart = parts[0];
+    const decimalPart = parts[1];
+    const thousands = /\B(?=(\d{3})+(?!\d))/g;
+    return (
+        numberPart.replace(thousands, ',') +
+        (decimalPart ? '.' + decimalPart : '')
+    );
+};
+
+const addOrDiffDays = (date, days) => {
+    date.setDate(date.getDate() + days);
+    return date;
+};
+
+const reviewNumberDate = (number) => {
+    return number > 9 ? number : `0${number}`;
+};
+
+const formatDate = (date) => {
+    return `${date.getFullYear()}-${reviewNumberDate(
+        date.getMonth() + 1
+    )}-${reviewNumberDate(date.getDate())}`;
+};
+
 export default {
     $_getInitialDay() {
         const fechaInicio = new Date();
@@ -244,6 +270,10 @@ export default {
         });
     },
 
+    $_formatNumber(number) {
+        return commify(number);
+    },
+
     /**
      * Fn Dates
      */
@@ -269,6 +299,16 @@ export default {
         }`;
 
         return currentDate;
+    },
+
+    $_formatDate(date) {
+        return formatDate(date);
+    },
+
+    $_addOrDiffDays(date, days, requiredFormat = true) {
+        return requiredFormat
+            ? formatDate(addOrDiffDays(date, days))
+            : addOrDiffDays(date, days);
     },
 
     /**
