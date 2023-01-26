@@ -56,6 +56,7 @@ export default {
                     },
                     {
                         text: 'Token Usuario',
+                        type: 'number',
                         align: 'start',
                         value: 'tokenUsuario',
                         show: false,

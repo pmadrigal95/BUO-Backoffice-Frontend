@@ -280,7 +280,7 @@ export default {
                         <v-col cols="12">
                             <BaseInput
                                 label="Identificación"
-                                v-model.number="entity.identificacion"
+                                v-model.trim="entity.identificacion"
                                 :validate="['optionalText']"
                             />
                         </v-col>
@@ -291,7 +291,7 @@ export default {
                                 endpoint="pais/list"
                                 itemText="nombre"
                                 itemValue="id"
-                                v-model="entity.paisId"
+                                v-model.number="entity.paisId"
                                 :validate="['optionalText']"
                             />
                         </v-col>
@@ -299,7 +299,7 @@ export default {
                         <v-col cols="12">
                             <BaseInput
                                 label="Ciudad"
-                                v-model.number="entity.ciudad"
+                                v-model.trim="entity.ciudad"
                                 :validate="['optionalText']"
                             />
                         </v-col>
@@ -315,8 +315,8 @@ export default {
                         <v-col cols="12">
                             <BaseInput
                                 label="Username"
-                                v-model.number="entity.username"
-                                :validate="['text']"
+                                v-model.trim="entity.username"
+                                :validate="['email']"
                             />
                         </v-col>
 
@@ -326,7 +326,7 @@ export default {
                                 endpoint="genero/list"
                                 itemText="nombre"
                                 itemValue="id"
-                                v-model="entity.generoId"
+                                v-model.number="entity.generoId"
                                 :validate="['optionalText']"
                             />
                         </v-col>
@@ -335,15 +335,16 @@ export default {
                             <BaseDatePicker
                                 label="Fecha de nacimiento"
                                 appendIcon="mdi-magnify"
-                                v-model="entity.fechaNacimiento"
+                                v-model.trim="entity.fechaNacimiento"
                                 :validate="['optionalText']"
+                                reqCurrentMaxDate
                             />
                         </v-col>
 
                         <v-col cols="12">
                             <BaseInput
                                 label="Número de teléfono"
-                                v-model.number="entity.telefono"
+                                v-model.trim="entity.telefono"
                                 :validate="['optionalText']"
                             />
                         </v-col>
@@ -353,15 +354,14 @@ export default {
                                 label="Organización"
                                 :setting="setting"
                                 :editText="entity.nombreOrganizacion"
-                                v-model="entity.organizacionId"
-                                :validateEditor="['text']"
+                                v-model.number="entity.organizacionId"
                             />
                         </v-col>
 
                         <v-col cols="12">
                             <BaseSelect
                                 label="Estado"
-                                v-model="entity.estadoId"
+                                v-model.number="entity.estadoId"
                                 :endpoint="statusList"
                                 itemText="product"
                                 itemValue="value"
