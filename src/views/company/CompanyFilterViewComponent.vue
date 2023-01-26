@@ -46,13 +46,13 @@ export default {
                         text: 'Nombre Contacto',
                         align: 'start',
                         value: 'nombreContacto',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Correo Contacto',
                         align: 'start',
                         value: 'correoContacto',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Token Usuario',
@@ -62,11 +62,23 @@ export default {
                         show: false,
                     },
                     {
+                        text: 'Usuarios',
+                        align: 'end',
+                        value: 'totalUsuarios',
+                        show: true,
+                    },
+                    {
+                        text: 'Wallets Activas',
+                        align: 'end',
+                        value: 'walletsActivas',
+                        show: true,
+                    },
+                    {
                         text: 'Certifica Inmediato',
                         type: 'bool',
                         align: 'center',
                         value: 'certificaInmediato',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Mostrar Puestos Genéricos',
@@ -76,7 +88,7 @@ export default {
                         show: false,
                     },
                     {
-                        text: 'Es Cliente Demo',
+                        text: 'Demo',
                         type: 'bool',
                         align: 'center',
                         value: 'esClienteDemo',
@@ -112,6 +124,7 @@ export default {
                         value: 'descripcion',
                         show: false,
                     },
+
                 ],
                 key: 'id',
             };
