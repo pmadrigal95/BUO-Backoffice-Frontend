@@ -18,6 +18,9 @@ const BaseCardViewComponent = () =>
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
+const BaseCustomsButtonsGrid = () =>
+    import('@/components/core/grids/BaseCustomsButtonsGrid.vue');
+
 export default {
     name: 'UserFilterViewComponent',
 
@@ -31,6 +34,7 @@ export default {
     components: {
         BaseCardViewComponent,
         BaseServerDataTable,
+        BaseCustomsButtonsGrid,
     },
 
     computed: {
@@ -174,6 +178,13 @@ export default {
                 params: params && { Id: params.selected[this.setting.key] },
             });
         },
+
+        /**
+         * Pantalla Carga Masiva
+         */
+        $_fnLoad() {
+            this.$router.push({ name: 'UserBulkLoadViewComponent' });
+        },
     },
 };
 </script>
@@ -187,7 +198,15 @@ export default {
                 :fnNew="write ? $_userEditor : undefined"
                 :fnEdit="write ? $_userEditor : undefined"
                 :fnDelete="write ? $_fnDesactiveUser : undefined"
-            />
+            >
+                <div slot="btns">
+                    <BaseCustomsButtonsGrid
+                        label="Carga Masiva"
+                        :fnMethod="$_fnLoad"
+                        icon="mdi-table-arrow-up"
+                    />
+                </div>
+            </BaseServerDataTable>
         </div>
     </BaseCardViewComponent>
 </template>

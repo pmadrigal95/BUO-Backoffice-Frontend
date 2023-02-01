@@ -1,8 +1,8 @@
 <script>
 /**
- * Descripción: Pantalla Editor Usuarios
+ * Descripción: Pantalla Carga Masiva  Usuarios
  *
- * @displayName UserEditorViewComponent
+ * @displayName UserBulkLoadViewComponent
  *
  */
 
@@ -12,21 +12,27 @@ import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
+import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
+
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
 const BaseInputDataTable = () =>
     import('@/components/core/forms/BaseInputDataTable.vue');
 
-const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
+const StepViewComponent = () =>
+    import('@/views/user/bulkLoad/components/StepViewComponent.vue');
+
+const BaseInputFile = () => import('@/components/core/forms/BaseInputFile');
 
 export default {
-    name: 'UserEditorViewComponent',
+    name: 'UserBulkLoadViewComponent',
 
     components: {
         BaseCardViewComponent,
-        BaseDatePicker,
         BaseInputDataTable,
+        StepViewComponent,
+        BaseInputFile,
     },
 
     data() {
@@ -204,6 +210,11 @@ export default {
                             {},
                             response.data
                         );
+
+                        this.entity.fechaNacimiento =
+                            baseSharedFnHelper.$_parseArrayToDateISOString(
+                                this.entity.fechaNacimiento
+                            );
                     }
                 });
             }
@@ -229,12 +240,16 @@ export default {
         },
 
         /**
-         * Function to return the CompanyFilterViewComponent
+         * Function to return the UserFilterViewComponent
          */
         $_returnToFilter() {
             this.$router.push({
                 name: 'UserFilterViewComponent',
             });
+        },
+
+        $_fnTest() {
+            alert('hola');
         },
     },
 };
@@ -253,105 +268,69 @@ export default {
             <BaseForm :method="$_sendToApi" :cancel="$_returnToFilter" v-else>
                 <div slot="body">
                     <v-row dense>
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Nombre"
-                                v-model.trim="entity.nombre"
-                                :validate="['text']"
-                            />
+                        <v-col cols="12" class="mb-2">
+                            <StepViewComponent
+                                icon="mdi-numeric-1-circle"
+                                description="Descarga el siguiente archivo Excel."
+                                iconColor="#54ABB0"
+                                font="grey700--text BUO-Paragraph-Medium"
+                            ></StepViewComponent>
+                        </v-col>
+
+                        <v-col cols="12" class="mb-4">
+                            <v-alert color="greenA400" dense>
+                                <v-row align="center">
+                                    <v-col class="shrink">
+                                        <v-icon large color="greenB800">
+                                            mdi mdi-microsoft-excel
+                                        </v-icon>
+                                    </v-col>
+                                    <v-col class="grow">
+                                        <h1
+                                            class="greenB800--text BUO-Paragraph-Medium"
+                                        >
+                                            Nombre documento.xlsx
+                                        </h1>
+                                    </v-col>
+                                    <v-col class="shrink">
+                                        <v-btn
+                                            class="mx-2"
+                                            fab
+                                            dark
+                                            small
+                                            color="greenB800"
+                                            @click="$_fnTest"
+                                        >
+                                            <v-icon dark>
+                                                mdi mdi-download
+                                            </v-icon>
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
+                            </v-alert>
+                        </v-col>
+
+                        <v-col cols="12" class="mb-4">
+                            <StepViewComponent
+                                icon="mdi-numeric-2-circle"
+                                description="Edita el mismo archivo con los datos de tus colaboradores, siguiendo el formato del archivo sin alterarlo."
+                                iconColor="#54ABB0"
+                                font="grey700--text BUO-Paragraph-Medium"
+                            ></StepViewComponent>
                         </v-col>
 
                         <v-col cols="12">
-                            <BaseInput
-                                label="Primer apellido"
-                                v-model.trim="entity.primerApellido"
-                                :validate="['text']"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Segundo apellido"
-                                v-model.trim="entity.segundoApellido"
-                                :validate="['optionalText']"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Identificación"
-                                v-model.trim="entity.identificacion"
-                                :validate="['optionalText']"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseSelect
-                                label="País"
-                                endpoint="pais/list"
-                                itemText="nombre"
-                                itemValue="id"
-                                v-model.number="entity.paisId"
-                                :validate="['optionalText']"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Ciudad"
-                                v-model.trim="entity.ciudad"
-                                :validate="['optionalText']"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Correo electrónico"
-                                v-model.trim="entity.correo"
-                                :validate="['email']"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Username"
-                                v-model.trim="entity.username"
-                                :validate="['email']"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseSelect
-                                label="Género"
-                                endpoint="genero/list"
-                                itemText="nombre"
-                                itemValue="id"
-                                v-model.number="entity.generoId"
-                                :validate="['optionalText']"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseDatePicker
-                                label="Fecha de nacimiento"
-                                appendIcon="mdi-magnify"
-                                v-model.trim="entity.fechaNacimiento"
-                                :validate="['optionalText']"
-                                reqCurrentMaxDate
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Número de teléfono"
-                                v-model.trim="entity.telefono"
-                                :validate="['optionalText']"
-                            />
+                            <StepViewComponent
+                                icon="mdi-numeric-3-circle"
+                                description="Selecciona la empresa."
+                                iconColor="#54ABB0"
+                                font="grey700--text BUO-Paragraph-Medium"
+                            ></StepViewComponent>
                         </v-col>
 
                         <v-col cols="12">
                             <BaseInputDataTable
-                                label="Organización"
+                                label="Buscar empresa"
                                 :setting="setting"
                                 :editText="entity.nombreOrganizacion"
                                 v-model.number="entity.organizacionId"
@@ -359,14 +338,16 @@ export default {
                         </v-col>
 
                         <v-col cols="12">
-                            <BaseSelect
-                                label="Estado"
-                                v-model.number="entity.estadoId"
-                                :endpoint="statusList"
-                                itemText="product"
-                                itemValue="value"
-                                :validate="['text']"
-                            />
+                            <StepViewComponent
+                                icon="mdi-numeric-4-circle"
+                                description="Sube el archivo editado."
+                                iconColor="#54ABB0"
+                                font="grey700--text BUO-Paragraph-Medium"
+                            ></StepViewComponent>
+                        </v-col>
+
+                        <v-col cols="12">
+                            <BaseInputFile></BaseInputFile>
                         </v-col>
                     </v-row>
                 </div>

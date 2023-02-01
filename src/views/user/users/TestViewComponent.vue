@@ -5,16 +5,18 @@
  * @displayName TestFilterViewComponent
  *
  */
-const userFilter = () => import('@/views/user/UserFilterViewComponent');
+//const userFilter = () => import('@/views/user/UserFilterViewComponent');
+
+const BaseInputFile = () => import('@/components/core/forms/BaseInputFile');
 
 export default {
     name: 'TestViewComponent',
     components: {
-        userFilter,
+        BaseInputFile,
     },
 };
 </script>
 
 <template>
-    <userFilter :empresa="1"></userFilter>
+    <BaseInputFile></BaseInputFile>
 </template>

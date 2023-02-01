@@ -63,12 +63,14 @@ export default {
                     },
                     {
                         text: 'Usuarios',
+                        type: 'number',
                         align: 'end',
                         value: 'totalUsuarios',
                         show: true,
                     },
                     {
                         text: 'Wallets Activas',
+                        type: 'number',
                         align: 'end',
                         value: 'walletsActivas',
                         show: true,
