@@ -39,6 +39,19 @@ const extensionsFile = {
     },
 };
 
+//funcion flecha como shared fn helper
+
+const isCorrectExtension = (file, extension) => {
+    try {
+        let result = false;
+        if (!file.name.endsWith(`.${extension}`)) {
+            return result;
+        }
+    } catch (result) {
+        return result;
+    }
+};
+
 /**
  * Description: functions used for files
  */
@@ -56,16 +69,7 @@ export default {
         reader.readAsDataURL(file);
     },
 
-    $_isCorrectExtension(file) {
-        if (file.name.endsWith('.xlsx')) {
-            alert('excel matched');
-        } else {
-            alert('not matched');
-        }
-        /*if (this.ffile[0].type.match('application/vnd.ms-excel')) {
-            console.log('excel matched');
-        } else {
-            console.log('not matched');
-        }*/
+    $_isCorrectExtension(file, extension) {
+        return isCorrectExtension(file, extension);
     },
 };

@@ -39,6 +39,7 @@ export default {
         return {
             entity: this.$_Object(),
             loading: false,
+            test: undefined,
         };
     },
 
@@ -347,7 +348,17 @@ export default {
                         </v-col>
 
                         <v-col cols="12">
-                            <BaseInputFile></BaseInputFile>
+                            <BaseInputFile
+                                outlined
+                                accept=".xlsx"
+                                label="Archivo"
+                                showSize
+                                appendIcon="mdi-progress-upload"
+                                counter
+                                placeholder="Arrastra y suelta tu archivo aquí o búscalo"
+                                :validate="['extension']"
+                                v-model="test"
+                            ></BaseInputFile>
                         </v-col>
                     </v-row>
                 </div>

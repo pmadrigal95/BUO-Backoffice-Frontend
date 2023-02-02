@@ -7,7 +7,7 @@
 
 import { mask } from 'vue-the-mask';
 
-//import extensions from '@/helpers/baseExtensionsFile.js';
+//import baseFnFile from '@/helpers/baseFnFile.js';
 
 export default {
     name: 'BaseInputFile',
@@ -23,7 +23,7 @@ export default {
          */
         appendIcon: {
             type: String,
-            default: undefined,
+            default: 'mdi-progress-upload',
         },
 
         /**
@@ -252,122 +252,218 @@ export default {
             default: undefined,
         },
 
+        /**
+         * Aplica la variante de tema claro al componente.
+         * No Requerido
+         */
         light: {
             type: Boolean,
             default: undefined,
         },
 
+        /**
+         * Especifica la altura del contenedor.
+         * No Requerido
+         */
         loaderHeight: {
             type: [Number, String],
             default: 2,
         },
 
+        /**
+         * Muestra la barra de progreso lineal.
+         * No Requerido
+         */
         loading: {
             type: [Boolean, String],
             default: false,
         },
 
+        /**
+         * Agrega el atributo múltiple al input file.
+         * No Requerido
+         */
         multiple: {
             type: Boolean,
             default: false,
         },
 
+        /**
+         * Aplica el estilo delineado a la entrada.
+         * No Requerido
+         */
         outlined: {
             type: Boolean,
             default: false,
         },
 
+        /**
+         * Forza la sugerencia de estar siempre visible.
+         * No Requerido
+         */
         persistentHint: {
             type: Boolean,
             default: false,
         },
 
+        /**
+         * Obliga al marcador de posición a estar siempre visible.
+         * No Requerido
+         */
         persistentPlaceholder: {
             type: Boolean,
             default: false,
         },
 
+        /**
+         * Establece el texto del marcador de posición de la entrada.
+         * No Requerido
+         */
         placeholder: {
             type: String,
             default: undefined,
         },
 
+        /**
+         * Muestra el texto del prefijo.
+         * No Requerido
+         */
         prefix: {
             type: String,
             default: undefined,
         },
 
+        /**
+         * Antepone un ícono al componente, usa la misma sintaxis que v-icon.
+         * No Requerido
+         */
         prependIcon: {
             type: String,
-            default: '$file',
+            default: '',
         },
 
+        /**
+         * Antepone un ícono dentro de la entrada del componente, usa la misma sintaxis que v-icon.
+         * No Requerido
+         */
         prependInnerIcon: {
             type: String,
-            default: 'undefined',
+            default: '',
         },
 
+        /**
+         * Invierte la orientación de entrada.
+         * No Requerido
+         */
         reverse: {
             type: Boolean,
             default: false,
         },
 
+        /**
+         * Agrega un radio de borde a la entrada.
+         * No Requerido
+         */
         rounded: {
             type: Boolean,
             default: false,
         },
 
+        /**
+         * Redondee si está delineado y aumente el radio del borde si está lleno.
+         * No Requerido
+         */
         shaped: {
             type: Boolean,
             default: false,
         },
 
+        /**
+         * Establece el tamaño mostrado de los archivos seleccionados.
+         * No Requerido
+         */
         showSize: {
             type: [Boolean, Number],
             default: false,
         },
 
+        /**
+         * La etiqueta no se mueve en foco / sucio.
+         * No Requerido
+         */
         singleLine: {
             type: Boolean,
             default: false,
         },
 
+        /**
+         * Cambia la visualización de selecciones a fichas con la propiedad pequeña.
+         * No Requerido
+         */
         smallChips: {
             type: Boolean,
             default: false,
         },
 
+        /**
+         * Cambia el estilo de la entrada.
+         * No Requerido
+         */
         solo: {
             type: Boolean,
             default: false,
         },
 
+        /**
+         * Reduce la opacidad del elemento hasta que se enfoca.
+         * No Requerido
+         */
         soloInverted: {
             type: Boolean,
             default: false,
         },
 
+        /**
+         * Pone la entrada en un estado de éxito.
+         * No Requerido
+         */
         success: {
             type: Boolean,
             default: false,
         },
 
+        /**
+         * Pone la entrada en un estado de éxito y pasa a través de mensajes de éxito personalizados.
+         * No Requerido
+         */
         successMessages: {
             type: [String, Array],
             default: undefined,
         },
 
+        /**
+         * Displays suffix text.
+         * No Requerido
+         */
         suffix: {
             type: String,
             default: undefined,
         },
 
+        /**
+         * La longitud de un nombre de archivo antes de que se trunque con puntos suspensivos.
+         * No Requerido
+         */
         truncateLength: {
             type: [Number, String],
             default: 22,
         },
 
-        trunvalidateOnBlurcateLength: {
+        /**
+         * Retrasa la validación hasta el evento de desenfoque.
+         * No Requerido
+         */
+        validateOnBlur: {
             type: Boolean,
             default: false,
         },
@@ -376,6 +472,13 @@ export default {
          * V-model
          */
         value: {
+            default: undefined,
+        },
+
+        /**
+         * Extensiones que se aceptan
+         */
+        accept: {
             type: String,
         },
 
@@ -390,29 +493,11 @@ export default {
 
         /**
          * Como validar el input
-         * ['text'] ['email'] [ @validacionPersonalizada ]
+         * ['text'] [ @validacionPersonalizada ]
          */
         validate: {
             type: Array,
             required: false,
-        },
-
-        /**
-         * Caracteres max
-         * Default: 100
-         */
-        max: {
-            type: Number,
-            default: 100,
-        },
-
-        /**
-         * Caracteres min
-         * Default: 0
-         */
-        min: {
-            type: Number,
-            default: 0,
         },
 
         /**
@@ -426,8 +511,6 @@ export default {
     data() {
         return {
             normalRules: [],
-            BoolMask: false,
-            files: [],
         };
     },
 
@@ -443,23 +526,22 @@ export default {
     /**
      * Validaciones
      */
-    created() {},
+    created() {
+        switch (this.validate[0]) {
+            case 'extension':
+                this.normalRules = [(v) => !!v || 'Item is required'];
+                break;
 
+            default:
+                this.normalRules = this.validate;
+        }
+    },
     /**
      * Metodos click icon
      */
     methods: {
-        inputChanged() {
-            if (this.file[0].name.endsWith('.xlsx')) {
-                alert('excel matched');
-            } else {
-                alert('not matched');
-            }
-            /*if (this.ffile[0].type.match('application/vnd.ms-excel')) {
-                console.log('excel matched');
-            } else {
-                console.log('not matched');
-            }*/
+        $_updateValue(event) {
+            this.$emit('input', event);
         },
     },
 };
@@ -467,13 +549,62 @@ export default {
 
 <template>
     <v-file-input
-        v-model="file"
-        accept=".xlsx"
-        placeholder="Upload your documents"
-        label="File input"
-        multiple
-        prepend-icon="mdi-paperclip"
-        @change="inputChanged"
+        :append-icon="appendIcon"
+        :append-outer-icon="appendOuterIcon"
+        :autofocus="autofocus"
+        :background-color="backgroundColor"
+        :chips="chips"
+        :clear-icon="clearIcon"
+        :clearable="clearable"
+        :color="color"
+        :counter="counter"
+        :counter-size-string="counterSizeString"
+        :counter-string="counterString"
+        :counter-value="counterValue"
+        :dark="dark"
+        :dense="dense"
+        :disabled="disabled"
+        :error="error"
+        :error-count="errorCount"
+        :filled="filled"
+        :flat="flat"
+        :full-width="fullWidth"
+        :height="height"
+        :hide-details="hideDetails"
+        :hide-input="hideInput"
+        :hint="hint"
+        :id="id"
+        :label="label"
+        :light="light"
+        :loader-height="loaderHeight"
+        :loading="loading"
+        :multiple="multiple"
+        :outlined="outlined"
+        :persistent-hint="persistentHint"
+        :persistent-placeholder="persistentPlaceholder"
+        :placeholder="placeholder"
+        :prefix="prefix"
+        :prepend-icon="prependIcon"
+        :prepend-inner-icon="prependInnerIcon"
+        :reverse="reverse"
+        :rounded="rounded"
+        :shaped="shaped"
+        :show-size="showSize"
+        :single-line="singleLine"
+        :small-chips="smallChips"
+        :solo="solo"
+        :solo-inverted="soloInverted"
+        :success="success"
+        :success-messages="successMessages"
+        :suffix="suffix"
+        :truncate-length="truncateLength"
+        :validate-on-blur="validateOnBlur"
+        :accept="accept"
+        :value="value"
+        @input="$_updateValue"
+        v-bind="$attrs"
+        v-on="listeners"
+        :rules="[(v) => !!v || 'File is mandatory']"
     >
         <template v-slot:selection="{ text }">
             <v-chip small label color="primary">

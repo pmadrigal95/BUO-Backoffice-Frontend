@@ -358,7 +358,7 @@ export default {
 
                         <v-col cols="12">
                             <BaseInputDataTable
-                                label="Organización"
+                                label="Empresa"
                                 :setting="setting"
                                 :editText="entity.nombreOrganizacion"
                                 v-model.number="entity.organizacionId"
