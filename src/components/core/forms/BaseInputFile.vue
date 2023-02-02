@@ -5,14 +5,10 @@
  * @displayName BaseInputFile
  */
 
-import { mask } from 'vue-the-mask';
-
 //import baseFnFile from '@/helpers/baseFnFile.js';
 
 export default {
     name: 'BaseInputFile',
-
-    directives: { mask },
 
     inheritAttrs: false,
 
@@ -213,7 +209,7 @@ export default {
          */
         hideDetails: {
             type: [Boolean, String],
-            default: undefined,
+            default: false,
         },
 
         /**
@@ -294,7 +290,7 @@ export default {
          */
         outlined: {
             type: Boolean,
-            default: false,
+            default: true,
         },
 
         /**
@@ -465,7 +461,7 @@ export default {
          */
         validateOnBlur: {
             type: Boolean,
-            default: false,
+            default: true,
         },
 
         /**
@@ -499,13 +495,6 @@ export default {
             type: Array,
             required: false,
         },
-
-        /**
-         * Mask Input
-         */
-        mask: {
-            default: undefined,
-        },
     },
 
     data() {
@@ -527,18 +516,9 @@ export default {
      * Validaciones
      */
     created() {
-        switch (this.validate[0]) {
-            case 'extension':
-                this.normalRules = [(v) => !!v || 'Item is required'];
-                break;
-
-            default:
-                this.normalRules = this.validate;
-        }
+        this.normalRules = [(v) => !!v || 'Item is required'];
     },
-    /**
-     * Metodos click icon
-     */
+
     methods: {
         $_updateValue(event) {
             this.$emit('input', event);
@@ -551,7 +531,6 @@ export default {
     <v-file-input
         :append-icon="appendIcon"
         :append-outer-icon="appendOuterIcon"
-        :autofocus="autofocus"
         :background-color="backgroundColor"
         :chips="chips"
         :clear-icon="clearIcon"
@@ -598,13 +577,13 @@ export default {
         :success-messages="successMessages"
         :suffix="suffix"
         :truncate-length="truncateLength"
-        :validate-on-blur="validateOnBlur"
         :accept="accept"
         :value="value"
-        @input="$_updateValue"
+        @change="$_updateValue"
         v-bind="$attrs"
         v-on="listeners"
-        :rules="[(v) => !!v || 'File is mandatory']"
+        :rules="normalRules"
+        :validate-on-blur="validateOnBlur"
     >
         <template v-slot:selection="{ text }">
             <v-chip small label color="primary">
