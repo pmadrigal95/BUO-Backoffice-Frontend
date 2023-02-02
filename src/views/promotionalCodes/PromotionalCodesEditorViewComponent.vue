@@ -21,12 +21,15 @@ const BaseCardViewComponent = () =>
 
 const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
 
+const BaseTreeview = () => import('@/components/core/treeview/BaseTreeview');
+
 export default {
     name: 'PromotionalCodesEditorViewComponent',
 
     components: {
         BaseCardViewComponent,
         BaseDatePicker,
+        BaseTreeview,
     },
 
     data() {
@@ -226,6 +229,13 @@ export default {
                                 itemText="product"
                                 itemValue="value"
                                 :validate="['text']"
+                            />
+                        </v-col>
+                        <v-col cols="12">
+                            <BaseTreeview
+                                endpoint="departamento/findAllTree/2"
+                                itemText="nombre"
+                                itemChildren="subDepartamentos"
                             />
                         </v-col>
                     </v-row>
