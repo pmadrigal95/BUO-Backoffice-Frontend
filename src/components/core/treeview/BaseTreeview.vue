@@ -5,7 +5,7 @@
  * @displayName BaseTreeview
  */
 
- import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 import httpService from '@/services/axios/httpService';
 
@@ -268,13 +268,13 @@ export default {
 
     data() {
         return {
-            items: [],
-            loading: null,
-            searchValue: null,
             /**
              * Identificador del input
              */
             refTree: 'BaseTreeview_',
+            items: [],
+            loading: null,
+            searchValue: null,
         };
     },
 
@@ -314,6 +314,14 @@ export default {
                 this.items = this.$props.endpoint;
                 this.loading = false;
             }
+        },
+
+        hello(item) {
+            alert(item);
+        },
+
+        hello2(item) {
+            console.log(item);
         },
     },
 };
@@ -359,7 +367,11 @@ export default {
             :selection-type="selectionType"
             :shaped="shaped"
             :transition="transition"
-        />
-        {{  }}
+        >
+            <template slot="label" slot-scope="{ item }">
+                <div v-on:dblclick="hello2(item)">{{ item[itemText] }}</div>
+            </template>
+        </v-treeview>
+        {{}}
     </div>
 </template>
