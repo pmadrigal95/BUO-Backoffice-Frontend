@@ -94,7 +94,7 @@ export default {
          * Enviar información adicional al servidor
          */
         extraParams: {
-            type: Object,
+            type: Array,
             default: undefined,
         },
 
