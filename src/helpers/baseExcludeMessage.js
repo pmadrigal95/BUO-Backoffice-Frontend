@@ -6,6 +6,7 @@
 
 const exclusionList = [
     '/findBy',
+    'analytics',
     'menuUsuario',
     '/user/authenticate',
     'misc/validateCaptcha',
