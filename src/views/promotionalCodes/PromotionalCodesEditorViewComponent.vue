@@ -60,6 +60,8 @@ export default {
          */
         this.$_getObject();
 
+        this.entity.usuarioId = this.user.userId;
+
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
             this.$vuetify.theme.themes.light.white;
