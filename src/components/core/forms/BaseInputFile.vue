@@ -4,8 +4,9 @@
  *
  * @displayName BaseInputFile
  */
+import baseLocalHelper from '@/helpers/baseLocalHelper';
 
-//import baseFnFile from '@/helpers/baseFnFile.js';
+import baseFnFile from '@/helpers/baseFnFile';
 
 export default {
     name: 'BaseInputFile',
@@ -64,7 +65,7 @@ export default {
          */
         clearIcon: {
             type: String,
-            default: '$clear',
+            default: 'mdi-close-circle',
         },
 
         /**
@@ -461,7 +462,7 @@ export default {
          */
         validateOnBlur: {
             type: Boolean,
-            default: true,
+            default: false,
         },
 
         /**
@@ -516,13 +517,26 @@ export default {
      * Validaciones
      */
     created() {
-        this.normalRules = [(v) => !!v || 'Item is required'];
+        this.normalRules = [
+            (v) =>
+                !!v ||
+                baseLocalHelper.$_MsgFieldRequired(
+                    this.label != undefined ? this.label : ''
+                ),
+            (v) =>
+                (v && baseFnFile.$_isCorrectExtension(v, this.accept)) ||
+                baseLocalHelper.$_MsgFileAllowedExtensioInvalid(this.accept),
+        ];
     },
 
     methods: {
         $_updateValue(event) {
             this.$emit('input', event);
         },
+
+        /*$_updateValue(event) {
+            this.$emit('input', event);
+        }, */
     },
 };
 </script>

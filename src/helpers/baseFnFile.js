@@ -18,7 +18,7 @@ const extensionsFile = {
     },
 
     excel: {
-        extension: ['.xls', 'xlsx'],
+        extension: ['.xls', '.xlsx'],
         documentType: 'Microsoft Excel',
         mimeType: [
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -39,17 +39,24 @@ const extensionsFile = {
     },
 };
 
-//funcion flecha como shared fn helper
-
 const isCorrectExtension = (file, extension) => {
     try {
-        let result = false;
-        if (!file.name.endsWith(`.${extension}`)) {
-            return result;
+        if (file.name.endsWith(`${extension}`) && extensionsFile.excel.extension.some((element) => element == extension)) {
+            return true;
         }
     } catch (result) {
-        return result;
+        return false;
     }
+};
+
+const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () =>
+            resolve(reader.result.replace('data:', '').replace(/^.+,/, ''));
+        reader.onerror = (error) => reject(error);
+    });
 };
 
 /**
@@ -58,18 +65,11 @@ const isCorrectExtension = (file, extension) => {
 export default {
     $_extensionsFile: extensionsFile,
 
-    $_convertToBase64(file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            const base64String = reader.result
-                .replace('data:', '')
-                .replace(/^.+,/, '');
-            console.log(base64String);
-        };
-        reader.readAsDataURL(file);
-    },
-
     $_isCorrectExtension(file, extension) {
         return isCorrectExtension(file, extension);
+    },
+
+    $_convertToBase64(file) {
+        return convertToBase64(file);
     },
 };

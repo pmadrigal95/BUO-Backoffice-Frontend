@@ -10,9 +10,7 @@ import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
-import BaseArrayHelper from '@/helpers/baseArrayHelper';
-
-import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
+import baseFnFile from '@/helpers/baseFnFile';
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
@@ -37,9 +35,11 @@ export default {
 
     data() {
         return {
-            entity: this.$_Object(),
             loading: false,
-            test: undefined,
+            file: undefined,
+            organizacionId: undefined,
+            nombreOrganizacion: undefined,
+            response: undefined,
         };
     },
 
@@ -155,11 +155,6 @@ export default {
     },
 
     created() {
-        /**
-         * Determinar si Es nuevo / editor
-         */
-        this.$_getObject();
-
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
             this.$vuetify.theme.themes.light.white;
@@ -172,72 +167,32 @@ export default {
 
     methods: {
         /**
-         * Entity Object
+         * Body Request
          */
-        $_Object() {
-            return {
-                id: 0,
-                nombre: undefined,
-                primerApellido: undefined,
-                segundoApellido: undefined,
-                identificacion: undefined,
-                paisId: undefined,
-                ciudad: undefined,
-                correo: undefined,
-                username: undefined,
-                generoId: undefined,
-                fechaNacimiento: undefined,
-                telefono: undefined,
-                nombreOrganizacion: undefined,
-                organizacionId: undefined,
-                estadoId: 2,
-                usuarioModificaId: undefined,
+        $_createBodyRequest(file) {
+            const request = {
+                excelFile: file,
             };
+            return request;
         },
 
-        /**
-         * Determinar si Es nuevo / editor
-         */
-        $_getObject() {
-            let data = this.$router.currentRoute.params.Id;
-            if (data) {
-                //HttpServices a la vista para obtener Vista
-                this.loading = true;
-                httpService.get(`user/${data}`).then((response) => {
+        async $_sendToApi() {
+            this.loading = true;
+            const base64 = await baseFnFile.$_convertToBase64(this.file);
+            const object = this.$_createBodyRequest(base64);
+            httpService
+                .post(
+                    `cargaMasivaEmpleados/addEmployees/${this.organizacionId}`,
+                    object
+                )
+                .then((response) => {
                     this.loading = false;
                     if (response != undefined) {
-                        // Encontro la entidad
-                        this.entity = BaseArrayHelper.SetObject(
-                            {},
-                            response.data
-                        );
-
-                        this.entity.fechaNacimiento =
-                            baseSharedFnHelper.$_parseArrayToDateISOString(
-                                this.entity.fechaNacimiento
-                            );
+                        //Logica JS luego de la acción exitosa!!!
+                        this.response = response.data.response;
+                        this.$refs.popUp.$_openModal();
                     }
                 });
-            }
-        },
-
-        $_setToUser() {
-            this.entity.usuarioModificaId = this.user.userId;
-        },
-
-        $_sendToApi() {
-            this.loading = true;
-            this.$_setToUser();
-            let object = BaseArrayHelper.SetObject({}, this.entity);
-
-            httpService.post('user/saveUserForm', object).then((response) => {
-                this.loading = false;
-
-                if (response != undefined) {
-                    //Logica JS luego de la acción exitosa!!!
-                    this.$_returnToFilter();
-                }
-            });
         },
 
         /**
@@ -257,112 +212,143 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent
-        title="Agrega a tus colaboradores"
-        :btnAction="$_returnToFilter"
-        class="mx-auto"
-        md="6"
-        offset="3"
-    >
-        <div slot="card-text">
-            <BaseSkeletonLoader v-if="loading" type="article, actions" />
-            <BaseForm :method="$_sendToApi" :cancel="$_returnToFilter" v-else>
-                <div slot="body">
-                    <v-row dense>
-                        <v-col cols="12" class="mb-2">
-                            <StepViewComponent
-                                icon="mdi-numeric-1-circle"
-                                description="Descarga el siguiente archivo Excel."
-                                iconColor="#54ABB0"
-                                font="grey700--text BUO-Paragraph-Medium"
-                            ></StepViewComponent>
-                        </v-col>
+    <div>
+        <BaseDialog
+            ref="popUp"
+            tittle="Resultados de la carga masiva"
+            width="$vuetify.breakpoint.mobile ? '100%' : '792px'"
+        >
+            <div slot="Content">
+                <v-list>
+                    <v-list-item v-for="item in response" :key="item.id">
+                        <v-list-item-icon>
+                            <v-icon color="pink">
+                                mdi mdi-alert-outline
+                            </v-icon>
+                        </v-list-item-icon>
 
-                        <v-col cols="12" class="mb-4">
-                            <v-alert color="greenA400" dense>
-                                <v-row align="center">
-                                    <v-col class="shrink">
-                                        <v-icon large color="greenB800">
-                                            mdi mdi-microsoft-excel
-                                        </v-icon>
-                                    </v-col>
-                                    <v-col class="grow">
-                                        <h1
-                                            class="greenB800--text BUO-Paragraph-Medium"
-                                        >
-                                            Nombre documento.xlsx
-                                        </h1>
-                                    </v-col>
-                                    <v-col class="shrink">
-                                        <v-btn
-                                            class="mx-2"
-                                            fab
-                                            dark
-                                            small
-                                            color="greenB800"
-                                            @click="$_fnTest"
-                                        >
-                                            <v-icon dark>
-                                                mdi mdi-download
+                        <v-list-item-content>
+                            <v-list-item-title
+                                class="buo-none-word-break buo-white-space .BUO-Paragraph-Small"
+                                v-text="item.descripcion"
+                            ></v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </div>
+        </BaseDialog>
+        <BaseCardViewComponent
+            title="Agrega a tus colaboradores"
+            :btnAction="$_returnToFilter"
+            class="mx-auto"
+            md="6"
+            offset="3"
+        >
+            <div slot="card-text">
+                <BaseSkeletonLoader v-if="loading" type="article, actions" />
+                <BaseForm
+                    :method="$_sendToApi"
+                    :cancel="$_returnToFilter"
+                    v-else
+                >
+                    <div slot="body">
+                        <v-row dense>
+                            <v-col cols="12" class="mb-2">
+                                <StepViewComponent
+                                    icon="mdi-numeric-1-circle"
+                                    description="Descarga el siguiente archivo Excel."
+                                    iconColor="#54ABB0"
+                                    font="grey700--text BUO-Paragraph-Medium"
+                                ></StepViewComponent>
+                            </v-col>
+
+                            <v-col cols="12" class="mb-4">
+                                <v-alert color="greenA400" dense>
+                                    <v-row align="center">
+                                        <v-col class="shrink">
+                                            <v-icon large color="greenB800">
+                                                mdi mdi-microsoft-excel
                                             </v-icon>
-                                        </v-btn>
-                                    </v-col>
-                                </v-row>
-                            </v-alert>
-                        </v-col>
+                                        </v-col>
+                                        <v-col class="grow">
+                                            <h1
+                                                class="greenB800--text BUO-Paragraph-Medium"
+                                            >
+                                                Nombre documento.xlsx
+                                            </h1>
+                                        </v-col>
+                                        <v-col class="shrink">
+                                            <v-btn
+                                                class="mx-2"
+                                                fab
+                                                dark
+                                                elevation="0"
+                                                small
+                                                color="greenB800"
+                                                @click="$_fnTest"
+                                            >
+                                                <v-icon dark>
+                                                    mdi mdi-download
+                                                </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+                                </v-alert>
+                            </v-col>
 
-                        <v-col cols="12" class="mb-4">
-                            <StepViewComponent
-                                icon="mdi-numeric-2-circle"
-                                description="Edita el mismo archivo con los datos de tus colaboradores, siguiendo el formato del archivo sin alterarlo."
-                                iconColor="#54ABB0"
-                                font="grey700--text BUO-Paragraph-Medium"
-                            ></StepViewComponent>
-                        </v-col>
+                            <v-col cols="12" class="mb-4">
+                                <StepViewComponent
+                                    icon="mdi-numeric-2-circle"
+                                    description="Edita el mismo archivo con los datos de tus colaboradores, siguiendo el formato del archivo sin alterarlo."
+                                    iconColor="#54ABB0"
+                                    font="grey700--text BUO-Paragraph-Medium"
+                                ></StepViewComponent>
+                            </v-col>
 
-                        <v-col cols="12">
-                            <StepViewComponent
-                                icon="mdi-numeric-3-circle"
-                                description="Selecciona la empresa."
-                                iconColor="#54ABB0"
-                                font="grey700--text BUO-Paragraph-Medium"
-                            ></StepViewComponent>
-                        </v-col>
+                            <v-col cols="12">
+                                <StepViewComponent
+                                    icon="mdi-numeric-3-circle"
+                                    description="Selecciona la empresa."
+                                    iconColor="#54ABB0"
+                                    font="grey700--text BUO-Paragraph-Medium"
+                                ></StepViewComponent>
+                            </v-col>
 
-                        <v-col cols="12">
-                            <BaseInputDataTable
-                                label="Buscar empresa"
-                                :setting="setting"
-                                :editText="entity.nombreOrganizacion"
-                                v-model.number="entity.organizacionId"
-                            />
-                        </v-col>
+                            <v-col cols="12">
+                                <BaseInputDataTable
+                                    label="Buscar empresa"
+                                    :setting="setting"
+                                    :editText="nombreOrganizacion"
+                                    v-model.number="organizacionId"
+                                />
+                            </v-col>
 
-                        <v-col cols="12">
-                            <StepViewComponent
-                                icon="mdi-numeric-4-circle"
-                                description="Sube el archivo editado."
-                                iconColor="#54ABB0"
-                                font="grey700--text BUO-Paragraph-Medium"
-                            ></StepViewComponent>
-                        </v-col>
+                            <v-col cols="12">
+                                <StepViewComponent
+                                    icon="mdi-numeric-4-circle"
+                                    description="Sube el archivo editado."
+                                    iconColor="#54ABB0"
+                                    font="grey700--text BUO-Paragraph-Medium"
+                                ></StepViewComponent>
+                            </v-col>
 
-                        <v-col cols="12">
-                            <BaseInputFile
-                                outlined
-                                accept=".xlsx"
-                                label="Archivo"
-                                showSize
-                                appendIcon="mdi-progress-upload"
-                                counter
-                                placeholder="Arrastra y suelta tu archivo aquí o búscalo"
-                                :validate="['extension']"
-                                v-model="test"
-                            ></BaseInputFile>
-                        </v-col>
-                    </v-row>
-                </div>
-            </BaseForm>
-        </div>
-    </BaseCardViewComponent>
+                            <v-col cols="12">
+                                <BaseInputFile
+                                    outlined
+                                    accept=".xlsx"
+                                    label="Archivo"
+                                    showSize
+                                    appendIcon="mdi-progress-upload"
+                                    counter
+                                    placeholder="Arrastra y suelta tu archivo aquí o búscalo"
+                                    :validate="['extension']"
+                                    v-model="file"
+                                ></BaseInputFile>
+                            </v-col>
+                        </v-row>
+                    </div>
+                </BaseForm>
+            </div>
+        </BaseCardViewComponent>
+    </div>
 </template>
