@@ -45,13 +45,6 @@ export default {
                 { product: 'Prueba PDA', value: 2 },
             ];
         },
-
-        statusList() {
-            return [
-                { product: 'Activo', value: 2 },
-                { product: 'Inactivo', value: 1 },
-            ];
-        },
     },
 
     created() {
@@ -226,13 +219,10 @@ export default {
                             />
                         </v-col>
                         <v-col cols="12">
-                            <BaseSelect
-                                label="Estado"
+                            <BaseRadioGroup
                                 v-model="entity.estadoId"
-                                :endpoint="statusList"
-                                itemText="product"
-                                itemValue="value"
-                                :validate="['text']"
+                                endpoint="status"
+                                :validate="['requiered']"
                             />
                         </v-col>
                     </v-row>
