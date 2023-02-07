@@ -148,7 +148,7 @@ export default {
                                 <BaseForm
                                     :method="$_authenticate"
                                     :labelBtn="lblbtnLogin"
-                                    :login="true"
+                                    :block="true"
                                     v-else
                                 >
                                     <div slot="body">

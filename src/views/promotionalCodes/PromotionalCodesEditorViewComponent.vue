@@ -60,6 +60,8 @@ export default {
          */
         this.$_getObject();
 
+        this.entity.usuarioId = this.user.userId;
+
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
             this.$vuetify.theme.themes.light.white;
@@ -156,7 +158,7 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="Códigos Promocionales"
+        title="Código Promocional"
         :btnAction="$_returnToFilter"
         class="mx-auto"
         md="6"
@@ -164,7 +166,12 @@ export default {
     >
         <div slot="card-text">
             <BaseSkeletonLoader v-if="loading" type="article, actions" />
-            <BaseForm :method="$_sendToApi" :cancel="$_returnToFilter" v-else>
+            <BaseForm
+                :block="$vuetify.breakpoint.mobile"
+                :method="$_sendToApi"
+                :cancel="$_returnToFilter"
+                v-else
+            >
                 <div slot="body">
                     <v-row dense>
                         <v-col cols="12">

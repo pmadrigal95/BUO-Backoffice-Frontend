@@ -126,7 +126,7 @@ export default {
          * Enviar información adicional al servidor
          */
         extraParams: {
-            type: Object,
+            type: Array,
             default: undefined,
         },
 
@@ -539,7 +539,7 @@ export default {
                 /**
                  * Retorna los params al API
                  */
-                params.extraParams = { ...this.extraParams };
+                params.extraParams = this.extraParams;
             }
 
             /**

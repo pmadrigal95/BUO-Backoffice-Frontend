@@ -83,7 +83,7 @@ export default {
                             <BaseReCaptchaForm
                                 :method="$_sendToAPI"
                                 labelBtn="Enviar"
-                                :login="true"
+                                :block="true"
                                 v-else
                             >
                                 <div slot="body">
