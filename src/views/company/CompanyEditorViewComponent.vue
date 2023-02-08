@@ -34,9 +34,9 @@ export default {
 
         statusList() {
             return [
-                { product: 'Activo', value: 2 },
-                { product: 'Inactivo', value: 1 },
-                { product: 'Empresa no registrada', value: 8 },
+                { name: 'Activo', id: 2 },
+                { name: 'Inactivo', id: 1 },
+                { name: 'Empresa no registrada', id: 8 },
             ];
         },
     },
@@ -249,13 +249,10 @@ export default {
                         </v-col>
 
                         <v-col cols="12">
-                            <BaseSelect
-                                label="Estado"
+                            <BaseRadioGroup
                                 v-model="entity.estadoId"
                                 :endpoint="statusList"
-                                itemText="product"
-                                itemValue="value"
-                                :validate="['text']"
+                                :validate="['requiered']"
                             />
                         </v-col>
                     </v-row>
