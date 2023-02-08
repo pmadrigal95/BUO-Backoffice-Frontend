@@ -41,7 +41,11 @@ const extensionsFile = {
 
 const isCorrectExtension = (file, extension) => {
     try {
-        if (file.name.endsWith(`${extension}`) && extensionsFile.excel.extension.some((element) => element == extension)) {
+        if (
+            file.name.endsWith(`${extension}`) /*extensionsFile[
+                extension
+            ]?.extension.some((element) => element == extension)*/
+        ) {
             return true;
         }
     } catch (result) {

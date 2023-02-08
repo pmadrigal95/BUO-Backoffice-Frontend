@@ -213,30 +213,43 @@ export default {
 
 <template>
     <div>
-        <BaseDialog
+        <BasePopUp
             ref="popUp"
-            tittle="Resultados de la carga masiva"
-            width="$vuetify.breakpoint.mobile ? '100%' : '792px'"
+            :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '600'"
+            scrollable
+            :isDrawer="false"
+            title=""
         >
             <div slot="Content">
-                <v-list>
-                    <v-list-item v-for="item in response" :key="item.id">
-                        <v-list-item-icon>
-                            <v-icon color="pink">
-                                mdi mdi-alert-outline
-                            </v-icon>
-                        </v-list-item-icon>
+                <v-card flat height="100%" width="100%">
+                    <v-card-title class="BUO-Heading-Small buo-word-break"
+                        >Resultados de la carga masiva
+                    </v-card-title>
+                    <v-card-text>
+                        <v-list>
+                            <v-list-item
+                                v-for="item in response"
+                                :key="item.id"
+                            >
+                                <v-list-item-avatar>
+                                    <v-icon color="yellowWarning900">
+                                        mdi-alert-circle
+                                    </v-icon>
+                                </v-list-item-avatar>
 
-                        <v-list-item-content>
-                            <v-list-item-title
-                                class="buo-none-word-break buo-white-space .BUO-Paragraph-Small"
-                                v-text="item.descripcion"
-                            ></v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
+                                <v-list-item-content>
+                                    <v-list-item-title
+                                        class="buo-none-word-break buo-white-space BUO-Paragraph-Small mb-3"
+                                        v-text="item.descripcion"
+                                    ></v-list-item-title>
+                                    <v-divider></v-divider>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list>
+                    </v-card-text>
+                </v-card>
             </div>
-        </BaseDialog>
+        </BasePopUp>
         <BaseCardViewComponent
             title="Agrega a tus colaboradores"
             :btnAction="$_returnToFilter"
@@ -253,9 +266,27 @@ export default {
                 >
                     <div slot="body">
                         <v-row dense>
-                            <v-col cols="12" class="mb-2">
+                            <v-col cols="12">
                                 <StepViewComponent
                                     icon="mdi-numeric-1-circle"
+                                    description="Selecciona la empresa."
+                                    iconColor="#54ABB0"
+                                    font="grey700--text BUO-Paragraph-Medium"
+                                ></StepViewComponent>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <BaseInputDataTable
+                                    label="Buscar empresa"
+                                    :setting="setting"
+                                    :editText="nombreOrganizacion"
+                                    v-model.number="organizacionId"
+                                />
+                            </v-col>
+
+                            <v-col cols="12" class="mb-2">
+                                <StepViewComponent
+                                    icon="mdi-numeric-2-circle"
                                     description="Descarga el siguiente archivo Excel."
                                     iconColor="#54ABB0"
                                     font="grey700--text BUO-Paragraph-Medium"
@@ -298,29 +329,11 @@ export default {
 
                             <v-col cols="12" class="mb-4">
                                 <StepViewComponent
-                                    icon="mdi-numeric-2-circle"
+                                    icon="mdi-numeric-3-circle"
                                     description="Edita el mismo archivo con los datos de tus colaboradores, siguiendo el formato del archivo sin alterarlo."
                                     iconColor="#54ABB0"
                                     font="grey700--text BUO-Paragraph-Medium"
                                 ></StepViewComponent>
-                            </v-col>
-
-                            <v-col cols="12">
-                                <StepViewComponent
-                                    icon="mdi-numeric-3-circle"
-                                    description="Selecciona la empresa."
-                                    iconColor="#54ABB0"
-                                    font="grey700--text BUO-Paragraph-Medium"
-                                ></StepViewComponent>
-                            </v-col>
-
-                            <v-col cols="12">
-                                <BaseInputDataTable
-                                    label="Buscar empresa"
-                                    :setting="setting"
-                                    :editText="nombreOrganizacion"
-                                    v-model.number="organizacionId"
-                                />
                             </v-col>
 
                             <v-col cols="12">
