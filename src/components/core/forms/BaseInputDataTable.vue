@@ -227,6 +227,14 @@ export default {
             this.$emit('input', event);
         },
 
+        $_insertIntoArray(params) {
+            let array = [];
+
+            params.forEach((element) => array.push(element[this.setting.key]));
+
+            return array;
+        },
+
         /**
          * Método del clic
          */
@@ -235,9 +243,13 @@ export default {
              * Setear información
              */
             if (this.$_returnMultiSelect() == true) {
-                let array = [params[this.setting.key]];
-                this.$_updateValue(array);
-                this.text = 'Elementos seleccionados ' + array.length;
+                let array = this.$_insertIntoArray(params);
+                const result =
+                    this.value != undefined
+                        ? [...new Set(array.concat(this.value))]
+                        : array;
+                this.$_updateValue(result);
+                this.text = 'Elementos seleccionados ' + result.length;
             } else {
                 this.$_updateValue(params[0][this.setting.key]);
                 this.text =
