@@ -45,13 +45,6 @@ export default {
                 { product: 'Prueba PDA', value: 2 },
             ];
         },
-
-        statusList() {
-            return [
-                { product: 'Activo', value: 2 },
-                { product: 'Inactivo', value: 1 },
-            ];
-        },
     },
 
     created() {
@@ -59,6 +52,8 @@ export default {
          * Determinar si Es nuevo / editor
          */
         this.$_getObject();
+
+        this.entity.usuarioId = this.user.userId;
 
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
@@ -156,7 +151,7 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="Códigos Promocionales"
+        title="Código Promocional"
         :btnAction="$_returnToFilter"
         class="mx-auto"
         md="6"
@@ -164,7 +159,12 @@ export default {
     >
         <div slot="card-text">
             <BaseSkeletonLoader v-if="loading" type="article, actions" />
-            <BaseForm :method="$_sendToApi" :cancel="$_returnToFilter" v-else>
+            <BaseForm
+                :block="$vuetify.breakpoint.mobile"
+                :method="$_sendToApi"
+                :cancel="$_returnToFilter"
+                v-else
+            >
                 <div slot="body">
                     <v-row dense>
                         <v-col cols="12">
@@ -205,7 +205,7 @@ export default {
                             <BaseDatePicker
                                 v-else
                                 label="Fecha de expiración"
-                                appendIcon="mdi-magnify"
+                                appendIcon="mdi-calendar-month"
                                 v-model="entity.fechaExpiracion"
                                 reqCurrentMinDate
                                 :validate="['text']"
@@ -219,13 +219,10 @@ export default {
                             />
                         </v-col>
                         <v-col cols="12">
-                            <BaseSelect
-                                label="Estado"
+                            <BaseRadioGroup
                                 v-model="entity.estadoId"
-                                :endpoint="statusList"
-                                itemText="product"
-                                itemValue="value"
-                                :validate="['text']"
+                                endpoint="status"
+                                :validate="['requiered']"
                             />
                         </v-col>
                     </v-row>

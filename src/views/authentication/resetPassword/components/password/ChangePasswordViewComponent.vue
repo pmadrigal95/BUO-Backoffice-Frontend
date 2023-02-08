@@ -79,7 +79,7 @@ export default {
                             <BaseForm
                                 :method="$_sendToAPI"
                                 labelBtn="Enviar"
-                                :login="true"
+                                :block="true"
                                 :enterSubmit="false"
                                 v-else
                             >

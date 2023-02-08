@@ -30,11 +30,6 @@ import BaseTextArea from '@/components/core/forms/BaseTextArea.vue';
 import BaseSelect from '@/components/core/forms/BaseSelect.vue';
 
 /**
- * InputList
- */
-import BaseInputList from '@/components/core/forms/BaseInputList.vue';
-
-/**
  * Input
  */
 import BaseSwitch from '@/components/core/forms/BaseSwitch.vue';
@@ -90,6 +85,11 @@ import BaseActionPopUp from '@/components/core/alerts/BaseActionPopUp.vue';
 import BaseNavigationDrawer from '@/components/core/alerts/BaseNavigationDrawer.vue';
 
 /**
+ * Alternative Dialog Actions
+ */
+import BaseRadioGroup from '@/components/core/forms/BaseRadioGroup.vue';
+
+/**
  * Registro de Componente
  */
 Vue.component(BaseForm.name, BaseForm);
@@ -108,11 +108,6 @@ Vue.component(BaseTextArea.name, BaseTextArea);
  * Registro de Componente
  */
 Vue.component(BaseSelect.name, BaseSelect);
-
-/**
- * Registro de Componente
- */
-Vue.component(BaseInputList.name, BaseInputList);
 
 /**
  * Registro de Componente
@@ -168,3 +163,8 @@ Vue.component(BaseActionPopUp.name, BaseActionPopUp);
  * Registro de Componente
  */
 Vue.component(BaseNavigationDrawer.name, BaseNavigationDrawer);
+
+/**
+ * Registro de Componente
+ */
+Vue.component(BaseRadioGroup.name, BaseRadioGroup);

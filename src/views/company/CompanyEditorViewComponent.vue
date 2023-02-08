@@ -147,7 +147,12 @@ export default {
     >
         <div slot="card-text">
             <BaseSkeletonLoader v-if="loading" type="article, actions" />
-            <BaseForm :method="$_sendToApi" :cancel="$_returnToFilter" v-else>
+            <BaseForm
+                :block="$vuetify.breakpoint.mobile"
+                :method="$_sendToApi"
+                :cancel="$_returnToFilter"
+                v-else
+            >
                 <div slot="body">
                     <v-row dense>
                         <v-col cols="12">

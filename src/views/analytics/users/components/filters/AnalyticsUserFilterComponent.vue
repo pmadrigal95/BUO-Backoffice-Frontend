@@ -57,8 +57,8 @@ export default {
                         <BaseForm
                             labelBtn="Filtrar"
                             icon="mdi-tune"
+                            block
                             :method="$_sendToApi"
-                            :cancel="$_open"
                             v-else
                         >
                             <div slot="body">
