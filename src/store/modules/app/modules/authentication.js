@@ -18,6 +18,8 @@ import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 import facebookSDK from '@/services/socialMedia/facebook-SDK.js';
 
+import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
+
 const $_redirect = (module) => {
     if (router.currentRoute.name === 'LoginViewComponent') {
         const result = baseSecurityHelper.$_getFirstItem();
@@ -41,6 +43,7 @@ const $_setStateValue = (state, decoded, data) => {
         userId: decoded?.userId,
         name: decoded?.name,
         photoUrl: undefined, //decoded?.photoUrl,
+        colorAvatar: baseDataVisualizationColorsHelper.$_randomColor().main,
         companyId: decoded?.companyId,
         companyName: decoded?.companyName,
         companyLogo: decoded?.companyLogo,

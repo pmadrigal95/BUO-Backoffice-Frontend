@@ -71,6 +71,22 @@ export default {
         },
 
         /**
+         * size del boton
+         */
+        isLarge: {
+            type: Boolean,
+            default: true,
+        },
+
+        /**
+         * size del boton
+         */
+        isSmall: {
+            type: Boolean,
+            default: false,
+        },
+
+        /**
          * Función a ejecutar en el form con el primer btn
          * Requerida
          */
@@ -200,6 +216,8 @@ export default {
                 <v-btn
                     class="no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                     :color="color"
+                    :large="isLarge"
+                    :small="isSmall"
                     dark
                     block
                     depressed
@@ -214,8 +232,10 @@ export default {
                     }}</v-icon></v-btn
                 >
                 <v-btn
-                    class="mt-3 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    class="mt-5 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                     color="primary"
+                    :large="isLarge"
+                    :small="isSmall"
                     outlined
                     block
                     @click="$_Cancel"
@@ -239,6 +259,8 @@ export default {
 
             <v-btn
                 class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                :large="isLarge"
+                :small="isSmall"
                 outlined
                 color="primary"
                 @click="$_Cancel"
@@ -256,6 +278,8 @@ export default {
             <v-btn
                 class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                 :color="color"
+                :large="isLarge"
+                :small="isSmall"
                 dark
                 depressed
                 @click="$_submit"
