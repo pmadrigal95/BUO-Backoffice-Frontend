@@ -200,36 +200,80 @@ export default {
             this.loading = true;
             httpService
                 .get(`cargaMasivaEmpleados/getFile/${this.organizacionId}`)
-                //.then((res) => res.data.blob())
-                .then((res) => {
-                    const aElement = document.createElement('a');
-                    aElement.setAttribute('download', 'test.xlsx');
-                    const href = URL.createObjectURL(res.data);
-                    aElement.href = href;
-                    aElement.setAttribute('target', '_blank');
-                    aElement.click();
-                    URL.revokeObjectURL(href);
-                });
-            /*.then((response) => {
+                .then((response) => {
                     this.loading = false;
                     if (response != undefined) {
                         this.downloadFile = response.data;
                         this.$_generateReport(this.downloadFile);
                     }
-                });*/
+                });
+        },
+
+        s2ab(s) {
+            var buf = new ArrayBuffer(s.length);
+            var view = new Uint8Array(buf);
+            for (var i = 0; i != s.length; ++i)
+                view[i] = s.charCodeAt(i) & 0xff;
+            return buf;
         },
 
         $_generateReport(data) {
-            //const test = await data.blob();
-            const anchor_href =
-                'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;' +
-                data;
+            //var bin = atob(data);
+            //var ab = btoa(unescape(encodeURIComponent(data))); // from example above
+
+            var bin = btoa(unescape(encodeURIComponent(data)));
+            var ab = this.s2ab(bin); // from example above
+            /*const anchor_href =
+                'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' +
+                ab;
             const link = document.createElement('a');
             link.href = anchor_href;
-            link.setAttribute('download', 'test.xlsx');
+            link.setAttribute('download', 'demo.xlsx');
+            document.body.appendChild(link);
+            link.click();
+            link.remove();*/
+
+            var blob = new Blob([ab], { type: 'text/csv' });
+            if (window.navigator.msSaveBlob) {
+                // // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
+                window.navigator.msSaveOrOpenBlob(
+                    blob,
+                    'exportData' + new Date().toDateString() + '.csv'
+                );
+            } else {
+                var a = window.document.createElement('a');
+                a.href = window.URL.createObjectURL(blob, {
+                    type: 'text/plain',
+                });
+                a.download = 'exportData' + new Date().toDateString() + '.csv';
+                document.body.appendChild(a);
+                a.click(); // IE: "Access is denied"; see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
+                document.body.removeChild(a);
+            }
+
+            const anchor_href =
+                'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' +
+                bin;
+            const link = document.createElement('a');
+            link.href = anchor_href;
+            link.setAttribute('download', 'demo.csv');
             document.body.appendChild(link);
             link.click();
             link.remove();
+
+            /*var blob = new Blob([ab], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8',
+            });
+
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'demo.xlsx';
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            document.body.removeChild(link);*/
         },
 
         /**
