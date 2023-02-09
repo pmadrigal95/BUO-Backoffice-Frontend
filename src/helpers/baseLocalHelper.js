@@ -235,8 +235,15 @@ export default {
     /**
      * Descripción: Validación
      */
-    $_MsgFileAllowedExtensioInvalid(extension) {
-        return `El campo no posee la extensión válida de ${extension}.`;
+    $_MsgFileAllowedExtensionInvalid() {
+        return `El campo no posee la extensión válida.`;
+    },
+
+    /**
+     * Descripción: Validación
+     */
+    $_MsgFileAllowedMimeInvalid() {
+        return `El campo no posee un tipo de mime válido.`;
     },
 
     /**

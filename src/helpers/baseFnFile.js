@@ -39,12 +39,13 @@ const extensionsFile = {
     },
 };
 
-const isCorrectExtension = (file, extension) => {
+const isCorrectExtension = (file, fileType) => {
     try {
+        const extensionFile = `.${file.name.split('.').pop()}`;
         if (
-            file.name.endsWith(`${extension}`) /*extensionsFile[
-                extension
-            ]?.extension.some((element) => element == extension)*/
+            extensionsFile[fileType].extension.some(
+                (element) => element === extensionFile
+            )
         ) {
             return true;
         }
@@ -52,6 +53,38 @@ const isCorrectExtension = (file, extension) => {
         return false;
     }
 };
+
+const isCorrectMime = (file, fileType) => {
+    try {
+        if (
+            extensionsFile[fileType].mimeType.some(
+                (element) => element === file.Type
+            )
+        ) {
+            return true;
+        }
+    } catch (result) {
+        return false;
+    }
+};
+
+/*const isCorrectSize = (file) => {
+    try {
+       /* const img = new Image();
+        img.onload = function () {
+            if (
+                this.width.toFixed(0) === 413 &&
+                this.height.toFixed(0) === 531
+            ) {
+                return true;
+            }
+        };
+        return true;
+    } catch (result) {
+        return false;
+    }
+};
+*/
 
 const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -71,6 +104,10 @@ export default {
 
     $_isCorrectExtension(file, extension) {
         return isCorrectExtension(file, extension);
+    },
+
+    $_isCorrectMime(file, extension) {
+        return isCorrectMime(file, extension);
     },
 
     $_convertToBase64(file) {

@@ -473,13 +473,6 @@ export default {
         },
 
         /**
-         * Extensiones que se aceptan
-         */
-        accept: {
-            type: String,
-        },
-
-        /**
          * Lista de errores
          * No es requerido
          */
@@ -499,9 +492,9 @@ export default {
 
         /**
          * Tipo de extensiones que aceptara el input file
-         * 
+         *
          */
-         fileType: {
+        fileType: {
             type: String,
             required: true,
         },
@@ -510,6 +503,7 @@ export default {
     data() {
         return {
             normalRules: [],
+            accept: '',
         };
     },
 
@@ -526,6 +520,8 @@ export default {
      * Validaciones
      */
     created() {
+        this.$_fnGetExtensionToAccept();
+
         this.normalRules = [
             (v) =>
                 !!v ||
@@ -533,11 +529,12 @@ export default {
                     this.label != undefined ? this.label : ''
                 ),
             (v) =>
-                (v && baseFnFile.$_isCorrectExtension(v, this.accept)) ||
-                baseLocalHelper.$_MsgFileAllowedExtensioInvalid(this.accept),
+                (v && baseFnFile.$_isCorrectExtension(v, this.fileType)) ||
+                baseLocalHelper.$_MsgFileAllowedExtensionInvalid(),
+            /*(v) =>
+                (v && baseFnFile.$_isCorrectMime(v, this.fileType)) ||
+                baseLocalHelper.$_MsgFileAllowedMimeInvalid(),*/
         ];
-
-        this.$_fnGetExtensionToAccept;
     },
 
     methods: {
@@ -549,13 +546,11 @@ export default {
             this.$emit('input', event);
         }, */
 
-        $_fnGetExtensionToAccept(){
-            alert(baseFnFile.$_extensionsFile[this.fileType]);
-            /*const accept = undefined;
-            const momentoComida = this.fileType.map(function(extensionType) {
-                return extensionType;
-            });*/
-        }
+        $_fnGetExtensionToAccept() {
+            baseFnFile.$_extensionsFile[this.fileType].extension.forEach (
+                type => this.accept  += `${type},`
+            );
+        },
     },
 };
 </script>

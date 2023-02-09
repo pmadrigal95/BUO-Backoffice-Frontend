@@ -249,7 +249,7 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="Agrega a tus colaboradores"
+        title="Usuarios"
         :btnAction="$_returnToFilter"
         class="mx-auto"
         md="6"
@@ -366,13 +366,10 @@ export default {
                         </v-col>
 
                         <v-col cols="12">
-                            <BaseSelect
-                                label="Estado"
-                                v-model.number="entity.estadoId"
-                                :endpoint="statusList"
-                                itemText="product"
-                                itemValue="value"
-                                :validate="['text']"
+                            <BaseRadioGroup
+                                v-model="entity.estadoId"
+                                endpoint="status"
+                                :validate="['requiered']"
                             />
                         </v-col>
                     </v-row>

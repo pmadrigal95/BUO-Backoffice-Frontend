@@ -23,7 +23,6 @@ const StepViewComponent = () =>
 
 const BaseInputFile = () => import('@/components/core/forms/BaseInputFile');
 
-
 export default {
     name: 'UserBulkLoadViewComponent',
 
@@ -201,20 +200,33 @@ export default {
             this.loading = true;
             httpService
                 .get(`cargaMasivaEmpleados/getFile/${this.organizacionId}`)
-                .then((response) => {
+                //.then((res) => res.data.blob())
+                .then((res) => {
+                    const aElement = document.createElement('a');
+                    aElement.setAttribute('download', 'test.xlsx');
+                    const href = URL.createObjectURL(res.data);
+                    aElement.href = href;
+                    aElement.setAttribute('target', '_blank');
+                    aElement.click();
+                    URL.revokeObjectURL(href);
+                });
+            /*.then((response) => {
                     this.loading = false;
                     if (response != undefined) {
                         this.downloadFile = response.data;
                         this.$_generateReport(this.downloadFile);
                     }
-                });
+                });*/
         },
 
         $_generateReport(data) {
-            //const anchor_href = data;
-            const link = document.createElement(data);
-           // link.href = anchor_href;
-            //link.setAttribute('download', 'test.xlsx');
+            //const test = await data.blob();
+            const anchor_href =
+                'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;' +
+                data;
+            const link = document.createElement('a');
+            link.href = anchor_href;
+            link.setAttribute('download', 'test.xlsx');
             document.body.appendChild(link);
             link.click();
             link.remove();
@@ -227,8 +239,6 @@ export default {
             this.$router.push({
                 name: 'UserFilterViewComponent',
             });
-
-            
         },
     },
 };
