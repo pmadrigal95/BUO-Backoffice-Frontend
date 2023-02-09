@@ -80,11 +80,7 @@ export default {
         this.chartData.datasets.forEach((element, index) => {
             const color = baseDataVisualizationColorsHelper.$_getColor(index);
             element.borderColor = color.main;
-            element.backgroundColor = color.secondary80;
-            element.fill = true;
-            /*element.backgroundColor = this.poolColors(1);
-            element.borderColor = this.poolColors(1);
-            element.fill = true;*/
+            element.backgroundColor = color.secondary50;
         });
     },
 

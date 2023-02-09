@@ -115,7 +115,7 @@ export default {
     >
         <v-list-item two-line class="px-2" v-if="user">
             <v-list-item-avatar>
-                <v-avatar color="yellowWarning900">
+                <v-avatar :color="user.colorAvatar">
                     <span
                         class="white--text BUO-Paragraph-Medium-SemiBold"
                         v-if="user.photoUrl == undefined"

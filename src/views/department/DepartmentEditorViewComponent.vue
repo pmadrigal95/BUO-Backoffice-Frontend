@@ -37,13 +37,6 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user']),
 
-        statusList() {
-            return [
-                { product: 'Activo', value: 2 },
-                { product: 'Inactivo', value: 1 },
-            ];
-        },
-
         /**
          * Extra Params
          */
@@ -464,13 +457,10 @@ export default {
                             />
                         </v-col>
                         <v-col cols="12">
-                            <BaseSelect
-                                label="Estado"
+                            <BaseRadioGroup
                                 v-model="entity.estadoId"
-                                :endpoint="statusList"
-                                itemText="product"
-                                itemValue="value"
-                                :validate="['text']"
+                                endpoint="status"
+                                :validate="['requiered']"
                             />
                         </v-col>
                     </v-row>
