@@ -496,6 +496,15 @@ export default {
             type: Array,
             required: false,
         },
+
+        /**
+         * Tipo de extensiones que aceptara el input file
+         * 
+         */
+         fileType: {
+            type: String,
+            required: true,
+        },
     },
 
     data() {
@@ -527,6 +536,8 @@ export default {
                 (v && baseFnFile.$_isCorrectExtension(v, this.accept)) ||
                 baseLocalHelper.$_MsgFileAllowedExtensioInvalid(this.accept),
         ];
+
+        this.$_fnGetExtensionToAccept;
     },
 
     methods: {
@@ -537,6 +548,14 @@ export default {
         /*$_updateValue(event) {
             this.$emit('input', event);
         }, */
+
+        $_fnGetExtensionToAccept(){
+            alert(baseFnFile.$_extensionsFile[this.fileType]);
+            /*const accept = undefined;
+            const momentoComida = this.fileType.map(function(extensionType) {
+                return extensionType;
+            });*/
+        }
     },
 };
 </script>
@@ -592,6 +611,7 @@ export default {
         :suffix="suffix"
         :truncate-length="truncateLength"
         :accept="accept"
+        :fileType="fileType"
         :value="value"
         @change="$_updateValue"
         v-bind="$attrs"

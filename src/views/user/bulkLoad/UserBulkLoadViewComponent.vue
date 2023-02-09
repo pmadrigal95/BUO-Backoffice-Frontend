@@ -23,6 +23,7 @@ const StepViewComponent = () =>
 
 const BaseInputFile = () => import('@/components/core/forms/BaseInputFile');
 
+
 export default {
     name: 'UserBulkLoadViewComponent',
 
@@ -39,6 +40,7 @@ export default {
             file: undefined,
             organizacionId: undefined,
             nombreOrganizacion: undefined,
+            downloadFile: undefined,
             response: undefined,
         };
     },
@@ -195,6 +197,29 @@ export default {
                 });
         },
 
+        $_getFile() {
+            this.loading = true;
+            httpService
+                .get(`cargaMasivaEmpleados/getFile/${this.organizacionId}`)
+                .then((response) => {
+                    this.loading = false;
+                    if (response != undefined) {
+                        this.downloadFile = response.data;
+                        this.$_generateReport(this.downloadFile);
+                    }
+                });
+        },
+
+        $_generateReport(data) {
+            //const anchor_href = data;
+            const link = document.createElement(data);
+           // link.href = anchor_href;
+            //link.setAttribute('download', 'test.xlsx');
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        },
+
         /**
          * Function to return the UserFilterViewComponent
          */
@@ -202,10 +227,8 @@ export default {
             this.$router.push({
                 name: 'UserFilterViewComponent',
             });
-        },
 
-        $_fnTest() {
-            alert('hola');
+            
         },
     },
 };
@@ -305,7 +328,7 @@ export default {
                                             <h1
                                                 class="greenB800--text BUO-Paragraph-Medium"
                                             >
-                                                Nombre documento.xlsx
+                                                Colaboradores.xlsx
                                             </h1>
                                         </v-col>
                                         <v-col class="shrink">
@@ -316,7 +339,7 @@ export default {
                                                 elevation="0"
                                                 small
                                                 color="greenB800"
-                                                @click="$_fnTest"
+                                                @click="$_getFile"
                                             >
                                                 <v-icon dark>
                                                     mdi mdi-download
@@ -348,7 +371,7 @@ export default {
                             <v-col cols="12">
                                 <BaseInputFile
                                     outlined
-                                    accept=".xlsx"
+                                    fileType="excel"
                                     label="Archivo"
                                     showSize
                                     appendIcon="mdi-progress-upload"
