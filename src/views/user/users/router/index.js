@@ -20,15 +20,6 @@ const routes = [
             module: 'UserViewComponent',
         },
     },
-
-    {
-        path: '/User/Test',
-        name: 'TestViewComponent',
-        component: 'user/users/TestViewComponent',
-        meta: {
-            module: 'UserViewComponent',
-        },
-    },
 ];
 
 export default routes;

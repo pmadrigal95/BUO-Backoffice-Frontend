@@ -38,9 +38,8 @@ export default {
             loading: false,
             file: undefined,
             organizacionId: undefined,
-            nombreOrganizacion: undefined,
             downloadFile: undefined,
-            response: undefined,
+            warningList: undefined,
         };
     },
 
@@ -163,16 +162,10 @@ export default {
         /**
          * Body Request
          */
-        $_createBodyRequest(file) {
-            const request = {
-                excelFile: file,
-            };
-            return request;
-        },
 
-        async $_sendToApi() {
+        $_sendToApi() {
             this.loading = true;
-            const object = this.$_createBodyRequest(this.file);
+            const object = { excel: this.file };
             httpService
                 .post(
                     `cargaMasivaEmpleados/addEmployees/${this.organizacionId}`,
@@ -182,9 +175,10 @@ export default {
                     this.loading = false;
                     if (response != undefined) {
                         //Logica JS luego de la acción exitosa!!!
-                        this.response = response.data.response;
-                        if (this.response.length > 0)
-                            this.$refs.popUp.$_openModal();
+                        this.warningList = response.data.response;
+                        this.warningList.length > 0
+                            ? this.$refs.popUp.$_openModal()
+                            : this.$_returnToFilter();
                     }
                 });
         },
@@ -241,7 +235,7 @@ export default {
                     <v-card-text>
                         <v-list>
                             <v-list-item
-                                v-for="item in response"
+                                v-for="item in warningList"
                                 :key="item.id"
                             >
                                 <v-list-item-avatar>
@@ -292,8 +286,8 @@ export default {
                                 <BaseInputDataTable
                                     label="Buscar empresa"
                                     :setting="setting"
-                                    :editText="nombreOrganizacion"
                                     v-model.number="organizacionId"
+                                    :validate="['text']"
                                 />
                             </v-col>
 
@@ -370,9 +364,7 @@ export default {
                                     placeholder="Arrastra y suelta tu archivo aquí o búscalo"
                                     :validate="['extension']"
                                     v-model="file"
-                                    :disabled="
-                                        this.organizacionId === undefined
-                                    "
+                                    :disabled="!this.organizacionId"
                                 ></BaseInputFile>
                             </v-col>
                         </v-row>
