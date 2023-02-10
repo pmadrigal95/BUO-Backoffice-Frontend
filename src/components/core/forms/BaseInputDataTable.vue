@@ -463,5 +463,31 @@ export default {
             clear-icon="mdi-close-circle"
             :validate-on-blur="validateOnBlur"
         />
+
+        <!--<v-combobox
+            v-model="text"
+            chips
+            readonly
+            clearable
+            multiple
+            :label="label"
+            append-icon="mdi-magnify"
+            @click:append="$_openModalGrid"
+            @click="$_openModalGrid"
+            clear-icon="mdi-close-circle"
+            :validate-on-blur="validateOnBlur"
+        >
+            <template v-slot:selection="{ attrs, item, select, selected }">
+                <v-chip
+                    small
+                    v-bind="attrs"
+                    :input-value="selected"
+                    close
+                    @click:close="remove(item)"
+                >
+                    {{ item[itemText] }}
+                </v-chip>
+            </template>
+        </v-combobox>-->
     </div>
 </template>
