@@ -138,7 +138,7 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="Acerca de la Empresa"
+        title="Empresas"
         :btnAction="$_returnToFilter"
         class="mx-auto"
         md="6"

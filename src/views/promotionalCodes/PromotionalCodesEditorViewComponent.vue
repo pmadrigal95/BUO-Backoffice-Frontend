@@ -151,7 +151,7 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="Código Promocional"
+        title="Códigos Promocionales"
         :btnAction="$_returnToFilter"
         class="mx-auto"
         md="6"

@@ -10,7 +10,7 @@ import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
-import baseFnFile from '@/helpers/baseFnFile';
+//import baseFnFile from '@/helpers/baseFnFile';
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
@@ -190,7 +190,8 @@ export default {
                     if (response != undefined) {
                         //Logica JS luego de la acción exitosa!!!
                         this.response = response.data.response;
-                        this.$refs.popUp.$_openModal();
+                        if (this.response.length > 0)
+                            this.$refs.popUp.$_openModal();
                     }
                 });
         },
@@ -215,74 +216,7 @@ export default {
                         this.downloadFile = response.data;
                         this.$_generateReport(this.downloadFile);
                     }
-                });
-        },
-
-        s2ab(s) {
-            var buf = new ArrayBuffer(s.length);
-            var view = new Uint8Array(buf);
-            for (var i = 0; i != s.length; ++i)
-                view[i] = s.charCodeAt(i) & 0xff;
-            return buf;
-        },
-
-        $_generateReport(data) {
-            //var bin = atob(data);
-            //var ab = btoa(unescape(encodeURIComponent(data))); // from example above
-
-            var bin = btoa(unescape(encodeURIComponent(data)));
-            var ab = this.s2ab(bin); // from example above
-            /*const anchor_href =
-                'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' +
-                ab;
-            const link = document.createElement('a');
-            link.href = anchor_href;
-            link.setAttribute('download', 'demo.xlsx');
-            document.body.appendChild(link);
-            link.click();
-            link.remove();*/
-
-            var blob = new Blob([ab], { type: 'text/csv' });
-            if (window.navigator.msSaveBlob) {
-                // // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
-                window.navigator.msSaveOrOpenBlob(
-                    blob,
-                    'exportData' + new Date().toDateString() + '.csv'
-                );
-            } else {
-                var a = window.document.createElement('a');
-                a.href = window.URL.createObjectURL(blob, {
-                    type: 'text/plain',
-                });
-                a.download = 'exportData' + new Date().toDateString() + '.csv';
-                document.body.appendChild(a);
-                a.click(); // IE: "Access is denied"; see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
-                document.body.removeChild(a);
-            }
-
-            const anchor_href =
-                'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' +
-                bin;
-            const link = document.createElement('a');
-            link.href = anchor_href;
-            link.setAttribute('download', 'demo.csv');
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-
-            /*var blob = new Blob([ab], {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8',
-            });
-
-            var link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = 'demo.xlsx';
-
-            document.body.appendChild(link);
-
-            link.click();
-
-            document.body.removeChild(link);*/
+                });*/
         },
 
         /**
@@ -356,7 +290,7 @@ export default {
                                 <StepViewComponent
                                     icon="mdi-numeric-1-circle"
                                     description="Selecciona la empresa."
-                                    iconColor="#54ABB0"
+                                    iconColor="greenC900"
                                     font="grey700--text BUO-Paragraph-Medium"
                                 ></StepViewComponent>
                             </v-col>
@@ -374,7 +308,7 @@ export default {
                                 <StepViewComponent
                                     icon="mdi-numeric-2-circle"
                                     description="Descarga el siguiente archivo Excel."
-                                    iconColor="#54ABB0"
+                                    iconColor="greenC900"
                                     font="grey700--text BUO-Paragraph-Medium"
                                 ></StepViewComponent>
                             </v-col>
@@ -416,18 +350,18 @@ export default {
 
                             <v-col cols="12" class="mb-4">
                                 <StepViewComponent
-                                    icon="mdi-numeric-3-circle"
+                                    icon="mdi-numeric-2-circle"
                                     description="Edita el mismo archivo con los datos de tus colaboradores, siguiendo el formato del archivo sin alterarlo."
-                                    iconColor="#54ABB0"
+                                    iconColor="greenC900"
                                     font="grey700--text BUO-Paragraph-Medium"
                                 ></StepViewComponent>
                             </v-col>
 
                             <v-col cols="12">
                                 <StepViewComponent
-                                    icon="mdi-numeric-4-circle"
+                                    icon="mdi-numeric-3-circle"
                                     description="Sube el archivo editado."
-                                    iconColor="#54ABB0"
+                                    iconColor="greenC900"
                                     font="grey700--text BUO-Paragraph-Medium"
                                 ></StepViewComponent>
                             </v-col>
