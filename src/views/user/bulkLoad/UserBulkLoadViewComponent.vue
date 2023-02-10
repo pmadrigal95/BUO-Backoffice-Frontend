@@ -47,13 +47,6 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user']),
 
-        statusList() {
-            return [
-                { product: 'Activo', value: 2 },
-                { product: 'Inactivo', value: 1 },
-            ];
-        },
-
         /**
          * Configuracion BaseInputDataTable
 

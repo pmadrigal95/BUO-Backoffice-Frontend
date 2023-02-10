@@ -199,6 +199,7 @@ export default {
                 :fnEdit="write ? $_userEditor : undefined"
                 :fnDelete="write ? $_fnDesactiveUser : undefined"
             >
+                /** * TODO: pendiente permiso de seguridad*/
                 <div slot="btns">
                     <BaseCustomsButtonsGrid
                         label="Carga Masiva"

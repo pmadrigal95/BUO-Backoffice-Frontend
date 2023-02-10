@@ -41,13 +41,6 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user']),
 
-        statusList() {
-            return [
-                { product: 'Activo', value: 2 },
-                { product: 'Inactivo', value: 1 },
-            ];
-        },
-
         /**
          * Configuracion BaseInputDataTable
 
@@ -155,6 +148,8 @@ export default {
          */
         this.$_getObject();
 
+        this.$_setToUser();
+
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
             this.$vuetify.theme.themes.light.white;
@@ -222,9 +217,7 @@ export default {
 
         $_sendToApi() {
             this.loading = true;
-            this.$_setToUser();
             let object = BaseArrayHelper.SetObject({}, this.entity);
-
             httpService.post('user/saveUserForm', object).then((response) => {
                 this.loading = false;
 
@@ -280,7 +273,6 @@ export default {
                             <BaseInput
                                 label="Segundo apellido"
                                 v-model.trim="entity.segundoApellido"
-                                :validate="['optionalText']"
                             />
                         </v-col>
 
@@ -288,7 +280,6 @@ export default {
                             <BaseInput
                                 label="Identificación"
                                 v-model.trim="entity.identificacion"
-                                :validate="['optionalText']"
                             />
                         </v-col>
 
@@ -299,7 +290,6 @@ export default {
                                 itemText="nombre"
                                 itemValue="id"
                                 v-model.number="entity.paisId"
-                                :validate="['optionalText']"
                             />
                         </v-col>
 
@@ -307,7 +297,6 @@ export default {
                             <BaseInput
                                 label="Ciudad"
                                 v-model.trim="entity.ciudad"
-                                :validate="['optionalText']"
                             />
                         </v-col>
 
@@ -334,7 +323,6 @@ export default {
                                 itemText="nombre"
                                 itemValue="id"
                                 v-model.number="entity.generoId"
-                                :validate="['optionalText']"
                             />
                         </v-col>
 
@@ -343,7 +331,6 @@ export default {
                                 label="Fecha de nacimiento"
                                 appendIcon="mdi-calendar-month"
                                 v-model.trim="entity.fechaNacimiento"
-                                :validate="['optionalText']"
                                 reqCurrentMaxDate
                             />
                         </v-col>
@@ -352,7 +339,6 @@ export default {
                             <BaseInput
                                 label="Número de teléfono"
                                 v-model.trim="entity.telefono"
-                                :validate="['optionalText']"
                             />
                         </v-col>
 
