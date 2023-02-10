@@ -179,8 +179,7 @@ export default {
 
         async $_sendToApi() {
             this.loading = true;
-            const base64 = await baseFnFile.$_convertToBase64(this.file);
-            const object = this.$_createBodyRequest(base64);
+            const object = this.$_createBodyRequest(this.file);
             httpService
                 .post(
                     `cargaMasivaEmpleados/addEmployees/${this.organizacionId}`,
@@ -200,15 +199,15 @@ export default {
             this.loading = true;
             httpService
                 .get(`cargaMasivaEmpleados/getFile/${this.organizacionId}`)
-                //.then((res) => res.data.blob())
-                .then((res) => {
-                    const aElement = document.createElement('a');
-                    aElement.setAttribute('download', 'test.xlsx');
-                    const href = URL.createObjectURL(res.data);
-                    aElement.href = href;
-                    aElement.setAttribute('target', '_blank');
-                    aElement.click();
-                    URL.revokeObjectURL(href);
+                .then((response) => {
+                    this.loading = false;
+                    /*let textblob = new Blob([response.data], {
+                        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    });*/
+                    let dwnlnk = document.createElement(response);
+                    document.body.appendChild(dwnlnk);
+                    dwnlnk.click();
+                    dwnlnk.remove();
                 });
             /*.then((response) => {
                     this.loading = false;
@@ -317,7 +316,7 @@ export default {
                                 />
                             </v-col>
 
-                            <v-col cols="12" class="mb-2">
+                            <v-col cols="12" class="mb-2" v-if="false">
                                 <StepViewComponent
                                     icon="mdi-numeric-2-circle"
                                     description="Descarga el siguiente archivo Excel."
@@ -326,7 +325,7 @@ export default {
                                 ></StepViewComponent>
                             </v-col>
 
-                            <v-col cols="12" class="mb-4">
+                            <v-col cols="12" class="mb-4" v-if="false">
                                 <v-alert color="greenA400" dense>
                                     <v-row align="center">
                                         <v-col class="shrink">
@@ -350,6 +349,7 @@ export default {
                                                 small
                                                 color="greenB800"
                                                 @click="$_getFile"
+                                                :disabled="!this.organizacionId"
                                             >
                                                 <v-icon dark>
                                                     mdi mdi-download
@@ -389,6 +389,9 @@ export default {
                                     placeholder="Arrastra y suelta tu archivo aquí o búscalo"
                                     :validate="['extension']"
                                     v-model="file"
+                                    :disabled="
+                                        this.organizacionId === undefined
+                                    "
                                 ></BaseInputFile>
                             </v-col>
                         </v-row>

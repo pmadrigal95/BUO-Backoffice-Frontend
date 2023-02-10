@@ -504,6 +504,7 @@ export default {
         return {
             normalRules: [],
             accept: '',
+            newFile: null,
         };
     },
 
@@ -542,13 +543,15 @@ export default {
             this.$emit('input', event);
         },
 
-        /*$_updateValue(event) {
-            this.$emit('input', event);
-        }, */
+        //TODO: cambiar nombre a este método
+        async $_save() {
+            const result = this.newFile ? await baseFnFile.$_convertToBase64(this.newFile) : undefined;
+            this.$_updateValue(result);
+        },
 
         $_fnGetExtensionToAccept() {
-            baseFnFile.$_extensionsFile[this.fileType].extension.forEach (
-                type => this.accept  += `${type},`
+            baseFnFile.$_extensionsFile[this.fileType].extension.forEach(
+                (type) => (this.accept += `${type},`)
             );
         },
     },
@@ -607,8 +610,8 @@ export default {
         :truncate-length="truncateLength"
         :accept="accept"
         :fileType="fileType"
-        :value="value"
-        @change="$_updateValue"
+        v-model="newFile"
+        @change="$_save"
         v-bind="$attrs"
         v-on="listeners"
         :rules="normalRules"
