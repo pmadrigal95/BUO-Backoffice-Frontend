@@ -56,7 +56,8 @@ const colorArray = [
 ];
 
 const random = () => {
-    return colorArray[Math.round(Math.random() * colorArray.length)];
+    const index = Math.round(Math.random() * colorArray.length);
+    return colorArray[index >= 0 && index < 6 ? index : 1];
 };
 
 export default {
