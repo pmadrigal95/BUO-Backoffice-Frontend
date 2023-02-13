@@ -4,9 +4,9 @@
 
 import homeRoutes from '@/views/home/router';
 
-import companyRoutes from '@/views/company/router';
-
 import userRoutes from '@/views/user/router';
+
+import companyRoutes from '@/views/company/router';
 
 import analyticsRoutes from '@/views/analytics/router';
 
@@ -22,11 +22,11 @@ const routes = [
         component: 'app',
         children: [
             ...homeRoutes,
+            ...userRoutes,
             ...companyRoutes,
             ...analyticsRoutes,
             ...departmentRoutes,
             ...promotionalCodesRoutes,
-            ...userRoutes,
         ],
     },
 ];

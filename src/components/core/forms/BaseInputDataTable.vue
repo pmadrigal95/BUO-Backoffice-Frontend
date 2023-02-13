@@ -169,7 +169,7 @@ export default {
 
     watch: {
         text: function (val) {
-            if (!val) {
+            if (!val || val.length == 0) {
                 this.$_updateValue(null);
             }
         },
@@ -248,8 +248,13 @@ export default {
                     this.value != undefined
                         ? [...new Set(array.concat(this.value))]
                         : array;
+
+                this.text =
+                    this.text != undefined
+                        ? [...new Set(params.concat(this.text))]
+                        : params;
+
                 this.$_updateValue(result);
-                this.text = 'Elementos seleccionados ' + result.length;
             } else {
                 this.$_updateValue(params[0][this.setting.key]);
                 this.text =
@@ -404,6 +409,15 @@ export default {
              */
             return multiSelect;
         },
+
+        /**
+         * Delete Chip
+         */
+        $_deleteChip(id) {
+            this.text = this.text.filter((item) => item.id != id);
+            const result = this.value.filter((item) => item != id);
+            this.$_updateValue(result);
+        },
     },
 };
 </script>
@@ -450,6 +464,7 @@ export default {
         />
 
         <v-text-field
+            v-if="!setting.multiSelect"
             :rules="normalRules"
             readonly
             clearable
@@ -464,30 +479,32 @@ export default {
             :validate-on-blur="validateOnBlur"
         />
 
-        <!--<v-combobox
+        <v-combobox
+            v-else
             v-model="text"
-            chips
+            outlined
             readonly
             clearable
             multiple
             :label="label"
+            :dense="denseInput"
             append-icon="mdi-magnify"
             @click:append="$_openModalGrid"
             @click="$_openModalGrid"
             clear-icon="mdi-close-circle"
             :validate-on-blur="validateOnBlur"
         >
-            <template v-slot:selection="{ attrs, item, select, selected }">
+            <template v-slot:selection="{ attrs, item, selected }">
                 <v-chip
                     small
                     v-bind="attrs"
                     :input-value="selected"
                     close
-                    @click:close="remove(item)"
+                    @click:close="$_deleteChip(item[setting.key])"
                 >
-                    {{ item[itemText] }}
+                    {{ item[itemText ? itemText : setting.columns[0].value] }}
                 </v-chip>
             </template>
-        </v-combobox>-->
+        </v-combobox>
     </div>
 </template>
