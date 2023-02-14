@@ -10,7 +10,7 @@ import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
-//import baseFnFile from '@/helpers/baseFnFile';
+import baseFnFile from '@/helpers/baseFnFile';
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
@@ -40,6 +40,8 @@ export default {
             organizacionId: undefined,
             downloadFile: undefined,
             warningList: undefined,
+            fileType:"excel",
+
         };
     },
 
@@ -82,13 +84,13 @@ export default {
                         text: 'Usuarios',
                         align: 'end',
                         value: 'totalUsuarios',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Wallets Activas',
                         align: 'end',
                         value: 'walletsActivas',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Certifica Inmediato',
@@ -162,14 +164,19 @@ export default {
         /**
          * Body Request
          */
+        $_createBodyRequest() {
+            const request = {
+                excelFile: this.file,
+            };
+            return request;
+        },
 
         $_sendToApi() {
             this.loading = true;
-            const object = { excel: this.file };
             httpService
                 .post(
                     `cargaMasivaEmpleados/addEmployees/${this.organizacionId}`,
-                    object
+                    this.$_createBodyRequest()
                 )
                 .then((response) => {
                     this.loading = false;
@@ -189,21 +196,12 @@ export default {
                 .get(`cargaMasivaEmpleados/getFile/${this.organizacionId}`)
                 .then((response) => {
                     this.loading = false;
-                    /*let textblob = new Blob([response.data], {
-                        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                    });*/
-                    let dwnlnk = document.createElement(response);
-                    document.body.appendChild(dwnlnk);
-                    dwnlnk.click();
-                    dwnlnk.remove();
+                    baseFnFile.$_dowloadFile(
+                        response.data.fileEncoded,
+                        response.data.fileName,
+                        this.fileType
+                    );
                 });
-            /*.then((response) => {
-                    this.loading = false;
-                    if (response != undefined) {
-                        this.downloadFile = response.data;
-                        this.$_generateReport(this.downloadFile);
-                    }
-                });*/
         },
 
         /**
@@ -291,7 +289,7 @@ export default {
                                 />
                             </v-col>
 
-                            <v-col cols="12" class="mb-2" v-if="false">
+                            <v-col cols="12" class="mb-2">
                                 <StepViewComponent
                                     icon="mdi-numeric-2-circle"
                                     description="Descarga el siguiente archivo Excel."
@@ -300,7 +298,7 @@ export default {
                                 ></StepViewComponent>
                             </v-col>
 
-                            <v-col cols="12" class="mb-4" v-if="false">
+                            <v-col cols="12" class="mb-4">
                                 <v-alert color="greenA400" dense>
                                     <v-row align="center">
                                         <v-col class="shrink">
@@ -337,7 +335,7 @@ export default {
 
                             <v-col cols="12" class="mb-4">
                                 <StepViewComponent
-                                    icon="mdi-numeric-2-circle"
+                                    icon="mdi-numeric-3-circle"
                                     description="Edita el mismo archivo con los datos de tus colaboradores, siguiendo el formato del archivo sin alterarlo."
                                     iconColor="greenC900"
                                     font="grey700--text BUO-Paragraph-Medium"
@@ -346,7 +344,7 @@ export default {
 
                             <v-col cols="12">
                                 <StepViewComponent
-                                    icon="mdi-numeric-3-circle"
+                                    icon="mdi-numeric-4-circle"
                                     description="Sube el archivo editado."
                                     iconColor="greenC900"
                                     font="grey700--text BUO-Paragraph-Medium"
@@ -356,7 +354,7 @@ export default {
                             <v-col cols="12">
                                 <BaseInputFile
                                     outlined
-                                    fileType="excel"
+                                    :fileType="fileType"
                                     label="Archivo"
                                     showSize
                                     appendIcon="mdi-progress-upload"

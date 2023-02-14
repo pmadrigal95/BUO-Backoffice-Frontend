@@ -531,10 +531,10 @@ export default {
                 ),
             (v) =>
                 (v && baseFnFile.$_isCorrectExtension(v, this.fileType)) ||
-                baseLocalHelper.$_MsgFileAllowedExtensionInvalid(),
-            /*(v) =>
+                baseLocalHelper.$_MsgFileAllowedExtensionInvalid(this.label != undefined ? this.label : '', baseFnFile.$_extensionsFile[this.fileType].documentType),
+            (v) =>
                 (v && baseFnFile.$_isCorrectMime(v, this.fileType)) ||
-                baseLocalHelper.$_MsgFileAllowedMimeInvalid(),*/
+                baseLocalHelper.$_MsgFileAllowedMimeInvalid(this.label != undefined ? this.label : ''),
         ];
     },
 

@@ -58,7 +58,7 @@ const isCorrectMime = (file, fileType) => {
     try {
         if (
             extensionsFile[fileType].mimeType.some(
-                (element) => element === file.Type
+                (element) => element === file.type
             )
         ) {
             return true;
@@ -96,6 +96,17 @@ const convertToBase64 = (file) => {
     });
 };
 
+const dowloadFile = (file, nameFile) => {
+    const anchor_href =
+        'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' +
+        file;
+    const link = document.createElement('a');
+    link.href = anchor_href;
+    link.setAttribute('download', nameFile);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+};
 /**
  * Description: functions used for files
  */
@@ -112,5 +123,9 @@ export default {
 
     $_convertToBase64(file) {
         return convertToBase64(file);
+    },
+
+    $_dowloadFile(file, nameFile) {
+        return dowloadFile(file, nameFile);
     },
 };
