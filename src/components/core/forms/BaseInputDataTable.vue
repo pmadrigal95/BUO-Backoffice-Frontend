@@ -82,10 +82,11 @@ export default {
         },
 
         /**
-         * Como validar el input
-         * ['text'] [ @validacionPersonalizada ]
+         * Accepts a mixed array of types function, boolean and string.
+         * Functions pass an input value as an argument and must return either true / false or a string containing an error message.
+         * The input field will enter an error state if a function returns (or any value in the array contains) false or is a string
          */
-        validateEditor: {
+        validate: {
             type: Array,
             required: false,
         },
@@ -94,7 +95,7 @@ export default {
          * Enviar información adicional al servidor
          */
         extraParams: {
-            type: Object,
+            type: Array,
             default: undefined,
         },
 
@@ -123,11 +124,6 @@ export default {
     data() {
         return {
             text: this.editText,
-
-            /**
-             *  Validación del Input
-             *  */
-            regex: null,
 
             /**
              * Densidad de las filas Grid
@@ -169,7 +165,7 @@ export default {
 
     watch: {
         text: function (val) {
-            if (!val) {
+            if (!val || val.length == 0) {
                 this.$_updateValue(null);
             }
         },
@@ -202,9 +198,9 @@ export default {
         /**
          * definición del Modal
          */
-        if (this.validateEditor != undefined) {
-            switch (this.validateEditor[0]) {
-                case 'text':
+        if (this.validate != undefined) {
+            switch (this.validate[0]) {
+                case 'requiered':
                     this.normalRules = [
                         (v) =>
                             !!v ||
@@ -214,7 +210,7 @@ export default {
                     ];
                     break;
                 default:
-                    this.normalRules = this.validateEditor;
+                    this.normalRules = this.validate;
             }
         }
     },
@@ -227,6 +223,14 @@ export default {
             this.$emit('input', event);
         },
 
+        $_insertIntoArray(params) {
+            let array = [];
+
+            params.forEach((element) => array.push(element[this.setting.key]));
+
+            return array;
+        },
+
         /**
          * Método del clic
          */
@@ -235,9 +239,18 @@ export default {
              * Setear información
              */
             if (this.$_returnMultiSelect() == true) {
-                let array = [params[this.setting.key]];
-                this.$_updateValue(array);
-                this.text = 'Elementos seleccionados ' + array.length;
+                let array = this.$_insertIntoArray(params);
+                const result =
+                    this.value != undefined
+                        ? [...new Set(array.concat(this.value))]
+                        : array;
+
+                this.text =
+                    this.text != undefined
+                        ? [...new Set(params.concat(this.text))]
+                        : params;
+
+                this.$_updateValue(result);
             } else {
                 this.$_updateValue(params[0][this.setting.key]);
                 this.text =
@@ -250,14 +263,6 @@ export default {
              * Cerrar modal
              */
             this.$_openModal();
-        },
-
-        /**
-         * Método para cambiar los valores del componente
-         */
-        $_ChangeValues(itemValue, itemText = undefined) {
-            this.$_updateValue(itemValue);
-            this.text = itemText;
         },
 
         /**
@@ -288,17 +293,7 @@ export default {
          * Configuración del Componente
          */
         $_setUp() {
-            this.$_validate();
             this.$_settingObjects();
-        },
-
-        /**
-         * Configuración Validación
-         */
-        $_validate() {
-            this.setting.validate != undefined && this.setting.validate == true
-                ? (this.regex = ['text'])
-                : '';
         },
 
         /**
@@ -392,6 +387,15 @@ export default {
              */
             return multiSelect;
         },
+
+        /**
+         * Delete Chip
+         */
+        $_deleteChip(id) {
+            this.text = this.text.filter((item) => item.id != id);
+            const result = this.value.filter((item) => item != id);
+            this.$_updateValue(result);
+        },
     },
 };
 </script>
@@ -438,6 +442,7 @@ export default {
         />
 
         <v-text-field
+            v-if="!setting.multiSelect"
             :rules="normalRules"
             readonly
             clearable
@@ -451,5 +456,34 @@ export default {
             clear-icon="mdi-close-circle"
             :validate-on-blur="validateOnBlur"
         />
+
+        <v-combobox
+            v-else
+            v-model="text"
+            :rules="normalRules"
+            outlined
+            readonly
+            clearable
+            multiple
+            :label="label"
+            :dense="denseInput"
+            append-icon="mdi-magnify"
+            @click:append="$_openModalGrid"
+            @click="$_openModalGrid"
+            clear-icon="mdi-close-circle"
+            :validate-on-blur="validateOnBlur"
+        >
+            <template v-slot:selection="{ attrs, item, selected }">
+                <v-chip
+                    small
+                    v-bind="attrs"
+                    :input-value="selected"
+                    close
+                    @click:close="$_deleteChip(item[setting.key])"
+                >
+                    {{ item[itemText ? itemText : setting.columns[0].value] }}
+                </v-chip>
+            </template>
+        </v-combobox>
     </div>
 </template>

@@ -301,8 +301,8 @@ html {
 
 /* width */
 ::-webkit-scrollbar {
-    width: 8px;
-    border-radius: 20px;
+    width: 4px;
+    border-radius: 4px;
 }
 
 /* Track */
@@ -312,10 +312,10 @@ html {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #EEF4F9;
+    background: #EEEEEE;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #174B89;
+    background: #282828;
 }

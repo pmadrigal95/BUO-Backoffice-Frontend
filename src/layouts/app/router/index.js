@@ -4,11 +4,15 @@
 
 import homeRoutes from '@/views/home/router';
 
-import promotionalCodesRoutes from '@/views/promotionalCodes/router';
+import userRoutes from '@/views/user/router';
 
 import companyRoutes from '@/views/company/router';
 
 import analyticsRoutes from '@/views/analytics/router';
+
+import departmentRoutes from '@/views/department/router';
+
+import promotionalCodesRoutes from '@/views/promotionalCodes/router';
 
 const routes = [
     {
@@ -18,9 +22,11 @@ const routes = [
         component: 'app',
         children: [
             ...homeRoutes,
-            ...promotionalCodesRoutes,
-            ...analyticsRoutes,
+            ...userRoutes,
             ...companyRoutes,
+            ...analyticsRoutes,
+            ...departmentRoutes,
+            ...promotionalCodesRoutes,
         ],
     },
 ];

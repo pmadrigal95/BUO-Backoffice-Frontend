@@ -22,6 +22,15 @@ export default {
             default: baseLocalHelper.$_LabelBtnSend,
         },
 
+        /**
+         * Label del Primer botón
+         * Default: Guardar
+         */
+        lblCancel: {
+            type: String,
+            default: baseLocalHelper.$_LabelBtnGoOut,
+        },
+
         beforeClick: {
             type: Function,
             default: undefined,
@@ -48,11 +57,31 @@ export default {
             default: 'mdi-content-save',
         },
 
+        orientationicon: {
+            default: undefined,
+        },
+
         /**
          * Unico botón que abarca tamaño del form
          * Default: false
          */
-        login: {
+        block: {
+            type: Boolean,
+            default: false,
+        },
+
+        /**
+         * size del boton
+         */
+        isLarge: {
+            type: Boolean,
+            default: true,
+        },
+
+        /**
+         * size del boton
+         */
+        isSmall: {
             type: Boolean,
             default: false,
         },
@@ -79,7 +108,6 @@ export default {
     data() {
         return {
             valid: true,
-            lblCancel: baseLocalHelper.$_LabelBtnGoOut,
             showCancel: false,
             /**
              * Identificador del input
@@ -181,46 +209,88 @@ export default {
 
         <!-- @slot Agregar Contenido después del form -->
         <slot name="afterForm"></slot>
-        <v-layout align-center justify-end v-if="login">
+        <v-layout align-center justify-end v-if="block">
             <v-card-text
                 ><!-- @slot Agregar botones después del Btn principal -->
                 <slot name="Beforebtns"></slot>
                 <v-btn
-                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    class="no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                     :color="color"
+                    :large="isLarge"
+                    :small="isSmall"
                     dark
                     block
                     depressed
                     @click="$_submit"
-                    >{{ labelBtn }}</v-btn
                 >
+                    <v-icon v-if="orientationicon === 'left'" left>{{
+                        icon
+                    }}</v-icon>
+                    {{ labelBtn }}
+                    <v-icon v-if="orientationicon === 'right'" right>{{
+                        icon
+                    }}</v-icon></v-btn
+                >
+                <v-btn
+                    class="mt-5 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    color="primary"
+                    :large="isLarge"
+                    :small="isSmall"
+                    outlined
+                    block
+                    @click="$_Cancel"
+                    v-if="showCancel"
+                >
+                    <v-icon v-if="orientationicon === 'left'" left
+                        >mdi-close-circle-outline</v-icon
+                    >
+                    {{ lblCancel }}
+                    <v-icon v-if="orientationicon === 'right'" right
+                        >mdi-close-circle-outline</v-icon
+                    >
+                </v-btn>
                 <!-- @slot Agregar botones después del Btn principal -->
                 <slot name="btns"></slot
             ></v-card-text>
         </v-layout>
-        <v-layout align-end justify-end v-if="!login">
+        <v-layout align-end justify-end v-if="!block">
             <!-- @slot Agregar botones después del Btn principal -->
             <slot name="Beforebtns"></slot>
 
             <v-btn
                 class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                :color="color"
-                dark
-                depressed
-                @click="$_submit"
+                :large="isLarge"
+                :small="isSmall"
+                outlined
+                color="primary"
+                @click="$_Cancel"
+                v-if="showCancel"
             >
-                <v-icon left>{{ icon }}</v-icon>
-                {{ labelBtn }}
+                <v-icon v-if="orientationicon === 'left'" left
+                    >mdi-close-circle-outline</v-icon
+                >
+                {{ lblCancel }}
+                <v-icon v-if="orientationicon === 'right'" right
+                    >mdi-close-circle-outline</v-icon
+                >
             </v-btn>
 
             <v-btn
                 class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                outlined
-                @click="$_Cancel"
-                v-if="showCancel"
+                :color="color"
+                :large="isLarge"
+                :small="isSmall"
+                dark
+                depressed
+                @click="$_submit"
             >
-                <v-icon left>mdi-close-circle-outline</v-icon>
-                {{ lblCancel }}
+                <v-icon v-if="orientationicon === 'left'" left>{{
+                    icon
+                }}</v-icon>
+                {{ labelBtn }}
+                <v-icon v-if="orientationicon === 'right'" right>{{
+                    icon
+                }}</v-icon>
             </v-btn>
 
             <!-- @slot Agregar botones después del Btn principal -->

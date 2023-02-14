@@ -5,6 +5,8 @@
  * @displayName BaseAnalyticsLineChart
  */
 
+import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
+
 const BaseLinearChart = () =>
     import('@/components/core/charts/BaseLinearChart');
 
@@ -75,10 +77,10 @@ export default {
     },
 
     created() {
-        this.chartData.datasets.forEach((element) => {
-            element.backgroundColor = this.poolColors(1);
-            element.borderColor = this.poolColors(1);
-            element.fill = true;
+        this.chartData.datasets.forEach((element, index) => {
+            const color = baseDataVisualizationColorsHelper.$_getColor(index);
+            element.borderColor = color.main;
+            element.backgroundColor = color.secondary50;
         });
     },
 
@@ -91,21 +93,6 @@ export default {
                     this.chartData.labels.indexOf(tooltipItems[0].label)
                 ]
             );
-        },
-
-        dynamicColors() {
-            var r = Math.floor(Math.random() * 255);
-            var g = Math.floor(Math.random() * 255);
-            var b = Math.floor(Math.random() * 255);
-            return 'rgba(' + r + ',' + g + ',' + b + ', 0.5)';
-        },
-
-        poolColors(a) {
-            var pool = [];
-            for (let i = 0; i < a; i++) {
-                pool.push(this.dynamicColors());
-            }
-            return pool;
         },
     },
 };

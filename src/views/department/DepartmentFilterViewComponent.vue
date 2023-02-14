@@ -1,0 +1,156 @@
+<script>
+/**
+ * Descripción: Pantalla Filtro Departamentos
+ *
+ * @displayName DepartmentFilterViewComponent
+ *
+ */
+
+import { mapGetters } from 'vuex';
+
+import httpService from '@/services/axios/httpService';
+
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
+const BaseCardViewComponent = () =>
+    import('@/components/core/cards/BaseCardViewComponent');
+
+const BaseServerDataTable = () =>
+    import('@/components/core/grids/BaseServerDataTable');
+
+export default {
+    name: 'DepartmentFilterViewComponent',
+
+    components: {
+        BaseCardViewComponent,
+        BaseServerDataTable,
+    },
+
+    computed: {
+        ...mapGetters('authentication', ['user']),
+
+        write() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                this.$router.currentRoute.meta.module,
+                baseSecurityHelper.$_write
+            );
+            return result;
+        },
+
+        setting() {
+            return {
+                endpoint: 'departamento/findBy',
+                columns: [
+                    {
+                        text: 'Nombre',
+                        align: 'start',
+                        value: 'nombre',
+                        show: true,
+                    },
+                    {
+                        text: 'Departamento Padre',
+                        align: 'start',
+                        value: 'nombrePadre',
+                        show: true,
+                    },
+                    {
+                        text: 'Empresa',
+                        align: 'start',
+                        value: 'nombreOrganizacion',
+                        show: true,
+                    },
+                    {
+                        text: 'Administrador',
+                        align: 'start',
+                        value: 'nombreUsuarioAdmin',
+                        show: false,
+                    },
+                    {
+                        text: 'Correo Administrador',
+                        align: 'start',
+                        value: 'correoUsuarioAdmin',
+                        show: false,
+                    },
+                    {
+                        text: 'Teléfono Administrador',
+                        align: 'start',
+                        value: 'telefonoUsuarioAdmin',
+                        show: false,
+                    },
+                    {
+                        text: 'Colaboradores',
+                        align: 'end',
+                        value: 'cantidadColaboradores',
+                        show: true,
+                    },
+                    {
+                        text: 'Estado',
+                        align: 'center',
+                        value: 'nombreEstado',
+                        show: true,
+                    },
+                    {
+                        text: 'Creado por',
+                        align: 'start',
+                        value: 'nombreUsuarioModifica',
+                        show: false,
+                    },
+                ],
+                key: 'id',
+            };
+        },
+    },
+
+    methods: {
+        /**
+         * Body Request
+         */
+        $_createBodyRequestDelete(row) {
+            return {
+                userId: this.user.userId,
+                id: row[0].id,
+            };
+        },
+
+        /**
+         * Delete Function
+         */
+        $_fnDelete(row) {
+            httpService
+                .post(
+                    'departamento/deactivate',
+                    this.$_createBodyRequestDelete(row)
+                )
+                .then((response) => {
+                    if (response != undefined) {
+                        this.$refs.departmentFilter.$_ParamsToAPI();
+                    }
+                });
+        },
+
+        /**
+         * Pantalla Editor
+         */
+        $_Editor(params) {
+            this.$router.push({
+                name: 'DepartmentEditorViewComponent',
+                params: params && { Id: params.selected[this.setting.key] },
+            });
+        },
+    },
+};
+</script>
+
+<template>
+    <BaseCardViewComponent title="Departamentos">
+        <div slot="card-text">
+            <BaseServerDataTable
+                ref="departmentFilter"
+                :setting="setting"
+                :fnNew="write ? $_Editor : undefined"
+                :fnEdit="write ? $_Editor : undefined"
+                :fnDelete="write ? $_fnDelete : undefined"
+            />
+        </div>
+    </BaseCardViewComponent>
+</template>

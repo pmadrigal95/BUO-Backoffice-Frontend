@@ -57,12 +57,14 @@ export default {
                     },
                     {
                         text: 'Monto Descuento',
+                        type: 'number',
                         align: 'end',
                         value: 'montoDescuento',
                         show: false,
                     },
                     {
                         text: 'Porcentaje Descuento',
+                        type: 'number',
                         align: 'end',
                         value: 'porcentajeDescuento',
                         show: false,
@@ -82,12 +84,14 @@ export default {
                     },
                     {
                         text: 'Uso Máximo',
+                        type: 'number',
                         align: 'end',
                         value: 'usoMaximo',
                         show: false,
                     },
                     {
                         text: 'Uso Actual',
+                        type: 'number',
                         align: 'end',
                         value: 'usoActual',
                         show: false,

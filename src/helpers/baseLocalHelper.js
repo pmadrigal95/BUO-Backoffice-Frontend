@@ -229,7 +229,21 @@ export default {
      * Descripción: Validación
      */
     $_MsgComponentSettingInvalid(val) {
-        return `El Componente ${val} posee una configuración no válida.`;
+        return `El Componente ${val} posee una configuración no válida`;
+    },
+
+    /**
+     * Descripción: Validación
+     */
+    $_MsgFileAllowedExtensionInvalid() {
+        return `El campo no posee la extensión válida.`;
+    },
+
+    /**
+     * Descripción: Validación
+     */
+    $_MsgFileAllowedMimeInvalid() {
+        return `El campo no posee un tipo de mime válido.`;
     },
 
     /**

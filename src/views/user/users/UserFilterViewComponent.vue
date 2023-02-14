@@ -1,8 +1,8 @@
 <script>
 /**
- * Descripción: Pantalla Filtro Empresas
+ * Descripción: Pantalla Filtro Usuarios
  *
- * @displayName CompanyFilterViewComponent
+ * @displayName UserFilterViewComponent
  *
  */
 
@@ -18,12 +18,23 @@ const BaseCardViewComponent = () =>
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
+const BaseCustomsButtonsGrid = () =>
+    import('@/components/core/grids/BaseCustomsButtonsGrid.vue');
+
 export default {
-    name: 'CompanyFilterViewComponent',
+    name: 'UserFilterViewComponent',
+
+    props: {
+        empresa: {
+            type: Number,
+            requiered: true,
+        },
+    },
 
     components: {
         BaseCardViewComponent,
         BaseServerDataTable,
+        BaseCustomsButtonsGrid,
     },
 
     computed: {
@@ -34,79 +45,37 @@ export default {
          */
         setting() {
             return {
-                endpoint: 'organizacion/findBy',
+                endpoint: 'user/findBy',
                 columns: [
                     {
                         text: 'Nombre',
                         align: 'start',
                         value: 'nombre',
-                        show: true,
+                        show: false,
                     },
                     {
-                        text: 'Nombre Contacto',
+                        text: 'Primer Apellido',
                         align: 'start',
-                        value: 'nombreContacto',
+                        value: 'primerApellido',
                         show: false,
                     },
                     {
-                        text: 'Correo Contacto',
+                        text: 'Segundo Apellido',
                         align: 'start',
-                        value: 'correoContacto',
+                        value: 'segundoApellido',
                         show: false,
                     },
                     {
-                        text: 'Token Usuario',
-                        type: 'number',
+                        text: 'Nombre Completo',
                         align: 'start',
-                        value: 'tokenUsuario',
-                        show: false,
-                    },
-                    {
-                        text: 'Usuarios',
-                        type: 'number',
-                        align: 'end',
-                        value: 'totalUsuarios',
+                        value: 'nombreCompleto',
                         show: true,
                     },
                     {
-                        text: 'Wallets Activas',
-                        type: 'number',
-                        align: 'end',
-                        value: 'walletsActivas',
-                        show: true,
-                    },
-                    {
-                        text: 'Certifica Inmediato',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'certificaInmediato',
-                        show: false,
-                    },
-                    {
-                        text: 'Mostrar Puestos Genéricos',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'mostrarPuestosGenericos',
-                        show: false,
-                    },
-                    {
-                        text: 'Demo',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'esClienteDemo',
-                        show: true,
-                    },
-                    {
-                        text: 'Estado',
-                        align: 'center',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Industria',
+                        text: 'Correo',
                         align: 'start',
-                        value: 'nombreIndustria',
-                        show: false,
+                        value: 'correo',
+                        show: true,
                     },
                     {
                         text: 'País',
@@ -115,18 +84,48 @@ export default {
                         show: false,
                     },
                     {
+                        text: 'Estado',
+                        align: 'center',
+                        value: 'nombreEstado',
+                        show: true,
+                    },
+                    {
+                        text: 'Wallet Activo',
+                        type: 'bool',
+                        align: 'center',
+                        value: 'walletActivo',
+                        show: true,
+                    },
+                    {
+                        text: 'Identificación',
+                        align: 'center',
+                        value: 'identificacion',
+                        show: false,
+                    },
+                    {
+                        text: 'Género',
+                        align: 'center',
+                        value: 'nombreGenero',
+                        show: false,
+                    },
+                    {
                         text: 'Ciudad',
-                        align: 'start',
+                        align: 'center',
                         value: 'ciudad',
                         show: false,
                     },
                     {
-                        text: 'Descripción',
-                        align: 'start',
-                        value: 'descripcion',
+                        text: 'Telefóno',
+                        align: 'center',
+                        value: 'telefono',
                         show: false,
                     },
-
+                    {
+                        text: 'Username',
+                        align: 'center',
+                        value: 'username',
+                        show: false,
+                    },
                 ],
                 key: 'id',
             };
@@ -139,6 +138,10 @@ export default {
             );
             return result;
         },
+    },
+
+    created() {
+        //alert(this.empresa);
     },
 
     methods: {
@@ -156,15 +159,12 @@ export default {
         /**
          * Desactive Function
          */
-        $_fnDesactiveCompany(row) {
+        $_fnDesactiveUser(row) {
             httpService
-                .post(
-                    'organizacion/deactivate',
-                    this.$_createBodyRequestDelete(row)
-                )
+                .post('user/deactivate', this.$_createBodyRequestDelete(row))
                 .then((response) => {
                     if (response != undefined) {
-                        this.$refs.CompanyFilter.$_ParamsToAPI();
+                        this.$refs.UserFilter.$_ParamsToAPI();
                     }
                 });
         },
@@ -172,26 +172,42 @@ export default {
         /**
          * Pantalla Editor
          */
-        $_companyEditor(params) {
+        $_userEditor(params) {
             this.$router.push({
-                name: 'CompanyEditorViewComponent',
+                name: 'UserEditorViewComponent',
                 params: params && { Id: params.selected[this.setting.key] },
             });
+        },
+
+        /**
+         * Pantalla Carga Masiva
+         */
+        $_fnLoad() {
+            this.$router.push({ name: 'UserBulkLoadViewComponent' });
         },
     },
 };
 </script>
 
 <template>
-    <BaseCardViewComponent title="Empresas">
+    <BaseCardViewComponent title="Usuarios">
         <div slot="card-text">
             <BaseServerDataTable
-                ref="CompanyFilter"
+                ref="UserFilter"
                 :setting="setting"
-                :fnNew="write ? $_companyEditor : undefined"
-                :fnEdit="write ? $_companyEditor : undefined"
-                :fnDelete="write ? $_fnDesactiveCompany : undefined"
-            />
+                :fnNew="write ? $_userEditor : undefined"
+                :fnEdit="write ? $_userEditor : undefined"
+                :fnDelete="write ? $_fnDesactiveUser : undefined"
+            >
+                /** * TODO: pendiente permiso de seguridad*/
+                <div slot="btns">
+                    <BaseCustomsButtonsGrid
+                        label="Carga Masiva"
+                        :fnMethod="$_fnLoad"
+                        icon="mdi-table-arrow-up"
+                    />
+                </div>
+            </BaseServerDataTable>
         </div>
     </BaseCardViewComponent>
 </template>

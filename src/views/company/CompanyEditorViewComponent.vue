@@ -34,8 +34,9 @@ export default {
 
         statusList() {
             return [
-                { product: 'Activo', value: 2 },
-                { product: 'Inactivo', value: 1 },
+                { name: 'Activo', id: 2 },
+                { name: 'Inactivo', id: 1 },
+                { name: 'Empresa no registrada', id: 8 },
             ];
         },
     },
@@ -74,7 +75,8 @@ export default {
                 correoContacto: undefined,
                 mostrarPuestosGenericos: false,
                 esClienteDemo: false,
-                tokenUsuario: 0,
+                tokenUsuario: undefined,
+                usuarioId: undefined,
             };
         },
 
@@ -90,6 +92,7 @@ export default {
                     this.loading = false;
                     if (response != undefined) {
                         // Encontro la entidad
+                        console.log(response.data);
                         this.entity = BaseArrayHelper.SetObject(
                             {},
                             response.data
@@ -99,19 +102,26 @@ export default {
             }
         },
 
+        $_fnSetToUser() {
+            this.entity.usuarioId = this.user.userId;
+        },
+
         $_sendToApi() {
             this.loading = true;
 
+            this.$_fnSetToUser();
+
             let object = BaseArrayHelper.SetObject({}, this.entity);
 
-            httpService.post('organizacion/save', object).then((response) => {
-                this.loading = false;
-
-                if (response != undefined) {
-                    //Logica JS luego de la acción exitosa!!!
-                    this.$_returnToFilter();
-                }
-            });
+            httpService
+                .post('organizacion/saveForm', object)
+                .then((response) => {
+                    this.loading = false;
+                    if (response != undefined) {
+                        //Logica JS luego de la acción exitosa!!!
+                        this.$_returnToFilter();
+                    }
+                });
         },
 
         /**
@@ -129,7 +139,6 @@ export default {
 <template>
     <BaseCardViewComponent
         title="Empresas"
-        subtitle="Datos Generales"
         :btnAction="$_returnToFilter"
         class="mx-auto"
         md="6"
@@ -137,7 +146,12 @@ export default {
     >
         <div slot="card-text">
             <BaseSkeletonLoader v-if="loading" type="article, actions" />
-            <BaseForm :method="$_sendToApi" :cancel="$_returnToFilter" v-else>
+            <BaseForm
+                :block="$vuetify.breakpoint.mobile"
+                :method="$_sendToApi"
+                :cancel="$_returnToFilter"
+                v-else
+            >
                 <div slot="body">
                     <v-row dense>
                         <v-col cols="12">
@@ -155,7 +169,7 @@ export default {
                                 itemText="nombre"
                                 itemValue="id"
                                 v-model="entity.industriaId"
-                                :validate="['text']"
+                                :validate="['optionalText']"
                             />
                         </v-col>
 
@@ -174,7 +188,7 @@ export default {
                             <BaseInput
                                 label="Ciudad"
                                 v-model.trim="entity.ciudad"
-                                :validate="['text']"
+                                :validate="['optionalText']"
                             />
                         </v-col>
 
@@ -206,7 +220,7 @@ export default {
                             <BaseTextArea
                                 label="Descripción general de la actividad"
                                 v-model.trim="entity.descripcion"
-                                :validate="['text']"
+                                :validate="['optionalText']"
                                 :max="200"
                                 counter="200"
                             />
@@ -234,13 +248,10 @@ export default {
                         </v-col>
 
                         <v-col cols="12">
-                            <BaseSelect
-                                label="Estado"
+                            <BaseRadioGroup
                                 v-model="entity.estadoId"
                                 :endpoint="statusList"
-                                itemText="product"
-                                itemValue="value"
-                                :validate="['text']"
+                                :validate="['requiered']"
                             />
                         </v-col>
                     </v-row>
