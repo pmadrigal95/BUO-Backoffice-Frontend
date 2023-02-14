@@ -82,10 +82,11 @@ export default {
         },
 
         /**
-         * Como validar el input
-         * ['text'] [ @validacionPersonalizada ]
+         * Accepts a mixed array of types function, boolean and string.
+         * Functions pass an input value as an argument and must return either true / false or a string containing an error message.
+         * The input field will enter an error state if a function returns (or any value in the array contains) false or is a string
          */
-        validateEditor: {
+        validate: {
             type: Array,
             required: false,
         },
@@ -202,9 +203,9 @@ export default {
         /**
          * definición del Modal
          */
-        if (this.validateEditor != undefined) {
-            switch (this.validateEditor[0]) {
-                case 'text':
+        if (this.validate != undefined) {
+            switch (this.validate[0]) {
+                case 'requiered':
                     this.normalRules = [
                         (v) =>
                             !!v ||
@@ -214,7 +215,7 @@ export default {
                     ];
                     break;
                 default:
-                    this.normalRules = this.validateEditor;
+                    this.normalRules = this.validate;
             }
         }
     },
@@ -270,14 +271,6 @@ export default {
         },
 
         /**
-         * Método para cambiar los valores del componente
-         */
-        $_ChangeValues(itemValue, itemText = undefined) {
-            this.$_updateValue(itemValue);
-            this.text = itemText;
-        },
-
-        /**
          * Abrir modal
          */
         $_openModal() {
@@ -305,17 +298,7 @@ export default {
          * Configuración del Componente
          */
         $_setUp() {
-            this.$_validate();
             this.$_settingObjects();
-        },
-
-        /**
-         * Configuración Validación
-         */
-        $_validate() {
-            this.setting.validate != undefined && this.setting.validate == true
-                ? (this.regex = ['text'])
-                : '';
         },
 
         /**
@@ -482,6 +465,7 @@ export default {
         <v-combobox
             v-else
             v-model="text"
+            :rules="normalRules"
             outlined
             readonly
             clearable
