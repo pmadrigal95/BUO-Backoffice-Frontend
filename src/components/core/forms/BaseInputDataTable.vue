@@ -126,11 +126,6 @@ export default {
             text: this.editText,
 
             /**
-             *  Validación del Input
-             *  */
-            regex: null,
-
-            /**
              * Densidad de las filas Grid
              */
             dense: true,
