@@ -36,12 +36,12 @@ export default {
     data() {
         return {
             loading: false,
+            loadingDownload: false,
             file: undefined,
             organizacionId: undefined,
             downloadFile: undefined,
             warningList: undefined,
-            fileType:"excel",
-
+            fileType: 'excel',
         };
     },
 
@@ -191,11 +191,11 @@ export default {
         },
 
         $_getFile() {
-            this.loading = true;
+            this.loadingDownload = true;
             httpService
                 .get(`cargaMasivaEmpleados/getFile/${this.organizacionId}`)
                 .then((response) => {
-                    this.loading = false;
+                    this.loadingDownload = false;
                     baseFnFile.$_dowloadFile(
                         response.data.fileEncoded,
                         response.data.fileName,
@@ -316,6 +316,7 @@ export default {
                                         <v-col class="shrink">
                                             <v-btn
                                                 class="mx-2"
+                                                :loading="loadingDownload"
                                                 fab
                                                 dark
                                                 elevation="0"
