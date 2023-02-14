@@ -223,7 +223,6 @@ export default {
             :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '600'"
             scrollable
             :isDrawer="false"
-            title=""
         >
             <div slot="Content">
                 <v-card flat height="100%" width="100%">
@@ -303,7 +302,7 @@ export default {
                                     <v-row align="center">
                                         <v-col class="shrink">
                                             <v-icon large color="greenB800">
-                                                mdi mdi-microsoft-excel
+                                                mdi-microsoft-excel
                                             </v-icon>
                                         </v-col>
                                         <v-col class="grow">

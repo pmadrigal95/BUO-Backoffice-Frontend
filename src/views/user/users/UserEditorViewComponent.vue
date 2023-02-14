@@ -185,6 +185,10 @@ export default {
             };
         },
 
+        $_setToUser() {
+            this.entity.usuarioModificaId = this.user.userId;
+        },
+
         /**
          * Determinar si Es nuevo / editor
          */
@@ -209,10 +213,6 @@ export default {
                     }
                 });
             }
-        },
-
-        $_setToUser() {
-            this.entity.usuarioModificaId = this.user.userId;
         },
 
         $_sendToApi() {

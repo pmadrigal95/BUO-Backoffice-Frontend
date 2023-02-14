@@ -531,10 +531,15 @@ export default {
                 ),
             (v) =>
                 (v && baseFnFile.$_isCorrectExtension(v, this.fileType)) ||
-                baseLocalHelper.$_MsgFileAllowedExtensionInvalid(this.label != undefined ? this.label : '', baseFnFile.$_extensionsFile[this.fileType].documentType),
+                baseLocalHelper.$_MsgFileAllowedExtensionInvalid(
+                    this.label != undefined ? this.label : '',
+                    baseFnFile.$_extensionsFile[this.fileType].documentType
+                ),
             (v) =>
                 (v && baseFnFile.$_isCorrectMime(v, this.fileType)) ||
-                baseLocalHelper.$_MsgFileAllowedMimeInvalid(this.label != undefined ? this.label : ''),
+                baseLocalHelper.$_MsgFileAllowedMimeInvalid(
+                    this.label != undefined ? this.label : ''
+                ),
         ];
     },
 
@@ -545,7 +550,9 @@ export default {
 
         //TODO: cambiar nombre a este método
         async $_save() {
-            const result = this.newFile ? await baseFnFile.$_convertToBase64(this.newFile) : undefined;
+            const result = this.newFile
+                ? await baseFnFile.$_convertToBase64(this.newFile)
+                : undefined;
             this.$_updateValue(result);
         },
 
