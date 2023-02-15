@@ -21,15 +21,12 @@ const BaseCardViewComponent = () =>
 
 const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
 
-const BaseTreeview = () => import('@/components/core/treeview/BaseTreeview');
-
 export default {
     name: 'PromotionalCodesEditorViewComponent',
 
     components: {
         BaseCardViewComponent,
         BaseDatePicker,
-        BaseTreeview,
     },
 
     data() {
@@ -104,7 +101,6 @@ export default {
                             {},
                             response.data
                         );
-
                         this.entity.fechaExpiracion =
                             baseSharedFnHelper.$_parseArrayToDateISOString(
                                 this.entity.fechaExpiracion
@@ -124,15 +120,12 @@ export default {
 
         $_sendToApi() {
             this.loading = true;
-
             this.$_isLicense();
             let object = BaseArrayHelper.SetObject({}, this.entity);
-
             httpService
                 .post('codigoPromocion/save', object)
                 .then((response) => {
                     this.loading = false;
-
                     if (response != undefined) {
                         //Logica JS luego de la acción exitosa!!!
                         this.$_returnToFilter();
@@ -226,13 +219,6 @@ export default {
                                 v-model="entity.estadoId"
                                 endpoint="status"
                                 :validate="['requiered']"
-                            />
-                        </v-col>
-                        <v-col cols="12">
-                            <BaseTreeview
-                                endpoint="departamento/findAllTree/2"
-                                itemText="nombre"
-                                itemChildren="subDepartamentos"
                             />
                         </v-col>
                     </v-row>
