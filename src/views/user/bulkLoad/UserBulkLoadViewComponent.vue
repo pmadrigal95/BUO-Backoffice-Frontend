@@ -39,7 +39,6 @@ export default {
             loadingDownload: false,
             file: undefined,
             organizacionId: undefined,
-            downloadFile: undefined,
             warningList: undefined,
             fileType: 'excel',
         };

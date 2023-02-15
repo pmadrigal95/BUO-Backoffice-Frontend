@@ -68,9 +68,10 @@ const isCorrectMime = (file, fileType) => {
     }
 };
 
-/*const isCorrectSize = (file) => {
+const isCorrectSize = (file) => {
     try {
-       /* const img = new Image();
+        const img = new Image();
+        img.src = file;
         img.onload = function () {
             if (
                 this.width.toFixed(0) === 413 &&
@@ -84,7 +85,6 @@ const isCorrectMime = (file, fileType) => {
         return false;
     }
 };
-*/
 
 const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -96,10 +96,11 @@ const convertToBase64 = (file) => {
     });
 };
 
-const dowloadFile = (file, nameFile) => {
-    const anchor_href =
-        'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' +
-        file;
+const dowloadFile = (file, nameFile, fileType) => {
+    const mimeType = extensionsFile[fileType].mimeType.find(
+        (element) => element === file.type
+    );
+    const anchor_href = `data:${mimeType};base64,` + file;
     const link = document.createElement('a');
     link.href = anchor_href;
     link.setAttribute('download', nameFile);
@@ -127,5 +128,9 @@ export default {
 
     $_dowloadFile(file, nameFile) {
         return dowloadFile(file, nameFile);
+    },
+
+    $_isCorrectSize(file) {
+        return isCorrectSize(file);
     },
 };

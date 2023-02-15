@@ -540,6 +540,11 @@ export default {
                 baseLocalHelper.$_MsgFileAllowedMimeInvalid(
                     this.label != undefined ? this.label : ''
                 ),
+            /*(v) =>
+                (v && this.fileType === "imagenes"  && baseFnFile.$isCorrectSize(v))||
+                baseLocalHelper.$_MsgFileAllowedMimeInvalid(
+                    this.label != undefined ? this.label : ''
+                ),*/
         ];
     },
 
@@ -548,8 +553,7 @@ export default {
             this.$emit('input', event);
         },
 
-        //TODO: cambiar nombre a este método
-        async $_save() {
+        async $_passTheBase64() {
             const result = this.newFile
                 ? await baseFnFile.$_convertToBase64(this.newFile)
                 : undefined;
@@ -618,7 +622,7 @@ export default {
         :accept="accept"
         :fileType="fileType"
         v-model="newFile"
-        @change="$_save"
+        @change="$_passTheBase64"
         v-bind="$attrs"
         v-on="listeners"
         :rules="normalRules"
