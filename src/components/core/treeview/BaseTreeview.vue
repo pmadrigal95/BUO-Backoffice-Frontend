@@ -448,7 +448,7 @@ export default {
 
                     default:
                         origin = this.selected;
-                        this.footerMethod(origin);
+                        this.footerMethod(origin[0]);
                         this.selected = [];
                 }
             }
