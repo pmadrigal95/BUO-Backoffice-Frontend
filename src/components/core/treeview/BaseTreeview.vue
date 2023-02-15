@@ -9,8 +9,16 @@ import { v4 as uuidv4 } from 'uuid';
 
 import httpService from '@/services/axios/httpService';
 
+import baseLocalHelper from '@/helpers/baseLocalHelper.js';
+
+import baseArrayHelper from '@/helpers/baseArrayHelper.js';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper.js';
+
 export default {
     name: 'BaseTreeview',
+
+    inheritAttrs: false,
 
     props: {
         //Allows user to mark a node as active by clicking on it
@@ -152,12 +160,6 @@ export default {
             default: '$loading',
         },
 
-        //When true, allows user to have multiple active nodes at the same time
-        multipleActive: {
-            type: Boolean,
-            default: false,
-        },
-
         //Icon used when node is not selected. Only visible when selectable is true.
         offIcon: {
             type: String,
@@ -216,7 +218,7 @@ export default {
          */
         search: {
             type: Boolean,
-            default: false,
+            default: true,
         },
 
         /**
@@ -261,8 +263,55 @@ export default {
             The array consists of the item-key of each selected item. Is used with @input event to allow for v-model binding.
          */
         value: {
-            type: Boolean,
-            default: false,
+            type: [String, Number, Array, Object],
+            default: undefined,
+        },
+
+        /**
+         * Label del Primer botón Footer
+         * Default: Guardar
+         */
+        labelBtn: {
+            type: String,
+            default: baseLocalHelper.$_LabelBtnSelected,
+        },
+
+        /**
+         * Función a ejecutar en el Footer con el primer btn
+         * Requerida
+         */
+        footerMethod: {
+            type: Function,
+            default: undefined,
+        },
+
+        /**
+         * Función a ejecutar en el Footer con el botón Cancelar
+         * no es Requerido
+         */
+        cancel: {
+            type: Function,
+            default: undefined,
+        },
+
+        /**
+         * Función Click
+         * Default undefined
+         */
+        fnClick: {
+            type: Function,
+            default: undefined,
+        },
+
+        /**
+         * Función DoubleClick
+         * Default undefined
+         * Cuidado con las props de footerMethod
+         * NO usar en conjunto
+         */
+        fnDoubleClick: {
+            type: [Function, String],
+            default: undefined,
         },
     },
 
@@ -272,10 +321,46 @@ export default {
              * Identificador del input
              */
             refTree: 'BaseTreeview_',
+            multipleActive: false,
             items: [],
+            selected: [],
             loading: null,
             searchValue: null,
+
+            /**
+             * Determina contador de clicks
+             */
+            clickCount: 0,
+
+            /**
+             * param tiempo entre clicks
+             */
+            delay: baseLocalHelper.$_clickDelay,
+
+            /**
+             * Descripción del botón
+             */
+            lblCancel: baseLocalHelper.$_LabelBtnGoOut,
+
+            /**
+             * Mostrar btn cancelar del footer
+             */
+            showCancel: false,
+
+            /**
+             * Mostrar btn footer
+             */
+            showFooter: false,
         };
+    },
+
+    computed: {
+        listeners() {
+            return {
+                ...this.$listeners,
+                input: this.$_updateValue,
+            };
+        },
     },
 
     created() {
@@ -285,6 +370,20 @@ export default {
          * Config Inicial ID
          */
         this.refTree = this.refTree + randomID;
+
+        /**
+         * Valida si es necesario el botón de Footer
+         */
+        if (this.$props.footerMethod != undefined) {
+            this.showFooter = true;
+        }
+
+        /**
+         * Valida si es necesario el botón de Cancelar
+         */
+        if (this.$props.cancel != undefined) {
+            this.showCancel = true;
+        }
     },
 
     mounted() {
@@ -295,6 +394,10 @@ export default {
     },
 
     methods: {
+        $_updateValue(event) {
+            this.$emit('input', event);
+        },
+
         $_sendToApi() {
             httpService[this.httpMethod](this.endpoint, this.httpBody).then(
                 (response) => {
@@ -316,62 +419,178 @@ export default {
             }
         },
 
-        hello(item) {
-            alert(item);
+        /**
+         * Validaciones y ejecutar función
+         */
+        $_click() {
+            if (this.fnClick != undefined) {
+                /**
+                 * Envia Array a ejecutar en la función Click
+                 */
+                this.fnClick(this.selected);
+            }
         },
 
-        hello2(item) {
-            console.log(item);
+        /**
+         * Botón del Footer
+         */
+        $_SelectedFooter() {
+            if (this.footerMethod != undefined) {
+                let origin = [];
+
+                switch (this.selected.length) {
+                    case 0:
+                        baseNotificationsHelper.Message(
+                            true,
+                            baseLocalHelper.$_MsgRowNotSelected
+                        );
+                        break;
+
+                    default:
+                        origin = this.selected;
+                        this.footerMethod(origin);
+                        this.selected = [];
+                }
+            }
+        },
+
+        /**
+         * Botón del Footer Cancelar
+         */
+        $_CancelFooter() {
+            this.cancel();
+        },
+
+        /**
+         * obtener objecto seleccionado
+         */
+        $_SetParams(array, index) {
+            return {
+                index: baseArrayHelper.GetObjIndex(array, index),
+                selected: index,
+            };
+        },
+
+        /**
+         * Eventos click y DBClick
+         */
+        $_setSelected(row) {
+            this.clickCount++;
+            if (this.clickCount === 1) {
+                this.clickTimer = setTimeout(() => {
+                    this.clickCount = 0;
+
+                    var index = baseArrayHelper.GetObjIndex(this.selected, row);
+
+                    if (index === -1) {
+                        this.selected = [];
+                        this.selected.push(row);
+                        this.$_click();
+                    } else {
+                        baseArrayHelper.DeleteObj(this.selected, index);
+                    }
+                    this.$_updateValue(
+                        this.selected.length > 0 ? this.selected[0] : undefined
+                    );
+                }, this.delay);
+            } else if (this.clickCount === 2) {
+                clearTimeout(this.clickTimer);
+
+                this.clickCount = 0;
+
+                if (this.fnDoubleClick != undefined) {
+                    this.fnDoubleClick(row);
+                }
+                this.selected = [];
+            }
         },
     },
 };
 </script>
 
 <template>
-    <div>
-        <BaseSkeletonLoader v-if="loading" type="list-item" />
-        <v-treeview
-            v-else
-            :ref="refTree"
-            :activatable="activatable"
-            :active="active"
-            :active-class="activeClass"
-            :color="color"
-            :dark="dark"
-            :dense="dense"
-            :disable-per-node="disablePerNode"
-            :disabled="disabled"
-            :expand-icon="expandIcon"
-            :filter="filter"
-            :hoverable="hoverable"
-            :indeterminate-icon="indeterminateIcon"
-            :item-children="itemChildren"
-            :item-disabled="itemDisabled"
-            :item-key="itemKey"
-            :item-text="itemText"
-            :items="items"
-            :light="light"
-            :load-children="loadChildren"
-            :loading-icon="loadingIcon"
-            :multiple-active="multipleActive"
-            :off-icon="offIcon"
-            :on-icon="onIcon"
-            :open="open"
-            :open-all="openAll"
-            :open-on-click="openOnClick"
-            :return-object="returnObject"
-            :rounded="rounded"
-            :search="searchValue"
-            :selectable="selectable"
-            :selected-color="selectedColor"
-            :selection-type="selectionType"
-            :shaped="shaped"
-            :transition="transition"
-        >
-            <template slot="label" slot-scope="{ item }">
-                <div v-on:dblclick="hello2(item)">{{ item[itemText] }}</div>
-            </template>
-        </v-treeview>
-        {{}}
-    </div>
+    <v-card color="transparent" flat class="rounded-lg">
+        <v-card-text>
+            <BaseInput
+                v-if="search"
+                placeholder="Buscar"
+                dense
+                rounded
+                clearable
+                v-model="searchValue"
+                prepend-inner-icon="mdi-magnify"
+            />
+            <BaseSkeletonLoader v-if="loading" type="list-item" />
+            <v-treeview
+                v-else
+                :ref="refTree"
+                :activatable="activatable"
+                :active="active"
+                :active-class="activeClass"
+                :color="color"
+                :dark="dark"
+                :dense="dense"
+                :disable-per-node="disablePerNode"
+                :disabled="disabled"
+                :expand-icon="expandIcon"
+                :filter="filter"
+                :hoverable="hoverable"
+                :indeterminate-icon="indeterminateIcon"
+                :item-children="itemChildren"
+                :item-disabled="itemDisabled"
+                :item-key="itemKey"
+                :item-text="itemText"
+                :items="items"
+                :light="light"
+                :load-children="loadChildren"
+                :loading-icon="loadingIcon"
+                :multiple-active="multipleActive"
+                :off-icon="offIcon"
+                :on-icon="onIcon"
+                :open="open"
+                :open-all="openAll"
+                :open-on-click="openOnClick"
+                :return-object="returnObject"
+                :rounded="rounded"
+                :search="searchValue"
+                :selectable="selectable"
+                :selected-color="selectedColor"
+                :selection-type="selectionType"
+                :shaped="shaped"
+                :transition="transition"
+            >
+                <template slot="label" slot-scope="{ item }">
+                    <div @click="$_setSelected(item)">
+                        {{ item[itemText] }}
+                    </div>
+                </template>
+            </v-treeview>
+        </v-card-text>
+
+        <v-card-actions v-if="showFooter">
+            <!-- @helper:  Botones Footer -->
+            <v-layout align-end justify-end>
+                <v-btn
+                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    color="blue900"
+                    outlined
+                    small
+                    @click="$_CancelFooter"
+                    v-if="showCancel"
+                    >{{ lblCancel }}</v-btn
+                >
+
+                <v-btn
+                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    color="blue900"
+                    dark
+                    small
+                    @click="$_SelectedFooter"
+                    >{{ labelBtn }}</v-btn
+                >
+                <!-- @slot Agregar botones después del Btn principal -->
+                <slot name="btns"></slot>
+            </v-layout>
+        </v-card-actions>
+    </v-card>
 </template>
