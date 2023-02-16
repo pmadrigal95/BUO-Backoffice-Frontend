@@ -101,7 +101,6 @@ export default {
                             {},
                             response.data
                         );
-
                         this.entity.fechaExpiracion =
                             baseSharedFnHelper.$_parseArrayToDateISOString(
                                 this.entity.fechaExpiracion
@@ -121,15 +120,12 @@ export default {
 
         $_sendToApi() {
             this.loading = true;
-
             this.$_isLicense();
             let object = BaseArrayHelper.SetObject({}, this.entity);
-
             httpService
                 .post('codigoPromocion/save', object)
                 .then((response) => {
                     this.loading = false;
-
                     if (response != undefined) {
                         //Logica JS luego de la acción exitosa!!!
                         this.$_returnToFilter();

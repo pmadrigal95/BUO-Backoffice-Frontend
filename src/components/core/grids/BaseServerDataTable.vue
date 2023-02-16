@@ -8,7 +8,6 @@
  * @displayName BaseServerDataTable
  */
 
-import BaseArrayHelper from '@/helpers/baseArrayHelper';
 import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper.js';
 import baseArrayHelper from '@/helpers/baseArrayHelper.js';
@@ -732,7 +731,7 @@ export default {
                 this.isFilter = 'Filter';
                 this.formTitle = baseLocalHelper.$_LabelBtnmobilSearch;
 
-                this.temporalFilters = BaseArrayHelper.SetObject(
+                this.temporalFilters = baseArrayHelper.SetObject(
                     {},
                     this.filters
                 );
@@ -742,7 +741,7 @@ export default {
         },
 
         $_setFilter() {
-            this.filters = BaseArrayHelper.SetObject({}, this.temporalFilters);
+            this.filters = baseArrayHelper.SetObject({}, this.temporalFilters);
             this.$refs.popUp.$_openModal();
         },
 
@@ -1381,6 +1380,7 @@ export default {
             <v-layout align-end justify-end>
                 <v-btn
                     class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    :color="color"
                     outlined
                     small
                     @click="$_CancelFooter"

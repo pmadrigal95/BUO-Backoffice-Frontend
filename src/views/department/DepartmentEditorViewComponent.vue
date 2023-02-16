@@ -18,12 +18,16 @@ const BaseCardViewComponent = () =>
 const BaseInputDataTable = () =>
     import('@/components/core/forms/BaseInputDataTable');
 
+const BaseInputTreeview = () =>
+    import('@/components/core/treeview/BaseInputTreeview');
+
 export default {
     name: 'DepartmentEditorViewComponent',
 
     components: {
-        BaseCardViewComponent,
+        BaseInputTreeview,
         BaseInputDataTable,
+        BaseCardViewComponent,
     },
 
     data() {
@@ -153,7 +157,8 @@ export default {
         /**
          * Configuracion BaseInputDataTable
          */
-        departmentSetting() {
+        /**
+         * departmentSetting() {
             return {
                 endpoint: 'departamento/findBy',
                 columns: [
@@ -214,7 +219,7 @@ export default {
                 ],
                 key: 'id',
             };
-        },
+        },*/
 
         /**
          * Configuracion BaseServerDataTable
@@ -435,7 +440,7 @@ export default {
                             />
                         </v-col>
                         <v-col cols="12">
-                            <BaseInputDataTable
+                            <!--<BaseInputDataTable
                                 label="Departamento Padre"
                                 :setting="departmentSetting"
                                 :extraParams="extraParams"
@@ -443,6 +448,15 @@ export default {
                                 :editText="entity.nombrePadre"
                                 v-model.number="entity.padreId"
                                 :key="componentKey"
+                            />-->
+                            <BaseInputTreeview
+                                label="Área / Departamento"
+                                v-model.number="entity.padreId"
+                                :editText="entity.nombrePadre"
+                                :readonly="!entity.organizacionId"
+                                itemText="nombre"
+                                itemChildren="subDepartamentos"
+                                :endpoint="`departamento/findAllTree/${entity.organizacionId}`"
                             />
                         </v-col>
                         <v-col cols="12">
