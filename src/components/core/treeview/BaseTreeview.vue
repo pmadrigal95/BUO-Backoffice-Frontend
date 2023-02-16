@@ -565,6 +565,14 @@ export default {
                     </div>
                 </template>
             </v-treeview>
+            <v-alert
+                class="mt-5"
+                outlined
+                color="blue900"
+                v-if="items.length == 0 && !loading"
+            >
+                <div class="text-center">No hay datos disponibles.</div>
+            </v-alert>
         </v-card-text>
 
         <v-card-actions v-if="showFooter">
