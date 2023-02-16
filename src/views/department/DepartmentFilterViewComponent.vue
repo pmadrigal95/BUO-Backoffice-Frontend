@@ -42,13 +42,25 @@ export default {
                 endpoint: 'departamento/findBy',
                 columns: [
                     {
+                        text: 'Nivel Superior',
+                        align: 'start',
+                        value: 'etiquetaNivelPadre',
+                        show: false,
+                    },
+                    {
+                        text: 'Nivel',
+                        align: 'start',
+                        value: 'etiquetaNivel',
+                        show: false,
+                    },
+                    {
                         text: 'Nombre',
                         align: 'start',
                         value: 'nombre',
                         show: true,
                     },
                     {
-                        text: 'Departamento Padre',
+                        text: 'Área / Departamento',
                         align: 'start',
                         value: 'nombrePadre',
                         show: true,
@@ -82,6 +94,12 @@ export default {
                         align: 'end',
                         value: 'cantidadColaboradores',
                         show: true,
+                    },
+                    {
+                        text: 'Descripción',
+                        align: 'start',
+                        value: 'descripcion',
+                        show: false,
                     },
                     {
                         text: 'Estado',

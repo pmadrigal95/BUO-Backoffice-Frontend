@@ -352,6 +352,8 @@ export default {
                 nombre: undefined,
                 padreId: undefined,
                 organizacionId: undefined,
+                descripcion: undefined,
+                etiquetaNivel: undefined,
                 estadoId: 2,
                 usuarioAdminId: undefined,
                 usuarioModificaId: undefined,
@@ -434,6 +436,14 @@ export default {
                         </v-col>
                         <v-col cols="12">
                             <BaseInput
+                                label="Nivel"
+                                :max="50"
+                                v-model.number="entity.etiquetaNivel"
+                                :validate="['optionalText']"
+                            />
+                        </v-col>
+                        <v-col cols="12">
+                            <BaseInput
                                 label="Nombre"
                                 v-model.number="entity.nombre"
                                 :validate="['text']"
@@ -468,6 +478,15 @@ export default {
                                 :editText="entity.nombreUsuarioAdmin"
                                 v-model.number="entity.usuarioAdminId"
                                 :key="componentKey"
+                            />
+                        </v-col>
+                        <v-col cols="12">
+                            <BaseTextArea
+                                label="Descripción general"
+                                v-model.trim="entity.descripcion"
+                                :validate="['optionalText']"
+                                :max="250"
+                                counter="250"
                             />
                         </v-col>
                         <v-col cols="12">
