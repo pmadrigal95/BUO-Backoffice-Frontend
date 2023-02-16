@@ -249,6 +249,20 @@ export default {
     /**
      * Descripción: Validación
      */
+    $_MsgFileAllowedSizeImagesInvalid(val, width, height) {
+        const dimensions =
+            width == undefined
+                ? `${height}px de alto`
+                : height == undefined
+                ? `${width}px de ancho`
+                : `${width}px de ancho y ${height}px de alto`;
+
+        return `El campo ${val} no posee tamaño válido de ${dimensions}.`;
+    },
+
+    /**
+     * Descripción: Validación
+     */
     $_MsgDelete(val) {
         if (val === 1) {
             return `¿Está seguro de eliminar ${val} elemento?`;

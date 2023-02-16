@@ -34,6 +34,7 @@ export default {
     data() {
         return {
             entity: this.$_Object(),
+            componentKey: 0,
             loading: false,
         };
     },
@@ -42,10 +43,24 @@ export default {
         ...mapGetters('authentication', ['user']),
 
         /**
+         * Extra Params
+         */
+        extraParams() {
+            return this.entity.organizacionId
+                ? [
+                      {
+                          name: 'organizacionId',
+                          value: this.entity.organizacionId,
+                      },
+                  ]
+                : undefined;
+        },
+
+        /**
          * Configuracion BaseInputDataTable
 
          */
-        setting() {
+        settingOrganization() {
             return {
                 endpoint: 'organizacion/findBy',
                 columns: [
@@ -140,6 +155,69 @@ export default {
                 key: 'id',
             };
         },
+
+        settingDepartment() {
+            return {
+                endpoint: 'departamento/findBy',
+                columns: [
+                    {
+                        text: 'Nombre',
+                        align: 'start',
+                        value: 'nombre',
+                        show: true,
+                    },
+                    {
+                        text: 'Departamento Padre',
+                        align: 'start',
+                        value: 'nombrePadre',
+                        show: true,
+                    },
+                    {
+                        text: 'Empresa',
+                        align: 'start',
+                        value: 'nombreOrganizacion',
+                        show: true,
+                    },
+                    {
+                        text: 'Administrador',
+                        align: 'start',
+                        value: 'nombreUsuarioAdmin',
+                        show: false,
+                    },
+                    {
+                        text: 'Correo Administrador',
+                        align: 'start',
+                        value: 'correoUsuarioAdmin',
+                        show: false,
+                    },
+                    {
+                        text: 'Teléfono Administrador',
+                        align: 'start',
+                        value: 'telefonoUsuarioAdmin',
+                        show: false,
+                    },
+                    {
+                        text: 'Colaboradores',
+                        align: 'end',
+                        value: 'cantidadColaboradores',
+                        show: false,
+                    },
+                    {
+                        text: 'Estado',
+                        align: 'center',
+                        value: 'nombreEstado',
+                        show: true,
+                    },
+                    {
+                        text: 'Creado por',
+                        align: 'start',
+                        value: 'nombreUsuarioModifica',
+                        show: false,
+                    },
+                ],
+                key: 'id',
+            };
+        },
     },
 
     created() {
@@ -160,7 +238,29 @@ export default {
             this.$vuetify.theme.themes.light.clouds;
     },
 
+    watch: {
+        /**
+         * Actualizar
+         */
+        'entity.organizacionId': {
+            handler(newValue, oldValue) {
+                if (oldValue) {
+                    this.$_forceUpdateComponente();
+                }
+            },
+            immediate: true,
+        },
+    },
+
+
     methods: {
+         /**
+         * Force Update Component
+         */
+         $_forceUpdateComponente() {
+            this.componentKey = this.componentKey + 1;
+        },
+
         /**
          * Entity Object
          */
@@ -180,6 +280,8 @@ export default {
                 telefono: undefined,
                 nombreOrganizacion: undefined,
                 organizacionId: undefined,
+                nombreDepartamento: undefined,
+                departamentoId: undefined,
                 estadoId: 2,
                 usuarioModificaId: undefined,
             };
@@ -345,9 +447,21 @@ export default {
                         <v-col cols="12">
                             <BaseInputDataTable
                                 label="Empresa"
-                                :setting="setting"
+                                :setting="settingOrganization"
                                 :editText="entity.nombreOrganizacion"
                                 v-model.number="entity.organizacionId"
+                            />
+                        </v-col>
+
+                        <v-col cols="12">
+                            <BaseInputDataTable
+                                label="Departamento"
+                                :setting="settingDepartment"
+                                :extraParams="extraParams"
+                                :readonly="extraParams == undefined"
+                                :editText="entity.nombreDepartamento"
+                                v-model.number="entity.departamentoId"
+                                :key="componentKey"
                             />
                         </v-col>
 

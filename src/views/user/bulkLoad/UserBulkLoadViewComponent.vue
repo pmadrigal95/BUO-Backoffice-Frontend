@@ -160,22 +160,16 @@ export default {
     },
 
     methods: {
-        /**
-         * Body Request
-         */
-        $_createBodyRequest() {
-            const request = {
-                excelFile: this.file,
-            };
-            return request;
-        },
+        //TODO: How to implement a dinamic name for file to download depending of organization
 
         $_sendToApi() {
             this.loading = true;
             httpService
                 .post(
                     `cargaMasivaEmpleados/addEmployees/${this.organizacionId}`,
-                    this.$_createBodyRequest()
+                    {
+                        excelFile: this.file,
+                    }
                 )
                 .then((response) => {
                     this.loading = false;
@@ -275,6 +269,7 @@ export default {
                                     description="Selecciona la empresa."
                                     iconColor="greenC900"
                                     font="grey700--text BUO-Paragraph-Medium"
+                                    :validate="['requiered']"
                                 ></StepViewComponent>
                             </v-col>
 
@@ -283,7 +278,6 @@ export default {
                                     label="Buscar empresa"
                                     :setting="setting"
                                     v-model.number="organizacionId"
-                                    :validate="['text']"
                                 />
                             </v-col>
 
@@ -308,7 +302,7 @@ export default {
                                             <h1
                                                 class="greenB800--text BUO-Paragraph-Medium"
                                             >
-                                                Colaboradores.xlsx
+                                                CargaMasivaBUO_template.xlsx
                                             </h1>
                                         </v-col>
                                         <v-col class="shrink">

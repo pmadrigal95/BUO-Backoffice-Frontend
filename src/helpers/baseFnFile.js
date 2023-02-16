@@ -68,19 +68,23 @@ const isCorrectMime = (file, fileType) => {
     }
 };
 
-const isCorrectSize = (file) => {
+//TODO: Revisar en IOS.
+const isCorrectSize = (file, widthProperty, heightProperty) => {
+    let result = true;
     try {
-        const img = new Image();
-        img.src = file;
+        const _URL = window.URL || window.webkitURL;
+        let img = new Image();
         img.onload = function () {
             if (
-                this.width.toFixed(0) === 413 &&
-                this.height.toFixed(0) === 531
+                (widthProperty != undefined && widthProperty > this.width) ||
+                (heightProperty != undefined && heightProperty >= this.height)
             ) {
-                return true;
+                result = false;
+                return result;
             }
         };
-        return true;
+        img.src = _URL.createObjectURL(file);
+        return result;
     } catch (result) {
         return false;
     }
@@ -96,10 +100,12 @@ const convertToBase64 = (file) => {
     });
 };
 
+//TODO: How to implement when de file has sheveral types mime as excel, word or images
 const dowloadFile = (file, nameFile, fileType) => {
-    const mimeType = extensionsFile[fileType].mimeType.find(
+    const mimeType = extensionsFile[fileType].mimeType[0];
+    /*const mimeType = extensionsFile[fileType].mimeType.find(
         (element) => element === file.type
-    );
+    );*/
     const anchor_href = `data:${mimeType};base64,` + file;
     const link = document.createElement('a');
     link.href = anchor_href;
@@ -126,11 +132,11 @@ export default {
         return convertToBase64(file);
     },
 
-    $_dowloadFile(file, nameFile) {
-        return dowloadFile(file, nameFile);
+    $_dowloadFile(file, nameFile, fileType) {
+        return dowloadFile(file, nameFile, fileType);
     },
 
-    $_isCorrectSize(file) {
-        return isCorrectSize(file);
+    $_isCorrectSize(file, width, height) {
+        return isCorrectSize(file, width, height);
     },
 };

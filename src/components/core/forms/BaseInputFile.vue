@@ -498,6 +498,24 @@ export default {
             type: String,
             required: true,
         },
+
+        /**
+         * Ancho de imagenes
+         *
+         */
+        imagesWidth: {
+            type: Number,
+            default: undefined,
+        },
+
+        /**
+         * Alto de imagenes
+         *
+         */
+        imagesHeight: {
+            type: Number,
+            default: undefined,
+        },
     },
 
     data() {
@@ -540,11 +558,18 @@ export default {
                 baseLocalHelper.$_MsgFileAllowedMimeInvalid(
                     this.label != undefined ? this.label : ''
                 ),
-            /*(v) =>
-                (v && this.fileType === "imagenes"  && baseFnFile.$isCorrectSize(v))||
-                baseLocalHelper.$_MsgFileAllowedMimeInvalid(
-                    this.label != undefined ? this.label : ''
-                ),*/
+            (v) =>
+                (v && this.fileType === 'imagenes') ||
+                baseFnFile.$_isCorrectSize(
+                    v,
+                    this.imagesWidth,
+                    this.imagesHeight
+                ) ||
+                baseLocalHelper.$_MsgFileAllowedSizeImagesInvalid(
+                    this.label != undefined ? this.label : '',
+                    this.imagesWidth,
+                    this.imagesHeight
+                ),
         ];
     },
 
