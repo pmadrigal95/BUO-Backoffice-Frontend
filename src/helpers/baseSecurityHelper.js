@@ -13,7 +13,8 @@ import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 const read = 'Read',
-    write = 'Write';
+    write = 'Write',
+    upload = 'Upload';
 
 const $_requestData = (callback) => {
     store.dispatch('security/$_request_buo_security', callback, { root: true });
@@ -77,6 +78,8 @@ export default {
     $_read: read,
 
     $_write: write,
+
+    $_upload: upload,
 
     $_security(callback = () => {}) {
         $_getPermissionList(callback);

@@ -143,10 +143,10 @@ export default {
             };
         },
 
-        write() {
+        permission() {
             const result = baseSecurityHelper.$_ReadPermission(
                 this.$router.currentRoute.meta.module,
-                baseSecurityHelper.$_write
+                [baseSecurityHelper.$_write, baseSecurityHelper.$_upload]
             );
             return result;
         },
@@ -207,13 +207,14 @@ export default {
             <BaseServerDataTable
                 ref="UserFilter"
                 :setting="setting"
-                :fnNew="write ? $_userEditor : undefined"
-                :fnEdit="write ? $_userEditor : undefined"
-                :fnDelete="write ? $_fnDesactiveUser : undefined"
+                :fnNew="permission?.Write ? $_userEditor : undefined"
+                :fnEdit="permission?.Write ? $_userEditor : undefined"
+                :fnDelete="permission?.Write ? $_fnDesactiveUser : undefined"
             >
                 <!-- TODO: pendiente permiso de seguridad -->
                 <div slot="btns">
                     <BaseCustomsButtonsGrid
+                        v-if="permission?.Upload"
                         label="Carga Masiva"
                         :fnMethod="$_fnLoad"
                         icon="mdi-table-arrow-up"
