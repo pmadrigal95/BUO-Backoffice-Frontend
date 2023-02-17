@@ -126,6 +126,18 @@ export default {
                         value: 'username',
                         show: false,
                     },
+                    {
+                        text: 'Empresa',
+                        align: 'start',
+                        value: 'nombreOrganizacion',
+                        show: false,
+                    },
+                    {
+                        text: 'Área / Departamento',
+                        align: 'start',
+                        value: 'nombreDepartamento',
+                        show: false,
+                    },
                 ],
                 key: 'id',
             };

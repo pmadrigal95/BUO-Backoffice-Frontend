@@ -22,19 +22,23 @@ const BaseInputDataTable = () =>
 
 const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
 
+const BaseInputTreeview = () =>
+    import('@/components/core/treeview/BaseInputTreeview');
+
 export default {
     name: 'UserEditorViewComponent',
 
     components: {
-        BaseCardViewComponent,
         BaseDatePicker,
+        BaseInputTreeview,
         BaseInputDataTable,
+        BaseCardViewComponent,
     },
 
     data() {
         return {
             entity: this.$_Object(),
-            componentKey: 0,
+            // componentKey: 0,
             loading: false,
         };
     },
@@ -45,7 +49,7 @@ export default {
         /**
          * Extra Params
          */
-        extraParams() {
+        /**extraParams() {
             return this.entity.organizacionId
                 ? [
                       {
@@ -54,7 +58,7 @@ export default {
                       },
                   ]
                 : undefined;
-        },
+        },**/
 
         /**
          * Configuracion BaseInputDataTable
@@ -238,10 +242,7 @@ export default {
             this.$vuetify.theme.themes.light.clouds;
     },
 
-    watch: {
-        /**
-         * Actualizar
-         */
+    /**watch: {
         'entity.organizacionId': {
             handler(newValue, oldValue) {
                 if (oldValue) {
@@ -250,16 +251,15 @@ export default {
             },
             immediate: true,
         },
-    },
-
+    },**/
 
     methods: {
-         /**
+        /**
          * Force Update Component
          */
-         $_forceUpdateComponente() {
+        /**$_forceUpdateComponente() {
             this.componentKey = this.componentKey + 1;
-        },
+        },**/
 
         /**
          * Entity Object
@@ -454,7 +454,7 @@ export default {
                         </v-col>
 
                         <v-col cols="12">
-                            <BaseInputDataTable
+                            <!--<BaseInputDataTable
                                 label="Departamento"
                                 :setting="settingDepartment"
                                 :extraParams="extraParams"
@@ -462,6 +462,16 @@ export default {
                                 :editText="entity.nombreDepartamento"
                                 v-model.number="entity.departamentoId"
                                 :key="componentKey"
+                            />-->
+
+                            <BaseInputTreeview
+                                label="Área / Departamento"
+                                v-model.number="entity.departamentoId"
+                                :editText="entity.nombreDepartamento"
+                                :readonly="!entity.organizacionId"
+                                itemText="nombre"
+                                itemChildren="subDepartamentos"
+                                :endpoint="`departamento/findAllTree/${entity.organizacionId}`"
                             />
                         </v-col>
 

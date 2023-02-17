@@ -114,6 +114,7 @@ const dowloadFile = (file, nameFile, fileType) => {
     link.click();
     link.remove();
 };
+
 /**
  * Description: functions used for files
  */
