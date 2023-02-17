@@ -92,7 +92,6 @@ export default {
                     this.loading = false;
                     if (response != undefined) {
                         // Encontro la entidad
-                        console.log(response.data);
                         this.entity = BaseArrayHelper.SetObject(
                             {},
                             response.data

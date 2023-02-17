@@ -307,8 +307,6 @@ export default {
          */
         this.$_getObject();
 
-        this.entity.usuarioModificaId = this.user.userId;
-
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
             this.$vuetify.theme.themes.light.white;
@@ -360,6 +358,10 @@ export default {
             };
         },
 
+        $_setToUser() {
+            this.entity.usuarioModificaId = this.user.userId;
+        },
+
         /**
          * Determinar si Es nuevo / editor
          */
@@ -383,7 +385,7 @@ export default {
 
         $_sendToApi() {
             this.loading = true;
-
+            this.$_setToUser();
             let object = BaseArrayHelper.SetObject({}, this.entity);
 
             httpService.post('departamento/save', object).then((response) => {

@@ -230,8 +230,6 @@ export default {
          */
         this.$_getObject();
 
-        this.$_setToUser();
-
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
             this.$vuetify.theme.themes.light.white;
@@ -319,6 +317,7 @@ export default {
 
         $_sendToApi() {
             this.loading = true;
+            this.$_setToUser();
             let object = BaseArrayHelper.SetObject({}, this.entity);
             httpService.post('user/saveUserForm', object).then((response) => {
                 this.loading = false;
