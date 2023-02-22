@@ -8,6 +8,8 @@ import userRoutes from '@/views/user/router';
 
 import companyRoutes from '@/views/company/router';
 
+import reportsRoutes from '@/views/reports/router';
+
 import analyticsRoutes from '@/views/analytics/router';
 
 import departmentRoutes from '@/views/department/router';
@@ -23,6 +25,7 @@ const routes = [
         children: [
             ...homeRoutes,
             ...userRoutes,
+            ...reportsRoutes,
             ...companyRoutes,
             ...analyticsRoutes,
             ...departmentRoutes,
