@@ -37,6 +37,24 @@ const extensionsFile = {
         documentType: 'Archivos PDF',
         mimeType: ['application/pdf'],
     },
+
+    zip: {
+        extension: ['.zip'],
+        documentType: 'Archivos ZIP',
+        mimeType: ['text/plain'],
+    },
+};
+
+const extensionsName = {
+    doc: 'doc',
+
+    excel: 'excel',
+
+    imagenes: 'imagenes',
+
+    pdf: 'pdf',
+
+    zip: 'zip',
 };
 
 const isCorrectExtension = (file, fileType) => {
@@ -119,6 +137,8 @@ const dowloadFile = (file, nameFile, fileType) => {
  * Description: functions used for files
  */
 export default {
+    $_extensionsName: extensionsName,
+
     $_extensionsFile: extensionsFile,
 
     $_isCorrectExtension(file, extension) {

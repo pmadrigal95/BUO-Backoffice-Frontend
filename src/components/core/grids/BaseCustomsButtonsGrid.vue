@@ -44,6 +44,16 @@ export default {
             type: String,
             default: 'blue900',
         },
+
+        outlined: {
+            type: Boolean,
+            default: true,
+        },
+
+        loading: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     /**
@@ -61,7 +71,9 @@ export default {
     <v-btn
         :color="color"
         class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-        outlined
+        :outlined="outlined"
+        :dark="outlined ? false : true"
+        :loading="loading"
         small
         @click="$_Method"
     >
