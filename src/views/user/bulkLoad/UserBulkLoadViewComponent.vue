@@ -40,7 +40,7 @@ export default {
             file: undefined,
             organizacionId: undefined,
             warningList: undefined,
-            fileType: 'excel',
+            fileType: baseFnFile.$_extensionsName.excel,
         };
     },
 
@@ -237,8 +237,10 @@ export default {
                                 <v-list-item-content>
                                     <v-list-item-title
                                         class="buo-none-word-break buo-white-space BUO-Paragraph-Small mb-3"
-                                        v-text="item.descripcion"
-                                    ></v-list-item-title>
+                                        >{{
+                                            item.descripcion
+                                        }}</v-list-item-title
+                                    >
                                     <v-divider></v-divider>
                                 </v-list-item-content>
                             </v-list-item>
