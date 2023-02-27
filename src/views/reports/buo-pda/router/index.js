@@ -10,6 +10,14 @@ const routes = [
             module: 'PromotionalCodesViewComponent',
         },
     },
+    {
+        path: '/Reports/BUO-PDA/User/:Id',
+        name: 'BUOPDAUserDetailsReportViewComponent',
+        component: 'reports/buo-pda/BUOPDAUserDetailsReportViewComponent',
+        meta: {
+            module: 'PromotionalCodesViewComponent',
+        },
+    },
 ];
 
 export default routes;

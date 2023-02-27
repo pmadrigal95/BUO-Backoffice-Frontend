@@ -27,7 +27,7 @@ const BaseInputTreeview = () =>
     import('@/components/core/treeview/BaseInputTreeview');
 
 const BaseCustomsButtonsGrid = () =>
-    import('@/components/core/grids/BaseCustomsButtonsGrid.vue');
+    import('@/components/core/grids/BaseCustomsButtonsGrid');
 
 export default {
     name: 'BUOPDAReportViewComponent',
@@ -347,6 +347,14 @@ export default {
             this.entity = this.$_Object();
             this.$_forceUpdateComponente();
         },
+
+        $_reviewUserDetails(row) {
+            console.log(row.selected.id);
+            this.$router.push({
+                name: 'BUOPDAUserDetailsReportViewComponent',
+                params: row && { Id: row?.selected?.id },
+            });
+        },
     },
 };
 </script>
@@ -402,6 +410,7 @@ export default {
                 :key="search"
                 :setting="setting"
                 :extraParams="extraParams"
+                :fnDoubleClick="$_reviewUserDetails"
                 v-if="entity.organizacionId && extraParams"
             >
                 <div slot="btns">
