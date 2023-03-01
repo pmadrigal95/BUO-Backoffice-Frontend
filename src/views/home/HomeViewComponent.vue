@@ -27,8 +27,8 @@ export default {
         ...mapGetters('security', ['permissionList', 'loadingSecurity']),
 
         filterList() {
-            const originalList = [...this.permissionList];
-            let list = originalList.filter(
+            let originalList = JSON.parse(JSON.stringify(this.permissionList));
+            originalList = originalList.filter(
                 (x) =>
                     x.acciones.filter(
                         (item) => item === baseSecurityHelper.$_read
@@ -38,18 +38,18 @@ export default {
                     x.nombre != 'HomeViewComponent'
             );
 
-            list.push({
+            originalList.push({
                 nombreUI: 'Cerrar sesión',
                 icono: 'login-variant',
                 rutaURL: 'LoginViewComponent',
             });
 
-            return list;
+            return originalList;
         },
 
         editorList() {
-            const originalList = [...this.permissionList];
-            let listEditor = originalList.filter(
+            let originalList = JSON.parse(JSON.stringify(this.permissionList));
+            originalList = originalList.filter(
                 (x) =>
                     x.acciones.filter(
                         (item) => item === baseSecurityHelper.$_write
@@ -59,15 +59,15 @@ export default {
                     x.nombre != 'HomeViewComponent'
             );
 
-            listEditor.forEach(function (item, index) {
-                listEditor[index].rutaURL = item.rutaURL.replace(
+            originalList.forEach(function (item, index) {
+                originalList[index].rutaURL = item.rutaURL.replace(
                     'Filter',
                     'Editor'
                 );
-                listEditor[index].nombreUI = `Agregar ${item.nombreUI}`;
+                originalList[index].nombreUI = `Agregar ${item.nombreUI}`;
             });
 
-            return listEditor;
+            return originalList;
         },
     },
 
