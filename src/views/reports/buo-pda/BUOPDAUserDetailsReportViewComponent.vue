@@ -12,6 +12,8 @@ import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
@@ -48,6 +50,16 @@ export default {
             loading: false,
             loadingBtn: false,
         };
+    },
+
+    computed: {
+        permission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                this.$router.currentRoute.meta.module,
+                baseSecurityHelper.$_download
+            );
+            return result;
+        },
     },
 
     created() {
@@ -145,6 +157,7 @@ export default {
     <BaseCardViewComponent :btnAction="$_returnToFilter">
         <div slot="top-actions">
             <BaseCustomsButtonsGrid
+                v-if="permission"
                 label="Descargar"
                 :fnMethod="$_sendToApi"
                 icon="mdi-download"

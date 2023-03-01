@@ -12,6 +12,8 @@ import httpService from '@/services/axios/httpService.js';
 
 import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 const BaseCardViewComponent = () =>
@@ -253,6 +255,28 @@ export default {
                 singleSelect: false,
             };
         },
+
+        permission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                this.$router.currentRoute.meta.module,
+                baseSecurityHelper.$_download
+            );
+            return result;
+        },
+    },
+
+    watch: {
+        /**
+         * Actualizar calendarios
+         */
+        'entity.organizacionId': {
+            handler(newValue, oldValue) {
+                if (oldValue) {
+                    this.entity.departamentoId = undefined;
+                }
+            },
+            immediate: true,
+        },
     },
 
     methods: {
@@ -415,6 +439,7 @@ export default {
             >
                 <div slot="btns">
                     <BaseCustomsButtonsGrid
+                        v-if="permission"
                         label="Descargar"
                         :fnMethod="$_downloadMultipleFiles"
                         icon="mdi-download"
@@ -422,6 +447,7 @@ export default {
                     />
 
                     <BaseCustomsButtonsGrid
+                        v-if="permission"
                         label="Descargar todo"
                         :outlined="false"
                         :fnMethod="$_downloadAll"

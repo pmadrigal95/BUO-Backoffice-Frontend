@@ -7,7 +7,7 @@ const routes = [
         name: 'BUOPDAReportViewComponent',
         component: 'reports/buo-pda/BUOPDAReportViewComponent',
         meta: {
-            module: 'PromotionalCodesViewComponent',
+            module: 'BUOPDAReportViewComponent',
         },
     },
     {
@@ -15,7 +15,7 @@ const routes = [
         name: 'BUOPDAUserDetailsReportViewComponent',
         component: 'reports/buo-pda/BUOPDAUserDetailsReportViewComponent',
         meta: {
-            module: 'PromotionalCodesViewComponent',
+            module: 'BUOPDAReportViewComponent',
         },
     },
 ];
