@@ -196,6 +196,13 @@ export default {
                         show: false,
                     },
                     {
+                        text: 'Test PDA',
+                        type: 'bool',
+                        align: 'center',
+                        value: 'conPda',
+                        show: true,
+                    },
+                    {
                         text: 'Estado',
                         align: 'center',
                         value: 'nombreEstado',
@@ -300,11 +307,19 @@ export default {
                 .post('buo_pda/reporte_resumen', entity)
                 .then((response) => {
                     if (response != undefined) {
-                        baseFnFile.$_dowloadFile(
-                            response.data.fileEncoded,
-                            response.data.fileName,
-                            baseFnFile.$_extensionsName.zip
-                        );
+                        if (response.data == '') {
+                            baseNotificationsHelper.Message(
+                                true,
+                                'Solo se podra generar el reporte de aquellos usuarios que cuenten con el test PDA'
+                            );
+                        } else {
+                            baseFnFile.$_dowloadFile(
+                                response.data.fileEncoded,
+                                response.data.fileName,
+                                baseFnFile.$_extensionsName.zip
+                            );
+                        }
+
                         this.loading[number].value = false;
                     }
                 });
@@ -322,9 +337,20 @@ export default {
          */
         $_downloadMultipleFiles() {
             const data = [];
-            this.$_GetRow().forEach((element) =>
-                data.push(element[this.setting.key])
+            this.$_GetRow().forEach(
+                (element) =>
+                    element.conPda && data.push(element[this.setting.key])
             );
+
+            if (
+                this.$_GetRow().length > 0 &&
+                this.$_GetRow().some((element) => element.conPda === false)
+            ) {
+                baseNotificationsHelper.Message(
+                    true,
+                    'Solo se podra generar el reporte de aquellos usuarios que cuenten con el test PDA'
+                );
+            }
 
             if (data != undefined && data.length > 0) {
                 this.$_sendToApi(
@@ -335,10 +361,11 @@ export default {
                     0
                 );
             } else {
-                baseNotificationsHelper.Message(
-                    true,
-                    baseLocalHelper.$_MsgRowNotSelected
-                );
+                if (this.$_GetRow().length <= 0)
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
             }
         },
 
@@ -373,11 +400,17 @@ export default {
         },
 
         $_reviewUserDetails(row) {
-            console.log(row.selected.id);
-            this.$router.push({
-                name: 'BUOPDAUserDetailsReportViewComponent',
-                params: row && { Id: row?.selected?.id },
-            });
+            if (row.selected.conPda) {
+                this.$router.push({
+                    name: 'BUOPDAUserDetailsReportViewComponent',
+                    params: row && { Id: row?.selected?.id },
+                });
+            } else {
+                baseNotificationsHelper.Message(
+                    true,
+                    'Usuario no cuenta con test PDA'
+                );
+            }
         },
     },
 };

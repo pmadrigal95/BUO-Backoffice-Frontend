@@ -97,6 +97,13 @@ export default {
                         show: true,
                     },
                     {
+                        text: 'Test PDA',
+                        type: 'bool',
+                        align: 'center',
+                        value: 'conPda',
+                        show: false,
+                    },
+                    {
                         text: 'Identificación',
                         align: 'center',
                         value: 'identificacion',
