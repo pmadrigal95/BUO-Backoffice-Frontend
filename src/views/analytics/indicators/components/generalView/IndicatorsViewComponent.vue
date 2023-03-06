@@ -4,31 +4,34 @@
  *
  * @displayName IndicatorsViewComponent
  */
-
-import { mapGetters } from 'vuex';
-
 const BaseStadisticCard = () =>
     import('@/components/core/cards/BaseStadisticCard');
 
 export default {
     name: 'IndicatorsViewComponent',
 
+    props: {
+        entity: {
+            type: Object,
+            requiered: true,
+        },
+    },
+
     components: {
         BaseStadisticCard,
     },
 
     computed: {
-        /**
-         * Nombre de Usuario
-         */
-        ...mapGetters('analyticsIndicators', ['buoAnalytics']),
-
         list() {
-            return this.buoAnalytics.filter((x) => x.indicadorId != 8);
+            return this.entity?.indicatorsData.filter(
+                (x) => x.indicadorId != 8
+            );
         },
 
         codeList() {
-            return this.buoAnalytics.filter((x) => x.indicadorId === 8);
+            return this.entity?.indicatorsData.filter(
+                (x) => x.indicadorId === 8
+            );
         },
     },
 
