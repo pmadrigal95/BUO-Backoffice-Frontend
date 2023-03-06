@@ -49,29 +49,26 @@ export default {
 
         editorList() {
             let originalList = JSON.parse(JSON.stringify(this.permissionList));
-            originalList = originalList.filter(
-                (x) =>
-                    x.acciones.filter(
-                        (item) => item === baseSecurityHelper.$_write
-                    ) &&
-                    x.activo &&
-                    x.rutaURL != null &&
-                    x.nombre != 'HomeViewComponent'
-            );
 
-            originalList.forEach(function (item, index) {
-                originalList[index].rutaURL = item.rutaURL.replace(
-                    'Filter',
-                    'Editor'
-                );
-                originalList[index].nombreUI = `Agregar ${item.nombreUI}`;
-            });
+            originalList = originalList
+                .filter(
+                    (x) =>
+                        x.acciones.filter(
+                            (item) => item === baseSecurityHelper.$_write
+                        ) &&
+                        x.activo &&
+                        x.rutaURL != null &&
+                        x.nombre != 'HomeViewComponent'
+                )
+                .map((x) => {
+                    x.rutaURL = x.rutaURL.replace('Filter', 'Editor');
+                    x.nombreUI = `Agregar ${x.nombreUI}`;
+                    return x;
+                });
 
             return originalList;
         },
     },
-
-    methods: {},
 };
 </script>
 
@@ -81,13 +78,15 @@ export default {
             <CardActivitiesViewComponent
                 :menuItems="editorList"
                 md="3"
-                minWidth="280px"
-                minHeight="100px"
-                size="small"
+                min-width="276"
+                max-width="276"
+                :small="true"
+                :large="false"
                 position="start"
-                :fontTypeSubtitle="'BUO-Paragraph-Medium-SemiBold Buo-Black'"
-                iconColor="blue800"
-                :movil="true"
+                :fontTypeSubtitle="'BUO-Paragraph-Small-SemiBold  Buo-Black'"
+                iconColor="greenB900"
+                :slider="true"
+                bottonDisplay="Ver más"
             />
 
             <h2 class="BUO-Heading-XSmall Buo-Black pb-4 pl-2 pt-8">
@@ -97,13 +96,13 @@ export default {
             <CardActivitiesViewComponent
                 :menuItems="filterList"
                 md="3"
-                minWidth="280px"
-                minHeight="258px"
-                size="x-large"
+                min-width="276"
+                max-width="276"
+                :large="true"
                 position="start"
                 :fontTypeSubtitle="'BUO-Heading-XSmall Buo-Black'"
-                iconColor="grey500"
-                :movil="false"
+                iconColor="blue900"
+                bottonDisplay="Ver más"
             />
         </div>
     </BaseCardViewComponent>

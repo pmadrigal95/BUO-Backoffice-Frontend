@@ -5,7 +5,7 @@
  * @displayName CardMainActivitiesViewComponent
  */
 
-const BaseCardTest = () => import('@/components/core/cards/BaseCardTest');
+const BaseCardMenu = () => import('@/components/core/cards/BaseCardMenu');
 
 export default {
     name: 'CardMainActivitiesViewComponent',
@@ -18,7 +18,7 @@ export default {
 
         size: {
             type: String,
-            default: 'small',
+            default: undefined,
         },
 
         position: {
@@ -38,12 +38,22 @@ export default {
 
         minWidth: {
             type: String,
-            default: '317px',
+            default: undefined,
         },
 
         minHeight: {
             type: String,
-            default: '258px',
+            default: undefined,
+        },
+
+        maxWidth: {
+            type: String,
+            default: undefined,
+        },
+
+        maxHeight: {
+            type: String,
+            default: undefined,
         },
 
         fontTypeSubtitle: {
@@ -56,14 +66,29 @@ export default {
             required: undefined,
         },
 
-        movil: {
+        slider: {
             type: Boolean,
             required: false,
+        },
+
+        bottonDisplay: {
+            type: String,
+            required: undefined,
+        },
+
+        large: {
+            type: Boolean,
+            default: false,
+        },
+
+        small: {
+            type: Boolean,
+            default: false,
         },
     },
 
     components: {
-        BaseCardTest,
+        BaseCardMenu,
     },
 
     computed: {
@@ -71,58 +96,68 @@ export default {
             return this.menuItems.lenght > 1 ? 'center' : this.position;
         },
     },
-
 };
 </script>
 
 <template>
     <v-row :justify="positionJustify" v-if="$vuetify.breakpoint.mdAndUp">
         <v-col cols="12" :md="md" v-for="(item, i) in menuItems" :key="i">
-            <BaseCardTest
+            <BaseCardMenu
                 :icon="item.icono"
                 :to="item.rutaURL"
                 :subtitle="item.nombreUI"
                 :iconColor="iconColor"
-                :minWidth="minWidth"
-                :minHeight="minHeight"
+                :min-width="minWidth"
+                :max-width="maxWidth"
+                :min-height="minHeight"
+                :max-height="maxHeight"
                 :size="size"
+                :small="small"
+                :large="large"
                 :fontTypeSubtitle="fontTypeSubtitle"
+                :bottonDisplay="bottonDisplay"
             />
         </v-col>
     </v-row>
 
-    <v-layout justify-center v-else-if="$vuetify.breakpoint.smAndDown && movil">
-        <v-slide-group>
+    <v-layout justify-center v-else-if="$vuetify.breakpoint.smAndDown">
+        <v-slide-group v-if="slider">
             <v-slide-item v-for="(item, i) in menuItems" :key="i">
-                <BaseCardTest
+                <BaseCardMenu
                     :icon="item.icono"
                     :to="item.rutaURL"
                     :subtitle="item.nombreUI"
                     :iconColor="iconColor"
-                    :minWidth="minWidth"
-                    :minHeight="minHeight"
+                    :min-width="minWidth"
+                    :max-width="maxWidth"
+                    :min-height="minHeight"
+                    :max-height="maxHeight"
                     :size="size"
+                    :small="small"
+                    :large="large"
                     :fontTypeSubtitle="fontTypeSubtitle"
+                    :bottonDisplay="bottonDisplay"
                 />
             </v-slide-item>
         </v-slide-group>
-    </v-layout>
-
-    <v-layout
-        justify-center
-        v-else-if="$vuetify.breakpoint.smAndDown && !movil"
-    >
-        <v-col cols="12" md="1" v-for="(item, i) in menuItems" :key="i">
-            <BaseCardTest
-                :icon="item.icono"
-                :to="item.rutaURL"
-                :subtitle="item.nombreUI"
-                :iconColor="iconColor"
-                :minWidth="minWidth"
-                :minHeight="minHeight"
-                :size="size"
-                :fontTypeSubtitle="fontTypeSubtitle"
-            />
-        </v-col>
+        <v-row :justify="positionJustify" v-else>
+            <v-col cols="12" :md="md" v-for="(item, i) in menuItems" :key="i">
+                <BaseCardMenu
+                    :icon="item.icono"
+                    :to="item.rutaURL"
+                    :subtitle="item.nombreUI"
+                    :iconColor="iconColor"
+                    :min-width="minWidth"
+                    :max-width="maxWidth"
+                    :min-height="minHeight"
+                    :max-height="maxHeight"
+                    :size="size"
+                    :small="small"
+                    :large="large"
+                    :fontTypeSubtitle="fontTypeSubtitle"
+                    :bottonDisplay="bottonDisplay"
+                />
+            </v-col>
+        </v-row>
     </v-layout>
 </template>
