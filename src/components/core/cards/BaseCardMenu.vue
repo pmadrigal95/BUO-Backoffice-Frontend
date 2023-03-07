@@ -19,6 +19,21 @@ export default {
             required: undefined,
         },
 
+        startIcon: {
+            type: Boolean,
+            required: undefined,
+        },
+
+        endIcon: {
+            type: Boolean,
+            required: undefined,
+        },
+
+        centerIcon: {
+            type: Boolean,
+            required: undefined,
+        },
+
         iconColor: {
             type: String,
             required: undefined,
@@ -29,13 +44,38 @@ export default {
             required: undefined,
         },
 
+        positionSubtitle: {
+            type: String,
+            required: undefined,
+        },
+
         description: {
+            type: String,
+            required: undefined,
+        },
+
+        positionDescription: {
             type: String,
             required: undefined,
         },
 
         bottonDisplay: {
             type: String,
+            required: undefined,
+        },
+
+        startBotton: {
+            type: Boolean,
+            required: undefined,
+        },
+
+        endBotton: {
+            type: Boolean,
+            required: undefined,
+        },
+
+        centerBotton: {
+            type: Boolean,
             required: undefined,
         },
 
@@ -72,6 +112,11 @@ export default {
         fontTypeSubtitle: {
             type: String,
             default: 'BUO-Paragraph-Small-SemiBold Buo-Black',
+        },
+
+        fontTypeDescription: {
+            type: String,
+            default: 'BUO-Label-XSmall Buo-Black',
         },
 
         size: {
@@ -122,36 +167,46 @@ export default {
             :max-height="maxHeight"
             :to="{ name: to }"
         >
-            <v-card-title
-                ><v-icon
-                    :color="iconColor === undefined ? 'blue' : iconColor"
-                    class="pb-2"
-                    :small="small"
-                    :large="large"
-                    :x-large="xLarge"
-                    :x-small="xSmall"
-                    >{{ `mdi-${icon}` }}</v-icon
-                ></v-card-title
+            <v-card-title class="d-flex">
+                <v-layout justify-center>
+                    <v-icon
+                        :color="iconColor === undefined ? 'blue' : iconColor"
+                        class="pb-2"
+                        :small="small"
+                        :large="large"
+                        :x-large="xLarge"
+                        :x-small="xSmall"
+                        >{{ `mdi-${icon}` }}</v-icon
+                    ></v-layout
+                >
+            </v-card-title>
+
+            <v-card-subtitle
+                :class="`${fontTypeSubtitle} d-flex ${positionSubtitle} flex-column`"
+                >{{ subtitle }}</v-card-subtitle
             >
 
-            <v-card-subtitle :class="fontTypeSubtitle">{{
-                subtitle
-            }}</v-card-subtitle>
-
-            <v-card-text class="BUO-Paragraph-Small">{{
-                description
-            }}</v-card-text>
+            <v-card-text
+                :class="`${fontTypeDescription} d-flex ${positionDescription} flex-column`"
+                >{{ description }}</v-card-text
+            >
 
             <v-card-actions>
-                <v-btn
-                    class="no-uppercase rounded-lg BUO-Label-XSmall-SemiBold lighten-2"
-                    text
-                    color="blue800"
-                    v-if="bottonDisplay != undefined"
+                <v-layout
+                    :justify-center="centerBotton"
+                    :justify-end="endBotton"
+                    :justify-start="startBotton"
                 >
-                    {{ bottonDisplay }}
-                    <v-icon right>mdi-chevron-right</v-icon>
-                </v-btn>
+                    <v-btn
+                        class="no-uppercase rounded-lg BUO-Label-XSmall-SemiBold lighten-2"
+                        text
+                        color="blue800"
+                        v-if="bottonDisplay != undefined"
+                    >
+                        {{ bottonDisplay }}
+                        <v-icon right>mdi-chevron-right</v-icon>
+                    </v-btn>
+                </v-layout>
             </v-card-actions>
         </v-card>
     </v-hover>

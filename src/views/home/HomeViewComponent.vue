@@ -73,34 +73,19 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="BUO BackOffice" md="12" offset="0">
+    <BaseCardViewComponent md="12" offset="0">
         <div slot="card-text">
-            <CardActivitiesViewComponent
-                :menuItems="editorList"
-                md="3"
-                min-width="276"
-                max-width="276"
-                :small="true"
-                :large="false"
-                position="start"
-                :fontTypeSubtitle="'BUO-Paragraph-Small-SemiBold  Buo-Black'"
-                iconColor="greenB900"
-                :slider="true"
-                bottonDisplay="Ver más"
-            />
-
-            <h2 class="BUO-Heading-XSmall Buo-Black pb-4 pl-2 pt-8">
-                Actividad Principal
+            <h2 class="BUO-Heading-Small Buo-Blue700 pl-2">¡Hola!</h2>
+            <h2 class="BUO-Heading-Large Buo-Blue900 pb-8 pl-2 pt-2">
+                ¿Qué quieres hacer hoy?
             </h2>
-
             <CardActivitiesViewComponent
                 :menuItems="filterList"
-                md="3"
-                min-width="276"
-                max-width="276"
+                md="4"
+                min-width="320"
+                max-width="320"
                 :large="true"
-                position="start"
-                :fontTypeSubtitle="'BUO-Heading-XSmall Buo-Black'"
+                :fontTypeSubtitle="'BUO-Paragraph-Medium-SemiBold Buo-Black'"
                 iconColor="blue900"
                 bottonDisplay="Ver más"
             />

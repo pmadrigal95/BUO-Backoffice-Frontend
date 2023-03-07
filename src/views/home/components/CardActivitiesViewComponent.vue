@@ -106,6 +106,7 @@ export default {
                 :icon="item.icono"
                 :to="item.rutaURL"
                 :subtitle="item.nombreUI"
+                positionSubtitle="align-center"
                 :iconColor="iconColor"
                 :min-width="minWidth"
                 :max-width="maxWidth"
@@ -116,6 +117,8 @@ export default {
                 :large="large"
                 :fontTypeSubtitle="fontTypeSubtitle"
                 :bottonDisplay="bottonDisplay"
+                centerBotton="true"
+                centerIcon="true"
             />
         </v-col>
     </v-row>
@@ -128,6 +131,7 @@ export default {
                     :to="item.rutaURL"
                     :subtitle="item.nombreUI"
                     :iconColor="iconColor"
+                    positionSubtitle="align-center"
                     :min-width="minWidth"
                     :max-width="maxWidth"
                     :min-height="minHeight"
@@ -137,6 +141,8 @@ export default {
                     :large="large"
                     :fontTypeSubtitle="fontTypeSubtitle"
                     :bottonDisplay="bottonDisplay"
+                    centerBotton="true"
+                    centerIcon="true"
                 />
             </v-slide-item>
         </v-slide-group>
@@ -147,6 +153,7 @@ export default {
                     :to="item.rutaURL"
                     :subtitle="item.nombreUI"
                     :iconColor="iconColor"
+                    positionSubtitle="align-center"
                     :min-width="minWidth"
                     :max-width="maxWidth"
                     :min-height="minHeight"
@@ -156,6 +163,8 @@ export default {
                     :large="large"
                     :fontTypeSubtitle="fontTypeSubtitle"
                     :bottonDisplay="bottonDisplay"
+                    centerBotton="true"
+                    centerIcon="true"
                 />
             </v-col>
         </v-row>
