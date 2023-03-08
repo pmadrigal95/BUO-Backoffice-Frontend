@@ -8,11 +8,17 @@
  * @displayName BaseServerDataTable
  */
 
-import baseLocalHelper from '@/helpers/baseLocalHelper.js';
-import baseNotificationsHelper from '@/helpers/baseNotificationsHelper.js';
-import baseArrayHelper from '@/helpers/baseArrayHelper.js';
+import httpService from '@/services/axios/httpService';
+
+import baseLocalHelper from '@/helpers/baseLocalHelper';
+
+import baseArrayHelper from '@/helpers/baseArrayHelper';
+
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
-import httpService from '@/services/axios/httpService.js';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
+
+import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
 
 const BaseButtonsGrid = () =>
     import('@/components/core/grids/BaseButtonsGrid.vue');
@@ -886,6 +892,12 @@ export default {
                     return 'grey400';
             }
         },
+
+        $_setChartColor(color, type = 'background-color') {
+            const palette =
+                baseDataVisualizationColorsHelper.$_getColorByName(color);
+            return `${type}: ${palette.main}`;
+        },
     },
 };
 </script>
@@ -953,6 +965,10 @@ export default {
                                     >
                                         <v-expansion-panel-header
                                             class="buo-expansion-panel-header"
+                                            v-if="
+                                                header.type != 'hidden' &&
+                                                header.type != 'color'
+                                            "
                                         >
                                             <div
                                                 v-if="
@@ -976,7 +992,10 @@ export default {
                                         <v-expansion-panel-content>
                                             <!-- @helper:  Filter type Text -->
                                             <v-text-field
-                                                v-if="header.type == undefined"
+                                                v-if="
+                                                    header.type == undefined ||
+                                                    header.type == 'chip'
+                                                "
                                                 label="Buscar"
                                                 v-model="
                                                     temporalFilters[
@@ -1197,7 +1216,10 @@ export default {
                         <th v-for="header in headers" :key="header.text">
                             <!-- @helper:  Filter type Text -->
                             <div
-                                v-if="header.type == undefined"
+                                v-if="
+                                    header.type == undefined ||
+                                    header.type == 'chip'
+                                "
                                 class="px-1 py-2"
                             >
                                 <v-text-field
@@ -1338,16 +1360,51 @@ export default {
                     </tr>
                 </template>
 
-                <!--
-                            Display de componentes Boolean && Status
-                        -->
+                <!-- Display de Filas -->
                 <template
-                    v-for="(header, bool) in headers"
+                    v-for="(
+                        header,
+                        bool,
+                        color,
+                        colorMobile,
+                        chip,
+                        percentage,
+                        percentageMobile
+                    ) in headers"
                     :slot="`item.${header.value}`"
                     slot-scope="{ item }"
                 >
+                    <!-- Color -->
+                    <td
+                        v-if="
+                            header.type == 'color' &&
+                            $vuetify.breakpoint.mdAndUp
+                        "
+                        :key="color"
+                        :style="
+                            $_setChartColor(
+                                header.color ? header.color : 'darkGreen'
+                            )
+                        "
+                    ></td>
+
                     <v-icon
-                        v-if="header.type == 'bool'"
+                        v-else-if="
+                            header.type == 'color' && $vuetify.breakpoint.mobile
+                        "
+                        :key="colorMobile"
+                        :style="
+                            $_setChartColor(
+                                header.color ? header.color : 'darkGreen',
+                                'color'
+                            )
+                        "
+                        >mdi-card</v-icon
+                    >
+
+                    <!-- Boolean -->
+                    <v-icon
+                        v-else-if="header.type == 'bool'"
                         :key="bool"
                         :color="item[header.value] ? 'greenA800' : 'grey500'"
                     >
@@ -1358,18 +1415,66 @@ export default {
                         }}
                     </v-icon>
 
+                    <!-- chip -->
+                    <v-chip
+                        small
+                        outlined
+                        :key="chip"
+                        v-else-if="header.type == 'chip'"
+                        :color="
+                            $_setStatusColor(
+                                item[
+                                    header.itemKey
+                                        ? `${header.itemKey}`
+                                        : 'estadoId'
+                                ]
+                            )
+                        "
+                    >
+                        {{ item[header.value] }}
+                    </v-chip>
+
+                    <!-- percentage -->
+                    <td
+                        v-else-if="
+                            header.type == 'percentage' &&
+                            $vuetify.breakpoint.mdAndUp
+                        "
+                        :key="percentage"
+                    >
+                        <v-row style="height: 100%; width: 100%">
+                            <div
+                                class="d-flex align-end justify-end white--text"
+                                :style="
+                                    $_setChartColor(
+                                        header.color ? header.color : 'purple'
+                                    )
+                                "
+                                style="height: 100%; width: 50%"
+                            >
+                                50%
+                            </div>
+                            <div
+                                class="d-flex align-end justify-end white--text"
+                                :style="
+                                    $_setChartColor(
+                                        header.color
+                                            ? header.color
+                                            : 'darkGreen'
+                                    )
+                                "
+                                style="height: 100%; width: 50%"
+                            >
+                                50%
+                            </div>
+                        </v-row>
+                    </td>
+
+                    
+
+                    <!-- Normal -->
                     <div v-else :key="header.value">
-                        <div v-if="header.value != 'nombreEstado'">
-                            {{ item[header.value] }}
-                        </div>
-                        <v-chip
-                            v-else
-                            :color="$_setStatusColor(item['estadoId'])"
-                            outlined
-                            small
-                        >
-                            {{ item[header.value] }}
-                        </v-chip>
+                        {{ item[header.value] }}
                     </div>
                 </template>
             </v-data-table>
