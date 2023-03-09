@@ -896,7 +896,9 @@ export default {
         $_setChartColor(color, type = 'background-color') {
             const palette =
                 baseDataVisualizationColorsHelper.$_getColorByName(color);
-            return `${type}: ${palette.main}`;
+            return type != 'hexa'
+                ? `${type}: ${palette.main}`
+                : `${palette.main}`;
         },
     },
 };
@@ -967,7 +969,8 @@ export default {
                                             class="buo-expansion-panel-header"
                                             v-if="
                                                 header.type != 'hidden' &&
-                                                header.type != 'color'
+                                                header.type != 'color' &&
+                                                header.type != 'percentage'
                                             "
                                         >
                                             <div
@@ -1470,7 +1473,81 @@ export default {
                         </v-row>
                     </td>
 
-                    
+                    <!-- percentage mobile -->
+                    <v-menu
+                        top
+                        offset-x
+                        v-else-if="
+                            header.type == 'percentage' &&
+                            $vuetify.breakpoint.mobile
+                        "
+                        :key="percentageMobile"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                                outlined
+                                icon
+                                small
+                                color="greenC800"
+                                v-bind="attrs"
+                                v-on="on"
+                            >
+                                <v-icon x-small>mdi-google-analytics</v-icon>
+                            </v-btn>
+                        </template>
+                        <v-card width="100%" elevation="3">
+                            <v-card-text>
+                                <div
+                                    class="BUO-Paragraph-Small buo-word-break buo-white-space pb-2"
+                                    :style="
+                                        $_setChartColor(
+                                            header.color
+                                                ? header.color
+                                                : 'purple',
+                                            'color'
+                                        )
+                                    "
+                                >
+                                    50%
+                                    <v-progress-linear
+                                        rounded
+                                        :value="50"
+                                        :color="
+                                            $_setChartColor(
+                                                header.color
+                                                    ? header.color
+                                                    : 'purple',
+                                                'hexa'
+                                            )
+                                        "
+                                    />
+                                </div>
+                                <div class="BUO-Paragraph-Small buo-word-break buo-white-space pb-1"
+                                    :style="
+                                        $_setChartColor(
+                                            header.color
+                                                ? header.color
+                                                : 'darkGreen',
+                                            'color'
+                                        )
+                                    ">
+                                    50%
+                                    <v-progress-linear
+                                        rounded
+                                        :value="50"
+                                        :color="
+                                            $_setChartColor(
+                                                header.color
+                                                    ? header.color
+                                                    : 'darkGreen',
+                                                'hexa'
+                                            )
+                                        "
+                                    />
+                                </div>
+                            </v-card-text>
+                        </v-card>
+                    </v-menu>
 
                     <!-- Normal -->
                     <div v-else :key="header.value">
