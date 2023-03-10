@@ -21,17 +21,17 @@ export default {
 
         startIcon: {
             type: Boolean,
-            required: undefined,
+            required: false,
         },
 
         endIcon: {
             type: Boolean,
-            required: undefined,
+            required: false,
         },
 
         centerIcon: {
             type: Boolean,
-            required: undefined,
+            required: false,
         },
 
         iconColor: {
@@ -66,17 +66,17 @@ export default {
 
         startBotton: {
             type: Boolean,
-            required: undefined,
+            required: false,
         },
 
         endBotton: {
             type: Boolean,
-            required: undefined,
+            required: false,
         },
 
         centerBotton: {
             type: Boolean,
-            required: undefined,
+            required: false,
         },
 
         position: {
@@ -168,7 +168,11 @@ export default {
             :to="{ name: to }"
         >
             <v-card-title class="d-flex">
-                <v-layout justify-center>
+                <v-layout
+                    :justify-center="centerIcon"
+                    :justify-end="endIcon"
+                    :justify-start="startIcon"
+                >
                     <v-icon
                         :color="iconColor === undefined ? 'blue' : iconColor"
                         class="pb-2"

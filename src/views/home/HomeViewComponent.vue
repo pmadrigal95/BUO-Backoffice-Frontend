@@ -18,6 +18,17 @@ const CardActivitiesViewComponent = () =>
 export default {
     name: 'HomeViewComponent',
 
+    data() {
+        return {
+            md: undefined,
+            offset: undefined,
+            windowSize: {
+                x: 0,
+                y: 0,
+            },
+        };
+    },
+
     components: {
         BaseCardViewComponent,
         CardActivitiesViewComponent,
@@ -69,26 +80,46 @@ export default {
             return originalList;
         },
     },
+
+    mounted() {
+        this.onResize();
+    },
+
+    methods: {
+        onResize() {
+            this.windowSize = { x: window.innerWidth, y: window.innerHeight };
+
+            if (this.windowSize.x > 1200) {
+                this.md = '9';
+                this.offset = '1';
+            } else {
+                this.md = '12';
+                this.offset = '0';
+            }
+        },
+    },
 };
 </script>
 
 <template>
-    <BaseCardViewComponent md="12" offset="0">
-        <div slot="card-text">
-            <h2 class="BUO-Heading-Small Buo-Blue700 pl-2">¡Hola!</h2>
-            <h2 class="BUO-Heading-Large Buo-Blue900 pb-8 pl-2 pt-2">
-                ¿Qué quieres hacer hoy?
-            </h2>
-            <CardActivitiesViewComponent
-                :menuItems="filterList"
-                md="4"
-                min-width="320"
-                max-width="320"
-                :large="true"
-                :fontTypeSubtitle="'BUO-Paragraph-Medium-SemiBold Buo-Black'"
-                iconColor="blue900"
-                bottonDisplay="Ver más"
-            />
-        </div>
-    </BaseCardViewComponent>
+    <div id="app" v-resize="onResize">
+        <BaseCardViewComponent
+            :md="md"
+            :offset="offset"
+            title="¡Hola!"
+            subtitle="¿Qué quieres hacer hoy?"
+        >
+            <div slot="card-text">
+                <CardActivitiesViewComponent
+                    :menuItems="filterList"
+                    min-width="354"
+                    max-width="234"
+                    :large="true"
+                    :fontTypeSubtitle="'BUO-Paragraph-Medium-SemiBold Buo-Black'"
+                    iconColor="blue900"
+                    bottonDisplay="Ver más"
+                />
+            </div>
+        </BaseCardViewComponent>
+    </div>
 </template>

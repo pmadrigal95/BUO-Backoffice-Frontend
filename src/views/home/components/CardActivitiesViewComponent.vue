@@ -101,7 +101,7 @@ export default {
 
 <template>
     <v-row :justify="positionJustify" v-if="$vuetify.breakpoint.mdAndUp">
-        <v-col cols="12" :md="md" v-for="(item, i) in menuItems" :key="i">
+        <div v-for="(item, i) in menuItems" :key="i" class="pb-4">
             <BaseCardMenu
                 :icon="item.icono"
                 :to="item.rutaURL"
@@ -117,10 +117,10 @@ export default {
                 :large="large"
                 :fontTypeSubtitle="fontTypeSubtitle"
                 :bottonDisplay="bottonDisplay"
-                centerBotton="true"
-                centerIcon="true"
+                :centerBotton="true"
+                :centerIcon="true"
             />
-        </v-col>
+        </div>
     </v-row>
 
     <v-layout justify-center v-else-if="$vuetify.breakpoint.smAndDown">
@@ -141,8 +141,8 @@ export default {
                     :large="large"
                     :fontTypeSubtitle="fontTypeSubtitle"
                     :bottonDisplay="bottonDisplay"
-                    centerBotton="true"
-                    centerIcon="true"
+                    :centerBotton="true"
+                    :centerIcon="true"
                 />
             </v-slide-item>
         </v-slide-group>
@@ -163,8 +163,8 @@ export default {
                     :large="large"
                     :fontTypeSubtitle="fontTypeSubtitle"
                     :bottonDisplay="bottonDisplay"
-                    centerBotton="true"
-                    centerIcon="true"
+                    :centerBotton="true"
+                    :centerIcon="true"
                 />
             </v-col>
         </v-row>
