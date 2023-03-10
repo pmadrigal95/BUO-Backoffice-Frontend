@@ -22,6 +22,7 @@ export default {
         return {
             md: undefined,
             offset: undefined,
+            width: undefined,
             windowSize: {
                 x: 0,
                 y: 0,
@@ -92,9 +93,11 @@ export default {
             if (this.windowSize.x > 1200) {
                 this.md = '9';
                 this.offset = '1';
+                this.width = '354';
             } else {
                 this.md = '12';
                 this.offset = '0';
+                this.width = '325';
             }
         },
     },
@@ -112,8 +115,8 @@ export default {
             <div slot="card-text">
                 <CardActivitiesViewComponent
                     :menuItems="filterList"
-                    min-width="354"
-                    max-width="234"
+                    :min-width="width"
+                    :max-width="width"
                     :large="true"
                     :fontTypeSubtitle="'BUO-Paragraph-Medium-SemiBold Buo-Black'"
                     iconColor="blue900"
