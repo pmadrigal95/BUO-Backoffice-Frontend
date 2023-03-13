@@ -11,72 +11,72 @@ export default {
     props: {
         to: {
             type: String,
-            required: undefined,
+            default: undefined,
         },
 
         icon: {
             type: String,
-            required: undefined,
+            default: undefined,
         },
 
         startIcon: {
             type: Boolean,
-            required: false,
+            default: false,
         },
 
         endIcon: {
             type: Boolean,
-            required: false,
+            default: false,
         },
 
         centerIcon: {
             type: Boolean,
-            required: false,
+            default: false,
         },
 
         iconColor: {
             type: String,
-            required: undefined,
+            default: 'blue900',
         },
 
         subtitle: {
             type: String,
-            required: undefined,
+            default: undefined,
         },
 
         positionSubtitle: {
             type: String,
-            required: undefined,
+            default: undefined,
         },
 
         description: {
             type: String,
-            required: undefined,
+            default: undefined,
         },
 
         positionDescription: {
             type: String,
-            required: undefined,
+            default: undefined,
         },
 
         bottonDisplay: {
             type: String,
-            required: undefined,
+            default: 'Ver más',
         },
 
         startBotton: {
             type: Boolean,
-            required: false,
+            default: false,
         },
 
         endBotton: {
             type: Boolean,
-            required: false,
+            default: false,
         },
 
         centerBotton: {
             type: Boolean,
-            required: false,
+            default: false,
         },
 
         position: {
@@ -90,22 +90,22 @@ export default {
         },
 
         minWidth: {
-            type: String,
+            type: [String, Number],
             default: undefined,
         },
 
         minHeight: {
-            type: String,
+            type: [String, Number],
             default: undefined,
         },
 
         maxWidth: {
-            type: String,
+            type: [String, Number],
             default: undefined,
         },
 
         maxHeight: {
-            type: String,
+            type: [String, Number],
             default: undefined,
         },
 
@@ -117,11 +117,6 @@ export default {
         fontTypeDescription: {
             type: String,
             default: 'BUO-Label-XSmall Buo-Black',
-        },
-
-        size: {
-            type: String,
-            default: undefined,
         },
 
         large: {
@@ -165,7 +160,7 @@ export default {
             :max-width="maxWidth"
             :min-height="minHeight"
             :max-height="maxHeight"
-            :to="{ name: to }"
+            :to="to && { name: to }"
         >
             <v-card-title class="d-flex">
                 <v-layout
@@ -195,7 +190,7 @@ export default {
                 >{{ description }}</v-card-text
             >
 
-            <v-card-actions>
+            <v-card-actions v-if="to != undefined">
                 <v-layout
                     :justify-center="centerBotton"
                     :justify-end="endBotton"
@@ -205,7 +200,7 @@ export default {
                         class="no-uppercase rounded-lg BUO-Label-XSmall-SemiBold lighten-2"
                         text
                         color="blue800"
-                        v-if="bottonDisplay != undefined"
+                        :to="to && { name: to }"
                     >
                         {{ bottonDisplay }}
                         <v-icon right>mdi-chevron-right</v-icon>
