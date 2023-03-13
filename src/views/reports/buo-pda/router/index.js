@@ -7,7 +7,15 @@ const routes = [
         name: 'BUOPDAReportViewComponent',
         component: 'reports/buo-pda/BUOPDAReportViewComponent',
         meta: {
-            module: 'PromotionalCodesViewComponent',
+            module: 'BUOPDAReportViewComponent',
+        },
+    },
+    {
+        path: '/Reports/BUO-PDA/User/:Id',
+        name: 'BUOPDAUserDetailsReportViewComponent',
+        component: 'reports/buo-pda/BUOPDAUserDetailsReportViewComponent',
+        meta: {
+            module: 'BUOPDAReportViewComponent',
         },
     },
 ];

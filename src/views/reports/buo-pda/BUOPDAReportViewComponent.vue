@@ -12,6 +12,8 @@ import httpService from '@/services/axios/httpService.js';
 
 import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 const BaseCardViewComponent = () =>
@@ -27,7 +29,7 @@ const BaseInputTreeview = () =>
     import('@/components/core/treeview/BaseInputTreeview');
 
 const BaseCustomsButtonsGrid = () =>
-    import('@/components/core/grids/BaseCustomsButtonsGrid.vue');
+    import('@/components/core/grids/BaseCustomsButtonsGrid');
 
 export default {
     name: 'BUOPDAReportViewComponent',
@@ -194,6 +196,13 @@ export default {
                         show: false,
                     },
                     {
+                        text: 'Test PDA',
+                        type: 'bool',
+                        align: 'center',
+                        value: 'conPda',
+                        show: true,
+                    },
+                    {
                         text: 'Estado',
                         align: 'center',
                         value: 'nombreEstado',
@@ -253,6 +262,28 @@ export default {
                 singleSelect: false,
             };
         },
+
+        permission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                this.$router.currentRoute.meta.module,
+                baseSecurityHelper.$_download
+            );
+            return result;
+        },
+    },
+
+    watch: {
+        /**
+         * Actualizar calendarios
+         */
+        'entity.organizacionId': {
+            handler(newValue, oldValue) {
+                if (oldValue) {
+                    this.entity.departamentoId = undefined;
+                }
+            },
+            immediate: true,
+        },
     },
 
     methods: {
@@ -276,11 +307,19 @@ export default {
                 .post('buo_pda/reporte_resumen', entity)
                 .then((response) => {
                     if (response != undefined) {
-                        baseFnFile.$_dowloadFile(
-                            response.data.fileEncoded,
-                            response.data.fileName,
-                            baseFnFile.$_extensionsName.zip
-                        );
+                        if (response.data == '') {
+                            baseNotificationsHelper.Message(
+                                true,
+                                'Solo se podra generar el reporte de aquellos usuarios que cuenten con el test PDA'
+                            );
+                        } else {
+                            baseFnFile.$_dowloadFile(
+                                response.data.fileEncoded,
+                                response.data.fileName,
+                                baseFnFile.$_extensionsName.zip
+                            );
+                        }
+
                         this.loading[number].value = false;
                     }
                 });
@@ -298,9 +337,20 @@ export default {
          */
         $_downloadMultipleFiles() {
             const data = [];
-            this.$_GetRow().forEach((element) =>
-                data.push(element[this.setting.key])
+            this.$_GetRow().forEach(
+                (element) =>
+                    element.conPda && data.push(element[this.setting.key])
             );
+
+            if (
+                this.$_GetRow().length > 0 &&
+                this.$_GetRow().some((element) => element.conPda === false)
+            ) {
+                baseNotificationsHelper.Message(
+                    true,
+                    'Solo se podra generar el reporte de aquellos usuarios que cuenten con el test PDA'
+                );
+            }
 
             if (data != undefined && data.length > 0) {
                 this.$_sendToApi(
@@ -311,10 +361,11 @@ export default {
                     0
                 );
             } else {
-                baseNotificationsHelper.Message(
-                    true,
-                    baseLocalHelper.$_MsgRowNotSelected
-                );
+                if (this.$_GetRow().length <= 0)
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
             }
         },
 
@@ -346,6 +397,20 @@ export default {
             this.extraParams = undefined;
             this.entity = this.$_Object();
             this.$_forceUpdateComponente();
+        },
+
+        $_reviewUserDetails(row) {
+            if (row.selected.conPda) {
+                this.$router.push({
+                    name: 'BUOPDAUserDetailsReportViewComponent',
+                    params: row && { Id: row?.selected?.id },
+                });
+            } else {
+                baseNotificationsHelper.Message(
+                    true,
+                    'Usuario no cuenta con test PDA'
+                );
+            }
         },
     },
 };
@@ -402,10 +467,12 @@ export default {
                 :key="search"
                 :setting="setting"
                 :extraParams="extraParams"
+                :fnDoubleClick="$_reviewUserDetails"
                 v-if="entity.organizacionId && extraParams"
             >
                 <div slot="btns">
                     <BaseCustomsButtonsGrid
+                        v-if="permission"
                         label="Descargar"
                         :fnMethod="$_downloadMultipleFiles"
                         icon="mdi-download"
@@ -413,6 +480,7 @@ export default {
                     />
 
                     <BaseCustomsButtonsGrid
+                        v-if="permission"
                         label="Descargar todo"
                         :outlined="false"
                         :fnMethod="$_downloadAll"

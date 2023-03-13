@@ -14,7 +14,8 @@ import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 const read = 'Read',
     write = 'Write',
-    upload = 'Upload';
+    upload = 'Upload',
+    download = 'Download';
 
 const $_requestData = (callback) => {
     store.dispatch('security/$_request_buo_security', callback, { root: true });
@@ -80,6 +81,8 @@ export default {
     $_write: write,
 
     $_upload: upload,
+
+    $_download: download,
 
     $_security(callback = () => {}) {
         $_getPermissionList(callback);

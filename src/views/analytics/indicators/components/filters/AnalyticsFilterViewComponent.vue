@@ -5,12 +5,22 @@
  * @displayName AnalyticsFilterViewComponent
  */
 
-import { mapGetters, mapActions } from 'vuex';
-
 const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
 
 export default {
     name: 'AnalyticsFilterViewComponent',
+
+    props: {
+        entity: {
+            type: Object,
+            requiered: true,
+        },
+
+        fn: {
+            type: Function,
+            requiered: true,
+        },
+    },
 
     components: {
         BaseDatePicker,
@@ -19,20 +29,12 @@ export default {
     data() {
         return {
             params: undefined,
-            menuStartDate: false,
-            menuEndDate: false,
-            drawer: null,
         };
     },
 
     computed: {
-        /**
-         * analytics
-         */
-        ...mapGetters('analyticsIndicators', ['buoFilters']),
-
         $_mode() {
-            return this.buoFilters.isAccumulated ? 'Acumulado' : 'Períodos';
+            return this.entity.filter.isAccumulated ? 'Acumulado' : 'Períodos';
         },
 
         $_finalDateValidated() {
@@ -46,7 +48,7 @@ export default {
         /**
          * Actualizar calendarios
          */
-        buoFilters: {
+        'entity.filter': {
             handler(buoFilter) {
                 // this will be run immediately on component creation.
                 this.$_setObject({
@@ -60,12 +62,6 @@ export default {
     },
 
     methods: {
-        ...mapActions('analyticsIndicators', [
-            '$_request_buo_analytics',
-            '$_change_buo_analytics_mode',
-            '$_set_buo_analytics_filters',
-        ]),
-
         $_open() {
             this.$refs['popUp'].$_openModal();
         },
@@ -75,12 +71,18 @@ export default {
         },
 
         $_sendToAPI() {
-            this.$_set_buo_analytics_filters(this.params);
+            this.entity.filter = this.params;
+            this.fn();
         },
 
         $_cleanSendToAPI() {
             this.params.startDate = undefined;
             this.params.endDate = undefined;
+            this.$_sendToAPI();
+        },
+
+        $_change_buo_analytics_mode() {
+            this.params.isAccumulated = !this.params.isAccumulated;
             this.$_sendToAPI();
         },
     },
@@ -251,7 +253,7 @@ export default {
                                             Actual</v-list-item-subtitle
                                         >
                                         <v-list-item-title>{{
-                                            `${buoFilters.startDate} al ${buoFilters.endDate}`
+                                            `${entity.filter.startDate} al ${entity.filter.endDate}`
                                         }}</v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
@@ -273,18 +275,14 @@ export default {
                                             Anterior</v-list-item-subtitle
                                         >
                                         <v-list-item-title>{{
-                                            `${buoFilters.previewStartDate} al ${buoFilters.previewEndDate}`
+                                            `${entity.filter.previewStartDate} al ${entity.filter.previewEndDate}`
                                         }}</v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-list>
                         </v-card>
                     </v-menu>
-                    <v-btn
-                        icon
-                        color="blue800"
-                        @click="$_request_buo_analytics"
-                    >
+                    <v-btn icon color="blue800" @click="$_sendToAPI">
                         <v-icon small>mdi-autorenew</v-icon>
                     </v-btn>
                 </div>

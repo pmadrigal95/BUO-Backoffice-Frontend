@@ -4,8 +4,9 @@
  *
  * @displayName AnalyticsViewComponent
  */
+import httpService from '@/services/axios/httpService';
 
-import { mapGetters, mapActions } from 'vuex';
+import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
@@ -31,22 +32,101 @@ export default {
         IndicatorsViewComponent,
     },
 
-    computed: {
-        /**
-         * analytics
-         */
-        ...mapGetters('analyticsIndicators', [
-            'buoAnalytics',
-            'loadingbuoAnalytics',
-        ]),
+    data() {
+        return {
+            entity: this.$_Object(),
+        };
     },
 
     created() {
-        !this.buoAnalytics && this.$_request_buo_analytics();
+        !this.entity.indicatorsData && this.$_sendToAPI();
     },
 
     methods: {
-        ...mapActions('analyticsIndicators', ['$_request_buo_analytics']),
+        $_Object() {
+            return {
+                filter: {
+                    startDate: undefined,
+                    endDate: undefined,
+                    isAccumulated: true,
+                },
+                indicatorsData: undefined,
+                loading: false,
+            };
+        },
+
+        $_dataRequest() {
+            if (
+                baseSharedFnHelper.$_checkValueNull(
+                    this.entity.filter.startDate
+                ) &&
+                baseSharedFnHelper.$_checkValueNull(this.entity.filter.endDate)
+            ) {
+                return {
+                    endpoint: this.entity.isAccumulated
+                        ? 'analytics/dashboardAcc'
+                        : 'analytics/dashboard',
+                    method: 'get',
+                };
+            }
+
+            if (
+                !baseSharedFnHelper.$_checkValueNull(
+                    this.entity.filter.startDate
+                ) &&
+                !baseSharedFnHelper.$_checkValueNull(this.entity.filter.endDate)
+            ) {
+                return {
+                    endpoint: 'analytics/dashboardByDate',
+                    method: 'post',
+                    params: {
+                        startDate: new Date(this.entity.filter.startDate),
+                        endDate: new Date(this.entity.filter.endDate),
+                        accumulated: this.entity.filter.isAccumulated,
+                    },
+                };
+            }
+
+            return null;
+        },
+
+        $_formatDate(dateToConvert) {
+            return baseSharedFnHelper.$_parseArrayToDateISOString(
+                dateToConvert
+            );
+        },
+
+        $_sendToAPI() {
+            this.entity.loading = true;
+            const request = this.$_dataRequest();
+
+            httpService[request.method](request.endpoint, request.params).then(
+                (response) => {
+                    if (response) {
+                        // Encontro la entidad
+                        this.entity.indicatorsData =
+                            response.data.indicadorDtoList;
+
+                        this.entity.filter = {
+                            startDate: this.$_formatDate(
+                                response.data.fechaInicio
+                            ),
+                            endDate: this.$_formatDate(
+                                response.data.fechaFinal
+                            ),
+                            previewStartDate: this.$_formatDate(
+                                response.data.fechaInicioAnterior
+                            ),
+                            previewEndDate: this.$_formatDate(
+                                response.data.fechaFinalAnterior
+                            ),
+                            isAccumulated: this.entity.filter.isAccumulated,
+                        };
+                    }
+                    this.entity.loading = false;
+                }
+            );
+        },
     },
 };
 </script>
@@ -55,13 +135,16 @@ export default {
     <BaseCardViewComponent title="BUO Analytics" md="12" offset="0">
         <div slot="card-text">
             <BaseSkeletonLoader
-                v-if="!buoAnalytics || loadingbuoAnalytics"
+                v-if="!entity.indicatorsData || entity.loading"
                 type="table-heading, image"
             />
             <v-card flat color="transparent" v-else>
-                <AnalyticsFilterViewComponent />
+                <AnalyticsFilterViewComponent
+                    :entity="entity"
+                    :fn="$_sendToAPI"
+                />
                 <br />
-                <IndicatorsViewComponent />
+                <IndicatorsViewComponent :entity="entity" />
             </v-card>
         </div>
     </BaseCardViewComponent>
