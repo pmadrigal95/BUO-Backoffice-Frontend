@@ -139,6 +139,16 @@ const formatDate = (date) => {
     )}-${reviewNumberDate(date.getDate())}`;
 };
 
+const chuckSize = (array, size) => {
+    const chunkSize = size;
+    let result = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+        const chunk = array.slice(i, i + chunkSize);
+        result.push(chunk);
+    }
+    return result;
+};
+
 export default {
     $_getInitialDay() {
         const fechaInicio = new Date();
@@ -325,5 +335,9 @@ export default {
 
     $_findNestedObjLike(obj, key, value) {
         return findNestedObjLike(obj, key, value);
+    },
+
+    $_chuckSize(array, size) {
+        return chuckSize(array, size);
     },
 };
