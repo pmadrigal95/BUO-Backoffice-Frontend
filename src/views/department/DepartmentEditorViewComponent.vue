@@ -81,13 +81,13 @@ export default {
                         show: true,
                     },
                     {
-                        text: 'Token Usuario',
+                        text: 'Token Colaborador',
                         align: 'start',
                         value: 'tokenUsuario',
                         show: false,
                     },
                     {
-                        text: 'Usuarios',
+                        text: 'Colaboradores',
                         align: 'end',
                         value: 'totalUsuarios',
                         show: false,
@@ -345,7 +345,7 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="Departamento"
+        title="Área / Departamento"
         :btnAction="$_returnToFilter"
         class="mx-auto"
         md="6"

@@ -55,14 +55,14 @@ export default {
                         show: false,
                     },
                     {
-                        text: 'Token Usuario',
+                        text: 'Token Colaborador',
                         type: 'number',
                         align: 'start',
                         value: 'tokenUsuario',
                         show: false,
                     },
                     {
-                        text: 'Usuarios',
+                        text: 'Colaboradores',
                         type: 'number',
                         align: 'end',
                         value: 'totalUsuarios',

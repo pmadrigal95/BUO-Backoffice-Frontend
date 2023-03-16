@@ -160,7 +160,7 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="Departamentos">
+    <BaseCardViewComponent title="Áreas / Departamentos">
         <div slot="card-text">
             <BaseServerDataTable
                 ref="departmentFilter"

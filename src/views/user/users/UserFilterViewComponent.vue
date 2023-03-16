@@ -209,7 +209,7 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="Usuarios">
+    <BaseCardViewComponent title="Colaboradores">
         <div slot="card-text">
             <BaseServerDataTable
                 ref="UserFilter"

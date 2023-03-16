@@ -79,13 +79,13 @@ export default {
                         show: true,
                     },
                     {
-                        text: 'Token Usuario',
+                        text: 'Token Colaborador',
                         align: 'start',
                         value: 'tokenUsuario',
                         show: false,
                     },
                     {
-                        text: 'Usuarios',
+                        text: 'Colaboradores',
                         align: 'end',
                         value: 'totalUsuarios',
                         show: false,
