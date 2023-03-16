@@ -2,11 +2,11 @@
 /**
  * Descripción: Menu
  *
- * @displayName BaseCardMenu
+ * @displayName BaseCardMenuViewComponent
  */
 
 export default {
-    name: 'BaseCardMenu',
+    name: 'BaseCardMenuViewComponent',
 
     props: {
         to: {
@@ -138,6 +138,11 @@ export default {
             type: Boolean,
             default: false,
         },
+
+        btnRequired: {
+            type: Boolean,
+            default: true,
+        },
     },
 
     computed: {
@@ -202,8 +207,10 @@ export default {
                         color="blue800"
                         :to="to && { name: to }"
                     >
-                        {{ bottonDisplay }}
-                        <v-icon right>mdi-chevron-right</v-icon>
+                        <div v-if="btnRequired">
+                            {{ bottonDisplay }}
+                            <v-icon right>mdi-chevron-right</v-icon>
+                        </div>
                     </v-btn>
                 </v-layout>
             </v-card-actions>
