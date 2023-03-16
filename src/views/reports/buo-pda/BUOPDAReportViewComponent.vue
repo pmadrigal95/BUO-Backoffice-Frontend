@@ -70,13 +70,13 @@ export default {
                         text: 'Nombre Contacto',
                         align: 'start',
                         value: 'nombreContacto',
-                        show: false,
+                        show: true,
                     },
                     {
                         text: 'Correo Contacto',
                         align: 'start',
                         value: 'correoContacto',
-                        show: false,
+                        show: true,
                     },
                     {
                         text: 'Token Usuario',
@@ -88,13 +88,13 @@ export default {
                         text: 'Usuarios',
                         align: 'end',
                         value: 'totalUsuarios',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Wallets Activas',
                         align: 'end',
                         value: 'walletsActivas',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Certifica Inmediato',

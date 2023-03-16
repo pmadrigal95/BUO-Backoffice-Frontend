@@ -72,13 +72,13 @@ export default {
                         text: 'Nombre Contacto',
                         align: 'start',
                         value: 'nombreContacto',
-                        show: false,
+                        show: true,
                     },
                     {
                         text: 'Correo Contacto',
                         align: 'start',
                         value: 'correoContacto',
-                        show: false,
+                        show: true,
                     },
                     {
                         text: 'Token Usuario',
@@ -90,13 +90,13 @@ export default {
                         text: 'Usuarios',
                         align: 'end',
                         value: 'totalUsuarios',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Wallets Activas',
                         align: 'end',
                         value: 'walletsActivas',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Certifica Inmediato',
@@ -155,73 +155,6 @@ export default {
         },
 
         /**
-         * Configuracion BaseInputDataTable
-         */
-        /**
-         * departmentSetting() {
-            return {
-                endpoint: 'departamento/findBy',
-                columns: [
-                    {
-                        text: 'Nombre',
-                        align: 'start',
-                        value: 'nombre',
-                        show: true,
-                    },
-                    {
-                        text: 'Departamento Padre',
-                        align: 'start',
-                        value: 'nombrePadre',
-                        show: true,
-                    },
-                    {
-                        text: 'Empresa',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        show: true,
-                    },
-                    {
-                        text: 'Administrador',
-                        align: 'start',
-                        value: 'nombreUsuarioAdmin',
-                        show: false,
-                    },
-                    {
-                        text: 'Correo Administrador',
-                        align: 'start',
-                        value: 'correoUsuarioAdmin',
-                        show: false,
-                    },
-                    {
-                        text: 'Teléfono Administrador',
-                        align: 'start',
-                        value: 'telefonoUsuarioAdmin',
-                        show: false,
-                    },
-                    {
-                        text: 'Colaboradores',
-                        align: 'end',
-                        value: 'cantidadColaboradores',
-                        show: true,
-                    },
-                    {
-                        text: 'Estado',
-                        align: 'center',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Creado por',
-                        align: 'start',
-                        value: 'nombreUsuarioModifica',
-                        show: false,
-                    },
-                ],
-                key: 'id',
-            };
-        },*/
-
-        /**
          * Configuracion BaseServerDataTable
          */
         userSetting() {
@@ -250,7 +183,7 @@ export default {
                         text: 'Empresa',
                         align: 'start',
                         value: 'nombreOrganizacion',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Estado',
@@ -263,7 +196,7 @@ export default {
                         type: 'bool',
                         align: 'center',
                         value: 'walletActivo',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Identificación',
@@ -452,15 +385,6 @@ export default {
                             />
                         </v-col>
                         <v-col cols="12">
-                            <!--<BaseInputDataTable
-                                label="Departamento Padre"
-                                :setting="departmentSetting"
-                                :extraParams="extraParams"
-                                :readonly="extraParams == undefined"
-                                :editText="entity.nombrePadre"
-                                v-model.number="entity.padreId"
-                                :key="componentKey"
-                            />-->
                             <BaseInputTreeview
                                 label="Área / Departamento"
                                 v-model.number="entity.padreId"

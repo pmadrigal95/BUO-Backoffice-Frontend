@@ -38,27 +38,12 @@ export default {
     data() {
         return {
             entity: this.$_Object(),
-            // componentKey: 0,
             loading: false,
         };
     },
 
     computed: {
         ...mapGetters('authentication', ['user']),
-
-        /**
-         * Extra Params
-         */
-        /**extraParams() {
-            return this.entity.organizacionId
-                ? [
-                      {
-                          name: 'organizacionId',
-                          value: this.entity.organizacionId,
-                      },
-                  ]
-                : undefined;
-        },**/
 
         /**
          * Configuracion BaseInputDataTable
@@ -78,13 +63,13 @@ export default {
                         text: 'Nombre Contacto',
                         align: 'start',
                         value: 'nombreContacto',
-                        show: false,
+                        show: true,
                     },
                     {
                         text: 'Correo Contacto',
                         align: 'start',
                         value: 'correoContacto',
-                        show: false,
+                        show: true,
                     },
                     {
                         text: 'Token Usuario',
@@ -96,13 +81,13 @@ export default {
                         text: 'Usuarios',
                         align: 'end',
                         value: 'totalUsuarios',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Wallets Activas',
                         align: 'end',
                         value: 'walletsActivas',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Certifica Inmediato',
@@ -240,28 +225,7 @@ export default {
             this.$vuetify.theme.themes.light.clouds;
     },
 
-    /**watch: {
-        'entity.organizacionId': {
-            handler(newValue, oldValue) {
-                if (oldValue) {
-                    this.$_forceUpdateComponente();
-                }
-            },
-            immediate: true,
-        },
-    },**/
-
     methods: {
-        /**
-         * Force Update Component
-         */
-        /**$_forceUpdateComponente() {
-            this.componentKey = this.componentKey + 1;
-        },**/
-
-        /**
-         * Entity Object
-         */
         $_Object() {
             return {
                 id: 0,
@@ -453,16 +417,6 @@ export default {
                         </v-col>
 
                         <v-col cols="12">
-                            <!--<BaseInputDataTable
-                                label="Departamento"
-                                :setting="settingDepartment"
-                                :extraParams="extraParams"
-                                :readonly="extraParams == undefined"
-                                :editText="entity.nombreDepartamento"
-                                v-model.number="entity.departamentoId"
-                                :key="componentKey"
-                            />-->
-
                             <BaseInputTreeview
                                 label="Área / Departamento"
                                 v-model.number="entity.departamentoId"
