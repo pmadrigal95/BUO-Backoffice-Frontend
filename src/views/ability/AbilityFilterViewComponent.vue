@@ -152,7 +152,9 @@ export default {
          */
         setting() {
             return {
-                endpoint: 'cualificacion/findBy',
+                endpoint: this.entity.categoriaId
+                    ? `cualificacion/findByDeep/${this.entity.categoriaId}`
+                    : 'cualificacion/findBy',
                 columns: [
                     {
                         text: 'Definición',
@@ -250,7 +252,30 @@ export default {
                 ];
             }
 
+            if (this.entity.organizacionId) {
+                return [
+                    {
+                        name: 'organizacionId',
+                        value: this.entity.organizacionId,
+                    },
+                ];
+            }
+
             return undefined;
+        },
+    },
+
+    watch: {
+        /**
+         * Actualizar calendarios
+         */
+        'entity.organizacionId': {
+            handler(newValue, oldValue) {
+                if (oldValue != newValue) {
+                    this.entity.categoriaId = undefined;
+                }
+            },
+            immediate: true,
         },
     },
 
@@ -260,8 +285,8 @@ export default {
          */
         $_Object() {
             return {
-                organizacionId: undefined,
-                categoriaId: undefined,
+                organizacionId: null,
+                categoriaId: null,
             };
         },
 
@@ -303,15 +328,22 @@ export default {
         },
 
         $_setParams() {
-            console.log('object');
+            this.$refs.abilityFilter.$_ParamsToAPI();
         },
 
         $_clean() {
-            console.log('object');
+            this.entity = this.$_Object();
+            this.$_setParams();
         },
 
         $_showAdvFilter() {
             this.show = !this.show;
+
+            if (this.show) {
+                if (this.user.companyId != this.buoId) {
+                    this.entity.organizacionId = this.user.companyId;
+                }
+            }
         },
     },
 };
@@ -339,6 +371,7 @@ export default {
                                         Seleccione la categoría
                                     </p>
                                     <BaseInputDataTable
+                                        v-if="user.companyId === buoId"
                                         label="Empresa"
                                         :setting="companySetting"
                                         v-model.number="entity.organizacionId"
@@ -353,6 +386,7 @@ export default {
                                         itemText="nombre"
                                         itemChildren="subCategorias"
                                         :endpoint="`categoria/findAllTree/${entity.organizacionId}`"
+                                        :validate="['requiered']"
                                     />
                                 </v-col>
                             </v-row>
