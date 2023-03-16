@@ -117,11 +117,13 @@ export default {
                 .get(`/pda/getTest/${this.entity.username}`)
                 .then((response) => {
                     if (response != undefined) {
-                        if (response.data) {
+                        if (response.data && response.data != '') {
                             this.entity.pda = BaseArrayHelper.SetObject(
                                 {},
                                 response.data
                             );
+                        } else {
+                            this.$_returnToFilter();
                         }
                     }
                     this.loading = false;
@@ -170,11 +172,17 @@ export default {
                 <v-card-text>
                     <HeaderViewComponent :entity="entity" />
 
-                    <AbilitiesViewComponent :entity="entity.pda" />
+                    <AbilitiesViewComponent
+                        :entity="entity.pda"
+                        v-if="entity.pda != undefined"
+                    />
 
-                    <ProfileViewComponent :entity="entity.pda" />
+                    <ProfileViewComponent
+                        :entity="entity.pda"
+                        v-if="entity.pda != undefined"
+                    />
 
-                    <AxesViewComponent :entity="entity.pda" />
+                    <AxesViewComponent :entity="entity.pda" v-if="entity.pda != undefined" />
                 </v-card-text>
             </v-card>
         </div>
