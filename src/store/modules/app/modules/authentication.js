@@ -65,6 +65,8 @@ export const state = {
 export const getters = {
     user: (state) => state.user,
 
+    buoId: () => 1,
+
     /**
      * Loanding Process
      */

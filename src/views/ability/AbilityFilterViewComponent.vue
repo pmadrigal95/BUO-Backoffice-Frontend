@@ -21,6 +21,12 @@ const BaseServerDataTable = () =>
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
+const BaseInputDataTable = () =>
+    import('@/components/core/forms/BaseInputDataTable');
+
+const BaseInputTreeview = () =>
+    import('@/components/core/treeview/BaseInputTreeview');
+
 export default {
     name: 'AbilityFilterViewComponent',
 
@@ -28,17 +34,118 @@ export default {
         BaseCardViewComponent,
         BaseServerDataTable,
         BaseCustomsButtonsGrid,
+        BaseInputDataTable,
+        BaseInputTreeview,
     },
 
     data() {
         return {
-            category: undefined,
+            entity: this.$_Object(),
             show: false,
         };
     },
 
     computed: {
-        ...mapGetters('authentication', ['user']),
+        ...mapGetters('authentication', ['user', 'buoId']),
+
+        /**
+         * Configuracion BaseInputDataTable
+         */
+        companySetting() {
+            return {
+                endpoint: 'organizacion/findBy',
+                columns: [
+                    {
+                        text: 'Nombre',
+                        align: 'start',
+                        value: 'nombre',
+                        show: true,
+                    },
+                    {
+                        text: 'Nombre Contacto',
+                        align: 'start',
+                        value: 'nombreContacto',
+                        show: true,
+                    },
+                    {
+                        text: 'Correo Contacto',
+                        align: 'start',
+                        value: 'correoContacto',
+                        show: true,
+                    },
+                    {
+                        text: 'Token Colaborador',
+                        align: 'start',
+                        value: 'tokenUsuario',
+                        show: false,
+                    },
+                    {
+                        text: 'Colaboradores',
+                        align: 'end',
+                        value: 'totalUsuarios',
+                        show: false,
+                    },
+                    {
+                        text: 'Wallets Activas',
+                        align: 'end',
+                        value: 'walletsActivas',
+                        show: false,
+                    },
+                    {
+                        text: 'Certifica Inmediato',
+                        type: 'bool',
+                        align: 'center',
+                        value: 'certificaInmediato',
+                        show: false,
+                    },
+                    {
+                        text: 'Mostrar Puestos Genéricos',
+                        type: 'bool',
+                        align: 'center',
+                        value: 'mostrarPuestosGenericos',
+                        show: false,
+                    },
+                    {
+                        text: 'Demo',
+                        type: 'bool',
+                        align: 'center',
+                        value: 'esClienteDemo',
+                        show: true,
+                    },
+                    {
+                        text: 'Estado',
+                        align: 'center',
+                        value: 'nombreEstado',
+                        show: true,
+                    },
+                    {
+                        text: 'Industria',
+                        align: 'start',
+                        value: 'nombreIndustria',
+                        show: false,
+                    },
+                    {
+                        text: 'País',
+                        align: 'start',
+                        value: 'nombrePais',
+                        show: false,
+                    },
+                    {
+                        text: 'Ciudad',
+                        align: 'start',
+                        value: 'ciudad',
+                        show: false,
+                    },
+                    {
+                        text: 'Descripción',
+                        align: 'start',
+                        value: 'descripcion',
+                        show: false,
+                    },
+                ],
+                key: 'id',
+            };
+        },
 
         /**
          * Configuracion BaseServerDataTable
@@ -132,9 +239,32 @@ export default {
             );
             return result;
         },
+
+        extraParams() {
+            if (this.user.companyId != this.buoId) {
+                return [
+                    {
+                        name: 'organizacionId',
+                        value: this.user.companyId,
+                    },
+                ];
+            }
+
+            return undefined;
+        },
     },
 
     methods: {
+        /**
+         * Entity Object
+         */
+        $_Object() {
+            return {
+                organizacionId: undefined,
+                categoriaId: undefined,
+            };
+        },
+
         /**
          * Body Request
          */
@@ -193,6 +323,7 @@ export default {
             <v-row dense v-if="show">
                 <v-col cols="12" md="6">
                     <BaseForm
+                        v-if="user && buoId"
                         :block="$vuetify.breakpoint.mobile"
                         labelBtn="Buscar"
                         :method="$_setParams"
@@ -207,6 +338,22 @@ export default {
                                     >
                                         Seleccione la categoría
                                     </p>
+                                    <BaseInputDataTable
+                                        label="Empresa"
+                                        :setting="companySetting"
+                                        v-model.number="entity.organizacionId"
+                                        :validate="['requiered']"
+                                    />
+                                </v-col>
+                                <v-col cols="12">
+                                    <BaseInputTreeview
+                                        label="Categoría"
+                                        v-model.number="entity.categoriaId"
+                                        :readonly="!entity.organizacionId"
+                                        itemText="nombre"
+                                        itemChildren="subCategorias"
+                                        :endpoint="`categoria/findAllTree/${entity.organizacionId}`"
+                                    />
                                 </v-col>
                             </v-row>
                         </div>
@@ -215,9 +362,12 @@ export default {
             </v-row>
         </div>
         <div slot="body">
+            <BaseSkeletonLoader v-if="!user && !buoId" type="list-item" />
             <BaseServerDataTable
+                v-else
                 ref="abilityFilter"
                 :setting="setting"
+                :extraParams="extraParams"
                 :fnNew="write ? $_editor : undefined"
                 :fnEdit="write ? $_editor : undefined"
                 :fnDelete="write ? $_delete : undefined"

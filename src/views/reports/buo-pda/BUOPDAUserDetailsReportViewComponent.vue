@@ -182,7 +182,10 @@ export default {
                         v-if="entity.pda != undefined"
                     />
 
-                    <AxesViewComponent :entity="entity.pda" v-if="entity.pda != undefined" />
+                    <AxesViewComponent
+                        :entity="entity.pda"
+                        v-if="entity.pda != undefined"
+                    />
                 </v-card-text>
             </v-card>
         </div>
