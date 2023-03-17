@@ -226,7 +226,7 @@ export default {
                     {
                         text: 'Modificado Por',
                         align: 'start',
-                        value: 'usuarioModificaId',
+                        value: 'nombreUsuarioModifica',
                         show: false,
                     },
                 ],
@@ -307,12 +307,12 @@ export default {
         $_delete(row) {
             httpService
                 .post(
-                    'codigoPromocion/deactivate',
+                    'cualificacion/deactivate',
                     this.$_createBodyRequestDelete(row)
                 )
                 .then((response) => {
                     if (response != undefined) {
-                        this.$refs.PromotionalCodeFilter.$_ParamsToAPI();
+                        this.$_setParams();
                     }
                 });
         },
@@ -322,7 +322,7 @@ export default {
          */
         $_editor(params) {
             this.$router.push({
-                name: 'PromotionalCodesEditorViewComponent',
+                name: 'AbilityEditorViewComponent',
                 params: params && { Id: params.selected[this.setting.key] },
             });
         },

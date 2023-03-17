@@ -1,50 +1,43 @@
 <script>
 /**
- * Descripción: Pantalla Editor Código  Promocionales
+ * Descripción: Pantalla Editor Habilidades
  *
- * @displayName PromotionalCodesEditorViewComponent
+ * @displayName AbilityEditorViewComponent
  *
  */
-
-//TODO: Implementar logica cuando la compra no es gratis!
-
-import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
-import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
-
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
-const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
+const AddAbilityViewComponent = () =>
+    import('@/views/ability/components/AddAbilityViewComponent');
+
+const UpdateAbilityViewComponent = () =>
+    import('@/views/ability/components/UpdateAbilityViewComponent');
+
+const MicroAbilityFilterViewComponent = () =>
+    import('@/views/microAbility/MicroAbilityFilterViewComponent');
 
 export default {
-    name: 'PromotionalCodesEditorViewComponent',
+    name: 'AbilityEditorViewComponent',
 
     components: {
+        AddAbilityViewComponent,
         BaseCardViewComponent,
-        BaseDatePicker,
+        UpdateAbilityViewComponent,
+        MicroAbilityFilterViewComponent,
     },
 
     data() {
         return {
+            tab: null,
             entity: this.$_Object(),
             loading: false,
         };
-    },
-
-    computed: {
-        ...mapGetters('authentication', ['user']),
-
-        productList() {
-            return [
-                { product: 'Tokens', value: 1 },
-                { product: 'Prueba PDA', value: 2 },
-            ];
-        },
     },
 
     created() {
@@ -70,16 +63,17 @@ export default {
         $_Object() {
             return {
                 id: 0,
-                usuarioId: undefined,
-                codigo: undefined,
-                fechaExpiracion: undefined,
-                productoId: 2,
-                montoDescuento: undefined,
-                porcentajeDescuento: undefined,
-                usoMaximo: undefined,
-                esLicencia: undefined,
-                compraGratis: true,
+                definicion: undefined,
+                otroNombre: undefined,
+                proposito: undefined,
+                ambitoOcupacional: undefined,
+                link: undefined,
+                esInterna: undefined,
+                categoriaId: undefined,
                 estadoId: 2,
+                organizacionId: undefined,
+                tipoCualificacionId: undefined,
+                usuarioModificaId: undefined,
             };
         },
 
@@ -91,7 +85,7 @@ export default {
             if (data) {
                 //HttpServices a la vista para obtener Vista
                 this.loading = true;
-                httpService.get(`codigoPromocion/${data}`).then((response) => {
+                httpService.get(`cualificacion/${data}`).then((response) => {
                     this.loading = false;
                     if (response != undefined) {
                         // Encontro la entidad
@@ -99,49 +93,17 @@ export default {
                             {},
                             response.data
                         );
-                        this.entity.fechaExpiracion =
-                            baseSharedFnHelper.$_parseArrayToDateISOString(
-                                this.entity.fechaExpiracion
-                            );
                     }
                 });
             }
-        },
-
-        $_isLicense() {
-            if (this.entity.esLicencia) {
-                this.entity.fechaExpiracion = undefined;
-            } else {
-                this.entity.usoMaximo = undefined;
-            }
-        },
-
-        $_setToUser() {
-            this.entity.usuarioModificaId = this.user.userId;
-        },
-
-        $_sendToApi() {
-            this.loading = true;
-            this.$_setToUser();
-            this.$_isLicense();
-            let object = BaseArrayHelper.SetObject({}, this.entity);
-            httpService
-                .post('codigoPromocion/save', object)
-                .then((response) => {
-                    this.loading = false;
-                    if (response != undefined) {
-                        //Logica JS luego de la acción exitosa!!!
-                        this.$_returnToFilter();
-                    }
-                });
         },
 
         /**
-         * Function to return the PromotionalCodesFilterViewComponent
+         * Function to return the AbilityFilterViewComponent
          */
         $_returnToFilter() {
             this.$router.push({
-                name: 'PromotionalCodesFilterViewComponent',
+                name: 'AbilityFilterViewComponent',
             });
         },
     },
@@ -149,8 +111,47 @@ export default {
 </script>
 
 <template>
+    <div v-if="$router.currentRoute.params.Id">
+        <v-tabs v-model="tab" right show-arrows height="25" class="pa-3">
+            <v-tabs-slider color="transparent"></v-tabs-slider>
+            <v-tab class="rounded-pill no-uppercase"> Habilidad </v-tab>
+            <v-tab class="rounded-pill no-uppercase"> Micro Habilidades </v-tab>
+        </v-tabs>
+
+        <v-tabs-items v-model="tab" class="pa-5">
+            <v-tab-item>
+                <BaseCardViewComponent
+                    title="Habilidad"
+                    :btnAction="$_returnToFilter"
+                    class="mx-auto"
+                    md="6"
+                    offset="3"
+                >
+                    <div slot="card-text">
+                        <BaseSkeletonLoader
+                            v-if="loading"
+                            type="article, actions"
+                        />
+                        <div v-else>
+                            <UpdateAbilityViewComponent
+                                :entity="entity"
+                                :$_returnToFilter="$_returnToFilter"
+                            />
+                        </div>
+                    </div>
+                </BaseCardViewComponent>
+            </v-tab-item>
+            <v-tab-item>
+                <MicroAbilityFilterViewComponent
+                    :id="$router.currentRoute.params.Id"
+                />
+            </v-tab-item>
+        </v-tabs-items>
+    </div>
+
     <BaseCardViewComponent
-        title="Códigos Promocionales"
+        v-else
+        title="Habilidad"
         :btnAction="$_returnToFilter"
         class="mx-auto"
         md="6"
@@ -158,75 +159,12 @@ export default {
     >
         <div slot="card-text">
             <BaseSkeletonLoader v-if="loading" type="article, actions" />
-            <BaseForm
-                :block="$vuetify.breakpoint.mobile"
-                :method="$_sendToApi"
-                :cancel="$_returnToFilter"
-                v-else
-            >
-                <div slot="body">
-                    <v-row dense>
-                        <v-col cols="12">
-                            <BaseInput
-                                mask="XXXXXX"
-                                label="Código"
-                                v-model.trim="entity.codigo"
-                                :max="6"
-                                :min="3"
-                                :validate="['range']"
-                            />
-                        </v-col>
-                        <v-col cols="12">
-                            <BaseSelect
-                                label="Producto"
-                                v-model="entity.productoId"
-                                :endpoint="productList"
-                                itemText="product"
-                                itemValue="value"
-                                :validate="['text']"
-                            />
-                        </v-col>
-                        <v-col cols="12">
-                            <BaseSwitch
-                                label="Es Licencia"
-                                v-model="entity.esLicencia"
-                            />
-                        </v-col>
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Uso Máximo"
-                                v-model.number="entity.usoMaximo"
-                                v-if="entity.esLicencia"
-                                type="number"
-                                :validate="['number']"
-                            />
-
-                            <BaseDatePicker
-                                v-else
-                                label="Fecha de expiración"
-                                appendIcon="mdi-calendar-month"
-                                v-model="entity.fechaExpiracion"
-                                reqCurrentMinDate
-                                :validate="['text']"
-                            />
-                        </v-col>
-                        <v-col cols="12">
-                            <BaseSwitch
-                                disabled
-                                label="Compra Gratis"
-                                v-model="entity.compraGratis"
-                            />
-                        </v-col>
-                        <v-col cols="12">
-                            <BaseRadioGroup
-                                v-model="entity.estadoId"
-                                endpoint="status"
-                                :validate="['requiered']"
-                            />
-                        </v-col>
-                    </v-row>
-                </div>
-            </BaseForm>
+            <div v-else>
+                <AddAbilityViewComponent
+                    :entity="entity"
+                    :$_returnToFilter="$_returnToFilter"
+                />
+            </div>
         </div>
     </BaseCardViewComponent>
 </template>

@@ -12,9 +12,9 @@ const routes = [
     },
 
     {
-        path: '/PromotionalCodes/Editor/:Id?',
+        path: '/Ability/Editor/:Id?',
         name: 'AbilityEditorViewComponent',
-        component: 'promotionalCodes/AbilityEditorViewComponent',
+        component: 'ability/AbilityEditorViewComponent',
         meta: {
             module: 'PromotionalCodesViewComponent',
         },

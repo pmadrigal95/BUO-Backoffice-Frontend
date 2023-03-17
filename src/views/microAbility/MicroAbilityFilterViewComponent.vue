@@ -21,13 +21,20 @@ const BaseServerDataTable = () =>
 export default {
     name: 'MicroAbilityFilterViewComponent',
 
+    props: {
+        id: {
+            type: Number,
+            requiered: true,
+        },
+    },
+
     components: {
         BaseCardViewComponent,
         BaseServerDataTable,
     },
 
     computed: {
-        ...mapGetters('authentication', ['user']),
+        ...mapGetters('authentication', ['user', 'buoId']),
 
         /**
          * Configuracion BaseServerDataTable
@@ -79,6 +86,25 @@ export default {
             );
             return result;
         },
+
+        extraParams() {
+            let array = [];
+            if (this.user.companyId != this.buoId) {
+                array.push({
+                    name: 'organizacionId',
+                    value: this.user.companyId,
+                });
+            }
+
+            if (this.id) {
+                array.push({
+                    name: 'cualificacionId',
+                    value: this.id,
+                });
+            }
+
+            return array.length > 0 ? array : undefined;
+        },
     },
 
     methods: {
@@ -125,9 +151,12 @@ export default {
 <template>
     <BaseCardViewComponent title="Micro Habilidades">
         <div slot="card-text">
+            <BaseSkeletonLoader v-if="!user && !buoId" type="list-item" />
             <BaseServerDataTable
+                v-else
                 ref="microAbilityFilter"
                 :setting="setting"
+                :extraParams="extraParams"
                 :fnNew="write ? $_editor : undefined"
                 :fnEdit="write ? $_editor : undefined"
                 :fnDelete="write ? $_delete : undefined"
