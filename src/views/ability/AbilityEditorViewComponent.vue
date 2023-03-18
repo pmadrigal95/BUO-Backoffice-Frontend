@@ -40,7 +40,7 @@ export default {
         };
     },
 
-    created() {
+    mounted() {
         /**
          * Determinar si Es nuevo / editor
          */
@@ -143,7 +143,8 @@ export default {
             </v-tab-item>
             <v-tab-item>
                 <MicroAbilityFilterViewComponent
-                    :id="$router.currentRoute.params.Id"
+                    :cualificacionId="$router.currentRoute.params.Id"
+                    :organizacionId="entity.organizacionId"
                 />
             </v-tab-item>
         </v-tabs-items>

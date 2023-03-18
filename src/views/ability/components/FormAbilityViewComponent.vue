@@ -236,7 +236,11 @@ export default {
             />
         </v-col>
         <v-col cols="12">
-            <BaseSwitch label="Interna" v-model="entity.esInterna" />
+            <BaseSwitch
+                :disabled="user.companyId != buoId"
+                label="Interna"
+                v-model="entity.esInterna"
+            />
         </v-col>
         <v-col cols="12">
             <BaseRadioGroup

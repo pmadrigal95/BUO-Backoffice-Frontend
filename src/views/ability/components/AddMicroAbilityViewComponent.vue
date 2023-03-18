@@ -6,6 +6,8 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
 import httpService from '@/services/axios/httpService';
 
 export default {
@@ -29,6 +31,10 @@ export default {
             entityForm: this.$_Object(),
             loading: false,
         };
+    },
+
+    computed: {
+        ...mapGetters('authentication', ['user', 'buoId']),
     },
 
     methods: {
@@ -75,7 +81,7 @@ export default {
 </script>
 
 <template>
-    <v-card flat>
+    <v-card flat v-if="user && buoId">
         <v-card-title>MicroHabilidades</v-card-title>
         <v-card-subtitle
             >Agrega las microhabilidades generales de la habilidad
@@ -101,6 +107,7 @@ export default {
                             </v-col>
                             <v-col cols="12">
                                 <BaseSwitch
+                                    :disabled="user.companyId != buoId"
                                     label="Interna"
                                     v-model="entityForm.esInterna"
                                 />

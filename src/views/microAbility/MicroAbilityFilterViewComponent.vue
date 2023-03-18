@@ -22,9 +22,12 @@ export default {
     name: 'MicroAbilityFilterViewComponent',
 
     props: {
-        id: {
-            type: Number,
-            requiered: true,
+        cualificacionId: {
+            type: [Number, String],
+        },
+
+        organizacionId: {
+            type: [Number, String],
         },
     },
 
@@ -89,17 +92,22 @@ export default {
 
         extraParams() {
             let array = [];
-            if (this.user.companyId != this.buoId) {
+            if (this.user.companyId != this.buoId && !this.companyId) {
                 array.push({
                     name: 'organizacionId',
                     value: this.user.companyId,
                 });
+            } else if (this.companyId) {
+                array.push({
+                    name: 'organizacionId',
+                    value: this.companyId,
+                });
             }
 
-            if (this.id) {
+            if (this.cualificacionId) {
                 array.push({
                     name: 'cualificacionId',
-                    value: this.id,
+                    value: this.cualificacionId,
                 });
             }
 
@@ -125,14 +133,29 @@ export default {
         $_delete(row) {
             httpService
                 .post(
-                    'codigoPromocion/deactivate',
+                    'competencia/deactivate',
                     this.$_createBodyRequestDelete(row)
                 )
                 .then((response) => {
                     if (response != undefined) {
-                        this.$refs.PromotionalCodeFilter.$_ParamsToAPI();
+                        this.$refs.microAbilityFilter.$_ParamsToAPI();
                     }
                 });
+        },
+
+        $_setQuery() {
+            if (this.cualificacionId || this.organizacionId) {
+                return {
+                    cualificacionId: this.cualificacionId
+                        ? this.cualificacionId
+                        : undefined,
+                    organizacionId: this.organizacionId
+                        ? this.organizacionId
+                        : undefined,
+                };
+            }
+
+            return undefined;
         },
 
         /**
@@ -140,8 +163,11 @@ export default {
          */
         $_editor(params) {
             this.$router.push({
-                name: 'PromotionalCodesEditorViewComponent',
-                params: params && { Id: params.selected[this.setting.key] },
+                name: 'MicroAbilityEditorViewComponent',
+                params: params && {
+                    Id: params.selected[this.setting.key],
+                },
+                query: this.$_setQuery(),
             });
         },
     },
