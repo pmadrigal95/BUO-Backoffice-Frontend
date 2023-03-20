@@ -225,6 +225,20 @@ export default {
             this.$vuetify.theme.themes.light.clouds;
     },
 
+    watch: {
+        /**
+         * Actualizar calendarios
+         */
+        'entity.organizacionId': {
+            handler(newValue, oldValue) {
+                if (oldValue) {
+                    this.entity.departamentoId = undefined;
+                }
+            },
+            immediate: true,
+        },
+    },
+
     methods: {
         $_Object() {
             return {
