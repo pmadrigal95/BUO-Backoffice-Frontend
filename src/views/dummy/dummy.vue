@@ -70,29 +70,22 @@ export default {
 
         setting3() {
             return {
-                endpoint: 'departamento/findBy',
-                columns: [
-                    {
-                        text: 'Nombre',
-                        align: 'start',
-                        value: 'nombre',
-                        type: 'chip',
-                        width: '20%',
-                        show: true,
-                    },
-                    {
-                        text: '',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        width: '80%',
-                        type: 'percentage',
-                        sortable: false,
-                        //color: 'purple',
-                        show: true,
-                    },
-                ],
-                key: 'id',
+                endpoint: 'talent/findBy/0',
+                dynamic: true,
             };
+        },
+
+        extraParams() {
+            return [
+                {
+                    name: 'organizacionId',
+                    value: '84',
+                },
+                {
+                    name: 'cualificacionId',
+                    value: '23|50|277|882|4',
+                },
+            ];
         },
     },
 };
@@ -100,10 +93,12 @@ export default {
 
 <template>
     <div>
-        <BaseServerDataTable ref="departmentFilter" :setting="setting" />
+        <BaseServerDataTable
+            ref="departmentFilter3"
+            :setting="setting3"
+            :extraParams="extraParams"
+        />
         <br />
         <BaseServerDataTable ref="departmentFilter2" :setting="setting2" />
-        <br />
-        <BaseServerDataTable ref="departmentFilter3" :setting="setting3" />
     </div>
 </template>

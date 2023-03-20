@@ -394,7 +394,7 @@ export default {
         /**
          * Columnas configuradas con Show
          */
-        this.$_initialize(this.setting.columns);
+        !this.setting.dynamic && this.$_initialize(this.setting.columns);
 
         this.cleanFilter = false;
 
@@ -432,6 +432,17 @@ export default {
 
     methods: {
         /**
+         *
+         */
+        reviewDynamicData(data) {
+            if (this.setting.dynamic) {
+                this.setting.columns = data.columns;
+                this.setting.key = data.key;
+                this.$_initialize(this.setting.columns);
+            }
+        },
+
+        /**
          * Lógica Server Side
          */
         $_ParamsToAPI(time = baseLocalHelper.$_DefaultTimer) {
@@ -456,6 +467,7 @@ export default {
                         .post(this.returnEndPoint(), this.returnParams())
                         .then((response) => {
                             if (response != undefined) {
+                                this.reviewDynamicData(response.data);
                                 this.items = response.data.content;
                                 this.totalItems = response.data.totalElements;
                                 this.loadingGrid = false;
@@ -535,6 +547,7 @@ export default {
             /**
              * Buscadores por columnas
              */
+            this.setting?.columns &&
             Object.entries(this.filters).length === 0 &&
             this.options.sortBy.length === 0
                 ? delete params.columns
@@ -893,12 +906,37 @@ export default {
             }
         },
 
-        $_setChartColor(color, type = 'background-color') {
+        $_setColorDegradedChart(value) {
+            const x = Math.round(value * 100);
+            switch (true) {
+                case x >= 90:
+                    return 'main';
+                case x >= 80 && x < 90:
+                    return 'secondary80';
+                case x >= 70 && x < 80:
+                    return 'secondary70';
+                case x >= 60 && x < 70:
+                    return 'secondary60';
+                case x >= 50 && x < 60:
+                    return 'secondary50';
+                case x >= 40 && x < 50:
+                    return 'secondary40';
+                case x < 40:
+                    return 'secondary40';
+                default:
+                    return 'main';
+            }
+        },
+
+        $_setChartColor(value, color, type = 'background-color') {
             const palette =
                 baseDataVisualizationColorsHelper.$_getColorByName(color);
+
+            const degradedColor = this.$_setColorDegradedChart(value);
+
             return type != 'hexa'
-                ? `${type}: ${palette.main}`
-                : `${palette.main}`;
+                ? `${type}: ${palette[degradedColor]}`
+                : `${palette[degradedColor]}`;
         },
     },
 };
@@ -1175,7 +1213,7 @@ export default {
                     <!-- @Componente:  BaseButtonsGrid-->
                     <BaseButtonsGrid
                         :fnRefresh="$_ParamsToAPI"
-                        :fnConfig="$_config"
+                        :fnConfig="setting.dynamic ? undefined : $_config"
                         :fnFilter="$_filter"
                         :fnNew="fnNew"
                         :fnEdit="fnEdit != undefined ? $_edit : undefined"
@@ -1386,11 +1424,13 @@ export default {
                         :key="color"
                         :style="
                             $_setChartColor(
+                                item[header.value],
                                 header.color ? header.color : 'darkGreen'
                             )
                         "
                     ></td>
 
+                    <!-- Color Mobile -->
                     <v-icon
                         v-else-if="
                             header.type == 'color' && $vuetify.breakpoint.mobile
@@ -1398,6 +1438,7 @@ export default {
                         :key="colorMobile"
                         :style="
                             $_setChartColor(
+                                item[header.value],
                                 header.color ? header.color : 'darkGreen',
                                 'color'
                             )
@@ -1450,6 +1491,7 @@ export default {
                                 class="d-flex align-end justify-end white--text"
                                 :style="
                                     $_setChartColor(
+                                        item[header.value],
                                         header.color ? header.color : 'purple'
                                     )
                                 "
@@ -1461,6 +1503,7 @@ export default {
                                 class="d-flex align-end justify-end white--text"
                                 :style="
                                     $_setChartColor(
+                                        item[header.value],
                                         header.color
                                             ? header.color
                                             : 'darkGreen'
@@ -1501,6 +1544,7 @@ export default {
                                     class="BUO-Paragraph-Small buo-word-break buo-white-space pb-2"
                                     :style="
                                         $_setChartColor(
+                                            item[header.value],
                                             header.color
                                                 ? header.color
                                                 : 'purple',
@@ -1514,6 +1558,7 @@ export default {
                                         :value="50"
                                         :color="
                                             $_setChartColor(
+                                                item[header.value],
                                                 header.color
                                                     ? header.color
                                                     : 'purple',
@@ -1522,21 +1567,25 @@ export default {
                                         "
                                     />
                                 </div>
-                                <div class="BUO-Paragraph-Small buo-word-break buo-white-space pb-1"
+                                <div
+                                    class="BUO-Paragraph-Small buo-word-break buo-white-space pb-1"
                                     :style="
                                         $_setChartColor(
+                                            item[header.value],
                                             header.color
                                                 ? header.color
                                                 : 'darkGreen',
                                             'color'
                                         )
-                                    ">
+                                    "
+                                >
                                     50%
                                     <v-progress-linear
                                         rounded
                                         :value="50"
                                         :color="
                                             $_setChartColor(
+                                                item[header.value],
                                                 header.color
                                                     ? header.color
                                                     : 'darkGreen',
