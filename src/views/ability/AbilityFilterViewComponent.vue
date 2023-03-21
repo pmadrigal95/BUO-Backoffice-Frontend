@@ -30,6 +30,12 @@ const BaseInputTreeview = () =>
 export default {
     name: 'AbilityFilterViewComponent',
 
+    props: {
+        organizacionId: {
+            type: [Number, String],
+        },
+    },
+
     components: {
         BaseCardViewComponent,
         BaseServerDataTable,

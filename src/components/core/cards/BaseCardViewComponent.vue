@@ -63,7 +63,7 @@ export default {
                 max-height="100%"
                 class="rounded-lg"
             >
-                <v-layout align-center>
+                <v-row align-content="center">
                     <v-layout
                         justify-start
                         align-center
@@ -81,7 +81,7 @@ export default {
                     </v-layout>
 
                     <slot name="top-actions"></slot>
-                </v-layout>
+                </v-row>
 
                 <v-card-title
                     v-if="title"

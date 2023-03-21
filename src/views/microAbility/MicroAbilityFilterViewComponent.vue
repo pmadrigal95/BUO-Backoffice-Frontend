@@ -92,15 +92,15 @@ export default {
 
         extraParams() {
             let array = [];
-            if (this.user.companyId != this.buoId && !this.companyId) {
+            if (this.user.companyId != this.buoId && !this.organizacionId) {
                 array.push({
                     name: 'organizacionId',
                     value: this.user.companyId,
                 });
-            } else if (this.companyId) {
+            } else if (this.organizacionId) {
                 array.push({
                     name: 'organizacionId',
-                    value: this.companyId,
+                    value: this.organizacionId,
                 });
             }
 
