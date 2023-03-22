@@ -133,7 +133,7 @@ export default {
     },
 
     mounted() {
-        this.$_setValues();
+        this.$_reviewQueryParams();
     },
 
     watch: {
@@ -151,22 +151,17 @@ export default {
     },
 
     methods: {
-        $_setValues() {
+        $_reviewQueryParams() {
             this.entity.usuarioModificaId = this.user.userId;
-            this.entity.organizacionId = this.$_reviewCompany();
-        },
 
-        $_reviewCompany() {
-            let result,
-                data = this.$router.currentRoute.params.Id;
-            if (data) {
-                result = this.entity.organizacionId;
-            } else {
-                if (this.user.companyId != this.buoId)
-                    result = this.user.companyId;
+            if (this.$router.currentRoute.query.organizacionId) {
+                this.entity.organizacionId =
+                    this.$router.currentRoute.query.organizacionId;
             }
 
-            return result;
+            if (this.user.companyId != this.buoId) {
+                this.entity.organizacionId = this.user.companyId;
+            }
         },
     },
 };
@@ -193,6 +188,7 @@ export default {
         <v-col cols="12" v-if="user.companyId === buoId">
             <BaseInputDataTable
                 label="Empresa"
+                v-if="!$router.currentRoute.query.organizacionId"
                 :setting="companySetting"
                 :editText="entity.nombreOrganizacion"
                 v-model.number="entity.organizacionId"

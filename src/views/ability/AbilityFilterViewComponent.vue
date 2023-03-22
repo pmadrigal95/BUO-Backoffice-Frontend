@@ -323,6 +323,18 @@ export default {
                 });
         },
 
+        $_setQuery() {
+            if (this.organizacionId) {
+                return {
+                    organizacionId: this.organizacionId
+                        ? this.organizacionId
+                        : undefined,
+                };
+            }
+
+            return undefined;
+        },
+
         /**
          * Pantalla Editor
          */
@@ -330,6 +342,7 @@ export default {
             this.$router.push({
                 name: 'AbilityEditorViewComponent',
                 params: params && { Id: params.selected[this.setting.key] },
+                query: !params && this.$_setQuery(),
             });
         },
 

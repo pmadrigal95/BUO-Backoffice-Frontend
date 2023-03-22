@@ -167,7 +167,7 @@ export default {
                 params: params && {
                     Id: params.selected[this.setting.key],
                 },
-                query: this.$_setQuery(),
+                query: !params && this.$_setQuery(),
             });
         },
     },
