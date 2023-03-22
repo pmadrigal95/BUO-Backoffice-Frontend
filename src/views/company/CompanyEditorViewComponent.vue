@@ -127,9 +127,7 @@ export default {
          * Function to return the CompanyFilterViewComponent
          */
         $_returnToFilter() {
-            this.$router.push({
-                name: 'CompanyFilterViewComponent',
-            });
+            this.$router.back();
         },
     },
 };

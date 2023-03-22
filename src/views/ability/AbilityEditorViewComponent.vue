@@ -102,9 +102,7 @@ export default {
          * Function to return the AbilityFilterViewComponent
          */
         $_returnToFilter() {
-            this.$router.push({
-                name: 'AbilityFilterViewComponent',
-            });
+            this.$router.back();
         },
     },
 };

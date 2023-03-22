@@ -281,8 +281,6 @@ export default {
         },
 
         $_reviewQueryParams() {
-            console.log(this.$router.currentRoute.query);
-
             if (this.$router.currentRoute.query.cualificacionId) {
                 this.entity.cualificacionId =
                     this.$router.currentRoute.query.cualificacionId;

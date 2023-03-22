@@ -200,6 +200,18 @@ export default {
                 });
         },
 
+        $_setQuery() {
+            if (this.organizacionId) {
+                return {
+                    organizacionId: this.organizacionId
+                        ? this.organizacionId
+                        : undefined,
+                };
+            }
+
+            return undefined;
+        },
+
         /**
          * Pantalla Editor
          */
@@ -207,6 +219,7 @@ export default {
             this.$router.push({
                 name: 'UserEditorViewComponent',
                 params: params && { Id: params.selected[this.setting.key] },
+                query: !params && this.$_setQuery(),
             });
         },
 
@@ -214,7 +227,10 @@ export default {
          * Pantalla Carga Masiva
          */
         $_fnLoad() {
-            this.$router.push({ name: 'UserBulkLoadViewComponent' });
+            this.$router.push({
+                name: 'UserBulkLoadViewComponent',
+                query: this.$_setQuery(),
+            });
         },
     },
 };

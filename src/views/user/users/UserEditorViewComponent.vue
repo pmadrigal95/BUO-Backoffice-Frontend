@@ -43,7 +43,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters('authentication', ['user']),
+        ...mapGetters('authentication', ['user', 'buoId']),
 
         /**
          * Configuracion BaseInputDataTable
@@ -215,6 +215,8 @@ export default {
          */
         this.$_getObject();
 
+        this.$_reviewQueryParams();
+
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
             this.$vuetify.theme.themes.light.white;
@@ -261,6 +263,17 @@ export default {
                 estadoId: 2,
                 usuarioModificaId: undefined,
             };
+        },
+
+        $_reviewQueryParams() {
+            if (this.$router.currentRoute.query.organizacionId) {
+                this.entity.organizacionId =
+                    this.$router.currentRoute.query.organizacionId;
+            }
+
+            if (this.user.companyId != this.buoId) {
+                this.entity.organizacionId = this.user.companyId;
+            }
         },
 
         $_setToUser() {
@@ -311,9 +324,7 @@ export default {
          * Function to return the UserFilterViewComponent
          */
         $_returnToFilter() {
-            this.$router.push({
-                name: 'UserFilterViewComponent',
-            });
+            this.$router.back();
         },
     },
 };
@@ -421,8 +432,11 @@ export default {
                             />
                         </v-col>
 
-                        <v-col cols="12">
+                        <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseInputDataTable
+                                v-if="
+                                    !$router.currentRoute.query.organizacionId
+                                "
                                 label="Empresa"
                                 :setting="settingOrganization"
                                 :editText="entity.nombreOrganizacion"
