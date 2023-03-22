@@ -190,30 +190,6 @@ export default {
                 :validate="['optionalText']"
             />
         </v-col>
-        <v-col cols="12">
-            <BaseTextArea
-                label="Propósito"
-                :max="3000"
-                v-model.trim="entity.proposito"
-                :validate="['optionalText']"
-            />
-        </v-col>
-        <v-col cols="12">
-            <BaseTextArea
-                label="Ámbito Ocupacional"
-                :max="3000"
-                v-model.trim="entity.ambitoOcupacional"
-                :validate="['optionalText']"
-            />
-        </v-col>
-        <v-col cols="12">
-            <BaseInput
-                label="Link"
-                :max="500"
-                v-model.trim="entity.link"
-                :validate="['optionalText']"
-            />
-        </v-col>
         <v-col cols="12" v-if="user.companyId === buoId">
             <BaseInputDataTable
                 label="Empresa"

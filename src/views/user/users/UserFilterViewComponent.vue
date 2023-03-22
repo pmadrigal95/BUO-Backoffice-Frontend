@@ -151,7 +151,7 @@ export default {
 
         permission() {
             const result = baseSecurityHelper.$_ReadPermission(
-                this.$router.currentRoute.meta.module,
+                'UserViewComponent',
                 [baseSecurityHelper.$_write, baseSecurityHelper.$_upload]
             );
             return result;

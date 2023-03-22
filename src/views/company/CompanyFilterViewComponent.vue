@@ -35,7 +35,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters('authentication', ['user']),
+        ...mapGetters('authentication', ['user', 'buoId']),
 
         /**
          * Configuracion BaseServerDataTable
@@ -141,11 +141,20 @@ export default {
 
         write() {
             const result = baseSecurityHelper.$_ReadPermission(
-                this.$router.currentRoute.meta.module,
+                'CompanyViewComponent',
                 baseSecurityHelper.$_write
             );
             return result;
         },
+    },
+
+    created() {
+        if (this.user.companyId != this.buoId) {
+            this.$router.push({
+                name: 'CompanyDashboardViewComponent',
+                params: { Id: this.user.companyId },
+            });
+        }
     },
 
     methods: {

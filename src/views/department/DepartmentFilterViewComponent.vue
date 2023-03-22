@@ -31,7 +31,7 @@ export default {
 
         write() {
             const result = baseSecurityHelper.$_ReadPermission(
-                this.$router.currentRoute.meta.module,
+                'DepartmentViewComponent',
                 baseSecurityHelper.$_write
             );
             return result;

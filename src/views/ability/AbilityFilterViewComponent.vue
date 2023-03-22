@@ -249,25 +249,25 @@ export default {
         },
 
         extraParams() {
-            if (this.user.companyId != this.buoId) {
-                return [
-                    {
-                        name: 'organizacionId',
-                        value: this.user.companyId,
-                    },
-                ];
+            let array = [];
+            if (this.user.companyId != this.buoId && !this.organizacionId) {
+                array.push({
+                    name: 'organizacionId',
+                    value: this.user.companyId,
+                });
+            } else if (this.organizacionId) {
+                array.push({
+                    name: 'organizacionId',
+                    value: this.organizacionId,
+                });
+            } else if (this.entity.organizacionId) {
+                array.push({
+                    name: 'organizacionId',
+                    value: this.organizacionId,
+                });
             }
 
-            if (this.entity.organizacionId) {
-                return [
-                    {
-                        name: 'organizacionId',
-                        value: this.entity.organizacionId,
-                    },
-                ];
-            }
-
-            return undefined;
+            return array.length > 0 ? array : undefined;
         },
     },
 
@@ -356,7 +356,59 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="Habilidades">
+    <div v-if="organizacionId">
+        <v-row v-if="show" class="pb-1">
+            <v-col cols="12" md="6">
+                <BaseForm
+                    v-if="user && buoId"
+                    :block="$vuetify.breakpoint.mobile"
+                    labelBtn="Buscar"
+                    :method="$_setParams"
+                    lblCancel="Limpiar"
+                    :cancel="$_clean"
+                >
+                    <div slot="body">
+                        <v-row dense>
+                            <v-col cols="12">
+                                <p
+                                    class="BUO-Paragraph-Large-SemiBold grey700--text"
+                                >
+                                    Seleccione la categoría
+                                </p>
+                                <BaseInputTreeview
+                                    label="Categoría"
+                                    v-model.number="entity.categoriaId"
+                                    :readonly="!entity.organizacionId"
+                                    itemText="nombre"
+                                    itemChildren="subCategorias"
+                                    :endpoint="`categoria/findAllTree/${entity.organizacionId}`"
+                                    :validate="['requiered']"
+                                />
+                            </v-col>
+                        </v-row>
+                    </div>
+                </BaseForm>
+            </v-col>
+        </v-row>
+        <BaseServerDataTable
+            ref="abilityFilter"
+            :setting="setting"
+            :extraParams="extraParams"
+            :fnNew="write ? $_editor : undefined"
+            :fnEdit="write ? $_editor : undefined"
+            :fnDelete="write ? $_delete : undefined"
+        >
+            <div slot="btns">
+                <BaseCustomsButtonsGrid
+                    label="Filtro Avanzado"
+                    :fnMethod="$_showAdvFilter"
+                    :outlined="!show"
+                    icon="mdi-filter-cog-outline"
+                />
+            </div>
+        </BaseServerDataTable>
+    </div>
+    <BaseCardViewComponent title="Habilidades" v-else>
         <div slot="card-text">
             <v-row dense v-if="show">
                 <v-col cols="12" md="6">

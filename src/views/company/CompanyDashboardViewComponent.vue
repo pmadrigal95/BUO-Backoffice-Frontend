@@ -12,11 +12,16 @@ import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
 const UserFilterViewComponent = () =>
     import('@/views/user/users/UserFilterViewComponent');
+
+const AbilityFilterViewComponent = () =>
+    import('@/views/ability/AbilityFilterViewComponent');
 
 export default {
     name: 'CompanyDashboardViewComponent',
@@ -24,6 +29,7 @@ export default {
     components: {
         BaseCardViewComponent,
         UserFilterViewComponent,
+        AbilityFilterViewComponent,
     },
 
     data() {
@@ -36,12 +42,35 @@ export default {
 
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
+
+        companyPermission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'CompanyViewComponent',
+                baseSecurityHelper.$_write
+            );
+            return result;
+        },
+
+        userPermission() {
+            const result =
+                baseSecurityHelper.$_ReadPermission('UserViewComponent');
+            return result;
+        },
     },
 
     created() {
         /**
          * Determinar si Es nuevo / editor
          */
+        if (
+            this.user.companyId != this.buoId &&
+            this.user.companyId != this.$router.currentRoute.params.Id
+        ) {
+            this.$router.push({
+                name: '403',
+            });
+        }
+
         this.$_getObject();
     },
 
@@ -97,10 +126,10 @@ export default {
         <BaseCardViewComponent
             v-else
             :title="entity.nombre"
-            :btnAction="$_returnToFilter"
+            :btnAction="user.companyId == buoId ? $_returnToFilter : undefined"
         >
             <div slot="top-actions">
-                <v-layout justify-end align-center>
+                <v-layout justify-end align-center v-if="companyPermission">
                     <v-btn
                         color="blue800"
                         class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
@@ -116,7 +145,7 @@ export default {
             </div>
             <div slot="card-text">
                 <v-expansion-panels multiple flat v-model="panel">
-                    <v-expansion-panel>
+                    <v-expansion-panel v-if="userPermission">
                         <v-expansion-panel-header color="clouds"
                             ><div
                                 :class="[
@@ -147,11 +176,9 @@ export default {
                             </div></v-expansion-panel-header
                         >
                         <v-expansion-panel-content color="clouds">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam, quis
-                            nostrud exercitation ullamco laboris nisi ut aliquip
-                            ex ea commodo consequat.
+                            <AbilityFilterViewComponent
+                                :organizacionId="$router.currentRoute.params.Id"
+                            />
                         </v-expansion-panel-content>
                     </v-expansion-panel>
                     <v-expansion-panel>

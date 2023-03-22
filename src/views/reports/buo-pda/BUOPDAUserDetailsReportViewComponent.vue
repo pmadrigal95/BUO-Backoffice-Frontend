@@ -55,7 +55,7 @@ export default {
     computed: {
         permission() {
             const result = baseSecurityHelper.$_ReadPermission(
-                this.$router.currentRoute.meta.module,
+                'BUOPDAReportViewComponent',
                 baseSecurityHelper.$_download
             );
             return result;
