@@ -127,6 +127,7 @@ export default {
                         <v-chip-group column>
                             <div v-for="(item, i) in list" :key="i">
                                 <v-chip
+                                    class="py-1 black--text BUO-Label-Small"
                                     style="height: auto; white-space: normal"
                                     close
                                     close-icon="mdi-close"

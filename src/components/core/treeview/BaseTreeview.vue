@@ -560,7 +560,7 @@ export default {
                 :transition="transition"
             >
                 <template slot="label" slot-scope="{ item }">
-                    <div @click="$_setSelected(item)">
+                    <div @click="$_setSelected(item)" style="cursor: pointer">
                         {{ item[itemText] }}
                     </div>
                 </template>

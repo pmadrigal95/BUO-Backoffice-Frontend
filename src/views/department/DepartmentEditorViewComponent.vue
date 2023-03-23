@@ -39,7 +39,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters('authentication', ['user']),
+        ...mapGetters('authentication', ['user', 'buoId']),
 
         /**
          * Extra Params
@@ -240,6 +240,8 @@ export default {
          */
         this.$_getObject();
 
+        this.$_reviewQueryParams();
+
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
             this.$vuetify.theme.themes.light.white;
@@ -272,6 +274,17 @@ export default {
             this.entity.padreId = undefined;
             this.entity.usuarioAdminId = undefined;
             this.componentKey = this.componentKey + 1;
+        },
+
+        $_reviewQueryParams() {
+            if (this.$router.currentRoute.query.organizacionId) {
+                this.entity.organizacionId =
+                    this.$router.currentRoute.query.organizacionId;
+            }
+
+            if (this.user.companyId != this.buoId) {
+                this.entity.organizacionId = this.user.companyId;
+            }
         },
 
         /**
@@ -335,9 +348,7 @@ export default {
          * Function to return the PromotionalCodesFilterViewComponent
          */
         $_returnToFilter() {
-            this.$router.push({
-                name: 'DepartmentFilterViewComponent',
-            });
+            this.$router.back();
         },
     },
 };
@@ -361,8 +372,11 @@ export default {
             >
                 <div slot="body">
                     <v-row dense>
-                        <v-col cols="12">
+                        <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseInputDataTable
+                                v-if="
+                                    !$router.currentRoute.query.organizacionId
+                                "
                                 label="Empresa"
                                 :setting="companySetting"
                                 :editText="entity.nombreOrganizacion"

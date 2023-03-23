@@ -70,6 +70,7 @@ export default {
 <template>
     <v-btn
         :color="color"
+        elevation="0"
         class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
         :outlined="outlined"
         :dark="outlined ? false : true"

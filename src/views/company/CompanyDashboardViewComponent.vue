@@ -26,6 +26,9 @@ const AbilityFilterViewComponent = () =>
 const DepartmentTreeViewComponent = () =>
     import('@/views/department/DepartmentTreeViewComponent');
 
+const DepartmentFilterViewComponent = () =>
+    import('@/views/department/DepartmentFilterViewComponent');
+
 export default {
     name: 'CompanyDashboardViewComponent',
 
@@ -34,11 +37,13 @@ export default {
         UserFilterViewComponent,
         AbilityFilterViewComponent,
         DepartmentTreeViewComponent,
+        DepartmentFilterViewComponent,
     },
 
     data() {
         return {
             panel: [0, 1, 2],
+            treeview: true,
             entity: undefined,
             loading: false,
         };
@@ -198,7 +203,41 @@ export default {
                             </div></v-expansion-panel-header
                         >
                         <v-expansion-panel-content color="clouds">
+                            <v-layout justify-end class="pb-3">
+                                <v-btn
+                                    elevation="0"
+                                    class="mx-2"
+                                    fab
+                                    dark
+                                    small
+                                    :outlined="!treeview"
+                                    color="primary"
+                                    @click="treeview = !treeview"
+                                >
+                                    <v-icon dark>
+                                        mdi-file-tree-outline
+                                    </v-icon>
+                                </v-btn>
+                                <v-btn
+                                    elevation="0"
+                                    class="mx-2"
+                                    fab
+                                    dark
+                                    small
+                                    :outlined="treeview"
+                                    color="primary"
+                                    @click="treeview = !treeview"
+                                >
+                                    <v-icon dark> mdi-table </v-icon>
+                                </v-btn></v-layout
+                            >
                             <DepartmentTreeViewComponent
+                                v-if="treeview"
+                                :organizacionId="$router.currentRoute.params.Id"
+                            />
+
+                            <DepartmentFilterViewComponent
+                                v-if="!treeview"
                                 :organizacionId="$router.currentRoute.params.Id"
                             />
                         </v-expansion-panel-content>

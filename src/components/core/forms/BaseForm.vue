@@ -215,6 +215,7 @@ export default {
                 <slot name="Beforebtns"></slot>
                 <v-btn
                     class="no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    elevation="0"
                     :color="color"
                     :large="isLarge"
                     :small="isSmall"
@@ -233,6 +234,7 @@ export default {
                 >
                 <v-btn
                     class="mt-5 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    elevation="0"
                     color="primary"
                     :large="isLarge"
                     :small="isSmall"
@@ -259,6 +261,7 @@ export default {
 
             <v-btn
                 class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                elevation="0"
                 :large="isLarge"
                 :small="isSmall"
                 outlined
@@ -277,6 +280,7 @@ export default {
 
             <v-btn
                 class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                elevation="0"
                 :color="color"
                 :large="isLarge"
                 :small="isSmall"
