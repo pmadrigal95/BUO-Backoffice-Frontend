@@ -23,6 +23,9 @@ const UserFilterViewComponent = () =>
 const AbilityFilterViewComponent = () =>
     import('@/views/ability/AbilityFilterViewComponent');
 
+const DepartmentTreeViewComponent = () =>
+    import('@/views/department/DepartmentTreeViewComponent');
+
 export default {
     name: 'CompanyDashboardViewComponent',
 
@@ -30,6 +33,7 @@ export default {
         BaseCardViewComponent,
         UserFilterViewComponent,
         AbilityFilterViewComponent,
+        DepartmentTreeViewComponent,
     },
 
     data() {
@@ -194,11 +198,9 @@ export default {
                             </div></v-expansion-panel-header
                         >
                         <v-expansion-panel-content color="clouds">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam, quis
-                            nostrud exercitation ullamco laboris nisi ut aliquip
-                            ex ea commodo consequat.
+                            <DepartmentTreeViewComponent
+                                :organizacionId="$router.currentRoute.params.Id"
+                            />
                         </v-expansion-panel-content>
                     </v-expansion-panel>
                 </v-expansion-panels>
