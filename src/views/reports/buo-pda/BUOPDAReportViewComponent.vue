@@ -412,6 +412,40 @@ export default {
                 );
             }
         },
+
+        $_userDetails() {
+            const row = this.$_GetRow();
+
+            switch (row.length) {
+                case 0:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
+                    break;
+
+                case 1:
+                    if (row[0].conPda) {
+                        this.$router.push({
+                            name: 'BUOPDAUserDetailsReportViewComponent',
+                            params: row && { Id: row[0].id },
+                        });
+                    } else {
+                        baseNotificationsHelper.Message(
+                            true,
+                            'Usuario no cuenta con test PDA'
+                        );
+                    }
+                    break;
+
+                default:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
+                    break;
+            }
+        },
     },
 };
 </script>
@@ -471,6 +505,12 @@ export default {
                 v-if="entity.organizacionId && extraParams"
             >
                 <div slot="btns">
+                    <BaseCustomsButtonsGrid
+                        label="Ver Reporte"
+                        :fnMethod="$_userDetails"
+                        icon="mdi-chevron-right"
+                    />
+
                     <BaseCustomsButtonsGrid
                         v-if="permission"
                         label="Descargar"
