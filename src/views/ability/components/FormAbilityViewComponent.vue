@@ -207,7 +207,7 @@ export default {
                 :validate="['requiered']"
             />
         </v-col>
-        <v-col cols="12">
+        <v-col cols="12" v-if="user.companyId === buoId">
             <BaseSwitch
                 :disabled="user.companyId != buoId"
                 label="Interna"

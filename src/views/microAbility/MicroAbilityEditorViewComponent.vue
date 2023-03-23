@@ -426,7 +426,7 @@ export default {
                                 "
                             />
                         </v-col>
-                        <v-col cols="12">
+                        <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseSwitch
                                 label="Interna"
                                 v-model="entity.esInterna"
