@@ -6,6 +6,8 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
 import baseFnFile from '@/helpers/baseFnFile';
 
 import httpService from '@/services/axios/httpService.js';
@@ -45,14 +47,15 @@ export default {
     data() {
         return {
             entity: this.$_Object(),
-            extraParams: undefined,
-            search: 0,
             componentKey: 0,
+            show: false,
             loading: [{ value: false }, { value: false }],
         };
     },
 
     computed: {
+        ...mapGetters('authentication', ['user', 'buoId']),
+
         /**
          * Configuracion BaseInputDataTable
          */
@@ -157,7 +160,9 @@ export default {
          */
         setting() {
             return {
-                endpoint: 'user/findBy',
+                endpoint: this.entity.departamentoId
+                    ? `user/findByDeep/${this.entity.departamentoId}`
+                    : 'user/findBy',
                 columns: [
                     {
                         text: 'Nombre',
@@ -270,6 +275,34 @@ export default {
             );
             return result;
         },
+
+        extraParams() {
+            let array = [];
+            if (this.user.companyId != this.buoId) {
+                array.push({
+                    name: 'organizacionId',
+                    value: this.user.companyId,
+                });
+            } else if (this.entity.organizacionId) {
+                array.push({
+                    name: 'organizacionId',
+                    value: this.entity.organizacionId,
+                });
+            }
+
+            if (this.entity.departamentoId) {
+                array.push({
+                    name: 'departamentoId',
+                    value: this.entity.departamentoId,
+                });
+            }
+
+            return array.length > 0 ? array : undefined;
+        },
+    },
+
+    created() {
+        this.entity.organizacionId = this.user.companyId;
     },
 
     watch: {
@@ -287,10 +320,6 @@ export default {
     },
 
     methods: {
-        $_forceUpdateComponente() {
-            this.componentKey = this.componentKey + 1;
-        },
-
         /**
          * Entity Object
          */
@@ -377,26 +406,15 @@ export default {
         },
 
         $_setParams() {
-            this.extraParams = [];
-            this.entity.organizacionId &&
-                this.extraParams.push({
-                    name: 'organizacionId',
-                    value: this.entity.organizacionId,
-                });
-
-            this.entity.departamentoId &&
-                this.extraParams.push({
-                    name: 'departamentoId',
-                    value: this.entity.departamentoId,
-                });
-
-            this.search++;
+            this.$refs.UserFilter.$_ParamsToAPI();
         },
 
         $_clean() {
-            this.extraParams = undefined;
-            this.entity = this.$_Object();
-            this.$_forceUpdateComponente();
+            this.entity.organizacionId = this.user.companyId;
+            this.entity.companyName = this.user.companyName;
+            this.entity.departamentoId = null;
+            this.componentKey++;
+            this.$_setParams();
         },
 
         $_reviewUserDetails(row) {
@@ -446,21 +464,29 @@ export default {
                     break;
             }
         },
+
+        $_showAdvFilter() {
+            this.show = !this.show;
+
+            if (this.show) {
+                if (this.user.companyId != this.buoId) {
+                    this.entity.organizacionId = this.user.companyId;
+                }
+            }
+        },
     },
 };
 </script>
 
 <template>
     <BaseCardViewComponent title="Generador de Reporte Buo-PDA">
-        <div slot="card-text">
+        <div slot="card-text" v-if="show">
             <v-row dense>
                 <v-col cols="12" md="6">
                     <BaseForm
                         :block="$vuetify.breakpoint.mobile"
                         labelBtn="Buscar"
                         :method="$_setParams"
-                        lblCancel="Limpiar"
-                        :cancel="$_clean"
                     >
                         <div slot="body">
                             <v-row dense>
@@ -468,19 +494,25 @@ export default {
                                     <p
                                         class="BUO-Paragraph-Large-SemiBold grey700--text"
                                     >
-                                        Seleccione la empresa
+                                        Seleccione la
+                                        {{
+                                            user.companyId === buoId
+                                                ? 'empresa'
+                                                : 'departamento'
+                                        }}
                                     </p>
                                     <BaseInputDataTable
+                                        v-if="user.companyId === buoId"
+                                        :key="componentKey"
                                         label="Empresa"
                                         :setting="companySetting"
-                                        v-model.number="entity.organizacionId"
-                                        :key="componentKey"
+                                        :editText="entity.companyName"
+                                        v-model="entity.organizacionId"
                                         :validate="['requiered']"
                                     />
                                 </v-col>
                                 <v-col cols="12">
                                     <BaseInputTreeview
-                                        :key="componentKey"
                                         label="Área / Departamento"
                                         v-model.number="entity.departamentoId"
                                         :readonly="!entity.organizacionId"
@@ -491,6 +523,18 @@ export default {
                                 </v-col>
                             </v-row>
                         </div>
+                        <div slot="Beforebtns">
+                            <v-btn
+                                class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                                elevation="0"
+                                large
+                                outlined
+                                color="primary"
+                                @click="$_clean"
+                            >
+                                Limpiar
+                            </v-btn>
+                        </div>
                     </BaseForm>
                 </v-col>
             </v-row>
@@ -498,11 +542,9 @@ export default {
         <div slot="body">
             <BaseServerDataTable
                 ref="UserFilter"
-                :key="search"
                 :setting="setting"
                 :extraParams="extraParams"
                 :fnDoubleClick="$_reviewUserDetails"
-                v-if="entity.organizacionId && extraParams"
             >
                 <div slot="btns">
                     <BaseCustomsButtonsGrid
@@ -526,6 +568,13 @@ export default {
                         :fnMethod="$_downloadAll"
                         icon="mdi-download-multiple"
                         :loading="loading[1].value"
+                    />
+
+                    <BaseCustomsButtonsGrid
+                        label="Filtro Avanzado"
+                        :fnMethod="$_showAdvFilter"
+                        :outlined="!show"
+                        icon="mdi-filter-cog-outline"
                     />
                 </div>
             </BaseServerDataTable>

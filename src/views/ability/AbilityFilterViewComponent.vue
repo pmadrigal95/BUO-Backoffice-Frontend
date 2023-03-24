@@ -263,7 +263,7 @@ export default {
             } else if (this.entity.organizacionId) {
                 array.push({
                     name: 'organizacionId',
-                    value: this.organizacionId,
+                    value: this.entity.organizacionId,
                 });
             }
 
