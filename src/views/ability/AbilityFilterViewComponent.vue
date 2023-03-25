@@ -351,7 +351,11 @@ export default {
         },
 
         $_clean() {
-            this.entity = this.$_Object();
+            this.entity.organizacionId =
+                this.user.companyId === this.buoId
+                    ? undefined
+                    : this.user.companyId;
+            this.entity.departamentoId = undefined;
             this.$_setParams();
         },
 
@@ -457,7 +461,6 @@ export default {
                                         itemText="nombre"
                                         itemChildren="subCategorias"
                                         :endpoint="`categoria/findAllTree/${entity.organizacionId}`"
-                                        :validate="['requiered']"
                                     />
                                 </v-col>
                             </v-row>
