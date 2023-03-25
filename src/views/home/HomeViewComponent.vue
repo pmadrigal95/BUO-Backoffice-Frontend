@@ -53,7 +53,7 @@ export default {
         componentProps() {
             return {
                 positionSubtitle: 'align-center',
-                fontTypeSubtitle: 'BUO-Paragraph-Small-SemiBold Buo-Black',
+                fontTypeSubtitle: 'BUO-Paragraph-Small-SemiBold black--text',
                 width: '320',
                 centerBotton: true,
                 centerIcon: true,

@@ -47,8 +47,8 @@ export default {
                             : 'BUO-Paragraph-Medium',
                     ]"
                 >
-                    <div class="Buo-Black"><b>Importante</b></div>
-                    <div class="Buo-Black">
+                    <div class="black--text"><b>Importante</b></div>
+                    <div class="black--text">
                         El porcentaje en cada habilidad no indica la falta o
                         presencia de la misma, sino cuanto esfuerzo toma
                         desempeñar esa habilidad.
@@ -78,7 +78,7 @@ export default {
                                 </v-list-item-avatar>
                                 <v-list-item-content>
                                     <v-list-item-title
-                                        class="BUO-Paragraph-Small buo-word-break buo-white-space Buo-Black"
+                                        class="BUO-Paragraph-Small buo-word-break buo-white-space black--text"
                                     >
                                         <div
                                             class="d-flex flex-no-wrap justify-space-between buo-word-break"

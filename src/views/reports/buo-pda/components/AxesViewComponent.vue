@@ -32,7 +32,7 @@ export default {
                 >
                     <v-card flat>
                         <v-card-title
-                            class="buo-word-break Buo-Black BUO-Label-Small-SemiBold"
+                            class="buo-word-break black--text BUO-Label-Small-SemiBold"
                         >
                             {{ item.nombreUI }}
                         </v-card-title>

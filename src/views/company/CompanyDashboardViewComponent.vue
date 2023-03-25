@@ -18,7 +18,7 @@ const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
 const UserFilterViewComponent = () =>
-    import('@/views/user/users/UserFilterViewComponent');
+    import('@/views/user/user/UserFilterViewComponent');
 
 const AbilityFilterViewComponent = () =>
     import('@/views/ability/AbilityFilterViewComponent');

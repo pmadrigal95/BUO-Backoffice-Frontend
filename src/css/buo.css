@@ -273,34 +273,20 @@ html {
 
 
 /*
-* Colors
+* Custom Vuetify Components
 */
+
+/*Event for active*/
+.v-tab--active {
+    background: #ffffff;
+    border: 2px solid #003f5e;
+}
 
 /*
 * Progress Bar Request API
 */
 #nprogress .bar {
     background: #174B89 !important;
-}
-
-.Buo-Black {
-    color: black !important;
-}
-
-.BUO-greenA900 {
-    color: #72bf44;
-}
-
-.BUO-redError900 {
-    color: #DC3127;
-}
-
-.Buo-Blue900 {
-    color: #003F5E !important;
-}
-
-.Buo-Blue700 {
-    color: #4C798E !important;
 }
 
 /*

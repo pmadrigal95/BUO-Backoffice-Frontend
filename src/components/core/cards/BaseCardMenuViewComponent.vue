@@ -111,12 +111,12 @@ export default {
 
         fontTypeSubtitle: {
             type: String,
-            default: 'BUO-Paragraph-Small-SemiBold Buo-Black',
+            default: 'BUO-Paragraph-Small-SemiBold black--text',
         },
 
         fontTypeDescription: {
             type: String,
-            default: 'BUO-Label-XSmall Buo-Black',
+            default: 'BUO-Label-XSmall black--text',
         },
 
         large: {
