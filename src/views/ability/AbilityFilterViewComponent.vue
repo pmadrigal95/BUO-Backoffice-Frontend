@@ -273,7 +273,7 @@ export default {
 
     watch: {
         /**
-         * Actualizar calendarios
+         * Actualizar
          */
         'entity.organizacionId': {
             handler(newValue, oldValue) {

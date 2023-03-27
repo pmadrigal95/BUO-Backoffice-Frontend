@@ -5,11 +5,12 @@
  * @displayName ProfileFilterViewComponent
  *
  */
-import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import { mapGetters } from 'vuex';
 
-import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+import baseLocalHelper from '@/helpers/baseLocalHelper.js';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
@@ -40,8 +41,6 @@ export default {
     data() {
         return {
             entity: this.$_Object(),
-            extraParams: undefined,
-            search: 0,
             componentKey: 0,
             show: false,
         };
@@ -244,42 +243,45 @@ export default {
                         text: 'Empresa',
                         align: 'start',
                         value: 'nombreOrganizacion',
-                        show: false,
+                        show: this.user.companyId === this.buoId,
                     },
                     {
                         text: 'Área / Departamento',
                         align: 'start',
                         value: 'nombreDepartamento',
-                        show: false,
+                        show: this.entity.departamentoId != undefined,
                     },
                 ],
                 key: 'id',
-                singleSelect: false,
             };
         },
 
-        permission() {
-            const result = baseSecurityHelper.$_ReadPermission(
-                this.$router.currentRoute.meta.module,
-                [baseSecurityHelper.$_write, baseSecurityHelper.$_upload]
-            );
-            return result;
-        },
-    },
+        extraParams() {
+            let array = [];
+            if (this.user.companyId != this.buoId) {
+                array.push({
+                    name: 'organizacionId',
+                    value: this.user.companyId,
+                });
+            } else if (this.entity.organizacionId) {
+                array.push({
+                    name: 'organizacionId',
+                    value: this.entity.organizacionId,
+                });
+            }
 
-    created() {
-        this.$_setToCompany();
-        this.$_setParams();
+            return array.length > 0 ? array : undefined;
+        },
     },
 
     watch: {
         /**
-         * Actualiza componente
+         * Actualizar
          */
         'entity.organizacionId': {
             handler(newValue, oldValue) {
                 if (oldValue != newValue) {
-                    this.entity.departamentoId = undefined;
+                    this.entity.categoriaId = undefined;
                 }
             },
             immediate: true,
@@ -287,8 +289,11 @@ export default {
     },
 
     methods: {
-        $_forceUpdateComponente() {
-            this.componentKey = this.componentKey + 1;
+        /**
+         * Get a registry
+         */
+        $_GetRow() {
+            return this.$refs.ProfileFilter.$data.selected;
         },
 
         /**
@@ -301,55 +306,38 @@ export default {
             };
         },
 
-        $_setToCompany() {
-            this.entity.organizacionId = this.user.companyId;
-        },
-
         $_setParams() {
-            this.extraParams = [];
-            this.entity.organizacionId &&
-                this.extraParams.push({
-                    name: 'organizacionId',
-                    value: this.entity.organizacionId,
-                });
-
-            this.entity.departamentoId &&
-                this.extraParams.push({
-                    name: 'departamentoId',
-                    value: this.entity.departamentoId,
-                });
-
-            this.search++;
+            this.$refs.ProfileFilter.$_ParamsToAPI();
+            this.componentKey++;
         },
 
         $_clean() {
-            this.extraParams = undefined;
+            this.entity.organizacionId =
+                this.user.companyId === this.buoId
+                    ? undefined
+                    : this.user.companyId;
             this.entity.departamentoId = undefined;
-            this.$_forceUpdateComponente();
+            this.$_setParams();
         },
 
-        $_profileDetails(params) {
-            let id = 0;
+        $_userDetails(params) {
+            const row = params ? [params.selected] : this.$_GetRow();
 
-            if (
-                this.$refs.ProfileFilter.$data.selected[0] === undefined &&
-                params === undefined
-            ) {
-                return baseNotificationsHelper.Message(
-                    true,
-                    'Debe seleccionar al menos un registro.'
-                );
-            } else {
-                id =
-                    params === undefined
-                        ? this.$refs.ProfileFilter.$data.selected[0].id
-                        : params.selected[this.setting.key];
+            switch (row.length) {
+                case 0:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
+                    break;
+
+                case 1:
+                    this.$router.push({
+                        name: 'ProfileDetailsViewComponent',
+                        params: row && { Id: row[0].id },
+                    });
+                    break;
             }
-
-            this.$router.push({
-                name: 'ProfileDetailsViewComponent',
-                params: { Id: id },
-            });
         },
 
         $_showAdvFilter() {
@@ -393,7 +381,6 @@ export default {
                                 </v-col>
                                 <v-col cols="12">
                                     <BaseInputTreeview
-                                        :key="componentKey"
                                         label="Área / Departamento"
                                         v-model.number="entity.departamentoId"
                                         :readonly="!entity.organizacionId"
@@ -414,18 +401,16 @@ export default {
             <BaseSkeletonLoader v-if="!user && !buoId" type="list-item" />
             <BaseServerDataTable
                 ref="ProfileFilter"
+                :key="componentKey"
                 :setting="setting"
-                :key="search"
                 :extraParams="extraParams"
-                :fnDoubleClick="$_profileDetails"
-                v-if="entity.organizacionId && extraParams"
+                :fnDoubleClick="$_userDetails"
             >
                 <div slot="btns">
                     <BaseCustomsButtonsGrid
-                        v-if="permission"
-                        label="Ver"
-                        :fnMethod="$_profileDetails"
-                        icon="mdi-account-eye-outline"
+                        label="Ver Perfil"
+                        :fnMethod="$_userDetails"
+                        icon="mdi-chevron-right"
                     />
 
                     <BaseCustomsButtonsGrid

@@ -459,7 +459,7 @@ export default {
                 default:
                     baseNotificationsHelper.Message(
                         true,
-                        baseLocalHelper.$_MsgRowNotSelected
+                        baseLocalHelper.$_MsgRowNotMultiSelected
                     );
                     break;
             }
