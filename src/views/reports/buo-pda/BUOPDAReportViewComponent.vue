@@ -48,6 +48,7 @@ export default {
         return {
             entity: this.$_Object(),
             componentKey: 0,
+            componentGrid: 0,
             show: false,
             loading: [{ value: false }, { value: false }],
         };
@@ -254,13 +255,13 @@ export default {
                         text: 'Empresa',
                         align: 'start',
                         value: 'nombreOrganizacion',
-                        show: false,
+                        show: this.user.companyId === this.buoId,
                     },
                     {
                         text: 'Área / Departamento',
                         align: 'start',
                         value: 'nombreDepartamento',
-                        show: false,
+                        show: this.entity.departamentoId != undefined,
                     },
                 ],
                 key: 'id',
@@ -287,13 +288,6 @@ export default {
                 array.push({
                     name: 'organizacionId',
                     value: this.entity.organizacionId,
-                });
-            }
-
-            if (this.entity.departamentoId) {
-                array.push({
-                    name: 'departamentoId',
-                    value: this.entity.departamentoId,
                 });
             }
 
@@ -407,6 +401,7 @@ export default {
 
         $_setParams() {
             this.$refs.UserFilter.$_ParamsToAPI();
+            this.componentGrid++;
         },
 
         $_clean() {
@@ -542,6 +537,7 @@ export default {
         <div slot="body">
             <BaseServerDataTable
                 ref="UserFilter"
+                :key="componentGrid"
                 :setting="setting"
                 :extraParams="extraParams"
                 :fnDoubleClick="$_reviewUserDetails"

@@ -63,13 +63,13 @@ export default {
                         type: 'bool',
                         align: 'center',
                         value: 'esInterna',
-                        show: true,
+                        show: this.user.companyId === this.buoId,
                     },
                     {
                         text: 'Empresa',
                         align: 'start',
                         value: 'nombreOrganizacion',
-                        show: true,
+                        show: this.user.companyId === this.buoId,
                     },
                     {
                         text: 'Estado',
