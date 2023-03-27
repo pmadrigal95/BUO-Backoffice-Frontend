@@ -7,7 +7,7 @@
 
 import { mapState, mapActions } from 'vuex';
 
-import baseLocalHelper from '@/helpers/baseLocalHelper';
+import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 export default {
     name: 'TheToolbar',
@@ -41,7 +41,7 @@ export default {
         ...mapActions('navbar', ['changeStatus']),
 
         $_changeTheme() {
-            this.change_mode([baseLocalHelper.$_app, !this.app]);
+            this.change_mode([baseConfigHelper.$_app, !this.app]);
         },
     },
 };

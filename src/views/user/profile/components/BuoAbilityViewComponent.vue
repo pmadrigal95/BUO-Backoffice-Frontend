@@ -11,7 +11,7 @@ import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
-import baseLocalHelper from '@/helpers/baseLocalHelper';
+import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid.vue');
@@ -109,33 +109,21 @@ export default {
         },
 
         $_getValidatedList() {
-            this.validatedList = this.mySkills.habilidades
-                .filter(
-                    (x) =>
-                        x.estadoId ==
-                        baseLocalHelper.$_statusAbility.validatedCode
-                )
-                .slice(0, 100);
+            this.validatedList = this.mySkills.habilidades.filter(
+                (x) => x.estadoId == baseConfigHelper.$_statusCode.certificate
+            );
         },
 
         $_getInReviewList() {
-            this.inReviewList = this.mySkills.habilidades
-                .filter(
-                    (x) =>
-                        x.estadoId ==
-                        baseLocalHelper.$_statusAbility.inProgressCode
-                )
-                .slice(0, 100);
+            this.inReviewList = this.mySkills.habilidades.filter(
+                (x) => x.estadoId == baseConfigHelper.$_statusCode.certifying
+            );
         },
 
         $_getNotValidatedList() {
-            this.notValidatedList = this.mySkills.habilidades
-                .filter(
-                    (x) =>
-                        x.estadoId ==
-                        baseLocalHelper.$_statusAbility.notValidatedCode
-                )
-                .slice(0, 100);
+            this.notValidatedList = this.mySkills.habilidades.filter(
+                (x) => x.estadoId == baseConfigHelper.$_statusCode.uncertified
+            );
         },
 
         $_requestLink() {

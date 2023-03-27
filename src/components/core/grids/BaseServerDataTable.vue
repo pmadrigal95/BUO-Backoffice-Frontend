@@ -8,11 +8,12 @@
  * @displayName BaseServerDataTable
  */
 
-import baseLocalHelper from '@/helpers/baseLocalHelper.js';
-import baseNotificationsHelper from '@/helpers/baseNotificationsHelper.js';
-import baseArrayHelper from '@/helpers/baseArrayHelper.js';
+import baseLocalHelper from '@/helpers/baseLocalHelper';
+import baseConfigHelper from '@/helpers/baseConfigHelper';
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
+import baseArrayHelper from '@/helpers/baseArrayHelper';
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
-import httpService from '@/services/axios/httpService.js';
+import httpService from '@/services/axios/httpService';
 
 const BaseButtonsGrid = () =>
     import('@/components/core/grids/BaseButtonsGrid.vue');
@@ -245,7 +246,7 @@ export default {
             /**
              * param tiempo entre clicks
              */
-            delay: baseLocalHelper.$_clickDelay,
+            delay: baseConfigHelper.$_clickDelay,
 
             /**
              * Mostrar buscadores por columnas
@@ -270,7 +271,7 @@ export default {
             /**
              * Opciones por página
              */
-            settingFooter: baseLocalHelper.$_itemsPerPage,
+            settingFooter: baseConfigHelper.$_itemsPerPage,
 
             booleanClick: true,
         };
@@ -333,7 +334,7 @@ export default {
                 /**
                  * Establece el tiempo a ejecutar la función
                  */
-                let timer = baseLocalHelper.$_DefaultTimer;
+                let timer = baseConfigHelper.$_DefaultTimer;
                 this.options.page = 1;
                 /**
                  * elimina propiedades sin información
@@ -350,7 +351,7 @@ export default {
                 Object.entries(val).length === 0
                     ? (this.cleanFilter = false)
                     : ((this.cleanFilter = true),
-                      (timer = baseLocalHelper.$_InputTimer));
+                      (timer = baseConfigHelper.$_InputTimer));
 
                 /**
                  * Envio al API
@@ -421,14 +422,14 @@ export default {
         /**
          * Enviar configuración al API
          */
-        this.$_ParamsToAPI(baseLocalHelper.$_DefaultTimer);
+        this.$_ParamsToAPI(baseConfigHelper.$_DefaultTimer);
     },
 
     methods: {
         /**
          * Lógica Server Side
          */
-        $_ParamsToAPI(time = baseLocalHelper.$_DefaultTimer) {
+        $_ParamsToAPI(time = baseConfigHelper.$_DefaultTimer) {
             /**
              * Determinar cuantas solicitudes ha recibido para ejecutar
              */
