@@ -54,13 +54,11 @@ export default {
                             v-bind="attrs"
                             v-on="on"
                         >
-                            <v-icon small class="pr-1">
-                                mdi-login-variant
-                            </v-icon>
+                            <v-icon small class="pr-1"> mdi-account </v-icon>
                             {{ entity.username }}
                         </div>
                     </template>
-                    <span>Username</span>
+                    <span>Cuenta</span>
                 </v-tooltip>
                 <v-divider></v-divider>
             </v-col>
