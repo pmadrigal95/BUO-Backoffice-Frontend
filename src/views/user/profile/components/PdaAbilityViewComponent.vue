@@ -36,7 +36,7 @@ export default {
     data() {
         return {
             skillsList: undefined,
-            userId: undefined,
+            pda: undefined,
             loading: false,
         };
     },
@@ -62,10 +62,10 @@ export default {
 
     methods: {
         $_fnSendReportPDA() {
-            if (this.conPda) {
+            if (this.conPda && this.$router.currentRoute.params.Id) {
                 this.$router.push({
                     name: 'BUOPDAUserDetailsReportViewComponent',
-                    params: { Id: this.userId },
+                    params: { Id: this.$router.currentRoute.params.Id },
                 });
             } else {
                 baseNotificationsHelper.Message(
@@ -76,8 +76,7 @@ export default {
         },
 
         $_reviewStatus() {
-            this.userId = this.$router.currentRoute.params.Id;
-            if (this.userId) {
+            if (this.userName && this.conPda) {
                 this.loading = true;
                 httpService
                     .get(`/pda/getTest/${this.userName}`)
@@ -117,7 +116,7 @@ export default {
         class="pt-8 rounded-lg card"
         md="12"
         ref="card"
-        v-else-if="conPda"
+        v-else-if="pda && conPda"
     >
         <v-row class="pb-5">
             <v-col cols="12" md="8" class="d-flex align-self-end">

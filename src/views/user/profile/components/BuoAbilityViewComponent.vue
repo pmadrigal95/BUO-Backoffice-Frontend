@@ -5,22 +5,22 @@
  * @displayName BuoAbilityViewComponent
  */
 
-import sharingLinks from '@/services/sharing/sharingLinks.js';
-
 import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
-import baseLocalHelper from '@/helpers/baseLocalHelper';
+import baseConfigHelper from '@/helpers/baseConfigHelper';
+
+import sharingLinks from '@/services/sharing/sharingLinks';
+
+const BaseSocialLinkSharing = () =>
+    import('@/components/core/sharing/BaseSocialLinkSharing');
 
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid.vue');
 
 const BaseMyAbilitiesList = () =>
     import('@/views/user/profile/components/buoAbilities/BaseMyAbilitiesList');
-
-const BaseSocialLinkSharing = () =>
-    import('@/components/core/sharing/BaseSocialLinkSharing');
 
 export default {
     name: 'BuoAbilityViewComponent',
@@ -43,10 +43,7 @@ export default {
             tab: null,
             mySkills: undefined,
             loading: false,
-            validatedList: undefined,
-            inReviewList: undefined,
-            notValidatedList: undefined,
-            userId: undefined,
+            loadingBtn: false,
             link: undefined,
         };
     },
@@ -60,21 +57,37 @@ export default {
                 socialNetworks: ['email', 'whatsapp'],
             };
         },
+
+        $_ValidatedList() {
+            return this.mySkills.habilidades.filter(
+                (x) => x.estadoId == baseConfigHelper.$_statusCode.certificate
+            );
+        },
+
+        $_InReviewList() {
+            return this.mySkills.habilidades.filter(
+                (x) => x.estadoId == baseConfigHelper.$_statusCode.certifying
+            );
+        },
+
+        $_NotValidatedList() {
+            return this.mySkills.habilidades.filter(
+                (x) => x.estadoId == baseConfigHelper.$_statusCode.uncertified
+            );
+        },
     },
 
     created() {
         this.$_getSkills();
-        this.$_requestLink();
     },
 
     methods: {
         $_fnSendReportPDA() {
-            const useNavigatorShare = false;
             sharingLinks.$_share(
                 this.link,
                 `BUO ${this.userName}`,
-                this.$refs['BuoShareableLink'].$_open,
-                useNavigatorShare
+                this.$refs.BuoShareableLink.$_open,
+                false
             );
         },
 
@@ -86,9 +99,8 @@ export default {
             let data = this.$router.currentRoute.params.Id;
             if (data) {
                 this.loading = true;
-                this.userId = data;
                 httpService
-                    .get(`wallet/getByUsuarioId/${this.userId}`)
+                    .get(`wallet/getByUsuarioId/${data}`)
                     .then((response) => {
                         this.loading = false;
                         if (response != undefined) {
@@ -96,60 +108,29 @@ export default {
                                 {},
                                 response.data
                             );
-
-                            if (this.mySkills != null) {
-                                this.$_getValidatedList();
-                                this.$_getInReviewList();
-                                this.$_getNotValidatedList();
-                            }
                         }
                         this.loading = false;
                     });
             }
         },
 
-        $_getValidatedList() {
-            this.validatedList = this.mySkills.habilidades
-                .filter(
-                    (x) =>
-                        x.estadoId ==
-                        baseLocalHelper.$_statusAbility.validatedCode
-                )
-                .slice(0, 100);
-        },
-
-        $_getInReviewList() {
-            this.inReviewList = this.mySkills.habilidades
-                .filter(
-                    (x) =>
-                        x.estadoId ==
-                        baseLocalHelper.$_statusAbility.inProgressCode
-                )
-                .slice(0, 100);
-        },
-
-        $_getNotValidatedList() {
-            this.notValidatedList = this.mySkills.habilidades
-                .filter(
-                    (x) =>
-                        x.estadoId ==
-                        baseLocalHelper.$_statusAbility.notValidatedCode
-                )
-                .slice(0, 100);
-        },
-
         $_requestLink() {
-            this.loading = true;
-            httpService
-                .post('user/createShareableLink', {
-                    usuarioId: this.userId,
-                })
-                .then((response) => {
-                    if (response != undefined) {
-                        this.link = response.data;
-                        this.loading = false;
-                    }
-                });
+            this.loadingBtn = true;
+            if (!this.link) {
+                httpService
+                    .post('user/createShareableLink', {
+                        usuarioId: this.$router.currentRoute.params.Id,
+                    })
+                    .then((response) => {
+                        this.loadingBtn = false;
+                        if (response != undefined) {
+                            this.link = response.data;
+                            this.$_fnSendReportPDA();
+                        }
+                    });
+            } else {
+                this.$_fnSendReportPDA();
+            }
         },
     },
 };
@@ -167,17 +148,14 @@ export default {
             <v-col cols="12" md="4" class="d-flex justify-end">
                 <BaseCustomsButtonsGrid
                     label="Compartir Skills ID"
-                    :fnMethod="$_fnSendReportPDA"
+                    :fnMethod="$_requestLink"
                     icon="mdi-share-variant-outline"
+                    :loading="loadingBtn"
                 />
             </v-col>
         </v-row>
 
-        <BaseSocialLinkSharing
-            ref="BuoShareableLink"
-            v-if="link"
-            :sharing="sharing"
-        />
+        <BaseSocialLinkSharing ref="BuoShareableLink" :sharing="sharing" />
 
         <v-tabs v-model="tab" right show-arrows height="25" class="pa-3">
             <v-tabs-slider color="transparent"></v-tabs-slider>
@@ -188,15 +166,15 @@ export default {
 
         <v-tabs-items v-model="tab" class="pa-5">
             <v-tab-item>
-                <BaseMyAbilitiesList :myAbilitiesList="inReviewList" />
+                <BaseMyAbilitiesList :myAbilitiesList="$_InReviewList" />
             </v-tab-item>
 
             <v-tab-item>
-                <BaseMyAbilitiesList :myAbilitiesList="validatedList" />
+                <BaseMyAbilitiesList :myAbilitiesList="$_ValidatedList" />
             </v-tab-item>
 
             <v-tab-item>
-                <BaseMyAbilitiesList :myAbilitiesList="notValidatedList" />
+                <BaseMyAbilitiesList :myAbilitiesList="$_NotValidatedList" />
             </v-tab-item>
         </v-tabs-items>
     </v-card>

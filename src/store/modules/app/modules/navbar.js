@@ -4,7 +4,7 @@
  * @displayName navbar
  */
 
-import baseLocalHelper from '@/helpers/baseLocalHelper';
+import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 export const namespaced = true;
 
@@ -20,7 +20,7 @@ export const getters = {
 export const mutations = {
     SET_STATUS_DATA(state) {
         state.status = !state.status;
-        sessionStorage.setItem(baseLocalHelper.$_status, state.status);
+        sessionStorage.setItem(baseConfigHelper.$_status, state.status);
     },
     CHANGEMODE(state, key) {
         state.status = key[1];

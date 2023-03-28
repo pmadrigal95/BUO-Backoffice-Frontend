@@ -136,7 +136,10 @@ export default {
                         text: 'Empresa',
                         align: 'start',
                         value: 'nombreOrganizacion',
-                        show: false,
+                        show:
+                            this.user.companyId === this.buoId &&
+                            this.$router.currentRoute.name !=
+                                'CompanyDashboardViewComponent',
                     },
                     {
                         text: 'Área / Departamento',

@@ -12,7 +12,7 @@ import jwt_decode from 'jwt-decode';
 
 import httpService from '@/services/axios/httpService';
 
-import baseLocalHelper from '@/helpers/baseLocalHelper';
+import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
@@ -34,8 +34,8 @@ const $_setStateValue = (state, decoded, data) => {
     state.jwtToken = data;
 
     sessionStorage.setItem(
-        baseLocalHelper.$_jwtToken,
-        AES.encrypt(data, baseLocalHelper.$_encryptKey).toString()
+        baseConfigHelper.$_jwtToken,
+        AES.encrypt(data, baseConfigHelper.$_encryptKey).toString()
     );
 
     state.user = {
@@ -80,9 +80,10 @@ export const mutations = {
     },
 
     LOGOUT(state, error) {
-        if (error) sessionStorage.setItem(baseLocalHelper.$_alert, state.alert);
-        sessionStorage.removeItem(baseLocalHelper.$_jwtToken);
-        sessionStorage.removeItem(baseLocalHelper.$_permissionList);
+        if (error)
+            sessionStorage.setItem(baseConfigHelper.$_alert, state.alert);
+        sessionStorage.removeItem(baseConfigHelper.$_jwtToken);
+        sessionStorage.removeItem(baseConfigHelper.$_permissionList);
         facebookSDK.$_facebookLogOut();
         location.reload();
     },
@@ -99,8 +100,8 @@ export const mutations = {
         state.jwtToken = undefined;
         state.user = undefined;
 
-        sessionStorage.removeItem(baseLocalHelper.$_permissionList);
-        sessionStorage.removeItem(baseLocalHelper.$_jwtToken);
+        sessionStorage.removeItem(baseConfigHelper.$_permissionList);
+        sessionStorage.removeItem(baseConfigHelper.$_jwtToken);
     },
 };
 

@@ -340,5 +340,4 @@ export default {
     $_encryptKey: '$_buoAppBackOffice',
 
     $_security: 1,
-
 };

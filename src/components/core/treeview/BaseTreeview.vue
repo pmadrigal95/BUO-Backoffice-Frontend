@@ -9,11 +9,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 import httpService from '@/services/axios/httpService';
 
-import baseLocalHelper from '@/helpers/baseLocalHelper.js';
+import baseLocalHelper from '@/helpers/baseLocalHelper';
 
-import baseArrayHelper from '@/helpers/baseArrayHelper.js';
+import baseConfigHelper from '@/helpers/baseConfigHelper';
 
-import baseNotificationsHelper from '@/helpers/baseNotificationsHelper.js';
+import baseArrayHelper from '@/helpers/baseArrayHelper';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 export default {
     name: 'BaseTreeview',
@@ -335,7 +337,7 @@ export default {
             /**
              * param tiempo entre clicks
              */
-            delay: baseLocalHelper.$_clickDelay,
+            delay: baseConfigHelper.$_clickDelay,
 
             /**
              * Descripción del botón

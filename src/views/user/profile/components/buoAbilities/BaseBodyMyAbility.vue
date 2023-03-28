@@ -7,7 +7,7 @@
 
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 
-import baseLocalHelper from '@/helpers/baseLocalHelper';
+import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 const BaseShareableMicroSkillStatusList = () =>
     import(
@@ -33,11 +33,11 @@ export default {
 
     computed: {
         validatedCode() {
-            return baseLocalHelper.$_statusAbility.validatedCode;
+            return baseConfigHelper.$_statusCode.certificate;
         },
 
         inProgressCode() {
-            return baseLocalHelper.$_statusAbility.inProgressCode;
+            return baseConfigHelper.$_statusCode.certifying;
         },
 
         totalPendingList() {
@@ -95,7 +95,7 @@ export default {
             <BaseShareableMicroSkillStatusList
                 v-if="totalPendingList.length > 0"
                 :list="totalPendingList"
-                :type="baseLocalHelper.$_statusAbility.inProgressCode"
+                :type="inProgressCode"
             />
             <BaseShareableMicroSkillStatusList
                 v-if="totalValidatedList.length > 0"

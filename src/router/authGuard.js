@@ -10,6 +10,7 @@ import paths from '@/router/path';
 import VueRouter from 'vue-router';
 import publicPages from '@/router/publicPages.js';
 import baseLocalHelper from '@/helpers/baseLocalHelper';
+import baseConfigHelper from '@/helpers/baseConfigHelper';
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
@@ -35,7 +36,7 @@ const instance = new VueRouter({
 });
 
 const deleteAlert = () => {
-    sessionStorage.removeItem(baseLocalHelper.$_alert);
+    sessionStorage.removeItem(baseConfigHelper.$_alert);
 };
 
 const cacheRoute = (value) => {
@@ -58,9 +59,9 @@ const validatePermission = (route, next) => {
 };
 
 const validateAuth = (to, next) => {
-    const loggedIn = sessionStorage.getItem(baseLocalHelper.$_jwtToken);
+    const loggedIn = sessionStorage.getItem(baseConfigHelper.$_jwtToken);
 
-    const alert = sessionStorage.getItem(baseLocalHelper.$_alert);
+    const alert = sessionStorage.getItem(baseConfigHelper.$_alert);
 
     const authRequired = !publicPages.includes(to.name);
 

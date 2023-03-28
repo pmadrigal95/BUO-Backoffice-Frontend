@@ -7,7 +7,7 @@
 
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 
-import baseLocalHelper from '@/helpers/baseLocalHelper';
+import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 export default {
     name: 'BaseHeaderMyAbility',
@@ -24,15 +24,15 @@ export default {
 
     computed: {
         validatedCode() {
-            return baseLocalHelper.$_statusAbility.validatedCode;
+            return baseConfigHelper.$_statusCode.certificate;
         },
 
         inProgressCode() {
-            return baseLocalHelper.$_statusAbility.inProgressCode;
+            return baseConfigHelper.$_statusCode.certifying;
         },
 
         notValidatedCode() {
-            return baseLocalHelper.$_statusAbility.notValidatedCode;
+            return baseConfigHelper.$_statusCode.uncertified;
         },
     },
 

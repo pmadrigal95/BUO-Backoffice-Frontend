@@ -9,6 +9,7 @@ const exclusionList = [
     'analytics',
     'menuUsuario',
     '/user/authenticate',
+    'createShareableLink',
     'misc/validateCaptcha',
 ];
 

@@ -89,6 +89,10 @@ import BaseNavigationDrawer from '@/components/core/alerts/BaseNavigationDrawer.
  */
 import BaseRadioGroup from '@/components/core/forms/BaseRadioGroup.vue';
 
+import shareIt from 'vue-share-it';
+
+Vue.use(shareIt);
+
 /**
  * Registro de Componente
  */
