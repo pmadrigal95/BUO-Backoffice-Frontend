@@ -412,22 +412,8 @@ export default {
             this.$_setParams();
         },
 
-        $_reviewUserDetails(row) {
-            if (row.selected.conPda) {
-                this.$router.push({
-                    name: 'BUOPDAUserDetailsReportViewComponent',
-                    params: row && { Id: row?.selected?.id },
-                });
-            } else {
-                baseNotificationsHelper.Message(
-                    true,
-                    'Usuario no cuenta con test PDA'
-                );
-            }
-        },
-
-        $_userDetails() {
-            const row = this.$_GetRow();
+        $_userDetails(params) {
+            const row = params ? [params.selected] : this.$_GetRow();
 
             switch (row.length) {
                 case 0:
@@ -450,7 +436,6 @@ export default {
                         );
                     }
                     break;
-
                 default:
                     baseNotificationsHelper.Message(
                         true,
@@ -540,7 +525,7 @@ export default {
                 :key="componentGrid"
                 :setting="setting"
                 :extraParams="extraParams"
-                :fnDoubleClick="$_reviewUserDetails"
+                :fnDoubleClick="$_userDetails"
             >
                 <div slot="btns">
                     <BaseCustomsButtonsGrid
