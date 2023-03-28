@@ -7,7 +7,7 @@
 
 import { mapGetters, mapActions } from 'vuex';
 
-import baseLocalHelper from '@/helpers/baseLocalHelper.js';
+import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 export default {
     name: 'BaseDrawer',
@@ -80,7 +80,7 @@ export default {
         ...mapActions('security', ['$_security_filter']),
 
         filter() {
-            const time = baseLocalHelper.$_DefaultTimer;
+            const time = baseConfigHelper.$_DefaultTimer;
             this.count++;
 
             /**

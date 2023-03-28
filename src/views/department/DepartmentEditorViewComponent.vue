@@ -39,7 +39,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters('authentication', ['user']),
+        ...mapGetters('authentication', ['user', 'buoId']),
 
         /**
          * Extra Params
@@ -72,31 +72,31 @@ export default {
                         text: 'Nombre Contacto',
                         align: 'start',
                         value: 'nombreContacto',
-                        show: false,
+                        show: true,
                     },
                     {
                         text: 'Correo Contacto',
                         align: 'start',
                         value: 'correoContacto',
-                        show: false,
+                        show: true,
                     },
                     {
-                        text: 'Token Usuario',
+                        text: 'Token Colaborador',
                         align: 'start',
                         value: 'tokenUsuario',
                         show: false,
                     },
                     {
-                        text: 'Usuarios',
+                        text: 'Colaboradores',
                         align: 'end',
                         value: 'totalUsuarios',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Wallets Activas',
                         align: 'end',
                         value: 'walletsActivas',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Certifica Inmediato',
@@ -155,73 +155,6 @@ export default {
         },
 
         /**
-         * Configuracion BaseInputDataTable
-         */
-        /**
-         * departmentSetting() {
-            return {
-                endpoint: 'departamento/findBy',
-                columns: [
-                    {
-                        text: 'Nombre',
-                        align: 'start',
-                        value: 'nombre',
-                        show: true,
-                    },
-                    {
-                        text: 'Departamento Padre',
-                        align: 'start',
-                        value: 'nombrePadre',
-                        show: true,
-                    },
-                    {
-                        text: 'Empresa',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        show: true,
-                    },
-                    {
-                        text: 'Administrador',
-                        align: 'start',
-                        value: 'nombreUsuarioAdmin',
-                        show: false,
-                    },
-                    {
-                        text: 'Correo Administrador',
-                        align: 'start',
-                        value: 'correoUsuarioAdmin',
-                        show: false,
-                    },
-                    {
-                        text: 'Teléfono Administrador',
-                        align: 'start',
-                        value: 'telefonoUsuarioAdmin',
-                        show: false,
-                    },
-                    {
-                        text: 'Colaboradores',
-                        align: 'end',
-                        value: 'cantidadColaboradores',
-                        show: true,
-                    },
-                    {
-                        text: 'Estado',
-                        align: 'center',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Creado por',
-                        align: 'start',
-                        value: 'nombreUsuarioModifica',
-                        show: false,
-                    },
-                ],
-                key: 'id',
-            };
-        },*/
-
-        /**
          * Configuracion BaseServerDataTable
          */
         userSetting() {
@@ -250,7 +183,7 @@ export default {
                         text: 'Empresa',
                         align: 'start',
                         value: 'nombreOrganizacion',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Estado',
@@ -263,7 +196,7 @@ export default {
                         type: 'bool',
                         align: 'center',
                         value: 'walletActivo',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Identificación',
@@ -307,6 +240,8 @@ export default {
          */
         this.$_getObject();
 
+        this.$_reviewQueryParams();
+
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
             this.$vuetify.theme.themes.light.white;
@@ -339,6 +274,17 @@ export default {
             this.entity.padreId = undefined;
             this.entity.usuarioAdminId = undefined;
             this.componentKey = this.componentKey + 1;
+        },
+
+        $_reviewQueryParams() {
+            if (this.$router.currentRoute.query.organizacionId) {
+                this.entity.organizacionId =
+                    this.$router.currentRoute.query.organizacionId;
+            }
+
+            if (this.user.companyId != this.buoId) {
+                this.entity.organizacionId = this.user.companyId;
+            }
         },
 
         /**
@@ -402,9 +348,7 @@ export default {
          * Function to return the PromotionalCodesFilterViewComponent
          */
         $_returnToFilter() {
-            this.$router.push({
-                name: 'DepartmentFilterViewComponent',
-            });
+            this.$router.back();
         },
     },
 };
@@ -412,7 +356,7 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="Departamento"
+        title="Área / Departamento"
         :btnAction="$_returnToFilter"
         class="mx-auto"
         md="6"
@@ -428,8 +372,11 @@ export default {
             >
                 <div slot="body">
                     <v-row dense>
-                        <v-col cols="12">
+                        <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseInputDataTable
+                                v-if="
+                                    !$router.currentRoute.query.organizacionId
+                                "
                                 label="Empresa"
                                 :setting="companySetting"
                                 :editText="entity.nombreOrganizacion"
@@ -452,15 +399,6 @@ export default {
                             />
                         </v-col>
                         <v-col cols="12">
-                            <!--<BaseInputDataTable
-                                label="Departamento Padre"
-                                :setting="departmentSetting"
-                                :extraParams="extraParams"
-                                :readonly="extraParams == undefined"
-                                :editText="entity.nombrePadre"
-                                v-model.number="entity.padreId"
-                                :key="componentKey"
-                            />-->
                             <BaseInputTreeview
                                 label="Área / Departamento"
                                 v-model.number="entity.padreId"

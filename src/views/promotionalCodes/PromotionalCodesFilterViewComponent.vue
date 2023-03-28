@@ -121,7 +121,7 @@ export default {
 
         write() {
             const result = baseSecurityHelper.$_ReadPermission(
-                this.$router.currentRoute.meta.module,
+                'PromotionalCodesViewComponent',
                 baseSecurityHelper.$_write
             );
             return result;

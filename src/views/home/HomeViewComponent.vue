@@ -14,14 +14,15 @@ import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
-const BaseCardMenu = () => import('@/components/core/cards/BaseCardMenu');
+const BaseCardMenuViewComponent = () =>
+    import('@/components/core/cards/BaseCardMenuViewComponent');
 
 export default {
     name: 'HomeViewComponent',
 
     components: {
         BaseCardViewComponent,
-        BaseCardMenu,
+        BaseCardMenuViewComponent,
     },
 
     computed: {
@@ -42,6 +43,7 @@ export default {
             originalList.push({
                 nombreUI: 'Cerrar sesión',
                 icono: 'login-variant',
+                btnRequired: false,
                 rutaURL: 'LoginViewComponent',
             });
 
@@ -51,7 +53,7 @@ export default {
         componentProps() {
             return {
                 positionSubtitle: 'align-center',
-                fontTypeSubtitle: 'BUO-Paragraph-Small-SemiBold Buo-Black',
+                fontTypeSubtitle: 'BUO-Paragraph-Small-SemiBold black--text',
                 width: '320',
                 centerBotton: true,
                 centerIcon: true,
@@ -81,7 +83,7 @@ export default {
                     >
                         <v-layout justify-center>
                             <div v-for="(item, i) in array" :key="i">
-                                <BaseCardMenu
+                                <BaseCardMenuViewComponent
                                     :icon="item.icono"
                                     :to="item.rutaURL"
                                     :subtitle="item.nombreUI"
@@ -95,6 +97,7 @@ export default {
                                     :centerBotton="componentProps.centerBotton"
                                     :centerIcon="componentProps.centerIcon"
                                     :large="componentProps.large"
+                                    :btnRequired="item?.btnRequired"
                                 />
                             </div>
                         </v-layout>
@@ -102,7 +105,7 @@ export default {
                 </div>
                 <v-row v-else-if="$vuetify.breakpoint.mobile" dense>
                     <v-col cols="12" v-for="(item, i) in filterList" :key="i">
-                        <BaseCardMenu
+                        <BaseCardMenuViewComponent
                             :icon="item.icono"
                             :to="item.rutaURL"
                             :subtitle="item.nombreUI"
@@ -112,6 +115,7 @@ export default {
                             :centerBotton="componentProps.centerBotton"
                             :centerIcon="componentProps.centerIcon"
                             :large="componentProps.large"
+                            :btnRequired="item?.btnRequired"
                         />
                     </v-col>
                 </v-row>

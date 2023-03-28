@@ -22,7 +22,7 @@ export default {
         <v-row style="margin-top: 1px !important">
             <v-col cols="12" md="11" class="BUO-Paragraph-XSmall">
                 <p>Certificaciones Digitales Buo SA de CV</p>
-                <p>©2022 Derechos Reservados</p>
+                <p>©{{ new Date().getFullYear() }} Derechos Reservados</p>
                 <p v-if="$vuetify.breakpoint.mdAndUp">
                     Política de Privacidad | Términos del Servicio
                 </p>

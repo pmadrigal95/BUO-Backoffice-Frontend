@@ -19,7 +19,7 @@ export default {
         <br />
         <v-row dense>
             <img
-                v-if="entity.pda.hotcakeSimpleURL"
+                v-if="entity.pda && entity.pda.hotcakeSimpleURL"
                 height="95"
                 width="70"
                 :src="entity.pda.hotcakeSimpleURL"
@@ -30,7 +30,7 @@ export default {
                 </div>
                 <div class="pt-2">
                     <v-layout>
-                        <div class="pr-3">
+                        <div class="pr-3" v-if="entity.pda">
                             <div class="BUO-Label-XSmall grey600--text pb-1">
                                 Eres una persona:
                             </div>
@@ -43,7 +43,7 @@ export default {
                             </v-chip>
                         </div>
                         <v-divider vertical></v-divider>
-                        <div class="pl-3">
+                        <div class="pl-3" v-if="entity.pda">
                             <div class="BUO-Label-XSmall grey600--text pb-1">
                                 Tu super poder es:
                             </div>

@@ -1,8 +1,8 @@
 <script>
 /**
- * Descripción: Pantalla Editor Usuarios
+ * Descripción: Pantalla Editor Micro Habilidades
  *
- * @displayName UserEditorViewComponent
+ * @displayName MicroAbilityEditorViewComponent
  *
  */
 
@@ -12,44 +12,35 @@ import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
-import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
-
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
 const BaseInputDataTable = () =>
-    import('@/components/core/forms/BaseInputDataTable.vue');
-
-const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
-
-const BaseInputTreeview = () =>
-    import('@/components/core/treeview/BaseInputTreeview');
+    import('@/components/core/forms/BaseInputDataTable');
 
 export default {
-    name: 'UserEditorViewComponent',
+    name: 'MicroAbilityEditorViewComponent',
 
     components: {
-        BaseDatePicker,
-        BaseInputTreeview,
-        BaseInputDataTable,
         BaseCardViewComponent,
+        BaseInputDataTable,
     },
 
     data() {
         return {
             entity: this.$_Object(),
-            // componentKey: 0,
             loading: false,
+            componentKey: 0,
         };
     },
 
     computed: {
-        ...mapGetters('authentication', ['user']),
+        ...mapGetters('authentication', ['user', 'buoId']),
 
         /**
          * Extra Params
          */
-        /**extraParams() {
+        extraParams() {
             return this.entity.organizacionId
                 ? [
                       {
@@ -58,13 +49,12 @@ export default {
                       },
                   ]
                 : undefined;
-        },**/
+        },
 
         /**
          * Configuracion BaseInputDataTable
-
          */
-        settingOrganization() {
+        companySetting() {
             return {
                 endpoint: 'organizacion/findBy',
                 columns: [
@@ -78,31 +68,31 @@ export default {
                         text: 'Nombre Contacto',
                         align: 'start',
                         value: 'nombreContacto',
-                        show: false,
+                        show: true,
                     },
                     {
                         text: 'Correo Contacto',
                         align: 'start',
                         value: 'correoContacto',
-                        show: false,
+                        show: true,
                     },
                     {
-                        text: 'Token Usuario',
+                        text: 'Token Colaborador',
                         align: 'start',
                         value: 'tokenUsuario',
                         show: false,
                     },
                     {
-                        text: 'Usuarios',
+                        text: 'Colaboradores',
                         align: 'end',
                         value: 'totalUsuarios',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Wallets Activas',
                         align: 'end',
                         value: 'walletsActivas',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Certifica Inmediato',
@@ -160,50 +150,72 @@ export default {
             };
         },
 
-        settingDepartment() {
+        /**
+         * Configuracion BaseServerDataTable
+         */
+        abilitySetting() {
             return {
-                endpoint: 'departamento/findBy',
+                endpoint: 'cualificacion/findBy',
                 columns: [
                     {
-                        text: 'Nombre',
+                        text: 'Definición',
                         align: 'start',
-                        value: 'nombre',
+                        value: 'definicion',
                         show: true,
                     },
                     {
-                        text: 'Departamento Padre',
+                        text: 'Descripción',
                         align: 'start',
-                        value: 'nombrePadre',
+                        value: 'otroNombre',
+                        show: false,
+                    },
+                    {
+                        text: 'Propósito',
+                        align: 'start',
+                        value: 'proposito',
+                        show: false,
+                    },
+                    {
+                        text: 'Ámbito Ocupacional',
+                        align: 'start',
+                        value: 'ambitoOcupacional',
+                        show: false,
+                    },
+                    {
+                        text: 'Link',
+                        align: 'start',
+                        value: 'link',
+                        show: false,
+                    },
+                    {
+                        text: 'interna',
+                        type: 'bool',
+                        align: 'center',
+                        value: 'esInterna',
                         show: true,
+                    },
+                    {
+                        text: 'Categoría',
+                        align: 'start',
+                        value: 'nombreCategoria',
+                        show: true,
+                    },
+                    {
+                        text: 'Categoría Superior',
+                        align: 'start',
+                        value: 'nombreCategoriaPadre',
+                        show: false,
                     },
                     {
                         text: 'Empresa',
                         align: 'start',
                         value: 'nombreOrganizacion',
-                        show: true,
-                    },
-                    {
-                        text: 'Administrador',
-                        align: 'start',
-                        value: 'nombreUsuarioAdmin',
                         show: false,
                     },
                     {
-                        text: 'Correo Administrador',
+                        text: 'Tipo',
                         align: 'start',
-                        value: 'correoUsuarioAdmin',
-                        show: false,
-                    },
-                    {
-                        text: 'Teléfono Administrador',
-                        align: 'start',
-                        value: 'telefonoUsuarioAdmin',
-                        show: false,
-                    },
-                    {
-                        text: 'Colaboradores',
-                        align: 'end',
-                        value: 'cantidadColaboradores',
+                        value: 'nombreTipoCualificacion',
                         show: false,
                     },
                     {
@@ -213,7 +225,7 @@ export default {
                         show: true,
                     },
                     {
-                        text: 'Creado por',
+                        text: 'Modificado Por',
                         align: 'start',
                         value: 'nombreUsuarioModifica',
                         show: false,
@@ -224,23 +236,10 @@ export default {
         },
     },
 
-    created() {
+    watch: {
         /**
-         * Determinar si Es nuevo / editor
+         * Actualizar calendarios
          */
-        this.$_getObject();
-
-        //TODO: How to implement on vue router the background config
-        this.$vuetify.theme.themes.light.background =
-            this.$vuetify.theme.themes.light.white;
-    },
-
-    destroyed() {
-        this.$vuetify.theme.themes.light.background =
-            this.$vuetify.theme.themes.light.clouds;
-    },
-
-    /**watch: {
         'entity.organizacionId': {
             handler(newValue, oldValue) {
                 if (oldValue) {
@@ -249,15 +248,49 @@ export default {
             },
             immediate: true,
         },
-    },**/
+    },
+
+    mounted() {
+        /**
+         * Determinar si Es nuevo / editor
+         */
+        this.$_getObject();
+
+        //TODO: How to implement on vue router the background config
+        this.$vuetify.theme.themes.light.background =
+            this.$vuetify.theme.themes.light.white;
+
+        this.$_setValues();
+
+        this.$_reviewQueryParams();
+    },
+
+    destroyed() {
+        this.$vuetify.theme.themes.light.background =
+            this.$vuetify.theme.themes.light.clouds;
+    },
 
     methods: {
         /**
          * Force Update Component
          */
-        /**$_forceUpdateComponente() {
+        $_forceUpdateComponente() {
+            this.entity.definicionCualificacion = undefined;
+            this.entity.cualificacionId = undefined;
             this.componentKey = this.componentKey + 1;
-        },**/
+        },
+
+        $_reviewQueryParams() {
+            if (this.$router.currentRoute.query.cualificacionId) {
+                this.entity.cualificacionId =
+                    this.$router.currentRoute.query.cualificacionId;
+            }
+
+            if (this.$router.currentRoute.query.organizacionId) {
+                this.entity.organizacionId =
+                    this.$router.currentRoute.query.organizacionId;
+            }
+        },
 
         /**
          * Entity Object
@@ -265,28 +298,30 @@ export default {
         $_Object() {
             return {
                 id: 0,
-                nombre: undefined,
-                primerApellido: undefined,
-                segundoApellido: undefined,
-                identificacion: undefined,
-                paisId: undefined,
-                ciudad: undefined,
-                correo: undefined,
-                username: undefined,
-                generoId: undefined,
-                fechaNacimiento: undefined,
-                telefono: undefined,
-                nombreOrganizacion: undefined,
+                definicion: undefined,
+                esInterna: undefined,
+                cualificacionId: undefined,
                 organizacionId: undefined,
-                nombreDepartamento: undefined,
-                departamentoId: undefined,
-                estadoId: 2,
                 usuarioModificaId: undefined,
+                estadoId: 2,
             };
         },
 
-        $_setToUser() {
-            this.entity.usuarioModificaId = this.user.userId;
+        $_setValues() {
+            this.entity.organizacionId = this.$_reviewCompany();
+        },
+
+        $_reviewCompany() {
+            let result,
+                data = this.$router.currentRoute.params.Id;
+            if (data) {
+                result = this.entity.organizacionId;
+            } else {
+                if (this.user.companyId != this.buoId)
+                    result = this.user.companyId;
+            }
+
+            return result;
         },
 
         /**
@@ -297,7 +332,7 @@ export default {
             if (data) {
                 //HttpServices a la vista para obtener Vista
                 this.loading = true;
-                httpService.get(`user/${data}`).then((response) => {
+                httpService.get(`competencia/${data}`).then((response) => {
                     this.loading = false;
                     if (response != undefined) {
                         // Encontro la entidad
@@ -305,11 +340,6 @@ export default {
                             {},
                             response.data
                         );
-
-                        this.entity.fechaNacimiento =
-                            baseSharedFnHelper.$_parseArrayToDateISOString(
-                                this.entity.fechaNacimiento
-                            );
                     }
                 });
             }
@@ -317,25 +347,26 @@ export default {
 
         $_sendToApi() {
             this.loading = true;
-            this.$_setToUser();
+            this.entity.usuarioModificaId = this.user.userId;
             let object = BaseArrayHelper.SetObject({}, this.entity);
-            httpService.post('user/saveUserForm', object).then((response) => {
-                this.loading = false;
 
-                if (response != undefined) {
-                    //Logica JS luego de la acción exitosa!!!
-                    this.$_returnToFilter();
-                }
-            });
+            httpService
+                .post('competencia/saveForm', object)
+                .then((response) => {
+                    this.loading = false;
+
+                    if (response != undefined) {
+                        //Logica JS luego de la acción exitosa!!!
+                        this.$_returnToFilter();
+                    }
+                });
         },
 
         /**
-         * Function to return the UserFilterViewComponent
+         * Function Go Back
          */
         $_returnToFilter() {
-            this.$router.push({
-                name: 'UserFilterViewComponent',
-            });
+            this.$router.back();
         },
     },
 };
@@ -343,137 +374,65 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="Usuarios"
+        title="Micro Habilidad"
         :btnAction="$_returnToFilter"
         class="mx-auto"
         md="6"
         offset="3"
+        v-if="user"
     >
         <div slot="card-text">
             <BaseSkeletonLoader v-if="loading" type="article, actions" />
-            <BaseForm :method="$_sendToApi" :cancel="$_returnToFilter" v-else>
+            <BaseForm
+                v-else
+                :block="$vuetify.breakpoint.mobile"
+                :method="$_sendToApi"
+                :cancel="$_returnToFilter"
+            >
                 <div slot="body">
                     <v-row dense>
                         <v-col cols="12">
                             <BaseInput
-                                label="Nombre"
-                                v-model.trim="entity.nombre"
+                                label="Definición"
+                                :max="1000"
+                                v-model.trim="entity.definicion"
                                 :validate="['text']"
                             />
                         </v-col>
-
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Primer apellido"
-                                v-model.trim="entity.primerApellido"
-                                :validate="['text']"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Segundo apellido"
-                                v-model.trim="entity.segundoApellido"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Identificación"
-                                v-model.trim="entity.identificacion"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseSelect
-                                label="País"
-                                endpoint="pais/list"
-                                itemText="nombre"
-                                itemValue="id"
-                                v-model.number="entity.paisId"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Ciudad"
-                                v-model.trim="entity.ciudad"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Correo electrónico"
-                                v-model.trim="entity.correo"
-                                :validate="['email']"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Username"
-                                v-model.trim="entity.username"
-                                :validate="['email']"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseSelect
-                                label="Género"
-                                endpoint="genero/list"
-                                itemText="nombre"
-                                itemValue="id"
-                                v-model.number="entity.generoId"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseDatePicker
-                                label="Fecha de nacimiento"
-                                appendIcon="mdi-calendar-month"
-                                v-model.trim="entity.fechaNacimiento"
-                                reqCurrentMaxDate
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Número de teléfono"
-                                v-model.trim="entity.telefono"
-                            />
-                        </v-col>
-
-                        <v-col cols="12">
+                        <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseInputDataTable
                                 label="Empresa"
-                                :setting="settingOrganization"
+                                :setting="companySetting"
                                 :editText="entity.nombreOrganizacion"
                                 v-model.number="entity.organizacionId"
+                                :validate="['requiered']"
+                                v-if="
+                                    !$router.currentRoute.query.organizacionId
+                                "
                             />
                         </v-col>
-
                         <v-col cols="12">
-                            <!--<BaseInputDataTable
-                                label="Departamento"
-                                :setting="settingDepartment"
+                            <BaseInputDataTable
+                                label="Habilidad"
                                 :extraParams="extraParams"
                                 :readonly="extraParams == undefined"
-                                :editText="entity.nombreDepartamento"
-                                v-model.number="entity.departamentoId"
+                                :setting="abilitySetting"
+                                :editText="entity.definicionCualificacion"
+                                v-model.number="entity.cualificacionId"
+                                :validate="['requiered']"
                                 :key="componentKey"
-                            />-->
-
-                            <BaseInputTreeview
-                                label="Área / Departamento"
-                                v-model.number="entity.departamentoId"
-                                :editText="entity.nombreDepartamento"
-                                :readonly="!entity.organizacionId"
-                                itemText="nombre"
-                                itemChildren="subDepartamentos"
-                                :endpoint="`departamento/findAllTree/${entity.organizacionId}`"
+                                v-if="
+                                    !$router.currentRoute.query.cualificacionId
+                                "
                             />
                         </v-col>
-
+                        <v-col cols="12" v-if="user.companyId === buoId">
+                            <BaseSwitch
+                                label="Interna"
+                                v-model="entity.esInterna"
+                                :disabled="user.companyId != buoId"
+                            />
+                        </v-col>
                         <v-col cols="12">
                             <BaseRadioGroup
                                 v-model="entity.estadoId"

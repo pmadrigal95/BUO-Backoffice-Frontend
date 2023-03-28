@@ -59,7 +59,7 @@ export default {
                         </v-list-item-avatar>
                         <v-list-item-content>
                             <v-list-item-title
-                                class="BUO-Paragraph-Small buo-word-break buo-white-space Buo-Black"
+                                class="BUO-Paragraph-Small buo-word-break buo-white-space black--text"
                                 >{{ item }}</v-list-item-title
                             >
                         </v-list-item-content>
@@ -81,7 +81,7 @@ export default {
                         </v-list-item-avatar>
                         <v-list-item-content>
                             <v-list-item-title
-                                class="BUO-Paragraph-Small buo-word-break buo-white-space Buo-Black"
+                                class="BUO-Paragraph-Small buo-word-break buo-white-space black--text"
                                 >{{ item }}</v-list-item-title
                             >
                         </v-list-item-content>

@@ -21,17 +21,23 @@ const BaseServerDataTable = () =>
 export default {
     name: 'DepartmentFilterViewComponent',
 
+    props: {
+        organizacionId: {
+            type: [Number, String],
+        },
+    },
+
     components: {
         BaseCardViewComponent,
         BaseServerDataTable,
     },
 
     computed: {
-        ...mapGetters('authentication', ['user']),
+        ...mapGetters('authentication', ['user', 'buoId']),
 
         write() {
             const result = baseSecurityHelper.$_ReadPermission(
-                this.$router.currentRoute.meta.module,
+                'DepartmentViewComponent',
                 baseSecurityHelper.$_write
             );
             return result;
@@ -69,7 +75,10 @@ export default {
                         text: 'Empresa',
                         align: 'start',
                         value: 'nombreOrganizacion',
-                        show: true,
+                        show:
+                            this.user.companyId === this.buoId &&
+                            this.$router.currentRoute.name !=
+                                'CompanyDashboardViewComponent',
                     },
                     {
                         text: 'Administrador',
@@ -117,6 +126,23 @@ export default {
                 key: 'id',
             };
         },
+
+        extraParams() {
+            let array = [];
+            if (this.user.companyId != this.buoId && !this.organizacionId) {
+                array.push({
+                    name: 'organizacionId',
+                    value: this.user.companyId,
+                });
+            } else if (this.organizacionId) {
+                array.push({
+                    name: 'organizacionId',
+                    value: this.organizacionId,
+                });
+            }
+
+            return array.length > 0 ? array : undefined;
+        },
     },
 
     methods: {
@@ -146,6 +172,18 @@ export default {
                 });
         },
 
+        $_setQuery() {
+            if (this.organizacionId) {
+                return {
+                    organizacionId: this.organizacionId
+                        ? this.organizacionId
+                        : undefined,
+                };
+            }
+
+            return undefined;
+        },
+
         /**
          * Pantalla Editor
          */
@@ -153,6 +191,7 @@ export default {
             this.$router.push({
                 name: 'DepartmentEditorViewComponent',
                 params: params && { Id: params.selected[this.setting.key] },
+                query: !params && this.$_setQuery(),
             });
         },
     },
@@ -160,11 +199,21 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="Departamentos">
+    <BaseServerDataTable
+        v-if="organizacionId"
+        ref="departmentFilter"
+        :setting="setting"
+        :extraParams="extraParams"
+        :fnNew="write ? $_Editor : undefined"
+        :fnEdit="write ? $_Editor : undefined"
+        :fnDelete="write ? $_fnDelete : undefined"
+    />
+    <BaseCardViewComponent title="Áreas / Departamentos" v-else>
         <div slot="card-text">
             <BaseServerDataTable
                 ref="departmentFilter"
                 :setting="setting"
+                :extraParams="extraParams"
                 :fnNew="write ? $_Editor : undefined"
                 :fnEdit="write ? $_Editor : undefined"
                 :fnDelete="write ? $_fnDelete : undefined"

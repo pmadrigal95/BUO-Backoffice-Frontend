@@ -8,12 +8,12 @@ import store from '@/store';
 
 import { AES, enc } from 'crypto-js';
 
-import baseLocalHelper from '@/helpers/baseLocalHelper';
+import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 function returnObject(key, value, type) {
     switch (type) {
         case 'String': {
-            const bytes = AES.decrypt(value, baseLocalHelper.$_encryptKey);
+            const bytes = AES.decrypt(value, baseConfigHelper.$_encryptKey);
             const originalValue = bytes.toString(enc.Utf8);
             return originalValue;
         }
@@ -43,11 +43,11 @@ function buildStore(key, method, type, defaultValue) {
 
 function createStoreDefault() {
     buildStore(
-        baseLocalHelper.$_jwtToken,
+        baseConfigHelper.$_jwtToken,
         'authentication/SET_USER_DATA',
         'String'
     );
-    buildStore(baseLocalHelper.$_app, 'theme/CHANGEMODE', 'Boolean', false);
+    buildStore(baseConfigHelper.$_app, 'theme/CHANGEMODE', 'Boolean', false);
 }
 
 export default {

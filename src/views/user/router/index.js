@@ -2,9 +2,12 @@
  * USER ROUTES
  */
 
-import bulkLoad from '@/views/user/bulkLoad/router';
-import users from '@/views/user/users/router';
+import userRoutes from '@/views/user/user/router';
 
-const routes = [...bulkLoad, ...users];
+import profileRoutes from '@/views/user/profile/router';
+
+import bulkLoadRoutes from '@/views/user/bulkLoad/router';
+
+const routes = [...userRoutes, ...profileRoutes, ...bulkLoadRoutes];
 
 export default routes;

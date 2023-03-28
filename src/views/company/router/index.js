@@ -19,6 +19,15 @@ const routes = [
             module: 'CompanyViewComponent',
         },
     },
+
+    {
+        path: '/Company/Dashboard/:Id',
+        name: 'CompanyDashboardViewComponent',
+        component: 'company/CompanyDashboardViewComponent',
+        meta: {
+            module: 'CompanyViewComponent',
+        },
+    },
 ];
 
 export default routes;

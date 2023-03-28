@@ -10,15 +10,15 @@ import jwt_decode from 'jwt-decode';
 
 import httpService from '@/services/axios/httpService';
 
-import baseLocalHelper from '@/helpers/baseLocalHelper';
+import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 const $_getUserId = () => {
-    const jwtToken = sessionStorage.getItem(baseLocalHelper.$_jwtToken);
-    const bytes = AES.decrypt(jwtToken, baseLocalHelper.$_encryptKey);
+    const jwtToken = sessionStorage.getItem(baseConfigHelper.$_jwtToken);
+    const bytes = AES.decrypt(jwtToken, baseConfigHelper.$_encryptKey);
     const result = bytes.toString(enc.Utf8);
 
     const decoded = jwt_decode(result);
@@ -50,10 +50,10 @@ export const mutations = {
         state.permissionListTEMP = data;
 
         sessionStorage.setItem(
-            baseLocalHelper.$_permissionList,
+            baseConfigHelper.$_permissionList,
             AES.encrypt(
                 JSON.stringify(state.permissionList),
-                baseLocalHelper.$_encryptKey
+                baseConfigHelper.$_encryptKey
             ).toString()
         );
     },
@@ -94,7 +94,7 @@ export const actions = {
     $_request_buo_security({ commit }, callback) {
         commit('$_CLEAN_PERMISSIONS_DATA');
 
-        const cache = sessionStorage.getItem(baseLocalHelper.$_permissionList);
+        const cache = sessionStorage.getItem(baseConfigHelper.$_permissionList);
 
         if (!cache) {
             commit('$_SET_LOADING', true);
@@ -102,7 +102,7 @@ export const actions = {
             const $_requestObject = {
                 usuarioId:
                     this.state.authentication.user?.userId || $_getUserId(),
-                aplicacionId: baseLocalHelper.$_security,
+                aplicacionId: baseConfigHelper.$_security,
             };
 
             httpService
@@ -121,7 +121,7 @@ export const actions = {
                     }
                 });
         } else {
-            const decrypted = AES.decrypt(cache, baseLocalHelper.$_encryptKey);
+            const decrypted = AES.decrypt(cache, baseConfigHelper.$_encryptKey);
             const decryptedObject = decrypted.toString(enc.Utf8);
             commit('SET_PERMISSIONS_DATA', JSON.parse(decryptedObject));
             callback();

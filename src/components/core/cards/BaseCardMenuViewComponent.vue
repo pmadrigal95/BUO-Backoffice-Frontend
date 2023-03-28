@@ -2,11 +2,11 @@
 /**
  * Descripción: Menu
  *
- * @displayName BaseCardMenu
+ * @displayName BaseCardMenuViewComponent
  */
 
 export default {
-    name: 'BaseCardMenu',
+    name: 'BaseCardMenuViewComponent',
 
     props: {
         to: {
@@ -111,12 +111,12 @@ export default {
 
         fontTypeSubtitle: {
             type: String,
-            default: 'BUO-Paragraph-Small-SemiBold Buo-Black',
+            default: 'BUO-Paragraph-Small-SemiBold black--text',
         },
 
         fontTypeDescription: {
             type: String,
-            default: 'BUO-Label-XSmall Buo-Black',
+            default: 'BUO-Label-XSmall black--text',
         },
 
         large: {
@@ -137,6 +137,11 @@ export default {
         xSmall: {
             type: Boolean,
             default: false,
+        },
+
+        btnRequired: {
+            type: Boolean,
+            default: true,
         },
     },
 
@@ -202,8 +207,10 @@ export default {
                         color="blue800"
                         :to="to && { name: to }"
                     >
-                        {{ bottonDisplay }}
-                        <v-icon right>mdi-chevron-right</v-icon>
+                        <div v-if="btnRequired">
+                            {{ bottonDisplay }}
+                            <v-icon right>mdi-chevron-right</v-icon>
+                        </div>
                     </v-btn>
                 </v-layout>
             </v-card-actions>

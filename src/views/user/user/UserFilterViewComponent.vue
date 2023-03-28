@@ -25,9 +25,8 @@ export default {
     name: 'UserFilterViewComponent',
 
     props: {
-        empresa: {
-            type: Number,
-            requiered: true,
+        organizacionId: {
+            type: [Number, String],
         },
     },
 
@@ -38,7 +37,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters('authentication', ['user']),
+        ...mapGetters('authentication', ['user', 'buoId']),
 
         /**
          * Configuracion BaseServerDataTable
@@ -137,7 +136,10 @@ export default {
                         text: 'Empresa',
                         align: 'start',
                         value: 'nombreOrganizacion',
-                        show: false,
+                        show:
+                            this.user.companyId === this.buoId &&
+                            this.$router.currentRoute.name !=
+                                'CompanyDashboardViewComponent',
                     },
                     {
                         text: 'Área / Departamento',
@@ -152,15 +154,28 @@ export default {
 
         permission() {
             const result = baseSecurityHelper.$_ReadPermission(
-                this.$router.currentRoute.meta.module,
+                'UserViewComponent',
                 [baseSecurityHelper.$_write, baseSecurityHelper.$_upload]
             );
             return result;
         },
-    },
 
-    created() {
-        //alert(this.empresa);
+        extraParams() {
+            let array = [];
+            if (this.user.companyId != this.buoId && !this.organizacionId) {
+                array.push({
+                    name: 'organizacionId',
+                    value: this.user.companyId,
+                });
+            } else if (this.organizacionId) {
+                array.push({
+                    name: 'organizacionId',
+                    value: this.organizacionId,
+                });
+            }
+
+            return array.length > 0 ? array : undefined;
+        },
     },
 
     methods: {
@@ -188,6 +203,18 @@ export default {
                 });
         },
 
+        $_setQuery() {
+            if (this.organizacionId) {
+                return {
+                    organizacionId: this.organizacionId
+                        ? this.organizacionId
+                        : undefined,
+                };
+            }
+
+            return undefined;
+        },
+
         /**
          * Pantalla Editor
          */
@@ -195,6 +222,7 @@ export default {
             this.$router.push({
                 name: 'UserEditorViewComponent',
                 params: params && { Id: params.selected[this.setting.key] },
+                query: !params && this.$_setQuery(),
             });
         },
 
@@ -202,18 +230,40 @@ export default {
          * Pantalla Carga Masiva
          */
         $_fnLoad() {
-            this.$router.push({ name: 'UserBulkLoadViewComponent' });
+            this.$router.push({
+                name: 'UserBulkLoadViewComponent',
+                query: this.$_setQuery(),
+            });
         },
     },
 };
 </script>
 
 <template>
-    <BaseCardViewComponent title="Usuarios">
+    <BaseServerDataTable
+        v-if="organizacionId"
+        ref="UserFilter"
+        :setting="setting"
+        :extraParams="extraParams"
+        :fnNew="permission?.Write ? $_userEditor : undefined"
+        :fnEdit="permission?.Write ? $_userEditor : undefined"
+        :fnDelete="permission?.Write ? $_fnDesactiveUser : undefined"
+    >
+        <div slot="btns">
+            <BaseCustomsButtonsGrid
+                v-if="permission?.Upload"
+                label="Carga Masiva"
+                :fnMethod="$_fnLoad"
+                icon="mdi-table-arrow-up"
+            />
+        </div>
+    </BaseServerDataTable>
+    <BaseCardViewComponent title="Colaboradores" v-else>
         <div slot="card-text">
             <BaseServerDataTable
                 ref="UserFilter"
                 :setting="setting"
+                :extraParams="extraParams"
                 :fnNew="permission?.Write ? $_userEditor : undefined"
                 :fnEdit="permission?.Write ? $_userEditor : undefined"
                 :fnDelete="permission?.Write ? $_fnDesactiveUser : undefined"

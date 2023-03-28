@@ -45,7 +45,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters('authentication', ['user']),
+        ...mapGetters('authentication', ['user', 'buoId']),
 
         /**
          * Configuracion BaseInputDataTable
@@ -65,22 +65,22 @@ export default {
                         text: 'Nombre Contacto',
                         align: 'start',
                         value: 'nombreContacto',
-                        show: false,
+                        show: true,
                     },
                     {
                         text: 'Correo Contacto',
                         align: 'start',
                         value: 'correoContacto',
-                        show: false,
+                        show: true,
                     },
                     {
-                        text: 'Token Usuario',
+                        text: 'Token Colaborador',
                         align: 'start',
                         value: 'tokenUsuario',
                         show: false,
                     },
                     {
-                        text: 'Usuarios',
+                        text: 'Colaboradores',
                         align: 'end',
                         value: 'totalUsuarios',
                         show: false,
@@ -152,6 +152,8 @@ export default {
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
             this.$vuetify.theme.themes.light.white;
+
+        this.$_reviewQueryParams();
     },
 
     destroyed() {
@@ -160,8 +162,18 @@ export default {
     },
 
     methods: {
-        //TODO: How to implement a dinamic name for file to download depending of organization
+        $_reviewQueryParams() {
+            if (this.$router.currentRoute.query.organizacionId) {
+                this.organizacionId =
+                    this.$router.currentRoute.query.organizacionId;
+            }
 
+            if (this.user.companyId != this.buoId) {
+                this.organizacionId = this.user.companyId;
+            }
+        },
+
+        //TODO: How to implement a dinamic name for file to download depending of organization
         $_sendToApi() {
             this.loading = true;
             httpService
@@ -201,9 +213,7 @@ export default {
          * Function to return the UserFilterViewComponent
          */
         $_returnToFilter() {
-            this.$router.push({
-                name: 'UserFilterViewComponent',
-            });
+            this.$router.back();
         },
     },
 };
@@ -265,8 +275,12 @@ export default {
                 >
                     <div slot="body">
                         <v-row dense>
-                            <v-col cols="12">
+                            <v-col cols="12" v-if="user.companyId == buoId">
                                 <StepViewComponent
+                                    v-if="
+                                        !$router.currentRoute.query
+                                            .organizacionId
+                                    "
                                     icon="mdi-numeric-1-circle"
                                     description="Selecciona la empresa."
                                     iconColor="greenC900"
@@ -275,8 +289,12 @@ export default {
                                 ></StepViewComponent>
                             </v-col>
 
-                            <v-col cols="12">
+                            <v-col cols="12" v-if="user.companyId == buoId">
                                 <BaseInputDataTable
+                                    v-if="
+                                        !$router.currentRoute.query
+                                            .organizacionId
+                                    "
                                     label="Buscar empresa"
                                     :setting="setting"
                                     v-model.number="organizacionId"
@@ -285,7 +303,13 @@ export default {
 
                             <v-col cols="12" class="mb-2">
                                 <StepViewComponent
-                                    icon="mdi-numeric-2-circle"
+                                    :icon="`mdi-numeric-${
+                                        user.companyId != buoId ||
+                                        $router.currentRoute.query
+                                            .organizacionId
+                                            ? '1'
+                                            : '2'
+                                    }-circle`"
                                     description="Descarga el siguiente archivo Excel."
                                     iconColor="greenC900"
                                     font="grey700--text BUO-Paragraph-Medium"

@@ -149,6 +149,10 @@ const chuckSize = (array, size) => {
     return result;
 };
 
+const getAge = (date) => {
+    return Math.floor((new Date() - date.getTime()) / 3.15576e10);
+};
+
 export default {
     $_getInitialDay() {
         const fechaInicio = new Date();
@@ -339,5 +343,9 @@ export default {
 
     $_chuckSize(array, size) {
         return chuckSize(array, size);
+    },
+
+    $_getAge(date) {
+        return getAge(date);
     },
 };

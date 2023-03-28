@@ -10,7 +10,11 @@ import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
+import baseLocalHelper from '@/helpers/baseLocalHelper.js';
+
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
@@ -18,16 +22,20 @@ const BaseCardViewComponent = () =>
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
+const BaseCustomsButtonsGrid = () =>
+    import('@/components/core/grids/BaseCustomsButtonsGrid');
+
 export default {
     name: 'CompanyFilterViewComponent',
 
     components: {
         BaseCardViewComponent,
         BaseServerDataTable,
+        BaseCustomsButtonsGrid,
     },
 
     computed: {
-        ...mapGetters('authentication', ['user']),
+        ...mapGetters('authentication', ['user', 'buoId']),
 
         /**
          * Configuracion BaseServerDataTable
@@ -55,14 +63,14 @@ export default {
                         show: false,
                     },
                     {
-                        text: 'Token Usuario',
+                        text: 'Token Colaborador',
                         type: 'number',
                         align: 'start',
                         value: 'tokenUsuario',
                         show: false,
                     },
                     {
-                        text: 'Usuarios',
+                        text: 'Colaboradores',
                         type: 'number',
                         align: 'end',
                         value: 'totalUsuarios',
@@ -126,7 +134,6 @@ export default {
                         value: 'descripcion',
                         show: false,
                     },
-
                 ],
                 key: 'id',
             };
@@ -134,11 +141,20 @@ export default {
 
         write() {
             const result = baseSecurityHelper.$_ReadPermission(
-                this.$router.currentRoute.meta.module,
+                'CompanyViewComponent',
                 baseSecurityHelper.$_write
             );
             return result;
         },
+    },
+
+    created() {
+        if (this.user.companyId != this.buoId) {
+            this.$router.push({
+                name: 'CompanyDashboardViewComponent',
+                params: { Id: this.user.companyId },
+            });
+        }
     },
 
     methods: {
@@ -178,6 +194,31 @@ export default {
                 params: params && { Id: params.selected[this.setting.key] },
             });
         },
+
+        /**
+         * Get a registry
+         */
+        $_GetRow() {
+            return this.$refs.CompanyFilter.$data.selected;
+        },
+
+        /**
+         * Pantalla Editor
+         */
+        $_companyDashboard() {
+            console.log(this.$_GetRow());
+            if (this.$_GetRow().length > 0) {
+                this.$router.push({
+                    name: 'CompanyDashboardViewComponent',
+                    params: { Id: this.$_GetRow()[0].id },
+                });
+            } else {
+                baseNotificationsHelper.Message(
+                    true,
+                    baseLocalHelper.$_MsgRowNotSelected
+                );
+            }
+        },
     },
 };
 </script>
@@ -191,7 +232,15 @@ export default {
                 :fnNew="write ? $_companyEditor : undefined"
                 :fnEdit="write ? $_companyEditor : undefined"
                 :fnDelete="write ? $_fnDesactiveCompany : undefined"
-            />
+            >
+                <div slot="btns">
+                    <BaseCustomsButtonsGrid
+                        label="Ver más"
+                        :fnMethod="$_companyDashboard"
+                        icon="mdi-chevron-right"
+                    />
+                </div>
+            </BaseServerDataTable>
         </div>
     </BaseCardViewComponent>
 </template>

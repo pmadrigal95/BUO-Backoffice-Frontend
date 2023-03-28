@@ -6,7 +6,7 @@ const routes = [
     {
         path: '/User/Filter',
         name: 'UserFilterViewComponent',
-        component: 'user/users/UserFilterViewComponent',
+        component: 'user/user/UserFilterViewComponent',
         meta: {
             module: 'UserViewComponent',
         },
@@ -15,7 +15,7 @@ const routes = [
     {
         path: '/User/Editor/:Id?',
         name: 'UserEditorViewComponent',
-        component: 'user/users/UserEditorViewComponent',
+        component: 'user/user/UserEditorViewComponent',
         meta: {
             module: 'UserViewComponent',
         },

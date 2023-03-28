@@ -21,7 +21,7 @@ export default {
 
         img: {
             type: String,
-            default: 'app/buoWallet/search.svg',
+            default: 'https://buo-resources.s3.us-east-2.amazonaws.com/b2b/search.svg',
         },
     },
 };
@@ -39,8 +39,8 @@ export default {
             <v-img
                 :max-height="$vuetify.breakpoint.smAndDown ? '150px' : '250px'"
                 :max-width="$vuetify.breakpoint.smAndDown ? '150px' : '250px'"
-                :src="require(`@/assets/${img}`)"
-                :lazy-src="require(`@/assets/${img}`)"
+                :src="img"
+                :lazy-src="img"
             >
             </v-img>
         </v-layout>
