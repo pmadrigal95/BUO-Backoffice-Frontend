@@ -31,6 +31,16 @@ const BaseInputTreeview = () =>
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
+const FilterViewComponent = () =>
+    import(
+        '@/views/b2b/filter/searchPeopleByAbility/components/FilterViewComponent'
+    );
+
+const CardViewComponent = () =>
+    import(
+        '@/views/b2b/filter/searchPeopleByAbility/components/CardViewComponent'
+    );
+
 export default {
     name: 'SearchPeopleByAbilityViewComponent',
 
@@ -40,6 +50,8 @@ export default {
         BaseNotFoundContent,
         BaseCardViewComponent,
         BaseCustomsButtonsGrid,
+        FilterViewComponent,
+        CardViewComponent,
     },
 
     data() {
@@ -404,6 +416,17 @@ export default {
                             v-if="!propEntity"
                             msg="Busca habilidades o puestos para encontrar a la persona indicada"
                         />
+                        <div v-else>
+                            <CardViewComponent
+                                :key="componentKey"
+                                :entity="propEntity"
+                            />
+                            <v-divider class="py-3"></v-divider>
+                            <FilterViewComponent
+                                :key="componentKey + 1"
+                                :entity="propEntity"
+                            />
+                        </div>
                     </div>
                 </v-card-text>
             </v-card>
