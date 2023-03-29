@@ -99,6 +99,7 @@ export default {
                     {
                         text: 'Estado',
                         align: 'center',
+                        type: 'chip',
                         value: 'nombreEstado',
                         show: true,
                     },

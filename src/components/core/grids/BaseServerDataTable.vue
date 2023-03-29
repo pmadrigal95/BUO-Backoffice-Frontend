@@ -8,16 +8,17 @@
  * @displayName BaseServerDataTable
  */
 
+import httpService from '@/services/axios/httpService';
+
 import baseLocalHelper from '@/helpers/baseLocalHelper';
-
-import baseConfigHelper from '@/helpers/baseConfigHelper';
-
-import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import baseArrayHelper from '@/helpers/baseArrayHelper';
 
+import baseConfigHelper from '@/helpers/baseConfigHelper';
+
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
-import httpService from '@/services/axios/httpService';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
 
@@ -894,13 +895,19 @@ export default {
 
         $_setStatusColor(id) {
             switch (id) {
-                case 1 || 3 || 8 || 10:
+                case baseConfigHelper.$_statusCode.inactive ||
+                    baseConfigHelper.$_statusCode.uncertified ||
+                    baseConfigHelper.$_statusCode.unregisteredCompany ||
+                    baseConfigHelper.$_statusCode.unrelatedProfessional:
                     return 'grey500';
-                case 2 || 5 || 9:
+                case baseConfigHelper.$_statusCode.active ||
+                    baseConfigHelper.$_statusCode.certificate ||
+                    baseConfigHelper.$_statusCode.fileProcessed:
                     return 'greenA800';
-                case 4:
+                case baseConfigHelper.$_statusCode.certifying:
                     return 'blue800';
-                case 6 || 7:
+                case baseConfigHelper.$_statusCode.rejected ||
+                    baseConfigHelper.$_statusCode.fileError:
                     return 'redError900';
                 default:
                     return 'grey400';

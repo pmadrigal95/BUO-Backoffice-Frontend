@@ -30,7 +30,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters('authentication', ['user']),
+        ...mapGetters('authentication', ['user', 'buoId']),
 
         statusList() {
             return [
@@ -205,7 +205,7 @@ export default {
                             />
                         </v-col>
 
-                        <v-col cols="12">
+                        <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseInput
                                 label="Cantidad Tokens"
                                 v-model.number="entity.tokenUsuario"
@@ -223,28 +223,28 @@ export default {
                             />
                         </v-col>
 
-                        <v-col cols="12">
+                        <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseSwitch
                                 label="Es Certificado Inmediato"
                                 v-model="entity.certificaInmediato"
                             />
                         </v-col>
 
-                        <v-col cols="12">
+                        <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseSwitch
                                 label="Mostrar puestos genéricos"
                                 v-model="entity.mostrarPuestosGenericos"
                             />
                         </v-col>
 
-                        <v-col cols="12">
+                        <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseSwitch
                                 label="Es cliente demo"
                                 v-model="entity.esClienteDemo"
                             />
                         </v-col>
 
-                        <v-col cols="12">
+                        <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseRadioGroup
                                 v-model="entity.estadoId"
                                 :endpoint="statusList"

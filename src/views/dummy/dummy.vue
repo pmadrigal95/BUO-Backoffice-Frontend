@@ -98,7 +98,5 @@ export default {
             :setting="setting3"
             :extraParams="extraParams"
         />
-        <br />
-        <BaseServerDataTable ref="departmentFilter2" :setting="setting2" />
     </div>
 </template>
