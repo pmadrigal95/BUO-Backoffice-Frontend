@@ -2,6 +2,8 @@
  * Views Routers
  */
 
+import b2bRoutes from '@/views/b2b/router';
+
 import homeRoutes from '@/views/home/router';
 
 import userRoutes from '@/views/user/router';
@@ -27,6 +29,7 @@ const routes = [
         name: 'TheMain',
         component: 'app',
         children: [
+            ...b2bRoutes,
             ...homeRoutes,
             ...userRoutes,
             ...abilityRoutes,

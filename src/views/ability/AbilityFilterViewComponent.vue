@@ -197,7 +197,7 @@ export default {
                         type: 'bool',
                         align: 'center',
                         value: 'esInterna',
-                        show: true,
+                        show: this.user.companyId === this.buoId,
                     },
                     {
                         text: 'Categoría',
@@ -378,7 +378,7 @@ export default {
 
 <template>
     <div v-if="organizacionId">
-        <v-row v-if="show" class="pb-1">
+        <v-row v-show="show" class="pb-1">
             <v-col cols="12" md="6">
                 <BaseForm
                     v-if="user && buoId"
@@ -431,7 +431,7 @@ export default {
     </div>
     <BaseCardViewComponent title="Habilidades" v-else>
         <div slot="card-text">
-            <v-row dense v-if="show">
+            <v-row dense v-show="show">
                 <v-col cols="12" md="6">
                     <BaseForm
                         v-if="user && buoId"
