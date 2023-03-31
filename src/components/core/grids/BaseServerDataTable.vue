@@ -894,20 +894,20 @@ export default {
         },
 
         $_setStatusColor(id) {
-            switch (id) {
-                case baseConfigHelper.$_statusCode.inactive ||
-                    baseConfigHelper.$_statusCode.uncertified ||
-                    baseConfigHelper.$_statusCode.unregisteredCompany ||
-                    baseConfigHelper.$_statusCode.unrelatedProfessional:
+            switch (true) {
+                case id == baseConfigHelper.$_statusCode.inactive ||
+                    id == baseConfigHelper.$_statusCode.uncertified ||
+                    id == baseConfigHelper.$_statusCode.unregisteredCompany ||
+                    id == baseConfigHelper.$_statusCode.unrelatedProfessional:
                     return 'grey500';
-                case baseConfigHelper.$_statusCode.active ||
-                    baseConfigHelper.$_statusCode.certificate ||
-                    baseConfigHelper.$_statusCode.fileProcessed:
+                case id == baseConfigHelper.$_statusCode.active ||
+                    id == baseConfigHelper.$_statusCode.certificate ||
+                    id == baseConfigHelper.$_statusCode.fileProcessed:
                     return 'greenA800';
-                case baseConfigHelper.$_statusCode.certifying:
+                case id == baseConfigHelper.$_statusCode.certifying:
                     return 'blue800';
-                case baseConfigHelper.$_statusCode.rejected ||
-                    baseConfigHelper.$_statusCode.fileError:
+                case id == baseConfigHelper.$_statusCode.rejected ||
+                    id == baseConfigHelper.$_statusCode.fileError:
                     return 'redError900';
                 default:
                     return 'grey400';
@@ -917,22 +917,18 @@ export default {
         $_setColorDegradedChart(value) {
             const x = Math.round(value * 100);
             switch (true) {
-                case x >= 90:
+                case x == 100:
                     return 'main';
-                case x >= 80 && x < 90:
+                case x > 50:
                     return 'secondary80';
-                case x >= 70 && x < 80:
+                case x == 50:
                     return 'secondary70';
-                case x >= 60 && x < 70:
+                case x < 50:
                     return 'secondary60';
-                case x >= 50 && x < 60:
+                case x == 0:
                     return 'secondary50';
-                case x >= 40 && x < 50:
-                    return 'secondary40';
-                case x < 40:
-                    return 'secondary40';
                 default:
-                    return 'main';
+                    return 'secondary40';
             }
         },
 
@@ -1494,32 +1490,25 @@ export default {
                         "
                         :key="percentage"
                     >
-                        <v-row style="height: 100%; width: 100%">
-                            <div
-                                class="d-flex align-end justify-end white--text"
-                                :style="
-                                    $_setChartColor(
-                                        item[header.value],
-                                        header.color ? header.color : 'purple'
-                                    )
-                                "
-                                style="height: 100%; width: 50%"
-                            >
-                                50%
-                            </div>
-                            <div
-                                class="d-flex align-end justify-end white--text"
-                                :style="
-                                    $_setChartColor(
-                                        item[header.value],
-                                        header.color
-                                            ? header.color
-                                            : 'darkGreen'
-                                    )
-                                "
-                                style="height: 100%; width: 50%"
-                            >
-                                50%
+                        <v-row style="height: 100%; width: 100%" dense>
+                            <div  v-for="(element, i) in item[header.value]"
+                                :key="i" :style="`height: 100%; width: ${Math.round(
+                                        element * 100
+                                    )}%`">                            
+                                <div v-if="element > 0"
+                                    class="d-flex align-end justify-end white--text"
+                                    :style="
+                                        $_setChartColor(
+                                            element,
+                                            header.color
+                                                ? header.color
+                                                : 'darkGreen'
+                                        )
+                                    "
+                                    style="height: 100%"
+                                >
+                                    {{ Math.round(element * 100) }}%
+                                </div>
                             </div>
                         </v-row>
                     </td>

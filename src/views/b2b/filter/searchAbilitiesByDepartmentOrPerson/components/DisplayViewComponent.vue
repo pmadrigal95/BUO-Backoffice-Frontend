@@ -11,10 +11,10 @@ const AbilityCardViewComponent = () =>
         '@/views/b2b/filter/searchAbilitiesByDepartmentOrPerson/components/AbilityCardViewComponent'
     );
 
-// const AbilityFilterViewComponent = () =>
-//     import(
-//         '@/views/b2b/filter/searchAbilitiesByDepartmentOrPerson/components/AbilityFilterViewComponent'
-//     );
+const AbilityFilterViewComponent = () =>
+    import(
+        '@/views/b2b/filter/searchAbilitiesByDepartmentOrPerson/components/AbilityFilterViewComponent'
+    );
 
 export default {
     name: 'DisplayViewComponent',
@@ -28,7 +28,7 @@ export default {
 
     components: {
         AbilityCardViewComponent,
-        //AbilityFilterViewComponent,
+        AbilityFilterViewComponent,
     },
 };
 </script>
@@ -37,7 +37,7 @@ export default {
     <v-window v-model="entity.step" touchless>
         <v-window-item :value="0">
             <AbilityCardViewComponent :entity="entity" />
-            <!-- <AbilityFilterViewComponent :entity="entity" /> -->
+            <AbilityFilterViewComponent :entity="entity" />
         </v-window-item>
     </v-window>
 </template>

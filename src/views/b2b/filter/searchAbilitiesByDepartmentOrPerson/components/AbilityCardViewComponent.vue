@@ -10,8 +10,8 @@ import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
-// const BaseCardMenuViewComponent = () =>
-//     import('@/components/core/cards/BaseCardMenuViewComponent');
+const BaseCardMenuViewComponent = () =>
+    import('@/components/core/cards/BaseCardMenuViewComponent');
 
 export default {
     name: 'CardViewComponent',
@@ -23,7 +23,7 @@ export default {
         },
     },
 
-    //components: { BaseCardMenuViewComponent },
+    components: { BaseCardMenuViewComponent },
 
     data() {
         return {
@@ -55,8 +55,8 @@ export default {
         componentProps() {
             return {
                 fontTypeSubtitle: 'BUO-Paragraph-Medium-SemiBold black--text',
-                width: '228',
-                height: '120',
+                width: '250',
+                height: '150',
             };
         },
     },
@@ -108,6 +108,120 @@ export default {
 <template>
     <BaseSkeletonLoader v-if="loading" type="list-item" />
     <div v-else-if="objectForm">
-        {{ objectForm }}
+        <div
+            v-if="objectForm.topAbilities && objectForm.topAbilities.length > 0"
+        >
+            <v-row justify="start" class="pl-3">
+                <v-col cols="12" md="8">
+                    <div class="BUO-Heading-Small blue900--text">
+                        Las
+                        <span class="greenC800--text">más</span> desarrolladas
+                    </div>
+                </v-col>
+            </v-row>
+            <v-layout
+                justify-center
+                v-if="$vuetify.breakpoint.mdAndUp"
+                class="py-5"
+            >
+                <div v-for="(item, i) in objectForm.topAbilities" :key="i">
+                    <BaseCardMenuViewComponent
+                        iconColor="greenC800"
+                        :icon="`numeric-${i + 1}-circle`"
+                        :subtitle="item.definicionCualificacion"
+                        :description="item.descripcion"
+                        :fontTypeSubtitle="componentProps.fontTypeSubtitle"
+                        :min-width="componentProps.width"
+                        :minHeight="componentProps.height"
+                        :max-width="componentProps.width"
+                        :maxHeight="componentProps.height"
+                    />
+                </div>
+            </v-layout>
+            <v-layout
+                justify-center
+                v-else-if="$vuetify.breakpoint.smAndDown"
+                class="py-5"
+            >
+                <v-slide-group>
+                    <v-slide-item
+                        v-for="(item, i) in objectForm.topAbilities"
+                        :key="i"
+                    >
+                        <BaseCardMenuViewComponent
+                            iconColor="greenC800"
+                            :icon="`numeric-${i + 1}-circle`"
+                            :subtitle="item.definicionCualificacion"
+                            :description="item.descripcion"
+                            :fontTypeSubtitle="componentProps.fontTypeSubtitle"
+                            :min-width="componentProps.width"
+                            :minHeight="componentProps.height"
+                            :max-width="componentProps.width"
+                            :maxHeight="componentProps.height"
+                        />
+                    </v-slide-item>
+                </v-slide-group>
+            </v-layout>
+        </div>
+        <div
+            v-if="
+                objectForm.bottomAbilities &&
+                objectForm.bottomAbilities.length > 0
+            "
+        >
+            <v-row justify="start" class="pl-3">
+                <v-col cols="12" md="8">
+                    <div class="BUO-Heading-Small blue900--text">
+                        Las
+                        <span class="redError900--text">menos</span>
+                        desarrolladas
+                    </div>
+                </v-col>
+            </v-row>
+            <v-layout
+                justify-center
+                v-if="$vuetify.breakpoint.mdAndUp"
+                class="py-5"
+            >
+                <div v-for="(item, i) in objectForm.bottomAbilities" :key="i">
+                    <BaseCardMenuViewComponent
+                        iconColor="redError900"
+                        :icon="`numeric-${i + 1}-circle`"
+                        :subtitle="item.definicionCualificacion"
+                        :description="item.descripcion"
+                        :fontTypeSubtitle="componentProps.fontTypeSubtitle"
+                        :min-width="componentProps.width"
+                        :minHeight="componentProps.height"
+                        :max-width="componentProps.width"
+                        :maxHeight="componentProps.height"
+                    />
+                </div>
+            </v-layout>
+            <v-layout
+                justify-center
+                v-else-if="$vuetify.breakpoint.smAndDown"
+                class="py-5"
+            >
+                <v-slide-group>
+                    <v-slide-item
+                        v-for="(item, i) in objectForm.bottomAbilities"
+                        :key="i"
+                    >
+                        <BaseCardMenuViewComponent
+                            iconColor="redError900"
+                            :icon="`numeric-${i + 1}-circle`"
+                            :subtitle="item.definicionCualificacion"
+                            :description="item.descripcion"
+                            :fontTypeSubtitle="componentProps.fontTypeSubtitle"
+                            :min-width="componentProps.width"
+                            :minHeight="componentProps.height"
+                            :max-width="componentProps.width"
+                            :maxHeight="componentProps.height"
+                        />
+                    </v-slide-item>
+                </v-slide-group>
+            </v-layout>
+        </div>
+        <v-divider class="my-3"></v-divider>
     </div>
 </template>
