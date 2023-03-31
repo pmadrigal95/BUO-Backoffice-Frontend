@@ -135,6 +135,11 @@ export default {
                     name: 'organizacionId',
                     value: this.user.companyId,
                 });
+            } else if (this.organizacionId != undefined) {
+                array.push({
+                    name: 'organizacionId',
+                    value: this.organizacionId,
+                });
             } else if (this.entity.organizacionId) {
                 array.push({
                     name: 'organizacionId',
@@ -185,14 +190,7 @@ export default {
     },
 
     created() {
-        if (
-            this.organizacionId != undefined &&
-            this.user.companyId != this.organizacionId
-        ) {
-            this.entity.organizacionId = this.organizacionId;
-        } else {
-            this.entity.organizacionId = this.user.companyId;
-        }
+        this.$_setOrganization();
     },
 
     methods: {
@@ -226,6 +224,17 @@ export default {
         $_close() {
             if (this.$refs['popUp'].$_checkStatus()) {
                 this.$_open();
+            }
+        },
+
+        $_setOrganization() {
+            if (
+                this.organizacionId != undefined &&
+                this.user.companyId != this.organizacionId
+            ) {
+                this.entity.organizacionId = this.organizacionId;
+            } else {
+                this.entity.organizacionId = this.user.companyId;
             }
         },
 
