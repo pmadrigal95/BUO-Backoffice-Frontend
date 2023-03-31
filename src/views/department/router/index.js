@@ -19,15 +19,6 @@ const routes = [
             module: 'DepartmentViewComponent',
         },
     },
-
-    {
-        path: '/dummy',
-        name: 'dummy',
-        component: 'dummy/dummy',
-        meta: {
-            module: 'DepartmentViewComponent',
-        },
-    },
 ];
 
 export default routes;
