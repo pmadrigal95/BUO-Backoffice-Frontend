@@ -12,6 +12,9 @@ import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
+const BaseNotFoundContent = () =>
+    import('@/components/core/cards/BaseNotFoundContent');
+
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
@@ -24,6 +27,11 @@ const BaseInputTreeview = () =>
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
+const DisplayViewComponent = () =>
+    import(
+        '@/views/b2b/filter/searchAbilitiesByDepartmentOrPerson/components/DisplayViewComponent'
+    );
+
 export default {
     name: 'SearchAbilitiesByDepartmentOrPersonViewComponent',
 
@@ -32,6 +40,8 @@ export default {
         BaseInputDataTable,
         BaseCardViewComponent,
         BaseCustomsButtonsGrid,
+        DisplayViewComponent,
+        BaseNotFoundContent,
     },
 
     data() {
@@ -287,6 +297,14 @@ export default {
         },
     },
 
+    created() {
+        this.entity.organizacionId =
+            this.user.companyId === this.buoId
+                ? undefined
+                : this.user.companyId;
+        this.$_setProps();
+    },
+
     methods: {
         /**
          * Entity Object
@@ -318,8 +336,8 @@ export default {
                 this.user.companyId === this.buoId
                     ? undefined
                     : this.user.companyId;
-            this.entity.departamentoId = undefined;
             this.entity.usuarioId = undefined;
+            this.entity.departamentoId = null;
             this.$_setProps();
         },
 
@@ -415,7 +433,20 @@ export default {
                             icon="mdi-filter-cog-outline"
                         />
                     </v-row>
-                    <div class="pt-3">hola</div>
+                    <div class="pt-3">
+                        <DisplayViewComponent
+                            :key="componentKey"
+                            :entity="propEntity"
+                            v-if="
+                                entity.organizacionId &&
+                                propEntity.organizacionId
+                            "
+                        />
+                        <BaseNotFoundContent
+                            v-else
+                            msg="Busca por colaboradores o departamentos para encontrar las habilidades"
+                        />
+                    </div>
                 </v-card-text>
             </v-card>
         </div>
