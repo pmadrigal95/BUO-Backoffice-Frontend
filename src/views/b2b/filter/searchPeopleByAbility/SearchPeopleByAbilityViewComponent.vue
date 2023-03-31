@@ -369,8 +369,6 @@ export default {
                         :block="$vuetify.breakpoint.mobile"
                         labelBtn="Buscar"
                         :method="$_setProps"
-                        lblCancel="Limpiar"
-                        :cancel="$_clean"
                     >
                         <div slot="body">
                             <v-row dense>
@@ -406,6 +404,18 @@ export default {
                                     />
                                 </v-col>
                             </v-row>
+                        </div>
+                        <div slot="Beforebtns">
+                            <v-btn
+                                class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                                elevation="0"
+                                large
+                                outlined
+                                color="primary"
+                                @click="$_clean"
+                            >
+                                Limpiar
+                            </v-btn>
                         </div>
                     </BaseForm>
                 </v-col>
