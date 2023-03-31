@@ -50,9 +50,7 @@ export default {
          * Function to return the ProfileFilterViewComponent
          */
         $_returnToFilter() {
-            this.$router.push({
-                name: 'ProfileFilterViewComponent',
-            });
+            this.$router.back();
         },
 
         $_getObject() {

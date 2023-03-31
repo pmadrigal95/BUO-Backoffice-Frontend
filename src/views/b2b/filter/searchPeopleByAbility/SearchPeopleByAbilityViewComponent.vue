@@ -12,7 +12,7 @@ import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
 import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 
-// import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
@@ -75,7 +75,7 @@ export default {
                 ? [
                       {
                           name: 'organizacionId',
-                          value: this.entity.organizacionId,
+                          value: `${this.entity.organizacionId} | 1`,
                       },
                   ]
                 : undefined;
@@ -263,6 +263,12 @@ export default {
                 multiSelect: true,
             };
         },
+
+        permission() {
+            const result =
+                baseSecurityHelper.$_ReadPermission('UserViewComponent');
+            return result;
+        },
     },
 
     watch: {
@@ -337,6 +343,15 @@ export default {
             this.entity.cualificacionId = undefined;
             this.propEntity = undefined;
         },
+
+        /**
+         * Function to return the UserFilterViewComponent
+         */
+        $_returnToFilter() {
+            this.$router.push({
+                name: 'UserFilterViewComponent',
+            });
+        },
     },
 };
 </script>
@@ -397,10 +412,11 @@ export default {
             </v-row>
             <v-card flat class="rounded-t-xl">
                 <v-card-text>
-                    <v-layout justify-end>
+                    <v-row justify="end" class="pa-3">
                         <BaseCustomsButtonsGrid
+                            v-if="permission"
                             label="Administrar colaboradores"
-                            :fnMethod="$_setProps"
+                            :fnMethod="$_returnToFilter"
                             icon="mdi-account-group-outline"
                         />
 
@@ -410,18 +426,17 @@ export default {
                             :outlined="!show"
                             icon="mdi-filter-cog-outline"
                         />
-                    </v-layout>
+                    </v-row>
                     <div class="pt-3">
                         <BaseNotFoundContent
                             v-if="!propEntity"
-                            msg="Busca habilidades o puestos para encontrar a la persona indicada"
+                            msg="Busca habilidades o estructura organizacional para encontrar a la persona indicada"
                         />
                         <div v-else>
                             <CardViewComponent
                                 :key="componentKey"
                                 :entity="propEntity"
                             />
-                            <v-divider class="py-3"></v-divider>
                             <FilterViewComponent
                                 :key="componentKey + 1"
                                 :entity="propEntity"

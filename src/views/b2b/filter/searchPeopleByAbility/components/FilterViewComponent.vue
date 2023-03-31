@@ -6,8 +6,20 @@
  *
  */
 
+import baseLocalHelper from '@/helpers/baseLocalHelper.js';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
+
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
+
+const BaseCustomsButtonsGrid = () =>
+    import('@/components/core/grids/BaseCustomsButtonsGrid');
+
+const RadarViewComponent = () =>
+    import(
+        '@/views/b2b/filter/searchPeopleByAbility/components/RadarViewComponent'
+    );
 
 export default {
     name: 'FilterViewComponent',
@@ -21,6 +33,15 @@ export default {
 
     components: {
         BaseServerDataTable,
+        BaseCustomsButtonsGrid,
+        RadarViewComponent,
+    },
+
+    data() {
+        return {
+            usuarioIdList: undefined,
+            componentKey: 0,
+        };
     },
 
     computed: {
@@ -31,6 +52,7 @@ export default {
                         ? this.entity.departamentoId
                         : '0'
                 }`,
+                singleSelect: false,
                 dynamic: true,
             };
         },
@@ -47,11 +69,47 @@ export default {
             if (this.entity.cualificacionId) {
                 array.push({
                     name: 'cualificacionId',
-                    value: this.entity.cualificacionId.toString(),
+                    value: this.entity.cualificacionId.join('|'),
                 });
             }
 
             return array.length > 0 ? array : undefined;
+        },
+    },
+
+    methods: {
+        /**
+         * Get a registry
+         */
+        $_GetRow() {
+            return this.$refs.filter.$data.selected;
+        },
+
+        $_userDetails(params) {
+            const row = params ? [params.selected] : this.$_GetRow();
+
+            switch (true) {
+                case row.length == 0:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
+                    break;
+
+                case row.length > 0 && row.length < 4:
+                    this.usuarioIdList = row.map(
+                        (element) => element.usuarioId
+                    );
+                    this.componentKey++;
+                    break;
+
+                default:
+                    baseNotificationsHelper.Message(
+                        true,
+                        'Puedes seleccionar hasta un máximo de tres colaboradores.'
+                    );
+                    break;
+            }
         },
     },
 };
@@ -71,6 +129,22 @@ export default {
             ref="filter"
             :setting="setting"
             :extraParams="extraParams"
+            :fnDoubleClick="$_userDetails"
+        >
+            <div slot="btns">
+                <BaseCustomsButtonsGrid
+                    label="Comparar PDA"
+                    :outlined="false"
+                    :fnMethod="$_userDetails"
+                    icon="mdi-account-group-outline"
+                />
+            </div>
+        </BaseServerDataTable>
+
+        <RadarViewComponent
+            :key="componentKey"
+            :usuarioIdList="usuarioIdList"
+            v-if="usuarioIdList && usuarioIdList.length > 0"
         />
     </div>
 </template>

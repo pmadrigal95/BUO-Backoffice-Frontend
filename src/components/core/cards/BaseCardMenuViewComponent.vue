@@ -186,12 +186,12 @@ export default {
             </v-card-title>
 
             <v-card-subtitle
-                :class="`${fontTypeSubtitle} d-flex ${positionSubtitle} flex-column`"
+                :class="`${fontTypeSubtitle} d-flex ${positionSubtitle} flex-column buo-word-break`"
                 >{{ subtitle }}</v-card-subtitle
             >
 
             <v-card-text
-                :class="`${fontTypeDescription} d-flex ${positionDescription} flex-column`"
+                :class="`${fontTypeDescription} d-flex ${positionDescription} flex-column buo-word-break`"
                 >{{ description }}</v-card-text
             >
 
