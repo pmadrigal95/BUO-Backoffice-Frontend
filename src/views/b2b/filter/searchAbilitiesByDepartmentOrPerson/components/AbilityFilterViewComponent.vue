@@ -6,11 +6,18 @@
  *
  */
 
+import baseLocalHelper from '@/helpers/baseLocalHelper.js';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
+
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
+
+const ScaleHelperViewComponent = () =>
+    import('@/views/b2b/filter/common/display/ScaleHelperViewComponent');
 
 export default {
     name: 'AbilityFilterViewComponent',
@@ -25,6 +32,7 @@ export default {
     components: {
         BaseServerDataTable,
         BaseCustomsButtonsGrid,
+        ScaleHelperViewComponent,
     },
 
     computed: {
@@ -67,13 +75,31 @@ export default {
             return this.$refs.filter.$data.selected;
         },
 
-        $_viewMicroAbility() {},
+        $_viewMicroAbility(params) {
+            const row = params ? [params.selected] : this.$_GetRow();
+
+            switch (row.length) {
+                case 0:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
+                    break;
+
+                case 1:
+                    this.entity.cualificacionId = row[0].cualificacionId;
+                    this.entity.definicionCualificacion =
+                        row[0].definicionCualificacion;
+                    this.entity.step = 1;
+                    break;
+            }
+        },
     },
 };
 </script>
 
 <template>
-    <div>
+    <div v-if="entity">
         <v-row justify="start" class="pl-3">
             <v-col cols="12" md="8">
                 <div class="BUO-Heading-Small blue900--text">
@@ -81,10 +107,11 @@ export default {
                 </div>
             </v-col>
         </v-row>
+        <ScaleHelperViewComponent />
         <BaseServerDataTable
-            v-if="entity"
             ref="filter"
             :setting="setting"
+            :fnDoubleClick="$_viewMicroAbility"
             :extraParams="extraParams"
         >
             <div slot="btns">

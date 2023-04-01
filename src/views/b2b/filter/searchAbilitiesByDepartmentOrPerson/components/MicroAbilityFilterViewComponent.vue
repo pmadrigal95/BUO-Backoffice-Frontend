@@ -1,8 +1,8 @@
 <script>
 /**
- * Descripción: Pantalla Busqueda de talento
+ * Descripción: Pantalla Busqueda de Habilidad
  *
- * @displayName FilterViewComponent
+ * @displayName MicroAbilityFilterViewComponent
  *
  */
 
@@ -19,11 +19,8 @@ const BaseCustomsButtonsGrid = () =>
 const RadarViewComponent = () =>
     import('@/views/b2b/filter/common/graph/RadarViewComponent');
 
-const ScaleHelperViewComponent = () =>
-    import('@/views/b2b/filter/common/display/ScaleHelperViewComponent');
-
 export default {
-    name: 'FilterViewComponent',
+    name: 'MicroAbilityFilterViewComponent',
 
     props: {
         entity: {
@@ -36,7 +33,6 @@ export default {
         BaseServerDataTable,
         BaseCustomsButtonsGrid,
         RadarViewComponent,
-        ScaleHelperViewComponent,
     },
 
     data() {
@@ -49,7 +45,7 @@ export default {
     computed: {
         setting() {
             return {
-                endpoint: `talent/findBy/${
+                endpoint: `abilityDetails/findBy/${
                     this.entity.departamentoId
                         ? this.entity.departamentoId
                         : '0'
@@ -71,7 +67,7 @@ export default {
             if (this.entity.cualificacionId) {
                 array.push({
                     name: 'cualificacionId',
-                    value: this.entity.cualificacionId.join('|'),
+                    value: this.entity.cualificacionId,
                 });
             }
 
@@ -85,6 +81,12 @@ export default {
          */
         $_GetRow() {
             return this.$refs.filter.$data.selected;
+        },
+
+        $_goBack() {
+            delete this.entity.cualificacionId;
+            delete this.entity.definicionCualificacion;
+            this.entity.step = 0;
         },
 
         $_userDetails(params) {
@@ -118,15 +120,30 @@ export default {
 </script>
 
 <template>
-    <div>
-        <v-row justify="start" class="pl-3">
+    <div
+        v-if="
+            entity && entity.cualificacionId && entity.definicionCualificacion
+        "
+    >
+        <v-row justify="start" class="pl-3" dense>
             <v-col cols="12" md="8">
                 <div class="BUO-Heading-Small blue900--text">
-                    Todos los colaboradores
+                    <v-btn
+                        fab
+                        dark
+                        x-small
+                        outlined
+                        class="mb-1"
+                        elevation="0"
+                        color="primary"
+                        @click="$_goBack"
+                    >
+                        <v-icon dark> mdi-chevron-left </v-icon>
+                    </v-btn>
+                    {{ entity.definicionCualificacion }}
                 </div>
             </v-col>
         </v-row>
-        <ScaleHelperViewComponent />
         <BaseServerDataTable
             v-if="entity"
             ref="filter"
