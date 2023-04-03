@@ -917,15 +917,15 @@ export default {
         $_setColorDegradedChart(value) {
             const x = Math.round(value * 100);
             switch (true) {
-                case x == 100:
+                case x === 100:
                     return 'main';
-                case x > 50:
+                case x > 50 && x < 100:
                     return 'secondary80';
-                case x == 50:
+                case x === 50:
                     return 'secondary70';
-                case x < 50:
+                case x < 50 && x > 0:
                     return 'secondary60';
-                case x == 0:
+                case x === 0:
                     return 'secondary50';
                 default:
                     return 'secondary40';
@@ -1491,24 +1491,40 @@ export default {
                         :key="percentage"
                     >
                         <v-row style="height: 100%; width: 100%" dense>
-                            <div  v-for="(element, i) in item[header.value]"
-                                :key="i" :style="`height: 100%; width: ${Math.round(
-                                        element * 100
-                                    )}%`">                            
-                                <div v-if="element > 0"
-                                    class="d-flex align-end justify-end white--text"
-                                    :style="
-                                        $_setChartColor(
-                                            element,
-                                            header.color
-                                                ? header.color
-                                                : 'darkGreen'
-                                        )
-                                    "
-                                    style="height: 100%"
-                                >
-                                    {{ Math.round(element * 100) }}%
-                                </div>
+                            <div
+                                v-for="(element, i) in item[header.value]"
+                                :key="i"
+                                :style="`height: 100%; width: ${Math.round(
+                                    element.size * 100
+                                )}%`"
+                            >
+                                <v-tooltip top>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <div
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            v-if="element.size > 0"
+                                            class="d-flex align-end justify-end white--text"
+                                            :style="
+                                                $_setChartColor(
+                                                    element.color,
+                                                    header.color
+                                                        ? header.color
+                                                        : 'darkGreen'
+                                                )
+                                            "
+                                            style="
+                                                height: 100%;
+                                                cursor: pointer;
+                                            "
+                                        >
+                                            {{
+                                                Math.round(element.size * 100)
+                                            }}%
+                                        </div>
+                                    </template>
+                                    <span>{{ element.tooltip }}</span>
+                                </v-tooltip>
                             </div>
                         </v-row>
                     </td>
@@ -1522,13 +1538,15 @@ export default {
                             $vuetify.breakpoint.mobile
                         "
                         :key="percentageMobile"
+                        min-width="50%"
+                        min-height="100%"
                     >
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn
                                 outlined
                                 icon
                                 small
-                                color="greenC800"
+                                color="primary"
                                 v-bind="attrs"
                                 v-on="on"
                             >
@@ -1538,58 +1556,42 @@ export default {
                         <v-card width="100%" elevation="3">
                             <v-card-text>
                                 <div
-                                    class="BUO-Paragraph-Small buo-word-break buo-white-space pb-2"
-                                    :style="
-                                        $_setChartColor(
-                                            item[header.value],
-                                            header.color
-                                                ? header.color
-                                                : 'purple',
-                                            'color'
-                                        )
-                                    "
+                                    v-for="(element, i) in item[header.value]"
+                                    :key="i"
+                                    :style="`height: 100%; width: ${Math.round(
+                                        element.size * 100
+                                    )}%`"
                                 >
-                                    50%
-                                    <v-progress-linear
-                                        rounded
-                                        :value="50"
-                                        :color="
+                                    <div
+                                        v-if="element.size > 0"
+                                        class="BUO-Label-Small buo-word-break buo-white-space pb-2"
+                                        :style="
                                             $_setChartColor(
-                                                item[header.value],
-                                                header.color
-                                                    ? header.color
-                                                    : 'purple',
-                                                'hexa'
-                                            )
-                                        "
-                                    />
-                                </div>
-                                <div
-                                    class="BUO-Paragraph-Small buo-word-break buo-white-space pb-1"
-                                    :style="
-                                        $_setChartColor(
-                                            item[header.value],
-                                            header.color
-                                                ? header.color
-                                                : 'darkGreen',
-                                            'color'
-                                        )
-                                    "
-                                >
-                                    50%
-                                    <v-progress-linear
-                                        rounded
-                                        :value="50"
-                                        :color="
-                                            $_setChartColor(
-                                                item[header.value],
+                                                element.color,
                                                 header.color
                                                     ? header.color
                                                     : 'darkGreen',
-                                                'hexa'
+                                                'color'
                                             )
                                         "
-                                    />
+                                    >
+                                        {{ Math.round(element.size * 100) }}%
+                                        <v-progress-linear
+                                            rounded
+                                            :value="
+                                                Math.round(element.size * 100)
+                                            "
+                                            :color="
+                                                $_setChartColor(
+                                                    element.color,
+                                                    header.color
+                                                        ? header.color
+                                                        : 'darkGreen',
+                                                    'hexa'
+                                                )
+                                            "
+                                        />
+                                    </div>
                                 </div>
                             </v-card-text>
                         </v-card>

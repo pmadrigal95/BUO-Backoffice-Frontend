@@ -148,17 +148,21 @@ export default {
                         v-for="(item, i) in objectForm.topAbilities"
                         :key="i"
                     >
-                        <BaseCardMenuViewComponent
-                            iconColor="greenC800"
-                            :icon="`numeric-${i + 1}-circle`"
-                            :subtitle="item.definicionCualificacion"
-                            :description="item.descripcion"
-                            :fontTypeSubtitle="componentProps.fontTypeSubtitle"
-                            :min-width="componentProps.width"
-                            :minHeight="componentProps.height"
-                            :max-width="componentProps.width"
-                            :maxHeight="componentProps.height"
-                        />
+                        <div>
+                            <BaseCardMenuViewComponent
+                                iconColor="greenC800"
+                                :icon="`numeric-${i + 1}-circle`"
+                                :subtitle="item.definicionCualificacion"
+                                :description="item.descripcion"
+                                :fontTypeSubtitle="
+                                    componentProps.fontTypeSubtitle
+                                "
+                                :min-width="componentProps.width"
+                                :minHeight="componentProps.height"
+                                :max-width="componentProps.width"
+                                :maxHeight="componentProps.height"
+                            />
+                        </div>
                     </v-slide-item>
                 </v-slide-group>
             </v-layout>
@@ -207,17 +211,21 @@ export default {
                         v-for="(item, i) in objectForm.bottomAbilities"
                         :key="i"
                     >
-                        <BaseCardMenuViewComponent
-                            iconColor="redError900"
-                            :icon="`numeric-${i + 1}-circle`"
-                            :subtitle="item.definicionCualificacion"
-                            :description="item.descripcion"
-                            :fontTypeSubtitle="componentProps.fontTypeSubtitle"
-                            :min-width="componentProps.width"
-                            :minHeight="componentProps.height"
-                            :max-width="componentProps.width"
-                            :maxHeight="componentProps.height"
-                        />
+                        <div>
+                            <BaseCardMenuViewComponent
+                                iconColor="redError900"
+                                :icon="`numeric-${i + 1}-circle`"
+                                :subtitle="item.definicionCualificacion"
+                                :description="item.descripcion"
+                                :fontTypeSubtitle="
+                                    componentProps.fontTypeSubtitle
+                                "
+                                :min-width="componentProps.width"
+                                :minHeight="componentProps.height"
+                                :max-width="componentProps.width"
+                                :maxHeight="componentProps.height"
+                            />
+                        </div>
                     </v-slide-item>
                 </v-slide-group>
             </v-layout>
