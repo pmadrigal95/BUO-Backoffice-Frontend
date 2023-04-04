@@ -16,6 +16,11 @@ const BaseServerDataTable = () =>
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
+const MicroAbilityCardViewComponent = () =>
+    import(
+        '@/views/b2b/filter/searchAbilitiesByDepartmentOrPerson/components/MicroAbilityCardViewComponent'
+    );
+
 const RadarViewComponent = () =>
     import('@/views/b2b/filter/common/graph/RadarViewComponent');
 
@@ -33,6 +38,7 @@ export default {
         BaseServerDataTable,
         BaseCustomsButtonsGrid,
         RadarViewComponent,
+        MicroAbilityCardViewComponent,
     },
 
     data() {
@@ -151,6 +157,9 @@ export default {
                 </div>
             </v-col>
         </v-row>
+
+        <MicroAbilityCardViewComponent :entity="entity" />
+
         <BaseServerDataTable
             v-if="entity"
             ref="filter"

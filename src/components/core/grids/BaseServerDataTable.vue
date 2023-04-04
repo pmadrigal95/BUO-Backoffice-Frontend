@@ -799,6 +799,10 @@ export default {
 
                     default:
                         origin = this.selected;
+                        this.$props.setting.dbClick = this.$props.setting
+                            .dbClick
+                            ? this.$props.setting.dbClick
+                            : 'Complete';
                         if (typeof this.$props.setting.dbClick === 'string') {
                             if (this.$props.setting.dbClick === 'Complete') {
                                 this.footerMethod(origin);
