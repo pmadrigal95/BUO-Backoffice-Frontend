@@ -111,6 +111,7 @@ export default {
                     },
                     {
                         text: 'Estado',
+                        type: 'chip',
                         align: 'center',
                         value: 'nombreEstado',
                         show: false,
@@ -122,12 +123,12 @@ export default {
                         value: 'esCargaMasiva',
                         show: false,
                     },
-                    {  
+                    {
                         text: 'Fecha Ingreso',
                         align: 'start',
                         value: 'ingresadoFormato',
                         show: false,
-                    }
+                    },
                 ],
                 key: 'id',
                 singleSelect: false,
