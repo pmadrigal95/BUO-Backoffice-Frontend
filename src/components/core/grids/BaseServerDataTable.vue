@@ -1518,9 +1518,13 @@ export default {
                                                 cursor: pointer;
                                             "
                                         >
-                                            {{
-                                                Math.round(element.size * 100)
-                                            }}%
+                                            <span class="pr-1 pb-1"
+                                                >{{
+                                                    Math.round(
+                                                        element.size * 100
+                                                    )
+                                                }}%</span
+                                            >
                                         </div>
                                     </template>
                                     <span>{{ element.tooltip }}</span>

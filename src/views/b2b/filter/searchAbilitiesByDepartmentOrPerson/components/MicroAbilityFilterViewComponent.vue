@@ -71,6 +71,13 @@ export default {
                 });
             }
 
+            if (this.entity.usuarioId) {
+                array.push({
+                    name: 'usuarioId',
+                    value: this.entity.usuarioId.join('|'),
+                });
+            }
+
             return array.length > 0 ? array : undefined;
         },
     },
