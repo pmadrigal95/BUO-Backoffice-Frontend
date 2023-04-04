@@ -5,9 +5,11 @@
  */
 
 const exclusionList = [
+    '/cards',
     '/findBy',
     'analytics',
     'menuUsuario',
+    'pda/getTestList',
     '/user/authenticate',
     'createShareableLink',
     'misc/validateCaptcha',

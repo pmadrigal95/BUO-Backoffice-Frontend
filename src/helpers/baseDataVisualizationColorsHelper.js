@@ -60,16 +60,48 @@ const random = () => {
     return colorArray[index >= 0 && index < 6 ? index : 1];
 };
 
+const getColor = (index) => {
+    if (index >= colorArray.length) {
+        return random();
+    } else {
+        return colorArray[index];
+    }
+};
+
 export default {
     $_randomColor() {
         return random();
     },
 
     $_getColor(index) {
-        if (index >= colorArray.length) {
-            return random();
-        } else {
-            return colorArray[index];
+        return getColor(index);
+    },
+
+    $_getColorByName(color) {
+        let index = 0;
+        switch (color) {
+            case 'lightBlue':
+                index = 0;
+                break;
+            case 'darkGreen':
+                index = 1;
+                break;
+            case 'lightGreen':
+                index = 2;
+                break;
+            case 'yellow':
+                index = 3;
+                break;
+            case 'orange':
+                index = 4;
+                break;
+            case 'purple':
+                index = 5;
+                break;
+            default:
+                index = 10;
+                break;
         }
+        return getColor(index);
     },
 };

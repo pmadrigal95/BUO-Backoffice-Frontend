@@ -1,22 +1,25 @@
 <script>
 /**
- * Descripción: Pantalla Filtro Perfiles
+ * Descripción: Pantalla Busqueda de habilidades
  *
- * @displayName ProfileFilterViewComponent
+ * @displayName SearchAbilitiesByDepartmentOrPersonViewComponent
  *
  */
 
 import { mapGetters } from 'vuex';
 
-import baseLocalHelper from '@/helpers/baseLocalHelper.js';
+import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
-import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
+const BaseNotFoundContent = () =>
+    import('@/components/core/cards/BaseNotFoundContent');
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
-const BaseServerDataTable = () =>
-    import('@/components/core/grids/BaseServerDataTable');
+const BaseInputDataTable = () =>
+    import('@/components/core/forms/BaseInputDataTable');
 
 const BaseInputTreeview = () =>
     import('@/components/core/treeview/BaseInputTreeview');
@@ -24,30 +27,49 @@ const BaseInputTreeview = () =>
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
-const BaseInputDataTable = () =>
-    import('@/components/core/forms/BaseInputDataTable');
+const DisplayViewComponent = () =>
+    import(
+        '@/views/b2b/filter/searchAbilitiesByDepartmentOrPerson/components/DisplayViewComponent'
+    );
 
 export default {
-    name: 'ProfileFilterViewComponent',
+    name: 'SearchAbilitiesByDepartmentOrPersonViewComponent',
 
     components: {
-        BaseCardViewComponent,
-        BaseServerDataTable,
         BaseInputTreeview,
-        BaseCustomsButtonsGrid,
         BaseInputDataTable,
+        BaseCardViewComponent,
+        BaseCustomsButtonsGrid,
+        DisplayViewComponent,
+        BaseNotFoundContent,
     },
 
     data() {
         return {
             entity: this.$_Object(),
+            propEntity: undefined,
             componentKey: 0,
+            filterKey: 0,
             show: false,
         };
     },
 
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
+
+        /**
+         * Extra Params
+         */
+        extraParams() {
+            return this.entity.organizacionId
+                ? [
+                      {
+                          name: 'organizacionId',
+                          value: `${this.entity.organizacionId}`,
+                      },
+                  ]
+                : undefined;
+        },
 
         companySetting() {
             return {
@@ -145,33 +167,16 @@ export default {
                 key: 'id',
             };
         },
+
         /**
          * Configuracion BaseServerDataTable
          */
-        setting() {
+        userSetting() {
             return {
                 endpoint: this.entity.departamentoId
                     ? `user/findByDeep/${this.entity.departamentoId}`
                     : 'user/findBy',
                 columns: [
-                    {
-                        text: 'Nombre',
-                        align: 'start',
-                        value: 'nombre',
-                        show: false,
-                    },
-                    {
-                        text: 'Primer Apellido',
-                        align: 'start',
-                        value: 'primerApellido',
-                        show: false,
-                    },
-                    {
-                        text: 'Segundo Apellido',
-                        align: 'start',
-                        value: 'segundoApellido',
-                        show: false,
-                    },
                     {
                         text: 'Nombre Completo',
                         align: 'start',
@@ -191,9 +196,15 @@ export default {
                         show: false,
                     },
                     {
+                        text: 'Empresa',
+                        align: 'start',
+                        value: 'nombreOrganizacion',
+                        show: false,
+                    },
+                    {
                         text: 'Estado',
-                        align: 'center',
                         type: 'chip',
+                        align: 'center',
                         value: 'nombreEstado',
                         show: true,
                     },
@@ -202,14 +213,7 @@ export default {
                         type: 'bool',
                         align: 'center',
                         value: 'walletActivo',
-                        show: true,
-                    },
-                    {
-                        text: 'Test PDA',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'conPda',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Identificación',
@@ -255,24 +259,14 @@ export default {
                     },
                 ],
                 key: 'id',
+                multiSelect: true,
             };
         },
 
-        extraParams() {
-            let array = [];
-            if (this.user.companyId != this.buoId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.user.companyId,
-                });
-            } else if (this.entity.organizacionId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.entity.organizacionId,
-                });
-            }
-
-            return array.length > 0 ? array : undefined;
+        permission() {
+            const result =
+                baseSecurityHelper.$_ReadPermission('UserViewComponent');
+            return result;
         },
     },
 
@@ -283,21 +277,37 @@ export default {
         'entity.organizacionId': {
             handler(newValue, oldValue) {
                 if (oldValue != newValue) {
-                    this.entity.categoriaId = undefined;
+                    this.entity.departamentoId = undefined;
+                    this.entity.usuarioId = undefined;
+                    this.filterKey = this.filterKey + 1;
+                }
+            },
+            immediate: true,
+        },
+
+        /**
+         * Actualizar
+         */
+        'entity.departamentoId': {
+            handler(newValue, oldValue) {
+                if (oldValue != newValue) {
+                    this.entity.usuarioId = undefined;
+                    this.filterKey = this.filterKey + 1;
                 }
             },
             immediate: true,
         },
     },
 
-    methods: {
-        /**
-         * Get a registry
-         */
-        $_GetRow() {
-            return this.$refs.ProfileFilter.$data.selected;
-        },
+    created() {
+        this.entity.organizacionId =
+            this.user.companyId === this.buoId
+                ? undefined
+                : this.user.companyId;
+        this.$_setProps();
+    },
 
+    methods: {
         /**
          * Entity Object
          */
@@ -305,41 +315,8 @@ export default {
             return {
                 organizacionId: undefined,
                 departamentoId: undefined,
+                usuarioId: undefined,
             };
-        },
-
-        $_setParams() {
-            this.$refs.ProfileFilter.$_ParamsToAPI();
-            this.componentKey++;
-        },
-
-        $_clean() {
-            this.entity.organizacionId =
-                this.user.companyId === this.buoId
-                    ? undefined
-                    : this.user.companyId;
-            this.entity.departamentoId = undefined;
-            this.$_setParams();
-        },
-
-        $_userDetails(params) {
-            const row = params ? [params.selected] : this.$_GetRow();
-
-            switch (row.length) {
-                case 0:
-                    baseNotificationsHelper.Message(
-                        true,
-                        baseLocalHelper.$_MsgRowNotSelected
-                    );
-                    break;
-
-                case 1:
-                    this.$router.push({
-                        name: 'ProfileDetailsViewComponent',
-                        params: row && { Id: row[0].id },
-                    });
-                    break;
-            }
         },
 
         $_showAdvFilter() {
@@ -350,26 +327,50 @@ export default {
                 }
             }
         },
+
+        $_setProps() {
+            this.propEntity = BaseArrayHelper.SetObject({}, this.entity);
+            this.componentKey++;
+        },
+
+        $_clean() {
+            this.entity.organizacionId =
+                this.user.companyId === this.buoId
+                    ? undefined
+                    : this.user.companyId;
+            this.entity.usuarioId = undefined;
+            this.entity.departamentoId = null;
+            this.$_setProps();
+        },
+
+        /**
+         * Function to return the UserFilterViewComponent
+         */
+        $_returnToFilter() {
+            this.$router.push({
+                name: 'AbilityFilterViewComponent',
+            });
+        },
     },
 };
 </script>
 
 <template>
     <BaseCardViewComponent
-        title="Perfil del colaborador"
-        subtitle="Busca toda la información de tus colaboradores"
+        title="Habilidades de mis colaboradores"
+        subtitle="Encuentra las habilidades que tienen tus colaboradores"
     >
         <div slot="card-text">
-            <v-row dense v-show="show">
+            <v-row dense v-show="show" class="pb-2">
                 <v-col cols="12" md="6">
                     <BaseForm
                         v-if="user && buoId"
                         :block="$vuetify.breakpoint.mobile"
                         labelBtn="Buscar"
-                        :method="$_setParams"
+                        :method="$_setProps"
                     >
                         <div slot="body">
-                            <v-row>
+                            <v-row dense>
                                 <v-col cols="12">
                                     <BaseInputDataTable
                                         v-if="user.companyId === buoId"
@@ -389,6 +390,17 @@ export default {
                                         :endpoint="`departamento/findAllTree/${entity.organizacionId}`"
                                     />
                                 </v-col>
+                                <v-col cols="12">
+                                    <BaseInputDataTable
+                                        label="Colaboradores"
+                                        :setting="userSetting"
+                                        :extraParams="extraParams"
+                                        :readonly="extraParams == undefined"
+                                        :editText="entity.nombre"
+                                        v-model="entity.usuarioId"
+                                        :key="filterKey"
+                                    />
+                                </v-col>
                             </v-row>
                         </div>
                         <div slot="Beforebtns">
@@ -406,33 +418,39 @@ export default {
                     </BaseForm>
                 </v-col>
             </v-row>
-            <v-card> </v-card>
-        </div>
+            <v-card flat class="rounded-t-xl">
+                <v-card-text>
+                    <v-row justify="end" class="pa-3">
+                        <BaseCustomsButtonsGrid
+                            v-if="permission"
+                            label="Administrar habilidades"
+                            :fnMethod="$_returnToFilter"
+                            icon="mdi-shield-star"
+                        />
 
-        <div slot="body">
-            <BaseSkeletonLoader v-if="!user && !buoId" type="list-item" />
-            <BaseServerDataTable
-                ref="ProfileFilter"
-                :key="componentKey"
-                :setting="setting"
-                :extraParams="extraParams"
-                :fnDoubleClick="$_userDetails"
-            >
-                <div slot="btns">
-                    <BaseCustomsButtonsGrid
-                        label="Ver Perfil"
-                        :fnMethod="$_userDetails"
-                        icon="mdi-chevron-right"
-                    />
-
-                    <BaseCustomsButtonsGrid
-                        label="Filtro Avanzado"
-                        :fnMethod="$_showAdvFilter"
-                        :outlined="!show"
-                        icon="mdi-filter-cog-outline"
-                    />
-                </div>
-            </BaseServerDataTable>
+                        <BaseCustomsButtonsGrid
+                            label="Filtro Avanzado"
+                            :fnMethod="$_showAdvFilter"
+                            :outlined="!show"
+                            icon="mdi-filter-cog-outline"
+                        />
+                    </v-row>
+                    <div class="pt-3">
+                        <DisplayViewComponent
+                            :key="componentKey"
+                            :entity="propEntity"
+                            v-if="
+                                entity.organizacionId &&
+                                propEntity.organizacionId
+                            "
+                        />
+                        <BaseNotFoundContent
+                            v-else
+                            msg="Busca por colaboradores o departamentos para encontrar las habilidades"
+                        />
+                    </div>
+                </v-card-text>
+            </v-card>
         </div>
     </BaseCardViewComponent>
 </template>

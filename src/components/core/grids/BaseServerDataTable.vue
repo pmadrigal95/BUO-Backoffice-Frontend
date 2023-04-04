@@ -8,12 +8,19 @@
  * @displayName BaseServerDataTable
  */
 
-import baseLocalHelper from '@/helpers/baseLocalHelper';
-import baseConfigHelper from '@/helpers/baseConfigHelper';
-import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
-import baseArrayHelper from '@/helpers/baseArrayHelper';
-import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 import httpService from '@/services/axios/httpService';
+
+import baseLocalHelper from '@/helpers/baseLocalHelper';
+
+import baseArrayHelper from '@/helpers/baseArrayHelper';
+
+import baseConfigHelper from '@/helpers/baseConfigHelper';
+
+import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
+
+import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
 
 const BaseButtonsGrid = () =>
     import('@/components/core/grids/BaseButtonsGrid.vue');
@@ -389,7 +396,7 @@ export default {
         /**
          * Columnas configuradas con Show
          */
-        this.$_initialize(this.setting.columns);
+        !this.setting.dynamic && this.$_initialize(this.setting.columns);
 
         this.cleanFilter = false;
 
@@ -427,6 +434,17 @@ export default {
 
     methods: {
         /**
+         *
+         */
+        reviewDynamicData(data) {
+            if (this.setting.dynamic) {
+                this.setting.columns = data.columns;
+                this.setting.key = data.key;
+                this.$_initialize(this.setting.columns);
+            }
+        },
+
+        /**
          * Lógica Server Side
          */
         $_ParamsToAPI(time = baseConfigHelper.$_DefaultTimer) {
@@ -451,6 +469,7 @@ export default {
                         .post(this.returnEndPoint(), this.returnParams())
                         .then((response) => {
                             if (response != undefined) {
+                                this.reviewDynamicData(response.data);
                                 this.items = response.data.content;
                                 this.totalItems = response.data.totalElements;
                                 this.loadingGrid = false;
@@ -530,6 +549,7 @@ export default {
             /**
              * Buscadores por columnas
              */
+            this.setting?.columns &&
             Object.entries(this.filters).length === 0 &&
             this.options.sortBy.length === 0
                 ? delete params.columns
@@ -779,6 +799,10 @@ export default {
 
                     default:
                         origin = this.selected;
+                        this.$props.setting.dbClick = this.$props.setting
+                            .dbClick
+                            ? this.$props.setting.dbClick
+                            : 'Complete';
                         if (typeof this.$props.setting.dbClick === 'string') {
                             if (this.$props.setting.dbClick === 'Complete') {
                                 this.footerMethod(origin);
@@ -874,18 +898,53 @@ export default {
         },
 
         $_setStatusColor(id) {
-            switch (id) {
-                case 1 || 3 || 8 || 10:
+            switch (true) {
+                case id == baseConfigHelper.$_statusCode.inactive ||
+                    id == baseConfigHelper.$_statusCode.uncertified ||
+                    id == baseConfigHelper.$_statusCode.unregisteredCompany ||
+                    id == baseConfigHelper.$_statusCode.unrelatedProfessional:
                     return 'grey500';
-                case 2 || 5 || 9:
+                case id == baseConfigHelper.$_statusCode.active ||
+                    id == baseConfigHelper.$_statusCode.certificate ||
+                    id == baseConfigHelper.$_statusCode.fileProcessed:
                     return 'greenA800';
-                case 4:
+                case id == baseConfigHelper.$_statusCode.certifying:
                     return 'blue800';
-                case 6 || 7:
+                case id == baseConfigHelper.$_statusCode.rejected ||
+                    id == baseConfigHelper.$_statusCode.fileError:
                     return 'redError900';
                 default:
                     return 'grey400';
             }
+        },
+
+        $_setColorDegradedChart(value) {
+            const x = Math.round(value * 100);
+            switch (true) {
+                case x === 100:
+                    return 'main';
+                case x > 50 && x < 100:
+                    return 'secondary80';
+                case x === 50:
+                    return 'secondary70';
+                case x < 50 && x > 0:
+                    return 'secondary60';
+                case x === 0:
+                    return 'secondary50';
+                default:
+                    return 'secondary40';
+            }
+        },
+
+        $_setChartColor(value, color, type = 'background-color') {
+            const palette =
+                baseDataVisualizationColorsHelper.$_getColorByName(color);
+
+            const degradedColor = this.$_setColorDegradedChart(value);
+
+            return type != 'hexa'
+                ? `${type}: ${palette[degradedColor]}`
+                : `${palette[degradedColor]}`;
         },
     },
 };
@@ -954,6 +1013,11 @@ export default {
                                     >
                                         <v-expansion-panel-header
                                             class="buo-expansion-panel-header"
+                                            v-if="
+                                                header.type != 'hidden' &&
+                                                header.type != 'color' &&
+                                                header.type != 'percentage'
+                                            "
                                         >
                                             <div
                                                 v-if="
@@ -977,7 +1041,10 @@ export default {
                                         <v-expansion-panel-content>
                                             <!-- @helper:  Filter type Text -->
                                             <v-text-field
-                                                v-if="header.type == undefined"
+                                                v-if="
+                                                    header.type == undefined ||
+                                                    header.type == 'chip'
+                                                "
                                                 label="Buscar"
                                                 v-model="
                                                     temporalFilters[
@@ -1154,7 +1221,7 @@ export default {
                     <!-- @Componente:  BaseButtonsGrid-->
                     <BaseButtonsGrid
                         :fnRefresh="$_ParamsToAPI"
-                        :fnConfig="$_config"
+                        :fnConfig="setting.dynamic ? undefined : $_config"
                         :fnFilter="$_filter"
                         :fnNew="fnNew"
                         :fnEdit="fnEdit != undefined ? $_edit : undefined"
@@ -1198,7 +1265,10 @@ export default {
                         <th v-for="header in headers" :key="header.text">
                             <!-- @helper:  Filter type Text -->
                             <div
-                                v-if="header.type == undefined"
+                                v-if="
+                                    header.type == undefined ||
+                                    header.type == 'chip'
+                                "
                                 class="px-1 py-2"
                             >
                                 <v-text-field
@@ -1339,16 +1409,54 @@ export default {
                     </tr>
                 </template>
 
-                <!--
-                            Display de componentes Boolean && Status
-                        -->
+                <!-- Display de Filas -->
                 <template
-                    v-for="(header, bool) in headers"
+                    v-for="(
+                        header,
+                        bool,
+                        color,
+                        colorMobile,
+                        chip,
+                        percentage,
+                        percentageMobile
+                    ) in headers"
                     :slot="`item.${header.value}`"
                     slot-scope="{ item }"
                 >
+                    <!-- Color -->
+                    <td
+                        v-if="
+                            header.type == 'color' &&
+                            $vuetify.breakpoint.mdAndUp
+                        "
+                        :key="color"
+                        :style="
+                            $_setChartColor(
+                                item[header.value],
+                                header.color ? header.color : 'darkGreen'
+                            )
+                        "
+                    ></td>
+
+                    <!-- Color Mobile -->
                     <v-icon
-                        v-if="header.type == 'bool'"
+                        v-else-if="
+                            header.type == 'color' && $vuetify.breakpoint.mobile
+                        "
+                        :key="colorMobile"
+                        :style="
+                            $_setChartColor(
+                                item[header.value],
+                                header.color ? header.color : 'darkGreen',
+                                'color'
+                            )
+                        "
+                        >mdi-card</v-icon
+                    >
+
+                    <!-- Boolean -->
+                    <v-icon
+                        v-else-if="header.type == 'bool'"
                         :key="bool"
                         :color="item[header.value] ? 'greenA800' : 'grey500'"
                     >
@@ -1359,18 +1467,147 @@ export default {
                         }}
                     </v-icon>
 
+                    <!-- chip -->
+                    <v-chip
+                        small
+                        outlined
+                        :key="chip"
+                        v-else-if="header.type == 'chip'"
+                        :color="
+                            $_setStatusColor(
+                                item[
+                                    header.itemKey
+                                        ? `${header.itemKey}`
+                                        : 'estadoId'
+                                ]
+                            )
+                        "
+                    >
+                        {{ item[header.value] }}
+                    </v-chip>
+
+                    <!-- percentage -->
+                    <td
+                        v-else-if="
+                            header.type == 'percentage' &&
+                            $vuetify.breakpoint.mdAndUp
+                        "
+                        :key="percentage"
+                    >
+                        <v-row style="height: 100%; width: 100%" dense>
+                            <div
+                                v-for="(element, i) in item[header.value]"
+                                :key="i"
+                                :style="`height: 100%; width: ${Math.round(
+                                    element.size * 100
+                                )}%`"
+                            >
+                                <v-tooltip top>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <div
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            v-if="element.size > 0"
+                                            class="d-flex align-end justify-end white--text"
+                                            :style="
+                                                $_setChartColor(
+                                                    element.color,
+                                                    header.color
+                                                        ? header.color
+                                                        : 'darkGreen'
+                                                )
+                                            "
+                                            style="
+                                                height: 100%;
+                                                cursor: pointer;
+                                            "
+                                        >
+                                            <span class="pr-1 pb-1"
+                                                >{{
+                                                    Math.round(
+                                                        element.size * 100
+                                                    )
+                                                }}%</span
+                                            >
+                                        </div>
+                                    </template>
+                                    <span>{{ element.tooltip }}</span>
+                                </v-tooltip>
+                            </div>
+                        </v-row>
+                    </td>
+
+                    <!-- percentage mobile -->
+                    <v-menu
+                        top
+                        offset-x
+                        v-else-if="
+                            header.type == 'percentage' &&
+                            $vuetify.breakpoint.mobile
+                        "
+                        :key="percentageMobile"
+                        min-width="50%"
+                        min-height="100%"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                                outlined
+                                icon
+                                small
+                                color="primary"
+                                v-bind="attrs"
+                                v-on="on"
+                            >
+                                <v-icon x-small>mdi-google-analytics</v-icon>
+                            </v-btn>
+                        </template>
+                        <v-card width="100%" elevation="3">
+                            <v-card-text>
+                                <div
+                                    v-for="(element, i) in item[header.value]"
+                                    :key="i"
+                                    :style="`height: 100%; width: ${Math.round(
+                                        element.size * 100
+                                    )}%`"
+                                >
+                                    <div
+                                        v-if="element.size > 0"
+                                        class="BUO-Label-Small buo-word-break buo-white-space pb-2"
+                                        :style="
+                                            $_setChartColor(
+                                                element.color,
+                                                header.color
+                                                    ? header.color
+                                                    : 'darkGreen',
+                                                'color'
+                                            )
+                                        "
+                                    >
+                                        {{ Math.round(element.size * 100) }}%
+                                        <v-progress-linear
+                                            rounded
+                                            :value="
+                                                Math.round(element.size * 100)
+                                            "
+                                            :color="
+                                                $_setChartColor(
+                                                    element.color,
+                                                    header.color
+                                                        ? header.color
+                                                        : 'darkGreen',
+                                                    'hexa'
+                                                )
+                                            "
+                                        />
+                                    </div>
+                                </div>
+                            </v-card-text>
+                        </v-card>
+                    </v-menu>
+
+                    <!-- Normal -->
                     <div v-else :key="header.value">
-                        <div v-if="header.value != 'nombreEstado'">
-                            {{ item[header.value] }}
-                        </div>
-                        <v-chip
-                            v-else
-                            :color="$_setStatusColor(item['estadoId'])"
-                            outlined
-                            small
-                        >
-                            {{ item[header.value] }}
-                        </v-chip>
+                        {{ item[header.value] }}
                     </div>
                 </template>
             </v-data-table>

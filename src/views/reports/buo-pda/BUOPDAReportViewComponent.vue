@@ -123,6 +123,7 @@ export default {
                     },
                     {
                         text: 'Estado',
+                        type: 'chip',
                         align: 'center',
                         value: 'nombreEstado',
                         show: true,
@@ -211,6 +212,7 @@ export default {
                     {
                         text: 'Estado',
                         align: 'center',
+                        type: 'chip',
                         value: 'nombreEstado',
                         show: true,
                     },
@@ -460,7 +462,7 @@ export default {
 
 <template>
     <BaseCardViewComponent title="Generador de Reporte Buo-PDA">
-        <div slot="card-text" v-if="show">
+        <div slot="card-text" v-show="show">
             <v-row dense>
                 <v-col cols="12" md="6">
                     <BaseForm

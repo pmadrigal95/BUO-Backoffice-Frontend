@@ -197,7 +197,7 @@ export default {
                         type: 'bool',
                         align: 'center',
                         value: 'esInterna',
-                        show: true,
+                        show: this.user.companyId === this.buoId,
                     },
                     {
                         text: 'Categoría',
@@ -229,6 +229,7 @@ export default {
                     {
                         text: 'Estado',
                         align: 'center',
+                        type: 'chip',
                         value: 'nombreEstado',
                         show: true,
                     },
@@ -377,15 +378,13 @@ export default {
 
 <template>
     <div v-if="organizacionId">
-        <v-row v-if="show" class="pb-1">
+        <v-row v-show="show" class="pb-1">
             <v-col cols="12" md="6">
                 <BaseForm
                     v-if="user && buoId"
                     :block="$vuetify.breakpoint.mobile"
                     labelBtn="Buscar"
                     :method="$_setParams"
-                    lblCancel="Limpiar"
-                    :cancel="$_clean"
                 >
                     <div slot="body">
                         <v-row dense>
@@ -406,6 +405,18 @@ export default {
                                 />
                             </v-col>
                         </v-row>
+                    </div>
+                    <div slot="Beforebtns">
+                        <v-btn
+                            class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                            elevation="0"
+                            large
+                            outlined
+                            color="primary"
+                            @click="$_clean"
+                        >
+                            Limpiar
+                        </v-btn>
                     </div>
                 </BaseForm>
             </v-col>
@@ -430,15 +441,13 @@ export default {
     </div>
     <BaseCardViewComponent title="Habilidades" v-else>
         <div slot="card-text">
-            <v-row dense v-if="show">
+            <v-row dense v-show="show">
                 <v-col cols="12" md="6">
                     <BaseForm
                         v-if="user && buoId"
                         :block="$vuetify.breakpoint.mobile"
                         labelBtn="Buscar"
                         :method="$_setParams"
-                        lblCancel="Limpiar"
-                        :cancel="$_clean"
                     >
                         <div slot="body">
                             <v-row dense>
@@ -467,6 +476,18 @@ export default {
                                     />
                                 </v-col>
                             </v-row>
+                        </div>
+                        <div slot="Beforebtns">
+                            <v-btn
+                                class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                                elevation="0"
+                                large
+                                outlined
+                                color="primary"
+                                @click="$_clean"
+                            >
+                                Limpiar
+                            </v-btn>
                         </div>
                     </BaseForm>
                 </v-col>
