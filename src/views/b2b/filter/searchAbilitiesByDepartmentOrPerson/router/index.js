@@ -8,7 +8,7 @@ const routes = [
         component:
             'b2b/filter/searchAbilitiesByDepartmentOrPerson/SearchAbilitiesByDepartmentOrPersonViewComponent',
         meta: {
-            module: 'UserViewComponent',
+            module: 'SearchAbilitiesByDepartmentOrPersonViewComponent',
         },
     },
 ];

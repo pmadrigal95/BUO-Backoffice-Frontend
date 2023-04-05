@@ -8,7 +8,7 @@ const routes = [
         name: 'ProfileFilterViewComponent',
         component: 'user/profile/ProfileFilterViewComponent',
         meta: {
-            module: 'UserViewComponent',
+            module: 'ProfileViewComponent',
         },
     },
 
@@ -17,7 +17,7 @@ const routes = [
         name: 'ProfileDetailsViewComponent',
         component: 'user/profile/ProfileDetailsViewComponent',
         meta: {
-            module: 'UserViewComponent',
+            module: 'ProfileViewComponent',
         },
     },
 ];

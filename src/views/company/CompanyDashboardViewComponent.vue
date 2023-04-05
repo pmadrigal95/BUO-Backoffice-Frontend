@@ -65,6 +65,20 @@ export default {
                 baseSecurityHelper.$_ReadPermission('UserViewComponent');
             return result;
         },
+
+        abilityPermission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'AbilityViewComponent'
+            );
+            return result;
+        },
+
+        departmentPermission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'DepartmentViewComponent'
+            );
+            return result;
+        },
     },
 
     created() {
@@ -172,7 +186,7 @@ export default {
                             />
                         </v-expansion-panel-content>
                     </v-expansion-panel>
-                    <v-expansion-panel>
+                    <v-expansion-panel v-if="abilityPermission">
                         <v-expansion-panel-header color="clouds"
                             ><div
                                 :class="[
@@ -190,7 +204,7 @@ export default {
                             />
                         </v-expansion-panel-content>
                     </v-expansion-panel>
-                    <v-expansion-panel>
+                    <v-expansion-panel v-if="departmentPermission">
                         <v-expansion-panel-header color="clouds"
                             ><div
                                 :class="[

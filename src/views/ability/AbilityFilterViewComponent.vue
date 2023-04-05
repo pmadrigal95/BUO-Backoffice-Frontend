@@ -246,7 +246,7 @@ export default {
 
         write() {
             const result = baseSecurityHelper.$_ReadPermission(
-                this.$router.currentRoute.meta.module,
+                'AbilityViewComponent',
                 baseSecurityHelper.$_write
             );
             return result;

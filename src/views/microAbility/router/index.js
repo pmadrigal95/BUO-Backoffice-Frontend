@@ -7,7 +7,7 @@ const routes = [
         name: 'MicroAbilityFilterViewComponent',
         component: 'microAbility/MicroAbilityFilterViewComponent',
         meta: {
-            module: 'PromotionalCodesViewComponent',
+            module: 'MicroAbilityViewComponent',
         },
     },
 
@@ -16,7 +16,7 @@ const routes = [
         name: 'MicroAbilityEditorViewComponent',
         component: 'microAbility/MicroAbilityEditorViewComponent',
         meta: {
-            module: 'PromotionalCodesViewComponent',
+            module: 'MicroAbilityViewComponent',
         },
     },
 ];

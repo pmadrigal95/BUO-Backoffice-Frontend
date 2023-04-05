@@ -8,7 +8,7 @@ const routes = [
         name: 'ApprovalViewComponent',
         component: 'approval/ApprovalViewComponent',
         meta: {
-            module: 'UserViewComponent',
+            module: 'ApprovalViewComponent',
         },
     },
 ];

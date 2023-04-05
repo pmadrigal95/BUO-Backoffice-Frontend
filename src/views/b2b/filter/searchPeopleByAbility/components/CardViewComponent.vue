@@ -63,8 +63,9 @@ export default {
         },
 
         permission() {
-            const result =
-                baseSecurityHelper.$_ReadPermission('UserViewComponent');
+            const result = baseSecurityHelper.$_ReadPermission(
+                'ProfileViewComponent'
+            );
             return result;
         },
     },

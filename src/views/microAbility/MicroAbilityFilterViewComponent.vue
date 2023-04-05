@@ -85,7 +85,7 @@ export default {
 
         write() {
             const result = baseSecurityHelper.$_ReadPermission(
-                this.$router.currentRoute.meta.module,
+                'MicroAbilityViewComponent',
                 baseSecurityHelper.$_write
             );
             return result;

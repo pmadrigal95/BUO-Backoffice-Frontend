@@ -10,6 +10,8 @@ import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
@@ -38,6 +40,15 @@ export default {
             entity: this.$_Object(),
             loading: false,
         };
+    },
+
+    computed: {
+        microabilityPermission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'MicroAbilityViewComponent'
+            );
+            return result;
+        },
     },
 
     mounted() {
@@ -113,7 +124,12 @@ export default {
         <v-tabs v-model="tab" right show-arrows height="25" class="pa-3">
             <v-tabs-slider color="transparent"></v-tabs-slider>
             <v-tab class="rounded-pill no-uppercase"> Habilidad </v-tab>
-            <v-tab class="rounded-pill no-uppercase"> Micro Habilidades </v-tab>
+            <v-tab
+                class="rounded-pill no-uppercase"
+                v-if="microabilityPermission"
+            >
+                Micro Habilidades
+            </v-tab>
         </v-tabs>
 
         <v-tabs-items v-model="tab" class="pa-5">
@@ -139,7 +155,7 @@ export default {
                     </div>
                 </BaseCardViewComponent>
             </v-tab-item>
-            <v-tab-item>
+            <v-tab-item v-if="microabilityPermission">
                 <MicroAbilityFilterViewComponent
                     :cualificacionId="$router.currentRoute.params.Id"
                     :organizacionId="entity.organizacionId"

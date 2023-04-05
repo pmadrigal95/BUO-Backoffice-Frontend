@@ -166,11 +166,10 @@ export default {
             return array.length > 0 ? array : undefined;
         },
 
-        //TODO: Realizar Cambios a permisos correspondientes
         permission() {
             const result = baseSecurityHelper.$_ReadPermission(
                 this.$router.currentRoute.meta.module,
-                [baseSecurityHelper.$_write, baseSecurityHelper.$_upload]
+                baseSecurityHelper.$_write
             );
             return result;
         },

@@ -7,7 +7,7 @@ const routes = [
         name: 'AbilityFilterViewComponent',
         component: 'ability/AbilityFilterViewComponent',
         meta: {
-            module: 'PromotionalCodesViewComponent',
+            module: 'AbilityViewComponent',
         },
     },
 
@@ -16,7 +16,7 @@ const routes = [
         name: 'AbilityEditorViewComponent',
         component: 'ability/AbilityEditorViewComponent',
         meta: {
-            module: 'PromotionalCodesViewComponent',
+            module: 'AbilityViewComponent',
         },
     },
 ];

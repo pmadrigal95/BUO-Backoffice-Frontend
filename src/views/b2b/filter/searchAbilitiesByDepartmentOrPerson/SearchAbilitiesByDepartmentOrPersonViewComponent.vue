@@ -264,8 +264,9 @@ export default {
         },
 
         permission() {
-            const result =
-                baseSecurityHelper.$_ReadPermission('UserViewComponent');
+            const result = baseSecurityHelper.$_ReadPermission(
+                'AbilityViewComponent'
+            );
             return result;
         },
     },
