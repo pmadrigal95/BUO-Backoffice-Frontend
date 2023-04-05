@@ -34,7 +34,7 @@ export default {
 
 <template>
     <div v-if="entity && entity.userId">
-        <v-layout justify-start class="pl-6">
+        <v-layout justify-start class="my-4 pl-6">
             <v-btn
                 color="blue800"
                 class="no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"

@@ -157,7 +157,7 @@ export default {
             ref="filter"
             :setting="setting"
             :extraParams="extraParams"
-            :fnDoubleClick="$_userDetails"
+            :fnDoubleClick="$_viewProfile"
         >
             <div slot="btns">
                 <BaseCustomsButtonsGrid

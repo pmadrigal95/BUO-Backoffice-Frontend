@@ -193,7 +193,7 @@ export default {
                         show: false,
                     },
                     {
-                        text: 'interna',
+                        text: 'Interna',
                         type: 'bool',
                         align: 'center',
                         value: 'esInterna',

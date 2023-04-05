@@ -59,7 +59,7 @@ export default {
                         show: true,
                     },
                     {
-                        text: 'interna',
+                        text: 'Interna',
                         type: 'bool',
                         align: 'center',
                         value: 'esInterna',
