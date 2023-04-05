@@ -8,13 +8,6 @@ import profileRoutes from '@/views/user/profile/router';
 
 import bulkLoadRoutes from '@/views/user/bulkLoad/router';
 
-import certificationRoutes from '@/views/user/certification/router';
-
-const routes = [
-    ...userRoutes,
-    ...profileRoutes,
-    ...bulkLoadRoutes,
-    ...certificationRoutes,
-];
+const routes = [...userRoutes, ...profileRoutes, ...bulkLoadRoutes];
 
 export default routes;

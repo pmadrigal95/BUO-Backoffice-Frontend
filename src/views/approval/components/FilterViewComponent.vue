@@ -25,7 +25,7 @@ const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
 export default {
-    name: 'CompetenceFilterViewComponent',
+    name: 'FilterViewComponent',
 
     props: {
         /**
@@ -38,7 +38,12 @@ export default {
 
         organizacionId: {
             type: Number,
-            required: false,
+            required: true,
+        },
+
+        updateGrid: {
+            type: Function,
+            required: true,
         },
     },
 
@@ -49,9 +54,6 @@ export default {
 
     data() {
         return {
-            entity: this.$_Object(),
-            search: 0,
-            componentKey: 0,
             loading: false,
             comment: undefined,
             newStatusCode: undefined,
@@ -60,6 +62,7 @@ export default {
 
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
+
         /**
          * Configuracion BaseServerDataTable
          */
@@ -95,7 +98,7 @@ export default {
                         text: 'Área / Departamento',
                         align: 'start',
                         value: 'nombreDepartamento',
-                        show: this.entity.departamentoId != undefined,
+                        show: false,
                     },
                     {
                         text: 'Comentario',
@@ -131,26 +134,18 @@ export default {
                     },
                 ],
                 key: 'id',
+
                 singleSelect: false,
             };
         },
 
         extraParams() {
             let array = [];
-            if (this.user.companyId != this.buoId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.user.companyId,
-                });
-            } else if (this.organizacionId != undefined) {
+
+            if (this.organizacionId) {
                 array.push({
                     name: 'organizacionId',
                     value: this.organizacionId,
-                });
-            } else if (this.entity.organizacionId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.entity.organizacionId,
                 });
             }
 
@@ -171,6 +166,7 @@ export default {
             return array.length > 0 ? array : undefined;
         },
 
+        //TODO: Realizar Cambios a permisos correspondientes
         permission() {
             const result = baseSecurityHelper.$_ReadPermission(
                 this.$router.currentRoute.meta.module,
@@ -196,28 +192,7 @@ export default {
         },
     },
 
-    created() {
-        this.$_setOrganization();
-    },
-
     methods: {
-        /**
-         * Entity Object
-         */
-        $_Object() {
-            return {
-                id: undefined,
-                organizacionId: undefined,
-                personaId: undefined,
-                competenciaId: undefined,
-                cualificacionId: undefined,
-                usuarioId: undefined,
-                comentario: undefined,
-                estadoId: this.statusCode,
-                newEstadoId: undefined,
-            };
-        },
-
         /**
          * Open a modal
          */
@@ -231,17 +206,6 @@ export default {
         $_close() {
             if (this.$refs['popUp'].$_checkStatus()) {
                 this.$_open();
-            }
-        },
-
-        $_setOrganization() {
-            if (
-                this.organizacionId != undefined &&
-                this.user.companyId != this.organizacionId
-            ) {
-                this.entity.organizacionId = this.organizacionId;
-            } else {
-                this.entity.organizacionId = this.user.companyId;
             }
         },
 
@@ -291,31 +255,26 @@ export default {
          * Set a information to ability or several
          */
         $_setAbility() {
-            let data = [];
-            this.$_GetRow().map((item) => {
-                item.usuarioId = this.user.userId;
-                item.newEstadoId = this.newStatusCode;
-                item.comentario = this.comment;
-                data.push(item);
-            });
-            this.entity = data;
+            return this.$_GetRow().map((element) =>
+                Object.assign({}, element, {
+                    usuarioId: this.user.userId,
+                    newEstadoId: this.newStatusCode,
+                    comentario: this.comment,
+                })
+            );
         },
 
         $_sendToApi() {
             this.loading = true;
-
-            this.$_setAbility();
-
             httpService
-                .post(`empleadoCompetencia/updateStatusList`, this.entity)
+                .post(
+                    `empleadoCompetencia/updateStatusList`,
+                    this.$_setAbility()
+                )
                 .then((response) => {
                     this.loading = false;
                     if (response != undefined) {
-                        this.$refs.CertificationFilter.$_ParamsToAPI();
-                        this.comment = undefined;
-                        this.newStatusCode = undefined;
-                        this.componentKey++;
-                        this.$_close();
+                        this.updateGrid();
                     }
                 });
         },
@@ -368,7 +327,6 @@ export default {
         </BasePopUp>
         <BaseServerDataTable
             ref="CertificationFilter"
-            :key="componentKey"
             :setting="setting"
             :extraParams="extraParams"
         >

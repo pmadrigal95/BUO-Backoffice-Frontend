@@ -4,9 +4,9 @@
 
 const routes = [
     {
-        path: '/Certifications/Filter',
-        name: 'CertificationsViewComponent',
-        component: 'user/certification/CertificationsViewComponent',
+        path: '/Approval/Filter',
+        name: 'ApprovalViewComponent',
+        component: 'approval/ApprovalViewComponent',
         meta: {
             module: 'UserViewComponent',
         },
