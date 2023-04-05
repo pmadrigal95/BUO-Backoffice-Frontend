@@ -49,7 +49,7 @@ export default {
             entity: this.$_Object(),
             componentKey: 0,
             componentGrid: 0,
-            show: false,
+            show: true,
             loading: [{ value: false }, { value: false }],
         };
     },

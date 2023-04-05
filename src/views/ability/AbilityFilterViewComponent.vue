@@ -47,7 +47,7 @@ export default {
     data() {
         return {
             entity: this.$_Object(),
-            show: false,
+            show: true,
         };
     },
 

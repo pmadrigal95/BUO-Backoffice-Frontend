@@ -13,11 +13,12 @@ import {
     Chart as ChartJS,
     PointElement,
     LineElement,
+    Legend,
     RadialLinearScale,
     Filler,
 } from 'chart.js';
 
-ChartJS.register(PointElement, RadialLinearScale, LineElement, Filler);
+ChartJS.register(PointElement, Legend, RadialLinearScale, LineElement, Filler);
 
 export default {
     name: 'BaseRadarChart',

@@ -35,7 +35,7 @@ export default {
     data() {
         return {
             tab: null,
-            show: false,
+            show: true,
             componentKey: 0,
             componentGrid: 0,
             entity: {},

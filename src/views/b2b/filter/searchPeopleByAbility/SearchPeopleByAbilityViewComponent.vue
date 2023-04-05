@@ -60,7 +60,7 @@ export default {
             propEntity: undefined,
             componentKey: 0,
             filterKey: 0,
-            show: false,
+            show: true,
         };
     },
 

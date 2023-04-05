@@ -42,7 +42,7 @@ export default {
         return {
             entity: this.$_Object(),
             componentKey: 0,
-            show: false,
+            show: true,
         };
     },
 
