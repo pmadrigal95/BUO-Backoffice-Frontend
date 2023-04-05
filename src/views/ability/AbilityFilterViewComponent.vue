@@ -366,7 +366,7 @@ export default {
                 this.user.companyId === this.buoId
                     ? undefined
                     : this.user.companyId;
-            this.entity.departamentoId = undefined;
+            this.entity.categoriaId = undefined;
             this.$_setParams();
         },
 

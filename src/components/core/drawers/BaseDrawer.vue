@@ -110,7 +110,7 @@ export default {
         :mini-variant.sync="mini"
         :permanent="$vuetify.breakpoint.mdAndUp"
         :absolute="$vuetify.breakpoint.mdAndUp"
-        style="max-height: 100% !important"
+        style="max-height: auto !important"
         :temporary="$vuetify.breakpoint.smAndDown"
     >
         <v-list-item two-line class="px-2" v-if="user">
