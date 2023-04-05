@@ -513,6 +513,7 @@ export default {
                                 outlined
                                 color="primary"
                                 @click="$_clean"
+                                :block="$vuetify.breakpoint.mobile"
                             >
                                 Limpiar
                             </v-btn>
