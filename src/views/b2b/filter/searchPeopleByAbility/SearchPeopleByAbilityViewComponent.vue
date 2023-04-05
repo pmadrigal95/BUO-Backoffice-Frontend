@@ -31,14 +31,9 @@ const BaseInputTreeview = () =>
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
-const FilterViewComponent = () =>
+const DisplayViewComponent = () =>
     import(
-        '@/views/b2b/filter/searchPeopleByAbility/components/FilterViewComponent'
-    );
-
-const CardViewComponent = () =>
-    import(
-        '@/views/b2b/filter/searchPeopleByAbility/components/CardViewComponent'
+        '@/views/b2b/filter/searchPeopleByAbility/components/DisplayViewComponent'
     );
 
 export default {
@@ -50,8 +45,7 @@ export default {
         BaseNotFoundContent,
         BaseCardViewComponent,
         BaseCustomsButtonsGrid,
-        FilterViewComponent,
-        CardViewComponent,
+        DisplayViewComponent,
     },
 
     data() {
@@ -288,6 +282,13 @@ export default {
         },
     },
 
+    created() {
+        this.entity.organizacionId =
+            this.user.companyId === this.buoId
+                ? undefined
+                : this.user.companyId;
+    },
+
     methods: {
         /**
          * Entity Object
@@ -444,16 +445,11 @@ export default {
                             v-if="!propEntity"
                             msg="Busca habilidades o estructura organizacional para encontrar a la persona indicada"
                         />
-                        <div v-else>
-                            <CardViewComponent
-                                :key="componentKey"
-                                :entity="propEntity"
-                            />
-                            <FilterViewComponent
-                                :key="componentKey + 1"
-                                :entity="propEntity"
-                            />
-                        </div>
+                        <DisplayViewComponent
+                            v-else
+                            :key="componentKey"
+                            :entity="propEntity"
+                        />
                     </div>
                 </v-card-text>
             </v-card>

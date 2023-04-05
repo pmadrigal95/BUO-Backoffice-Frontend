@@ -104,10 +104,8 @@ export default {
 
         $_toProfile(id) {
             if (this.permission) {
-                this.$router.push({
-                    name: 'ProfileDetailsViewComponent',
-                    params: { Id: id },
-                });
+                this.entity.userId = id;
+                this.entity.step = 1;
             }
         },
     },

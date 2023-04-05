@@ -289,6 +289,13 @@ export default {
         },
     },
 
+    created() {
+        this.entity.organizacionId =
+            this.user.companyId === this.buoId
+                ? undefined
+                : this.user.companyId;
+    },
+
     methods: {
         /**
          * Entity Object

@@ -27,6 +27,12 @@ const BuoAbilityViewComponent = () =>
 export default {
     name: 'ProfileDetailsViewComponent',
 
+    props: {
+        userId: {
+            type: [Number, String],
+        },
+    },
+
     components: {
         BaseCardViewComponent,
         PersonalInformationViewComponent,
@@ -54,7 +60,9 @@ export default {
         },
 
         $_getObject() {
-            let data = this.$router.currentRoute.params.Id;
+            let data = this.userId
+                ? this.userId
+                : this.$router.currentRoute.params.Id;
             if (data) {
                 //HttpServices a la vista para obtener Vista
                 this.loading = true;
@@ -80,7 +88,11 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent :btnAction="$_returnToFilter">
+    <BaseCardViewComponent
+        :btnAction="userId ? undefined : $_returnToFilter"
+        :md="userId ? '12' : undefined"
+        :offset="userId ? '0' : undefined"
+    >
         <div slot="card-text">
             <BaseSkeletonLoader
                 v-if="loading || !entity"
@@ -89,7 +101,10 @@ export default {
             <v-card flat v-else class="rounded-t-xl">
                 <v-card-text>
                     <PersonalInformationViewComponent :entity="entity" />
-                    <BuoAbilityViewComponent :userName="entity.username" />
+                    <BuoAbilityViewComponent
+                        :userName="entity.username"
+                        :userId="userId"
+                    />
                     <PdaAbilityViewComponent
                         :userName="entity.username"
                         :conPda="entity.conPda"

@@ -30,6 +30,10 @@ export default {
             type: String,
             requiered: true,
         },
+
+        userId: {
+            type: [Number, String],
+        },
     },
 
     components: {
@@ -96,7 +100,9 @@ export default {
         },
 
         $_getSkills() {
-            let data = this.$router.currentRoute.params.Id;
+            let data = this.userId
+                ? this.userId
+                : this.$router.currentRoute.params.Id;
             if (data) {
                 this.loading = true;
                 httpService

@@ -113,6 +113,31 @@ export default {
                     break;
             }
         },
+
+        $_viewProfile(params) {
+            const row = params ? [params.selected] : this.$_GetRow();
+
+            switch (row.length) {
+                case 0:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
+                    break;
+
+                case 1:
+                    this.entity.userId = row[0].usuarioId;
+                    this.entity.step = 1;
+                    break;
+
+                default:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotMultiSelected
+                    );
+                    break;
+            }
+        },
     },
 };
 </script>
@@ -135,6 +160,12 @@ export default {
             :fnDoubleClick="$_userDetails"
         >
             <div slot="btns">
+                <BaseCustomsButtonsGrid
+                    label="Ver Perfil"
+                    :fnMethod="$_viewProfile"
+                    icon="mdi-account-search"
+                />
+
                 <BaseCustomsButtonsGrid
                     label="Comparar PDA"
                     :outlined="false"
