@@ -83,9 +83,7 @@ export default {
          * Function to return the BUOPDAReportViewComponent
          */
         $_returnToFilter() {
-            this.$router.push({
-                name: 'BUOPDAReportViewComponent',
-            });
+            this.$router.back();
         },
 
         /**

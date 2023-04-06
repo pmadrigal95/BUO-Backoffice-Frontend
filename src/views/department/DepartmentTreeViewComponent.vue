@@ -181,10 +181,19 @@ export default {
                                 <v-card-text>
                                     <div
                                         class="pb-2 black--text BUO-Paragraph-Small"
+                                        v-if="department.descripcion"
                                     >
-                                        Descripcion
+                                        Descripción
                                     </div>
-                                    <v-divider></v-divider>
+                                    <div
+                                        class="pb-2 black--text BUO-Label"
+                                        v-if="department.descripcion"
+                                    >
+                                        {{ department.descripcion }}
+                                    </div>
+                                    <v-divider
+                                        v-if="department.descripcion"
+                                    ></v-divider>
                                     <div class="py-2">
                                         <div
                                             class="py-1grey500--text BUO-Label-Small"
@@ -323,11 +332,14 @@ export default {
                             >
                         </v-layout>
                         <v-row v-else-if="$vuetify.breakpoint.mobile" dense>
-                            <v-col cols="12">
+                            <v-col cols="12" v-if="department.descripcion">
                                 <div
                                     class="pb-2 black--text BUO-Paragraph-Small"
                                 >
                                     Descripcion
+                                </div>
+                                <div class="pb-2 black--text BUO-Label">
+                                    {{ department.descripcion }}
                                 </div>
                                 <v-divider></v-divider>
                             </v-col>

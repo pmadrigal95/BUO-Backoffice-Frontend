@@ -120,7 +120,7 @@ export default {
      * Descripción: Seleccionar fila validación
      */
     $_MsgRowNotMultiSelected:
-        'Sólo es posible editar un registro al mismo tiempo',
+        'Sólo es posible realizar la acción con un registro al mismo tiempo',
 
     /**
      * Descripción: eliminar fila validación

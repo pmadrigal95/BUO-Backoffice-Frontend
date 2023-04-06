@@ -234,7 +234,7 @@ export default {
                         show: false,
                     },
                     {
-                        text: 'Telefóno',
+                        text: 'Teléfono',
                         align: 'center',
                         value: 'telefono',
                         show: false,
