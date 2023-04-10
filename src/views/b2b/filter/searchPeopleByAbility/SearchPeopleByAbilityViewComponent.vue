@@ -69,7 +69,7 @@ export default {
                 ? [
                       {
                           name: 'organizacionId',
-                          value: `${this.entity.organizacionId} | 1`,
+                          value: `${this.entity.organizacionId}`,
                       },
                   ]
                 : undefined;
