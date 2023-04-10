@@ -16,13 +16,19 @@ const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
 const PersonalInformationViewComponent = () =>
-    import('@/views/user/profile/components/PersonalInformationViewComponent');
+    import(
+        '@/views/user/profile/components/internalCompontes/PersonalInformationViewComponent'
+    );
 
 const PdaAbilityViewComponent = () =>
-    import('@/views/user/profile/components/PdaAbilityViewComponent');
+    import(
+        '@/views/user/profile/components/internalCompontes/PdaAbilityViewComponent'
+    );
 
 const BuoAbilityViewComponent = () =>
-    import('@/views/user/profile/components/BuoAbilityViewComponent');
+    import(
+        '@/views/user/profile/components/internalCompontes/BuoAbilityViewComponent'
+    );
 
 export default {
     name: 'ProfileDetailsViewComponent',
@@ -108,6 +114,7 @@ export default {
                     <PdaAbilityViewComponent
                         :userName="entity.username"
                         :conPda="entity.conPda"
+                        :userId="userId"
                     />
                 </v-card-text>
             </v-card>

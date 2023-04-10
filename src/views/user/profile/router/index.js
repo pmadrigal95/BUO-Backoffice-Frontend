@@ -11,15 +11,6 @@ const routes = [
             module: 'ProfileViewComponent',
         },
     },
-
-    {
-        path: '/Profile/Details/:Id',
-        name: 'ProfileDetailsViewComponent',
-        component: 'user/profile/ProfileDetailsViewComponent',
-        meta: {
-            module: 'ProfileViewComponent',
-        },
-    },
 ];
 
 export default routes;

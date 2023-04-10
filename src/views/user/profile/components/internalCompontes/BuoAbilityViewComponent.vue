@@ -20,7 +20,9 @@ const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid.vue');
 
 const BaseMyAbilitiesList = () =>
-    import('@/views/user/profile/components/buoAbilities/BaseMyAbilitiesList');
+    import(
+        '@/views/user/profile/components/internalCompontes/buoAbilities/BaseMyAbilitiesList'
+    );
 
 export default {
     name: 'BuoAbilityViewComponent',

@@ -31,6 +31,10 @@ export default {
             type: Boolean,
             requiered: true,
         },
+
+        userId: {
+            type: [Number, String],
+        },
     },
 
     data() {
@@ -62,10 +66,14 @@ export default {
 
     methods: {
         $_fnSendReportPDA() {
-            if (this.conPda && this.$router.currentRoute.params.Id) {
+            if (this.conPda) {
+                let data = this.userId
+                    ? this.userId
+                    : this.$router.currentRoute.params.Id;
+
                 this.$router.push({
                     name: 'BUOPDAUserDetailsReportViewComponent',
-                    params: { Id: this.$router.currentRoute.params.Id },
+                    params: { Id: data },
                 });
             } else {
                 baseNotificationsHelper.Message(

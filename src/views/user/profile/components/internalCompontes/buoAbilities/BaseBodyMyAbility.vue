@@ -11,7 +11,7 @@ import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 const BaseShareableMicroSkillStatusList = () =>
     import(
-        '@/views/user/profile/components/buoAbilities/BaseMicroSkillStatusList'
+        '@/views/user/profile/components/internalCompontes/buoAbilities/BaseMicroSkillStatusList'
     );
 
 export default {

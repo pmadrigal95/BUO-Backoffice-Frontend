@@ -6,10 +6,14 @@
  */
 
 const BaseHeaderMySkill = () =>
-    import('@/views/user/profile/components/buoAbilities/BaseHeaderMyAbility');
+    import(
+        '@/views/user/profile/components/internalCompontes/buoAbilities/BaseHeaderMyAbility'
+    );
 
 const BaseBodyMySkill = () =>
-    import('@/views/user/profile/components/buoAbilities/BaseBodyMyAbility');
+    import(
+        '@/views/user/profile/components/internalCompontes/buoAbilities/BaseBodyMyAbility'
+    );
 
 const BaseNotFoundContent = () =>
     import('@/components/core/cards/BaseNotFoundContent');

@@ -92,15 +92,6 @@ export default {
                     }
                 });
         },
-
-        $_toProfile(id) {
-            if (this.permission) {
-                this.$router.push({
-                    name: 'ProfileDetailsViewComponent',
-                    params: { Id: id },
-                });
-            }
-        },
     },
 };
 </script>

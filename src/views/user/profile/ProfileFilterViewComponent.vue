@@ -8,15 +8,13 @@
 
 import { mapGetters } from 'vuex';
 
-import baseLocalHelper from '@/helpers/baseLocalHelper.js';
-
-import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
+import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
-const BaseServerDataTable = () =>
-    import('@/components/core/grids/BaseServerDataTable');
+const BaseInputDataTable = () =>
+    import('@/components/core/forms/BaseInputDataTable');
 
 const BaseInputTreeview = () =>
     import('@/components/core/treeview/BaseInputTreeview');
@@ -24,15 +22,15 @@ const BaseInputTreeview = () =>
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
-const BaseInputDataTable = () =>
-    import('@/components/core/forms/BaseInputDataTable');
+const DisplayViewComponent = () =>
+    import('@/views/user/profile/components/DisplayViewComponent.vue');
 
 export default {
     name: 'ProfileFilterViewComponent',
 
     components: {
         BaseCardViewComponent,
-        BaseServerDataTable,
+        DisplayViewComponent,
         BaseInputTreeview,
         BaseCustomsButtonsGrid,
         BaseInputDataTable,
@@ -41,7 +39,9 @@ export default {
     data() {
         return {
             entity: this.$_Object(),
+            propEntity: undefined,
             componentKey: 0,
+            filterKey: 0,
             show: true,
         };
     },
@@ -145,135 +145,6 @@ export default {
                 key: 'id',
             };
         },
-        /**
-         * Configuracion BaseServerDataTable
-         */
-        setting() {
-            return {
-                endpoint: this.entity.departamentoId
-                    ? `user/findByDeep/${this.entity.departamentoId}`
-                    : 'user/findBy',
-                columns: [
-                    {
-                        text: 'Nombre',
-                        align: 'start',
-                        value: 'nombre',
-                        show: false,
-                    },
-                    {
-                        text: 'Primer Apellido',
-                        align: 'start',
-                        value: 'primerApellido',
-                        show: false,
-                    },
-                    {
-                        text: 'Segundo Apellido',
-                        align: 'start',
-                        value: 'segundoApellido',
-                        show: false,
-                    },
-                    {
-                        text: 'Nombre Completo',
-                        align: 'start',
-                        value: 'nombreCompleto',
-                        show: true,
-                    },
-                    {
-                        text: 'Correo',
-                        align: 'start',
-                        value: 'correo',
-                        show: true,
-                    },
-                    {
-                        text: 'País',
-                        align: 'start',
-                        value: 'nombrePais',
-                        show: false,
-                    },
-                    {
-                        text: 'Estado',
-                        align: 'center',
-                        type: 'chip',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Wallet Activo',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'walletActivo',
-                        show: true,
-                    },
-                    {
-                        text: 'Test PDA',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'conPda',
-                        show: true,
-                    },
-                    {
-                        text: 'Identificación',
-                        align: 'center',
-                        value: 'identificacion',
-                        show: false,
-                    },
-                    {
-                        text: 'Género',
-                        align: 'center',
-                        value: 'nombreGenero',
-                        show: false,
-                    },
-                    {
-                        text: 'Ciudad',
-                        align: 'center',
-                        value: 'ciudad',
-                        show: false,
-                    },
-                    {
-                        text: 'Teléfono',
-                        align: 'center',
-                        value: 'telefono',
-                        show: false,
-                    },
-                    {
-                        text: 'Username',
-                        align: 'center',
-                        value: 'username',
-                        show: false,
-                    },
-                    {
-                        text: 'Empresa',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        show: this.user.companyId === this.buoId,
-                    },
-                    {
-                        text: 'Área / Departamento',
-                        align: 'start',
-                        value: 'nombreDepartamento',
-                        show: this.entity.departamentoId != undefined,
-                    },
-                ],
-                key: 'id',
-            };
-        },
-
-        extraParams() {
-            let array = [];
-            if (this.user.companyId != this.buoId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.user.companyId,
-                });
-            } else if (this.entity.organizacionId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.entity.organizacionId,
-                });
-            }
-
-            return array.length > 0 ? array : undefined;
-        },
     },
 
     watch: {
@@ -283,7 +154,7 @@ export default {
         'entity.organizacionId': {
             handler(newValue, oldValue) {
                 if (oldValue != newValue) {
-                    this.entity.categoriaId = undefined;
+                    this.entity.departamentoId = undefined;
                 }
             },
             immediate: true,
@@ -295,16 +166,11 @@ export default {
             this.user.companyId === this.buoId
                 ? undefined
                 : this.user.companyId;
+
+        this.$_setProps();
     },
 
     methods: {
-        /**
-         * Get a registry
-         */
-        $_GetRow() {
-            return this.$refs.ProfileFilter.$data.selected;
-        },
-
         /**
          * Entity Object
          */
@@ -315,8 +181,8 @@ export default {
             };
         },
 
-        $_setParams() {
-            this.$refs.ProfileFilter.$_ParamsToAPI();
+        $_setProps() {
+            this.propEntity = BaseArrayHelper.SetObject({}, this.entity);
             this.componentKey++;
         },
 
@@ -325,28 +191,8 @@ export default {
                 this.user.companyId === this.buoId
                     ? undefined
                     : this.user.companyId;
-            this.entity.departamentoId = undefined;
-            this.$_setParams();
-        },
-
-        $_userDetails(params) {
-            const row = params ? [params.selected] : this.$_GetRow();
-
-            switch (row.length) {
-                case 0:
-                    baseNotificationsHelper.Message(
-                        true,
-                        baseLocalHelper.$_MsgRowNotSelected
-                    );
-                    break;
-
-                case 1:
-                    this.$router.push({
-                        name: 'ProfileDetailsViewComponent',
-                        params: row && { Id: row[0].id },
-                    });
-                    break;
-            }
+            this.entity.departamentoId = null;
+            this.$_setProps();
         },
 
         $_showAdvFilter() {
@@ -367,16 +213,16 @@ export default {
         subtitle="Busca toda la información de tus colaboradores"
     >
         <div slot="card-text">
-            <v-row dense v-show="show">
+            <v-row dense v-show="show" class="pb-2">
                 <v-col cols="12" md="6">
                     <BaseForm
                         v-if="user && buoId"
                         :block="$vuetify.breakpoint.mobile"
                         labelBtn="Buscar"
-                        :method="$_setParams"
+                        :method="$_setProps"
                     >
                         <div slot="body">
-                            <v-row>
+                            <v-row dense>
                                 <v-col cols="12">
                                     <BaseInputDataTable
                                         v-if="user.companyId === buoId"
@@ -414,33 +260,25 @@ export default {
                     </BaseForm>
                 </v-col>
             </v-row>
-            <v-card> </v-card>
-        </div>
 
-        <div slot="body">
-            <BaseSkeletonLoader v-if="!user && !buoId" type="list-item" />
-            <BaseServerDataTable
-                ref="ProfileFilter"
-                :key="componentKey"
-                :setting="setting"
-                :extraParams="extraParams"
-                :fnDoubleClick="$_userDetails"
-            >
-                <div slot="btns">
-                    <BaseCustomsButtonsGrid
-                        label="Ver Perfil"
-                        :fnMethod="$_userDetails"
-                        icon="mdi-chevron-right"
-                    />
-
-                    <BaseCustomsButtonsGrid
-                        label="Filtro Avanzado"
-                        :fnMethod="$_showAdvFilter"
-                        :outlined="!show"
-                        icon="mdi-filter-cog-outline"
-                    />
-                </div>
-            </BaseServerDataTable>
+            <v-card flat class="rounded-t-xl">
+                <v-card-text>
+                    <v-row justify="end" class="pa-3">
+                        <BaseCustomsButtonsGrid
+                            label="Filtro Avanzado"
+                            :fnMethod="$_showAdvFilter"
+                            :outlined="!show"
+                            icon="mdi-filter-cog-outline"
+                        />
+                    </v-row>
+                    <div class="pt-3">
+                        <DisplayViewComponent
+                            :key="componentKey"
+                            :entity="propEntity"
+                        />
+                    </div>
+                </v-card-text>
+            </v-card>
         </div>
     </BaseCardViewComponent>
 </template>
