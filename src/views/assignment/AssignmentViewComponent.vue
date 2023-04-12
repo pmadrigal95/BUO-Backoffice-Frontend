@@ -2,43 +2,52 @@
 /**
  * Descripción: Pantalla  Certificaciones
  *
- * @displayName CertificationsViewComponent
+ * @displayName AssignmentViewComponent
  *
  */
 
 import { mapGetters } from 'vuex';
 
-import baseConfigHelper from '@/helpers/baseConfigHelper';
+import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
-const BaseInputDataTable = () =>
-    import('@/components/core/forms/BaseInputDataTable');
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
+const BaseNotFoundContent = () =>
+    import('@/components/core/cards/BaseNotFoundContent');
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
-const FilterViewComponent = () =>
-    import('@/views/approval/components/FilterViewComponent');
+const BaseInputDataTable = () =>
+    import('@/components/core/forms/BaseInputDataTable');
+
+const BaseInputTreeview = () =>
+    import('@/components/core/treeview/BaseInputTreeview');
 
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
+const DisplayViewComponent = () =>
+    import('@/views/assignment/components/DisplayViewComponent');
+
 export default {
-    name: 'ApprovalViewComponent',
+    name: 'AssignmentViewComponent',
 
     components: {
+        BaseInputTreeview,
         BaseInputDataTable,
-        FilterViewComponent,
         BaseCardViewComponent,
         BaseCustomsButtonsGrid,
+        BaseNotFoundContent,
+        DisplayViewComponent,
     },
 
     data() {
         return {
-            tab: null,
-            show: true,
+            entity: this.$_Object(),
+            propEntity: undefined,
             componentKey: 0,
-            componentGrid: 0,
-            entity: {},
+            show: true,
         };
     },
 
@@ -142,41 +151,92 @@ export default {
             };
         },
 
-        certifying() {
-            return baseConfigHelper.$_statusCode.certifying;
+        abilityPermission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'AbilityViewComponent'
+            );
+            return result;
         },
 
-        certificate() {
-            return baseConfigHelper.$_statusCode.certificate;
+        userPermission() {
+            const result =
+                baseSecurityHelper.$_ReadPermission('UserViewComponent');
+            return result;
         },
+    },
 
-        rejected() {
-            return baseConfigHelper.$_statusCode.rejected;
-        },
-
-        uncertified() {
-            return baseConfigHelper.$_statusCode.uncertified;
+    watch: {
+        /**
+         * Actualizar
+         */
+        'entity.organizacionId': {
+            handler(newValue, oldValue) {
+                if (oldValue != newValue) {
+                    this.entity.departamentoId = undefined;
+                }
+            },
+            immediate: true,
         },
     },
 
     created() {
-        this.$_clean();
+        this.entity.organizacionId =
+            this.user.companyId === this.buoId
+                ? undefined
+                : this.user.companyId;
+        this.$_setProps();
     },
 
     methods: {
-        $_showAdvFilter() {
-            this.show = !this.show;
+        /**
+         * Entity Object
+         */
+        $_Object() {
+            return {
+                organizacionId: undefined,
+                departamentoId: undefined,
+            };
         },
 
-        $_setParams() {
-            this.componentGrid++;
+        $_showAdvFilter() {
+            this.show = !this.show;
+            if (this.show) {
+                if (this.user.companyId != this.buoId) {
+                    this.entity.organizacionId = this.user.companyId;
+                }
+            }
+        },
+
+        $_setProps() {
+            this.propEntity = BaseArrayHelper.SetObject({}, this.entity);
+            this.componentKey++;
         },
 
         $_clean() {
-            this.entity.organizacionId = this.user.companyId;
-            this.entity.companyName = this.user.companyName;
-            this.componentKey++;
-            this.$_setParams();
+            this.entity.organizacionId =
+                this.user.companyId === this.buoId
+                    ? undefined
+                    : this.user.companyId;
+            this.entity.departamentoId = undefined;
+            this.$_setProps();
+        },
+
+        /**
+         * Function to return the UserFilterViewComponent
+         */
+        $_returnToAbility() {
+            this.$router.push({
+                name: 'AbilityFilterViewComponent',
+            });
+        },
+
+        /**
+         * Function to return the UserFilterViewComponent
+         */
+        $_returnToUser() {
+            this.$router.push({
+                name: 'UserFilterViewComponent',
+            });
         },
     },
 };
@@ -184,31 +244,37 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="Administración de las solicitudes y aprobaciones"
+        title="Asignaciones"
+        subtitle="Algun copy relacionado"
     >
-        <div slot="card-text" v-show="show">
-            <v-row dense v-if="user.companyId === buoId">
+        <div slot="card-text">
+            <v-row dense v-show="show" class="pb-2">
                 <v-col cols="12" md="6">
                     <BaseForm
+                        v-if="user && buoId"
                         :block="$vuetify.breakpoint.mobile"
                         labelBtn="Buscar"
-                        :method="$_setParams"
+                        :method="$_setProps"
                     >
                         <div slot="body">
                             <v-row dense>
                                 <v-col cols="12">
-                                    <p
-                                        class="BUO-Paragraph-Large-SemiBold grey700--text"
-                                    >
-                                        Seleccione la empresa
-                                    </p>
                                     <BaseInputDataTable
+                                        v-if="user.companyId === buoId"
                                         label="Empresa"
                                         :setting="companySetting"
-                                        :editText="entity.companyName"
-                                        v-model="entity.organizacionId"
+                                        v-model.number="entity.organizacionId"
                                         :validate="['requiered']"
-                                        :key="componentKey"
+                                    />
+                                </v-col>
+                                <v-col cols="12">
+                                    <BaseInputTreeview
+                                        label="Área / Departamento"
+                                        v-model.number="entity.departamentoId"
+                                        :readonly="!entity.organizacionId"
+                                        itemText="nombre"
+                                        itemChildren="subDepartamentos"
+                                        :endpoint="`departamento/findAllTree/${entity.organizacionId}`"
                                     />
                                 </v-col>
                             </v-row>
@@ -229,74 +295,43 @@ export default {
                     </BaseForm>
                 </v-col>
             </v-row>
-        </div>
-        <div slot="body">
             <v-card flat class="rounded-t-xl">
                 <v-card-text>
-                    <v-layout justify-end>
+                    <v-row justify="end" class="pa-3">
+                        <BaseCustomsButtonsGrid
+                            v-if="abilityPermission"
+                            label="Administrar habilidades"
+                            :fnMethod="$_returnToAbility"
+                            icon="mdi-shield-star"
+                        />
+
+                        <BaseCustomsButtonsGrid
+                            v-if="abilityPermission"
+                            label="Administrar Colaboradores"
+                            :fnMethod="$_returnToUser"
+                            icon="mdi-account-group-outline"
+                        />
+
                         <BaseCustomsButtonsGrid
                             label="Filtro Avanzado"
                             :fnMethod="$_showAdvFilter"
                             :outlined="!show"
                             icon="mdi-filter-cog-outline"
-                            v-if="user.companyId === buoId"
                         />
-                    </v-layout>
-
-                    <div v-if="entity.organizacionId" :key="componentGrid">
-                        <v-tabs
-                            v-model="tab"
-                            right
-                            show-arrows
-                            height="25"
-                            class="pa-6 pt-5"
-                            flat
-                        >
-                            <v-tabs-slider color="transparent"></v-tabs-slider>
-                            <v-tab class="rounded-pill no-uppercase"
-                                >Pendientes</v-tab
-                            >
-                            <v-tab class="rounded-pill no-uppercase">
-                                Aprobadas
-                            </v-tab>
-                            <v-tab class="rounded-pill no-uppercase">
-                                Rechazadas</v-tab
-                            >
-                            <v-tab class="rounded-pill no-uppercase">
-                                Sin certificar</v-tab
-                            >
-                        </v-tabs>
-
-                        <v-tabs-items v-model="tab" class="pa-5">
-                            <v-tab-item>
-                                <FilterViewComponent
-                                    :statusCode="certifying"
-                                    :organizacionId="entity.organizacionId"
-                                    :updateGrid="$_setParams"
-                                />
-                            </v-tab-item>
-                            <v-tab-item>
-                                <FilterViewComponent
-                                    :statusCode="certificate"
-                                    :organizacionId="entity.organizacionId"
-                                    :updateGrid="$_setParams"
-                                />
-                            </v-tab-item>
-                            <v-tab-item>
-                                <FilterViewComponent
-                                    :statusCode="rejected"
-                                    :organizacionId="entity.organizacionId"
-                                    :updateGrid="$_setParams"
-                                />
-                            </v-tab-item>
-                            <v-tab-item>
-                                <FilterViewComponent
-                                    :statusCode="uncertified"
-                                    :organizacionId="entity.organizacionId"
-                                    :updateGrid="$_setParams"
-                                />
-                            </v-tab-item>
-                        </v-tabs-items>
+                    </v-row>
+                    <div class="pt-3">
+                        <BaseNotFoundContent
+                            v-if="
+                                !entity.organizacionId ||
+                                !propEntity.organizacionId
+                            "
+                            msg="Por favor seleccione una empresa"
+                        />
+                        <DisplayViewComponent
+                            :key="componentKey"
+                            :entity="propEntity"
+                            v-else
+                        />
                     </div>
                 </v-card-text>
             </v-card>

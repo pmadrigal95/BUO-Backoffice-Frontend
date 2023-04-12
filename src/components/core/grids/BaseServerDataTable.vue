@@ -88,6 +88,15 @@ export default {
         },
 
         /**
+         * Label del Primer botón Footer
+         * Default: Guardar
+         */
+        cancellabelBtn: {
+            type: String,
+            default: baseLocalHelper.$_LabelBtnGoOut,
+        },
+
+        /**
          * Color del Primer botón Footer
          * Default: blue900
          */
@@ -263,7 +272,7 @@ export default {
             /**
              * Descripción del botón
              */
-            lblCancel: baseLocalHelper.$_LabelBtnGoOut,
+            lblCancel: this.cancellabelBtn,
 
             /**
              * Mostrar btn cancelar del footer
@@ -1618,6 +1627,7 @@ export default {
             <v-layout align-end justify-end>
                 <v-btn
                     class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    elevation="0"
                     :color="color"
                     outlined
                     small
@@ -1628,6 +1638,7 @@ export default {
 
                 <v-btn
                     class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    elevation="0"
                     :color="color"
                     dark
                     small
@@ -1636,7 +1647,7 @@ export default {
                 >
 
                 <!-- @slot Agregar botones después del Btn principal -->
-                <slot name="btns"></slot>
+                <slot name="footerBtns"></slot>
             </v-layout>
         </v-card-actions>
     </v-card>

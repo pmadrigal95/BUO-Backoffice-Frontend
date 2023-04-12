@@ -35,7 +35,7 @@ export default {
 <template>
     <div>
         <p :class="font">
-            <v-icon :color="iconColor">{{ icon }}</v-icon>
+            <v-icon class="pb-1" :color="iconColor">{{ icon }}</v-icon>
             {{ description }}
         </p>
     </div>

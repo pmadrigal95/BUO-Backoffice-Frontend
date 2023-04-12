@@ -177,6 +177,7 @@ export default {
         showBottonApprove() {
             return this.statusCode ===
                 baseConfigHelper.$_statusCode.certifying ||
+                baseConfigHelper.$_statusCode.uncertified ||
                 this.statusCode === baseConfigHelper.$_statusCode.rejected
                 ? true
                 : false;
@@ -185,6 +186,7 @@ export default {
         showBottonDecline() {
             return this.statusCode ===
                 baseConfigHelper.$_statusCode.certifying ||
+                baseConfigHelper.$_statusCode.uncertified ||
                 this.statusCode === baseConfigHelper.$_statusCode.certificate
                 ? true
                 : false;
