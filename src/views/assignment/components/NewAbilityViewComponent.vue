@@ -181,6 +181,11 @@ export default {
                 <BaseSkeletonLoader v-if="loading" type="article, actions" />
                 <BaseForm :method="$_sendToApi" :cancel="$_open" v-else>
                     <div slot="body" :key="view">
+                        <div
+                            class="text-left BUO-Heading-Small blue900--text mb-2"
+                        >
+                            Crear nuevo Indicador
+                        </div>
                         <v-card outlined flat class="rounded-lg mb-5">
                             <v-card-text>
                                 <v-row dense>
@@ -213,6 +218,11 @@ export default {
                                 </v-row>
                             </v-card-text>
                         </v-card>
+                        <div
+                            class="text-left BUO-Heading-Small blue900--text mb-2"
+                        >
+                            Detalles de asignación
+                        </div>
                         <v-card outlined flat class="rounded-lg">
                             <v-card-text>
                                 <v-row dense>
@@ -224,10 +234,12 @@ export default {
                                         "
                                         :key="key"
                                     >
-                                        <div class="text-left">
+                                        <div
+                                            class="text-left BUO-Paragraph-Large black--text"
+                                        >
                                             Colaboradores
                                         </div>
-                                        <div>
+                                        <div class="pb-3">
                                             <v-chip-group column>
                                                 <div
                                                     v-for="(item, i) in entity
@@ -284,7 +296,7 @@ export default {
             </div>
         </BasePopUp>
         <BaseCustomsButtonsGrid
-            label="Crear nueva habilidad"
+            label="Crear nuevo Indicador"
             :fnMethod="$_tryOpen"
             icon="mdi-shield"
         />

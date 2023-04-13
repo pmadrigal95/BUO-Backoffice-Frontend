@@ -186,7 +186,7 @@ export default {
         <v-layout justify-start>
             <StepViewComponent
                 icon="mdi-numeric-2-circle"
-                description="Seleccionar habilidades"
+                description="Seleccionar Indicadores"
                 iconColor="greenC900"
                 font="grey700--text BUO-Paragraph-Medium"
             />

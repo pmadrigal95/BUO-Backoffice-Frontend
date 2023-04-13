@@ -101,17 +101,17 @@ export default {
             <v-expansion-panel-header class="buo-expansion-panel-header">
                 <v-list-item>
                     <v-list-item-content>
-                        <v-list-item-title>{{
+                        <v-list-item-title class="BUO-Paragraph-Medium">{{
                             item.definicion
                         }}</v-list-item-title>
 
-                        <v-list-item-subtitle>{{
+                        <v-list-item-subtitle class="BUO-Label-XSmall">{{
                             item.nombreCategoria
                         }}</v-list-item-subtitle>
                     </v-list-item-content>
 
                     <v-list-item-action>
-                        <v-btn icon @click="$_delete(item.id)">
+                        <v-btn icon @click="$_delete(item.id)" class="pb-1">
                             <v-icon color="grey500"
                                 >mdi-close-circle-outline</v-icon
                             >
