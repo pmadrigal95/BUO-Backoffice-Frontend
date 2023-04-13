@@ -7,7 +7,18 @@
  */
 
 const StepViewComponent = () =>
-    import('@/views/user/bulkLoad/components/StepViewComponent.vue');
+    import('@/views/user/bulkLoad/components/StepViewComponent');
+
+const AbilityListViewComponent = () =>
+    import(
+        '@/views/assignment/components/confirmation/AbilityListViewComponent'
+    );
+
+const StatusViewComponent = () =>
+    import('@/views/assignment/components/confirmation/StatusViewComponent');
+
+const UserListViewComponent = () =>
+    import('@/views/assignment/components/confirmation/UserListViewComponent');
 
 export default {
     name: 'ConfirmationViewComponent',
@@ -21,10 +32,21 @@ export default {
 
     components: {
         StepViewComponent,
+        StatusViewComponent,
+        UserListViewComponent,
+        AbilityListViewComponent,
+    },
+
+    data() {
+        return {
+            panel: [1],
+        };
     },
 
     methods: {
         $_goBack() {
+            delete this.entity.selected.abilityIdList;
+            delete this.entity.selected.abilityList;
             this.entity.step = 1;
         },
     },
@@ -57,6 +79,45 @@ export default {
                 </v-btn>
             </div>
         </v-layout>
-        {{ entity }}
+        <v-expansion-panels multiple flat v-model="panel">
+            <v-expansion-panel v-if="entity.selected.userList">
+                <v-expansion-panel-header
+                    ><div
+                        :class="[
+                            $vuetify.breakpoint.smAndDown
+                                ? 'BUO-Paragraph-Large'
+                                : 'BUO-Heading-Small',
+                        ]"
+                    >
+                        Colaboradores
+                    </div></v-expansion-panel-header
+                >
+                <v-expansion-panel-content>
+                    <UserListViewComponent :entity="entity" />
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+
+            <v-expansion-panel v-if="entity.selected.abilityIdList">
+                <v-expansion-panel-header
+                    ><div
+                        :class="[
+                            $vuetify.breakpoint.smAndDown
+                                ? 'BUO-Paragraph-Large'
+                                : 'BUO-Heading-Small',
+                        ]"
+                    >
+                        Habilidades
+                    </div></v-expansion-panel-header
+                >
+                <v-expansion-panel-content>
+                    <AbilityListViewComponent
+                        :abilityIdList="entity.selected.abilityIdList"
+                        :entity="entity"
+                    />
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
+        <v-divider class="my-3"></v-divider>
+        <StatusViewComponent :entity="entity" />
     </div>
 </template>

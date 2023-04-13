@@ -13,6 +13,7 @@ const exclusionList = [
     '/user/authenticate',
     'createShareableLink',
     'misc/validateCaptcha',
+    'cualificacion/details',
 ];
 
 const logOutExclusion = ['/user/authenticate'];

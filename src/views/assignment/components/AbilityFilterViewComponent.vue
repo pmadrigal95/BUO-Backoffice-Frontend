@@ -164,7 +164,7 @@ export default {
                     break;
 
                 case row.length > 0:
-                    this.entity.objectForm.abilityIdList = row.map(
+                    this.entity.selected.abilityIdList = row.map(
                         (element) => element.id
                     );
 
@@ -174,7 +174,7 @@ export default {
         },
 
         $_goBack() {
-            delete this.entity.objectForm.abilityIdList;
+            delete this.entity.selected;
             this.entity.step = 0;
         },
     },

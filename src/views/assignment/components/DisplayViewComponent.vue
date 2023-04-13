@@ -62,7 +62,11 @@ export default {
         </v-window-item>
 
         <v-window-item :value="2">
-            <ConfirmationViewComponent :entity="entity" :key="key" />
+            <ConfirmationViewComponent
+                :entity="entity"
+                :key="key"
+                v-if="this.entity.selected"
+            />
         </v-window-item>
     </v-window>
 </template>

@@ -192,8 +192,14 @@ export default {
                     break;
 
                 case row.length > 0:
-                    this.entity.objectForm = {
-                        usuarioIdList: row.map((element) => element.id),
+                    this.entity.selected = {
+                        userList: row.map((element) => {
+                            return {
+                                userId: element.id,
+                                name: element.nombreCompleto,
+                                departamentId: element.nombreDepartamento,
+                            };
+                        }),
                     };
 
                     this.entity.step = 1;
