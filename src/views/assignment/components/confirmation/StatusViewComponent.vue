@@ -6,6 +6,10 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
+import httpService from '@/services/axios/httpService';
+
 import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
@@ -31,10 +35,13 @@ export default {
         return {
             form: this.$_Object(),
             pendingList: [],
+            loading: false,
         };
     },
 
     computed: {
+        ...mapGetters('authentication', ['user']),
+
         statusList() {
             return [
                 {
@@ -94,7 +101,7 @@ export default {
                 if (microAbilities) {
                     this.form.ability.push({
                         id: x.id,
-                        microAbilitiesId: x.competencias
+                        microAbilities: x.competencias
                             .filter((element) => element.check == true)
                             .map((item) => item.id),
                     });
@@ -138,11 +145,31 @@ export default {
             }
         },
 
+        $_requestObject() {
+            return {
+                organizacionId: this.entity.organizacionId,
+                userIds: this.form.userIds,
+                abilities: this.form.ability,
+                estadoId: this.form.statusID,
+                comentario: this.form.comment,
+                usuarioModificaId: this.user.userId,
+            };
+        },
+
         $_sendRequest() {
-            console.log(this.form);
-            if (this.$refs['popUp'].$_checkStatus()) {
-                this.$_open();
-            }
+            this.loading = true;
+
+            httpService
+                .post('wallet/assignMultiple', this.$_requestObject())
+                .then((response) => {
+                    this.loading = false;
+                    if (response != undefined) {
+                        if (this.$refs['popUp'].$_checkStatus()) {
+                            this.$_open();
+                        }
+                        location.reload();
+                    }
+                });
         },
     },
 };
@@ -209,7 +236,13 @@ export default {
                 </v-card>
             </div>
         </BasePopUp>
-        <BaseForm :method="$_sendToApi" :cancel="$_goBack" lblCancel="Regresar">
+        <BaseSkeletonLoader v-if="loading" type="article, actions" />
+        <BaseForm
+            :method="$_sendToApi"
+            :cancel="$_goBack"
+            lblCancel="Regresar"
+            v-else
+        >
             <div slot="body">
                 <v-row dense>
                     <v-col cols="12">
