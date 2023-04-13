@@ -65,7 +65,7 @@ export default {
                 <v-card-subtitle
                     class="BUO-Paragraph-Small buo-none-word-break"
                 >
-                    BUO: Revolucioná la forma de certificar tus habilidades y
+                    BUO: Revolucioná la forma de certificar tus indicadores y
                     experiencias
                 </v-card-subtitle>
                 <v-card-text>

@@ -21,7 +21,7 @@ export default {
     <v-card flat class="pt-6">
         <v-card flat outlined class="rounded-lg">
             <v-card-title class="grey700--text BUO-Paragraph-Large"
-                >Tus habilidades</v-card-title
+                >Tus indicadores</v-card-title
             >
 
             <v-card-text>
@@ -49,16 +49,16 @@ export default {
                 >
                     <div class="black--text"><b>Importante</b></div>
                     <div class="black--text">
-                        El porcentaje en cada habilidad no indica la falta o
+                        El porcentaje en cada indicador no indica la falta o
                         presencia de la misma, sino cuanto esfuerzo toma
-                        desempeñar esa habilidad.
+                        desempeñar ese indicador.
                     </div>
                 </v-alert>
             </v-card-text>
         </v-card>
         <v-card flat>
             <v-card-title class="grey700--text BUO-Paragraph-Large"
-                >Habilidades</v-card-title
+                >Indicadores</v-card-title
             >
             <v-card-text>
                 <v-row>

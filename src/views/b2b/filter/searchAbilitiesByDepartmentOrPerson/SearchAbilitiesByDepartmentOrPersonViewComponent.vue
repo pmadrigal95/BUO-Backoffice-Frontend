@@ -358,8 +358,8 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="Habilidades de mis colaboradores"
-        subtitle="Encuentra las habilidades que tienen tus colaboradores"
+        title="Tendencias de Talento"
+        subtitle="Selecciona un grupo de personas e identifica tendencias entre ellos."
     >
         <div slot="card-text">
             <v-row dense v-show="show" class="pb-2">
@@ -425,7 +425,7 @@ export default {
                     <v-row justify="end" class="pa-3">
                         <BaseCustomsButtonsGrid
                             v-if="permission"
-                            label="Administrar habilidades"
+                            label="Administrar Indicadores"
                             :fnMethod="$_returnToFilter"
                             icon="mdi-shield-star"
                         />
@@ -448,7 +448,7 @@ export default {
                         />
                         <BaseNotFoundContent
                             v-else
-                            msg="Busca por colaboradores o departamentos para encontrar las habilidades"
+                            msg="Selecciona un departamento o colaboradores para identificar tendencias entre ellos"
                         />
                     </div>
                 </v-card-text>

@@ -150,12 +150,12 @@ export default {
         <v-row class="pb-5 pt-8">
             <v-col cols="12" md="8" class="d-flex align-self-end">
                 <div class="grey700--text BUO-Paragraph-Large-SemiBold pl-6">
-                    Skills ID
+                    Skill - ID
                 </div>
             </v-col>
             <v-col cols="12" md="4" class="d-flex justify-end">
                 <BaseCustomsButtonsGrid
-                    label="Compartir Skills ID"
+                    label="Compartir Skill - ID"
                     :fnMethod="$_requestLink"
                     icon="mdi-share-variant-outline"
                     :loading="loadingBtn"

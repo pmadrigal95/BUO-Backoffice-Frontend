@@ -103,7 +103,7 @@ export default {
         <v-row justify="start" class="pl-3">
             <v-col cols="12" md="8">
                 <div class="BUO-Heading-Small blue900--text">
-                    Todas las habilidades
+                    Todas los indicadores
                 </div>
             </v-col>
         </v-row>
@@ -116,7 +116,7 @@ export default {
         >
             <div slot="btns">
                 <BaseCustomsButtonsGrid
-                    label="Ver Habilidad"
+                    label="Ver Indicador"
                     :outlined="false"
                     :fnMethod="$_viewMicroAbility"
                     icon="mdi-shield"

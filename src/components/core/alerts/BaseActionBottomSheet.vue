@@ -195,7 +195,7 @@ export default {
                     icon: 'mdi-delete-outline',
                     color: 'redError900',
                     item: this.item,
-                    desc: `¿Estás seguro que quieres eliminar esta ${this.item}? La información de tu habilidad se perderá.`,
+                    desc: `¿Estás seguro que quieres eliminar esta ${this.item}? La información de tu indicador se perderá.`,
                 };
             } else if (this.action === 'info') {
                 result = {

@@ -330,7 +330,7 @@ export default {
                 default:
                     baseNotificationsHelper.Message(
                         true,
-                        'No se pueder realizar la búsqueda de más de 5 habilidades a la vez'
+                        'No se pueder realizar la búsqueda de más de 5 indicadores a la vez'
                     );
                     break;
             }
@@ -361,7 +361,7 @@ export default {
 <template>
     <BaseCardViewComponent
         title="Talento entre tus colaboradores"
-        subtitle="Busca el talento que necesitas según sus habilidades y tus necesidades"
+        subtitle="Encuentra el talento que buscas según tus necesidades"
     >
         <div slot="card-text">
             <v-row dense v-show="show" class="pb-2">
@@ -395,7 +395,7 @@ export default {
                                 </v-col>
                                 <v-col cols="12">
                                     <BaseInputDataTable
-                                        label="¿Cuáles habilidades debe tener esa persona?"
+                                        label="¿Cuáles indicadores necesitas?"
                                         :setting="abilitySetting"
                                         :extraParams="extraParams"
                                         :readonly="extraParams == undefined"
@@ -443,7 +443,7 @@ export default {
                     <div class="pt-3">
                         <BaseNotFoundContent
                             v-if="!propEntity"
-                            msg="Busca habilidades o estructura organizacional para encontrar a la persona indicada"
+                            msg="Selecciona los indicadores que debe tener la persona que buscas"
                         />
                         <DisplayViewComponent
                             v-else

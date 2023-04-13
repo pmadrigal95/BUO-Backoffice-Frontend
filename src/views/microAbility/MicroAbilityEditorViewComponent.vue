@@ -189,7 +189,7 @@ export default {
                         show: false,
                     },
                     {
-                        text: 'interna',
+                        text: 'Interna',
                         type: 'bool',
                         align: 'center',
                         value: 'esInterna',
@@ -376,7 +376,7 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="Micro Habilidad"
+        title="Micro-Indicador"
         :btnAction="$_returnToFilter"
         class="mx-auto"
         md="6"
@@ -415,7 +415,7 @@ export default {
                         </v-col>
                         <v-col cols="12">
                             <BaseInputDataTable
-                                label="Habilidad"
+                                label="Indicador"
                                 :extraParams="extraParams"
                                 :readonly="extraParams == undefined"
                                 :setting="abilitySetting"

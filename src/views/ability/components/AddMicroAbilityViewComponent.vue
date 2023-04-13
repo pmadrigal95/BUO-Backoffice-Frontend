@@ -82,9 +82,9 @@ export default {
 
 <template>
     <v-card flat v-if="user && buoId">
-        <v-card-title>MicroHabilidades</v-card-title>
+        <v-card-title>Micro-Indicadores</v-card-title>
         <v-card-subtitle
-            >Agrega las microhabilidades generales de la habilidad
+            >Agrega los micro-indicadores generales al indicador
             {{ entity?.definicion }}</v-card-subtitle
         >
         <v-card-text>

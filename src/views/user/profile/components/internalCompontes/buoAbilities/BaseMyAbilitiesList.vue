@@ -57,7 +57,7 @@ export default {
         </v-expansion-panels>
         <BaseNotFoundContent
             v-else-if="myAbilitiesList.length <= 0"
-            msg="Actualmente el colaborador no posee habilidades en esta categoría."
+            msg="Actualmente el colaborador no posee indicadores en esta categoría."
         />
     </div>
 </template>

@@ -19,22 +19,29 @@ export default {
                 {
                     color: palette['secondary50'],
                     name: 'Sin Experiencia',
+                    description: '0 micro indicadores completados.',
                 },
                 {
                     color: palette['secondary60'],
                     name: 'Aprendiz',
+                    description:
+                        'menos del 50% de micro indicadores completados.',
                 },
                 {
                     color: palette['secondary70'],
                     name: 'Intermedio',
+                    description: '50% de micro indicadores completados.',
                 },
                 {
                     color: palette['secondary80'],
                     name: 'Avanzado',
+                    description:
+                        'más del 50% de micro indicadores completados.',
                 },
                 {
                     color: palette['main'],
                     name: 'Master',
+                    description: '100% de micro indicadores completados.',
                 },
             ];
         },
@@ -59,16 +66,34 @@ export default {
         >
             <div slot="Content">
                 <v-card flat>
-                    <v-card-title>Escala de habilidades</v-card-title>
+                    <v-card-title>Escala de Dominio</v-card-title>
                     <v-card-text class="black--text">
                         <div class="pb-4">
-                            Cada habilidad tiene una escala de micro habilidades
-                            específica que varía en número, según haya sido
-                            definido.
+                            Cada indicador en Buo está compuesto por micro
+                            indicadores que permiten medir el nivel de dominio
+                            de la persona.
                         </div>
-                        <div>
-                            Por ejemplo, tener dos micro habilidades no
-                            representa la misma escala en otra habilidad.
+
+                        <div class="pb-1">
+                            La Escala de Dominio está definida de la siguiente
+                            manera:
+                        </div>
+
+                        <div
+                            v-for="(item, i) in scale"
+                            :key="i"
+                            class="px-2 pb-1 pt-1"
+                        >
+                            <v-icon :color="item.color" class="pb-1 pr-1" small
+                                >mdi-circle</v-icon
+                            >
+                            <strong class="black--text"
+                                >{{ item.name }} =
+                            </strong>
+
+                            <span class="black--text">{{
+                                item.description
+                            }}</span>
                         </div>
                     </v-card-text>
                     <v-card-actions>

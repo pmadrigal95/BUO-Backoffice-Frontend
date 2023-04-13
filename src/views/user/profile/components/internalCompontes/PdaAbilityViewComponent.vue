@@ -129,7 +129,7 @@ export default {
         <v-row class="pb-5">
             <v-col cols="12" md="8" class="d-flex align-self-end">
                 <div class="grey700--text BUO-Paragraph-Large-SemiBold pl-6">
-                    Habilidades PDA
+                    Indicadores PDA
                 </div>
             </v-col>
             <v-col cols="12" md="4" class="d-flex justify-end">
@@ -200,7 +200,7 @@ export default {
             <v-col cols="12" class="px-5 pb-10">
                 <v-card flat>
                     <v-card-title class="grey700--text BUO-Paragraph-Large pt-6"
-                        >Habilidades principales</v-card-title
+                        >Indicadores principales</v-card-title
                     >
                     <v-card-text>
                         <v-row>

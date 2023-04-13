@@ -123,19 +123,19 @@ export default {
     <div v-if="$router.currentRoute.params.Id">
         <v-tabs v-model="tab" right show-arrows height="25" class="pa-3">
             <v-tabs-slider color="transparent"></v-tabs-slider>
-            <v-tab class="rounded-pill no-uppercase"> Habilidad </v-tab>
+            <v-tab class="rounded-pill no-uppercase"> Indicador </v-tab>
             <v-tab
                 class="rounded-pill no-uppercase"
                 v-if="microabilityPermission"
             >
-                Micro Habilidades
+                Micro-Indicadores
             </v-tab>
         </v-tabs>
 
         <v-tabs-items v-model="tab" class="pa-5">
             <v-tab-item>
                 <BaseCardViewComponent
-                    title="Habilidad"
+                    title="Indicadores"
                     :btnAction="$_returnToFilter"
                     class="mx-auto"
                     md="6"
@@ -166,7 +166,7 @@ export default {
 
     <BaseCardViewComponent
         v-else
-        title="Habilidad"
+        title="Indicador"
         :btnAction="$_returnToFilter"
         class="mx-auto"
         md="6"

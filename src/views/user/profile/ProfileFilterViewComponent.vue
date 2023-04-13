@@ -209,8 +209,8 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="Perfil del colaborador"
-        subtitle="Busca toda la información de tus colaboradores"
+        title="Perfiles de Colaboradores"
+        subtitle="Descubre el perfil de cada persona, sus indicadores y PDA"
     >
         <div slot="card-text">
             <v-row dense v-show="show" class="pb-2">

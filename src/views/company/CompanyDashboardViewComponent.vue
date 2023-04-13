@@ -195,7 +195,7 @@ export default {
                                         : 'BUO-Heading-Small',
                                 ]"
                             >
-                                Habilidades
+                                Indicadores
                             </div></v-expansion-panel-header
                         >
                         <v-expansion-panel-content color="clouds">

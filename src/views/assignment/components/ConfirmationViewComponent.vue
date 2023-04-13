@@ -58,7 +58,7 @@ export default {
         <v-layout justify-space-between>
             <StepViewComponent
                 icon="mdi-numeric-3-circle"
-                description="Seleccionar micro habilidades"
+                description="Seleccionar micro-indicadores"
                 iconColor="greenC900"
                 font="grey700--text BUO-Paragraph-Medium"
             />

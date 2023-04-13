@@ -11,7 +11,7 @@ export default {
     props: {
         msg: {
             type: String,
-            default: 'Tus habilidades te están esperando.',
+            default: 'Tus indicadores te están esperando.',
         },
 
         fn: {

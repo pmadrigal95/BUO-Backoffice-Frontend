@@ -447,7 +447,7 @@ export default {
             </div>
         </BaseServerDataTable>
     </div>
-    <BaseCardViewComponent title="Habilidades" v-else>
+    <BaseCardViewComponent title="Indicadores" v-else>
         <div slot="card-text">
             <v-row dense v-show="show">
                 <v-col cols="12" md="6">

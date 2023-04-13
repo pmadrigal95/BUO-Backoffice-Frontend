@@ -75,7 +75,7 @@ export default {
         <v-row justify="start" class="pl-3 pb-8">
             <v-col cols="12" md="8">
                 <div class="BUO-Heading-Small blue900--text">
-                    Comparación de habilidades PDA
+                    Comparación de indicadores PDA
                 </div>
             </v-col>
         </v-row>

@@ -77,13 +77,13 @@ export default {
                         show: true,
                     },
                     {
-                        text: 'Habilidad',
+                        text: 'Indicador',
                         align: 'start',
                         value: 'definicionCualificacion',
                         show: true,
                     },
                     {
-                        text: 'Microhabilidad',
+                        text: 'Micro-Indicador',
                         align: 'start',
                         value: 'definicionCompetencia',
                         show: true,

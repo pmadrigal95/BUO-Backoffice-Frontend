@@ -47,7 +47,7 @@ export default {
                 endpoint: 'competencia/findBy',
                 columns: [
                     {
-                        text: 'Habilidad',
+                        text: 'Indicador',
                         align: 'start',
                         value: 'definicionCualificacion',
                         show: true,
@@ -176,7 +176,7 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="Micro Habilidades">
+    <BaseCardViewComponent title="Micro-Indicadores">
         <div slot="card-text">
             <BaseSkeletonLoader v-if="!user && !buoId" type="list-item" />
             <BaseServerDataTable

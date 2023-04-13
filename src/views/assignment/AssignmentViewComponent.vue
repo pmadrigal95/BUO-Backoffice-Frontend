@@ -300,7 +300,7 @@ export default {
                     <v-row justify="end" class="pa-3">
                         <BaseCustomsButtonsGrid
                             v-if="abilityPermission"
-                            label="Administrar habilidades"
+                            label="Administrar Indicadores"
                             :fnMethod="$_returnToAbility"
                             icon="mdi-shield-star"
                         />

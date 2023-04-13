@@ -232,7 +232,7 @@ export default {
         >
             <div slot="btns">
                 <BaseCustomsButtonsGrid
-                    label="Crear nueva habilidad"
+                    label="Crear nuevo indicador"
                     :fnMethod="$_setUserList"
                     icon="mdi-shield"
                 />

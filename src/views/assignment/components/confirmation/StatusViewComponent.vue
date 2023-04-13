@@ -163,10 +163,10 @@ export default {
                     width="100%"
                     v-if="pendingList.length > 0"
                 >
-                    <v-card-title> Habilidades pendientes </v-card-title>
+                    <v-card-title> Indicadores pendientes </v-card-title>
                     <v-card-subtitle>
-                        Las siguientes habilidades no poseen ninguna
-                        microhabilidad seleccionada
+                        Los siguientes indicadores no poseen ningun
+                        micro-indicador seleccionada
                     </v-card-subtitle>
                     <v-card-text>
                         <v-list>
