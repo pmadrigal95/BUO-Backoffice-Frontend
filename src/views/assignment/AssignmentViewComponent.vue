@@ -303,7 +303,7 @@ export default {
                         />
 
                         <BaseCustomsButtonsGrid
-                            v-if="abilityPermission"
+                            v-if="userPermission"
                             label="Administrar Colaboradores"
                             :fnMethod="$_returnToUser"
                             icon="mdi-account-group-outline"

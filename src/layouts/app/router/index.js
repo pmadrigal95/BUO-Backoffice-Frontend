@@ -14,9 +14,12 @@ import companyRoutes from '@/views/company/router';
 
 import reportsRoutes from '@/views/reports/router';
 
+import categoryRoutes from '@/views/category/router';
+
 import approvalRoutes from '@/views/approval/router';
 
 import analyticsRoutes from '@/views/analytics/router';
+
 
 import assignmentRoutes from '@/views/assignment/router';
 
@@ -38,6 +41,7 @@ const routes = [
             ...userRoutes,
             ...abilityRoutes,
             ...reportsRoutes,
+            ...categoryRoutes,
             ...approvalRoutes,
             ...companyRoutes,
             ...analyticsRoutes,

@@ -10,6 +10,8 @@ import { mapGetters } from 'vuex';
 
 import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 const BaseServerDataTable = () =>
@@ -165,6 +167,13 @@ export default {
 
             return array.length > 0 ? array : undefined;
         },
+
+        abilityPermission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'AbilityViewComponent'
+            );
+            return result;
+        },
     },
 
     methods: {
@@ -264,6 +273,7 @@ export default {
                     <NewAbilityViewComponent
                         :entity="entity"
                         :fn="$_newAbility"
+                        v-if="abilityPermission"
                     />
 
                     <v-btn fab x-small elevation="0" disabled>
@@ -286,6 +296,7 @@ export default {
                     <NewAbilityViewComponent
                         :entity="entity"
                         :fn="$_newAbility"
+                        v-if="abilityPermission"
                     />
 
                     <v-btn fab x-small elevation="0" disabled>
