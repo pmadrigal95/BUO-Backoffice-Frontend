@@ -58,7 +58,7 @@ export default {
         <v-layout justify-space-between>
             <StepViewComponent
                 icon="mdi-numeric-3-circle"
-                description="Seleccionar micro-indicadores"
+                description="Seleccionar Micro-Indicadores"
                 iconColor="greenC900"
                 font="grey700--text BUO-Paragraph-Medium"
             />
@@ -106,7 +106,7 @@ export default {
                                 : 'BUO-Heading-Small',
                         ]"
                     >
-                        Habilidades
+                        Indicadores
                     </div></v-expansion-panel-header
                 >
                 <v-expansion-panel-content>

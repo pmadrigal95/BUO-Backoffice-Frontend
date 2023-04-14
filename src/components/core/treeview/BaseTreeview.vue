@@ -583,6 +583,7 @@ export default {
                 <v-btn
                     class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                     color="blue900"
+                    elevation="0"
                     outlined
                     small
                     @click="$_CancelFooter"
@@ -592,6 +593,7 @@ export default {
 
                 <v-btn
                     class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    elevation="0"
                     color="blue900"
                     dark
                     small

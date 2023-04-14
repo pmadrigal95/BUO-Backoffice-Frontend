@@ -15,11 +15,11 @@ import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
-const BaseCustomsButtonsGrid = () =>
-    import('@/components/core/grids/BaseCustomsButtonsGrid');
-
 const StepViewComponent = () =>
-    import('@/views/user/bulkLoad/components/StepViewComponent.vue');
+    import('@/views/user/bulkLoad/components/StepViewComponent');
+
+const NewAbilityViewComponent = () =>
+    import('@/views/assignment/components/NewAbilityViewComponent');
 
 export default {
     name: 'FilterViewComponent',
@@ -33,8 +33,8 @@ export default {
 
     components: {
         BaseServerDataTable,
-        BaseCustomsButtonsGrid,
         StepViewComponent,
+        NewAbilityViewComponent,
     },
 
     computed: {
@@ -176,6 +176,8 @@ export default {
         },
 
         $_setUserList(params) {
+            this.entity?.selected?.userList &&
+                delete this.entity.selected.userList;
             const row =
                 Array.isArray(params) || params.selected
                     ? params.selected
@@ -206,6 +208,33 @@ export default {
                     break;
             }
         },
+
+        $_newAbility() {
+            this.entity?.selected?.userList &&
+                delete this.entity.selected.userList;
+            const row = this.$_GetRow();
+
+            switch (true) {
+                case row.length == 0:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
+                    break;
+
+                case row.length > 0:
+                    this.entity.selected = {
+                        userList: row.map((element) => {
+                            return {
+                                userId: element.id,
+                                name: element.nombreCompleto,
+                                departamentId: element.nombreDepartamento,
+                            };
+                        }),
+                    };
+                    break;
+            }
+        },
     },
 };
 </script>
@@ -231,26 +260,49 @@ export default {
             labelBtn="Continuar"
         >
             <div slot="btns">
-                <BaseCustomsButtonsGrid
-                    label="Crear nuevo indicador"
-                    :fnMethod="$_setUserList"
-                    icon="mdi-shield"
-                />
+                <v-layout v-if="$vuetify.breakpoint.mdAndUp">
+                    <NewAbilityViewComponent
+                        :entity="entity"
+                        :fn="$_newAbility"
+                    />
 
-                <v-btn fab x-small elevation="0" disabled>
-                    <v-icon dark> mdi-chevron-left </v-icon>
-                </v-btn>
+                    <v-btn fab x-small elevation="0" disabled>
+                        <v-icon dark> mdi-chevron-left </v-icon>
+                    </v-btn>
 
-                <v-btn
-                    fab
-                    x-small
-                    color="primary"
-                    @click="$_setUserList"
-                    elevation="0"
-                    class="mx-1"
-                >
-                    <v-icon dark> mdi-chevron-right </v-icon>
-                </v-btn>
+                    <v-btn
+                        fab
+                        x-small
+                        color="primary"
+                        @click="$_setUserList"
+                        elevation="0"
+                        class="mx-1"
+                    >
+                        <v-icon dark> mdi-chevron-right </v-icon>
+                    </v-btn>
+                </v-layout>
+
+                <div v-else>
+                    <NewAbilityViewComponent
+                        :entity="entity"
+                        :fn="$_newAbility"
+                    />
+
+                    <v-btn fab x-small elevation="0" disabled>
+                        <v-icon dark> mdi-chevron-left </v-icon>
+                    </v-btn>
+
+                    <v-btn
+                        fab
+                        x-small
+                        color="primary"
+                        @click="$_setUserList"
+                        elevation="0"
+                        class="mx-1"
+                    >
+                        <v-icon dark> mdi-chevron-right </v-icon>
+                    </v-btn>
+                </div>
             </div>
         </BaseServerDataTable>
     </div>

@@ -66,15 +66,17 @@ export default {
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                    <v-list-item-title>{{ item.name }}</v-list-item-title>
+                    <v-list-item-title class="BUO-Paragraph-Medium">{{
+                        item.name
+                    }}</v-list-item-title>
 
-                    <v-list-item-subtitle>{{
+                    <v-list-item-subtitle class="BUO-Label-XSmall">{{
                         item.departamentId
                     }}</v-list-item-subtitle>
                 </v-list-item-content>
 
                 <v-list-item-action>
-                    <v-btn icon @click="$_delete(item.userId)">
+                    <v-btn icon @click="$_delete(item.userId)" class="pb-1">
                         <v-icon color="grey500"
                             >mdi-close-circle-outline</v-icon
                         >
