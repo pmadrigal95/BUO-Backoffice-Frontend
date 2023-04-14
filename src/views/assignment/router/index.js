@@ -8,7 +8,7 @@ const routes = [
         name: 'AssignmentViewComponent',
         component: 'assignment/AssignmentViewComponent',
         meta: {
-            module: 'ApprovalViewComponent',
+            module: 'AssignmentViewComponent',
         },
     },
 ];
