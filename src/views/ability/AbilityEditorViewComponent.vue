@@ -135,7 +135,7 @@ export default {
         <v-tabs-items v-model="tab" class="pa-5">
             <v-tab-item>
                 <BaseCardViewComponent
-                    title="Indicadores"
+                    title="Indicador"
                     :btnAction="$_returnToFilter"
                     class="mx-auto"
                     md="6"
