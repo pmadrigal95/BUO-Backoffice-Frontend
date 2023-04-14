@@ -141,6 +141,20 @@ export default {
         },
     },
 
+    watch: {
+        /**
+         * Actualizar calendarios
+         */
+        'entity.organizacionId': {
+            handler(newValue, oldValue) {
+                if (oldValue) {
+                    this.entity.padreId = undefined;
+                }
+            },
+            immediate: true,
+        },
+    },
+
     created() {
         /**
          * Determinar si Es nuevo / editor
