@@ -150,7 +150,11 @@ export default {
 
         $_tryOpen() {
             this.fn();
-            if (this.entity && this.entity?.selected?.userList && this.entity?.selected?.userList.length > 0) {
+            if (
+                this.entity &&
+                this.entity?.selected?.userList &&
+                this.entity?.selected?.userList.length > 0
+            ) {
                 this.form = this.$_Object();
                 this.$_open();
                 this.view++;
