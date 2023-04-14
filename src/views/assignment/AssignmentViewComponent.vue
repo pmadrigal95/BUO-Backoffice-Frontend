@@ -243,10 +243,7 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent
-        title="Asignaciones"
-        subtitle="Algun copy relacionado"
-    >
+    <BaseCardViewComponent title="Asignaciones">
         <div slot="card-text">
             <v-row dense v-show="show" class="pb-2">
                 <v-col cols="12" md="6">

@@ -176,6 +176,8 @@ export default {
         },
 
         $_setUserList(params) {
+            this.entity?.selected?.userList &&
+                delete this.entity.selected.userList;
             const row =
                 Array.isArray(params) || params.selected
                     ? params.selected
@@ -208,6 +210,8 @@ export default {
         },
 
         $_newAbility() {
+            this.entity?.selected?.userList &&
+                delete this.entity.selected.userList;
             const row = this.$_GetRow();
 
             switch (true) {
