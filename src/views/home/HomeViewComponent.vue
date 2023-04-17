@@ -53,7 +53,9 @@ export default {
         componentProps() {
             return {
                 positionSubtitle: 'align-center',
+                positionDescription: 'align-center',
                 fontTypeSubtitle: 'BUO-Paragraph-Small-SemiBold black--text',
+                fontTypeDescription: 'BUO-Paragraph-Small black--text',
                 width: '320',
                 centerBotton: true,
                 centerIcon: true,
@@ -98,6 +100,13 @@ export default {
                                     :centerIcon="componentProps.centerIcon"
                                     :large="componentProps.large"
                                     :btnRequired="item?.btnRequired"
+                                    :description="item.descripcion"
+                                    :positionDescription="
+                                        componentProps.positionDescription
+                                    "
+                                    :fontTypeDescription="
+                                        componentProps.fontTypeDescription
+                                    "
                                 />
                             </div>
                         </v-layout>
@@ -116,6 +125,13 @@ export default {
                             :centerIcon="componentProps.centerIcon"
                             :large="componentProps.large"
                             :btnRequired="item?.btnRequired"
+                            :description="item.descripcion"
+                            :positionDescription="
+                                componentProps.positionDescription
+                            "
+                            :fontTypeDescription="
+                                componentProps.fontTypeDescription
+                            "
                         />
                     </v-col>
                 </v-row>

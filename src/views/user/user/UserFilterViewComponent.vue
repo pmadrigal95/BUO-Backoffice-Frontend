@@ -87,7 +87,7 @@ export default {
                         align: 'center',
                         type: 'chip',
                         value: 'nombreEstado',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Wallet Activo',
@@ -101,7 +101,7 @@ export default {
                         type: 'bool',
                         align: 'center',
                         value: 'conPda',
-                        show: false,
+                        show: true,
                     },
                     {
                         text: 'Identificación',
