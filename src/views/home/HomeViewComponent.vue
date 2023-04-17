@@ -57,6 +57,7 @@ export default {
                 fontTypeSubtitle: 'BUO-Paragraph-Small-SemiBold black--text',
                 fontTypeDescription: 'BUO-Paragraph-Small black--text',
                 width: '320',
+                heigh: '200',
                 centerBotton: true,
                 centerIcon: true,
                 large: true,
@@ -96,6 +97,7 @@ export default {
                                         componentProps.fontTypeSubtitle
                                     "
                                     :min-width="componentProps.width"
+                                    :min-height="componentProps.heigh"
                                     :centerBotton="componentProps.centerBotton"
                                     :centerIcon="componentProps.centerIcon"
                                     :large="componentProps.large"
@@ -119,6 +121,7 @@ export default {
                             :to="item.rutaURL"
                             :subtitle="item.nombreUI"
                             min-width="100%"
+                            :min-height="componentProps.heigh"
                             :positionSubtitle="componentProps.positionSubtitle"
                             :fontTypeSubtitle="componentProps.fontTypeSubtitle"
                             :centerBotton="componentProps.centerBotton"

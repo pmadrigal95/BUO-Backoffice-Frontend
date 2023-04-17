@@ -45,15 +45,15 @@ export default {
         statusList() {
             return [
                 {
-                    name: 'Sin certificar',
+                    name: 'Sin validar',
                     id: baseConfigHelper.$_statusCode.uncertified,
                 },
                 {
-                    name: 'Certificando',
+                    name: 'Validando',
                     id: baseConfigHelper.$_statusCode.certifying,
                 },
                 {
-                    name: 'Certificado',
+                    name: 'Validado',
                     id: baseConfigHelper.$_statusCode.certificate,
                 },
                 {
@@ -250,7 +250,7 @@ export default {
                         <BaseTextArea
                             label="Comentario"
                             v-model.trim="form.comment"
-                            :validate="['text']"
+                            :validate="['optionalText']"
                             :max="255"
                             :min="1"
                             counter="255"
