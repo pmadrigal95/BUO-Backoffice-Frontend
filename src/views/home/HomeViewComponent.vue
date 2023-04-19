@@ -53,7 +53,7 @@ export default {
         componentProps() {
             return {
                 positionSubtitle: 'align-center',
-                positionDescription: 'align-center',
+                positionDescription: 'text-center',
                 fontTypeSubtitle: 'BUO-Paragraph-Small-SemiBold black--text',
                 fontTypeDescription: 'BUO-Paragraph-Small black--text',
                 width: '320',
@@ -97,6 +97,7 @@ export default {
                                         componentProps.fontTypeSubtitle
                                     "
                                     :min-width="componentProps.width"
+                                    :max-width="componentProps.width"
                                     :min-height="componentProps.heigh"
                                     :centerBotton="componentProps.centerBotton"
                                     :centerIcon="componentProps.centerIcon"
@@ -121,6 +122,7 @@ export default {
                             :to="item.rutaURL"
                             :subtitle="item.nombreUI"
                             min-width="100%"
+                            :max-width="componentProps.width"
                             :min-height="componentProps.heigh"
                             :positionSubtitle="componentProps.positionSubtitle"
                             :fontTypeSubtitle="componentProps.fontTypeSubtitle"
