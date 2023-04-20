@@ -55,15 +55,15 @@ export default {
         statusList() {
             return [
                 {
-                    name: 'Sin certificar',
+                    name: 'Sin validar',
                     id: baseConfigHelper.$_statusCode.uncertified,
                 },
                 {
-                    name: 'Certificando',
+                    name: 'Validando',
                     id: baseConfigHelper.$_statusCode.certifying,
                 },
                 {
-                    name: 'Certificado',
+                    name: 'Validado',
                     id: baseConfigHelper.$_statusCode.certificate,
                 },
                 {
@@ -79,6 +79,7 @@ export default {
             return {
                 comment: undefined,
                 statusID: undefined,
+                sendNotification: true,
                 ability: {
                     definicion: undefined,
                     categoriaId: undefined,
@@ -117,6 +118,7 @@ export default {
                 estadoId: this.form.statusID,
                 comentario: this.form.comment,
                 usuarioModificaId: this.user.userId,
+                enviarNotificacion: this.form.sendNotification,
             };
         },
 
@@ -279,11 +281,16 @@ export default {
                                         <BaseTextArea
                                             label="Comentario"
                                             v-model.trim="form.comment"
-                                            :validate="['text']"
                                             :max="255"
                                             :min="1"
                                             counter="255"
                                         />
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <v-switch
+                                            v-model="form.sendNotification"
+                                            label="Enviar notificación"
+                                        ></v-switch>
                                     </v-col>
                                     <v-col cols="12">
                                         <BaseRadioGroup

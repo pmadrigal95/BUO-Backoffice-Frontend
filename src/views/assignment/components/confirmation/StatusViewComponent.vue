@@ -275,7 +275,6 @@ export default {
                         <BaseTextArea
                             label="Comentario"
                             v-model.trim="form.comment"
-                            :validate="['optionalText']"
                             :max="255"
                             :min="1"
                             counter="255"
