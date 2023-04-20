@@ -310,6 +310,12 @@ export default {
                         />
 
                         <BaseCustomsButtonsGrid
+                            label="Seleccionar todos"
+                            :fnMethod="$_showAdvFilter"
+                            icon="mdi-account-multiple-check-outline"
+                        />
+
+                        <BaseCustomsButtonsGrid
                             label="Filtro Avanzado"
                             :fnMethod="$_showAdvFilter"
                             :outlined="!show"
