@@ -174,7 +174,7 @@ export default {
 
         abilitySetting() {
             return {
-                endpoint: 'cualificacion/findBy',
+                endpoint: 'cualificacion/findByFilter',
                 columns: [
                     {
                         text: 'Definición',
@@ -207,7 +207,7 @@ export default {
                         show: false,
                     },
                     {
-                        text: 'interna',
+                        text: 'Interna',
                         type: 'bool',
                         align: 'center',
                         value: 'esInterna',
@@ -229,10 +229,7 @@ export default {
                         text: 'Empresa',
                         align: 'start',
                         value: 'nombreOrganizacion',
-                        show:
-                            this.user.companyId === this.buoId &&
-                            this.$router.currentRoute.name !=
-                                'SearchPeopleByAbilityViewComponent',
+                        show: true,
                     },
                     {
                         text: 'Tipo',
