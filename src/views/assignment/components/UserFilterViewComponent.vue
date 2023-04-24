@@ -222,15 +222,7 @@ export default {
             this.entity?.selected?.userList &&
                 delete this.entity.selected.userList;
             const row = this.$_GetRow();
-
             switch (true) {
-                case row.length == 0:
-                    baseNotificationsHelper.Message(
-                        true,
-                        baseLocalHelper.$_MsgRowNotSelected
-                    );
-                    break;
-
                 case row.length > 0:
                     this.entity.selected = {
                         userList: row.map((element) => {

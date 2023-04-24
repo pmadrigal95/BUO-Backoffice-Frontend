@@ -80,6 +80,7 @@ export default {
                 comment: undefined,
                 statusID: undefined,
                 sendNotification: true,
+                useAllEmployees: false,
                 ability: {
                     definicion: undefined,
                     categoriaId: undefined,
@@ -88,10 +89,19 @@ export default {
         },
 
         $_validateEntity() {
-            let result =
-                this.form.userIds.length > 0 &&
-                this.entity.selected.userList.length > 0;
-
+            let result;
+            switch (true) {
+                case !this.form.useAllEmployees:
+                    this.$_setObject();
+                    result =
+                        this.form.userIds != undefined &&
+                        this.form.userIds.length > 0 &&
+                        this.entity.selected.userList.length > 0;
+                    break;
+                case this.form.useAllEmployees:
+                    result = true;
+                    break;
+            }
             return result;
         },
 
@@ -102,9 +112,10 @@ export default {
         },
 
         $_setObject() {
-            delete this.form.userIds;
-
-            this.$_setUserIdList();
+            if (!this.form.useAllEmployees) {
+                delete this.form.userIds;
+                this.$_setUserIdList();
+            }
         },
 
         $_requestObject() {
@@ -119,6 +130,7 @@ export default {
                 comentario: this.form.comment,
                 usuarioModificaId: this.user.userId,
                 enviarNotificacion: this.form.sendNotification,
+                useAllEmployees: this.form.useAllEmployees,
             };
         },
 
@@ -138,8 +150,6 @@ export default {
         },
 
         $_sendToApi() {
-            this.$_setObject();
-
             if (this.$_validateEntity()) {
                 this.$_sendRequest();
             } else {
@@ -152,15 +162,9 @@ export default {
 
         $_tryOpen() {
             this.fn();
-            if (
-                this.entity &&
-                this.entity?.selected?.userList &&
-                this.entity?.selected?.userList.length > 0
-            ) {
-                this.form = this.$_Object();
-                this.$_open();
-                this.view++;
-            }
+            this.form = this.$_Object();
+            this.$_open();
+            this.view++;
         },
 
         $_open() {
@@ -171,6 +175,15 @@ export default {
             this.entity.selected.userList =
                 this.entity.selected.userList.filter((x) => x.userId != index);
             this.key++;
+        },
+
+        /**
+         * Close a modal
+         */
+        $_close() {
+            if (this.$refs['popUp'].$_checkStatus()) {
+                this.$_open();
+            }
         },
     },
 };
@@ -185,7 +198,7 @@ export default {
         >
             <div slot="Content">
                 <BaseSkeletonLoader v-if="loading" type="article, actions" />
-                <BaseForm :method="$_sendToApi" :cancel="$_open" v-else>
+                <BaseForm :method="$_sendToApi" :cancel="$_close" v-else>
                     <div slot="body" :key="view">
                         <div
                             class="text-left BUO-Heading-Small blue900--text mb-2"
@@ -276,6 +289,14 @@ export default {
                                                 </div>
                                             </v-chip-group>
                                         </div>
+                                    </v-col>
+                                    <v-col cols="12" v-else>
+                                        <v-switch
+                                            v-model="form.useAllEmployees"
+                                            label="Sí desea asignar el nuevo
+                                                indicador a todos sus
+                                                colaboradores, debe dar clic aquí."
+                                        ></v-switch>
                                     </v-col>
                                     <v-col cols="12">
                                         <BaseTextArea

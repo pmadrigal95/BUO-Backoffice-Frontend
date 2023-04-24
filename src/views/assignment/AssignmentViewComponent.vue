@@ -308,13 +308,7 @@ export default {
                             :fnMethod="$_returnToUser"
                             icon="mdi-account-group-outline"
                         />
-
-                        <BaseCustomsButtonsGrid
-                            label="Seleccionar todos"
-                            :fnMethod="$_showAdvFilter"
-                            icon="mdi-account-multiple-check-outline"
-                        />
-
+                        
                         <BaseCustomsButtonsGrid
                             label="Filtro Avanzado"
                             :fnMethod="$_showAdvFilter"
