@@ -132,7 +132,7 @@ export default {
                     break;
                 case this.form.ability.length == 0:
                     this.warningMessage =
-                        'Debe seleccionar al menos un indicador.';
+                        'Debe seleccionar un indicador que posea al menos un micro-indicador.';
                     this.$_open();
                     break;
                 case this.pendingList.length > 0:
@@ -190,8 +190,8 @@ export default {
                         siguiente:
                     </v-card-subtitle>
                     <v-card-text>
-                        <div class="px-2 pb-8">
-                            <v-icon class="pb-1 pl-4" color="yellowWarning900"
+                        <div class="px-2 pb-08">
+                            <v-icon class="pb-1 pl-0" color="yellowWarning900"
                                 >mdi-alert-circle-outline</v-icon
                             >
                             <span class="black--text pl-1">{{

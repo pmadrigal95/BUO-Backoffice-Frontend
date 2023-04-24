@@ -308,7 +308,7 @@ export default {
                             :fnMethod="$_returnToUser"
                             icon="mdi-account-group-outline"
                         />
-
+                        
                         <BaseCustomsButtonsGrid
                             label="Filtro Avanzado"
                             :fnMethod="$_showAdvFilter"
