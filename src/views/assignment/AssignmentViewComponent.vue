@@ -47,6 +47,7 @@ export default {
             entity: this.$_Object(),
             propEntity: undefined,
             componentKey: 0,
+            filterCompanyKey: 0,
             show: true,
         };
     },
@@ -218,6 +219,7 @@ export default {
                     ? undefined
                     : this.user.companyId;
             this.entity.departamentoId = undefined;
+            this.filterCompanyKey = this.filterCompanyKey + 1;
             this.$_setProps();
         },
 
@@ -262,6 +264,7 @@ export default {
                                         :setting="companySetting"
                                         v-model.number="entity.organizacionId"
                                         :validate="['requiered']"
+                                        :key="filterCompanyKey"
                                     />
                                 </v-col>
                                 <v-col cols="12">

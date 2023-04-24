@@ -53,6 +53,7 @@ export default {
             entity: this.$_Object(),
             propEntity: undefined,
             componentKey: 0,
+            filterCompanyKey: 0,
             filterKey: 0,
             show: true,
         };
@@ -341,6 +342,8 @@ export default {
             this.entity.departamentoId = undefined;
             this.entity.cualificacionId = undefined;
             this.propEntity = undefined;
+            this.filterKey = this.filterKey + 1;
+            this.filterCompanyKey = this.filterCompanyKey + 1;
         },
 
         /**
@@ -378,6 +381,7 @@ export default {
                                         :setting="companySetting"
                                         v-model.number="entity.organizacionId"
                                         :validate="['requiered']"
+                                        :key="filterCompanyKey"
                                     />
                                 </v-col>
                                 <v-col cols="12">
