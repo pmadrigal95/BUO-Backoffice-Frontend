@@ -132,6 +132,12 @@ export default {
                         value: 'ingresadoFormato',
                         show: false,
                     },
+                    {
+                        text: 'Categoría',
+                        align: 'start',
+                        value: 'nombreCategoria',
+                        show: false,
+                    },
                 ],
                 key: 'id',
 

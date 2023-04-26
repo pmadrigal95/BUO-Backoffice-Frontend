@@ -53,8 +53,11 @@ export default {
         componentProps() {
             return {
                 positionSubtitle: 'align-center',
+                positionDescription: 'text-center',
                 fontTypeSubtitle: 'BUO-Paragraph-Small-SemiBold black--text',
+                fontTypeDescription: 'BUO-Paragraph-Small black--text',
                 width: '320',
+                heigh: '200',
                 centerBotton: true,
                 centerIcon: true,
                 large: true,
@@ -94,10 +97,19 @@ export default {
                                         componentProps.fontTypeSubtitle
                                     "
                                     :min-width="componentProps.width"
+                                    :max-width="componentProps.width"
+                                    :min-height="componentProps.heigh"
                                     :centerBotton="componentProps.centerBotton"
                                     :centerIcon="componentProps.centerIcon"
                                     :large="componentProps.large"
                                     :btnRequired="item?.btnRequired"
+                                    :description="item.descripcion"
+                                    :positionDescription="
+                                        componentProps.positionDescription
+                                    "
+                                    :fontTypeDescription="
+                                        componentProps.fontTypeDescription
+                                    "
                                 />
                             </div>
                         </v-layout>
@@ -110,12 +122,21 @@ export default {
                             :to="item.rutaURL"
                             :subtitle="item.nombreUI"
                             min-width="100%"
+                            :max-width="componentProps.width"
+                            :min-height="componentProps.heigh"
                             :positionSubtitle="componentProps.positionSubtitle"
                             :fontTypeSubtitle="componentProps.fontTypeSubtitle"
                             :centerBotton="componentProps.centerBotton"
                             :centerIcon="componentProps.centerIcon"
                             :large="componentProps.large"
                             :btnRequired="item?.btnRequired"
+                            :description="item.descripcion"
+                            :positionDescription="
+                                componentProps.positionDescription
+                            "
+                            :fontTypeDescription="
+                                componentProps.fontTypeDescription
+                            "
                         />
                     </v-col>
                 </v-row>

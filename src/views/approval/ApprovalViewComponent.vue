@@ -263,7 +263,7 @@ export default {
                                 Rechazadas</v-tab
                             >
                             <v-tab class="rounded-pill no-uppercase">
-                                Sin certificar</v-tab
+                                Asignadas</v-tab
                             >
                         </v-tabs>
 
