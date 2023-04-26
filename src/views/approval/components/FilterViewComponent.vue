@@ -258,7 +258,8 @@ export default {
         $_setAbility() {
             return this.$_GetRow().map((element) =>
                 Object.assign({}, element, {
-                    usuarioId: this.user.userId,
+                    usuarioId: element.usuarioId,
+                    usuarioModificaId: this.user.userId,
                     newEstadoId: this.newStatusCode,
                     comentario: this.comment,
                 })
