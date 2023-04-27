@@ -96,6 +96,7 @@ export default {
                     result =
                         this.form.userIds != undefined &&
                         this.form.userIds.length > 0 &&
+                        this.entity.selected != undefined &&
                         this.entity.selected.userList.length > 0;
                     break;
                 case this.form.useAllEmployees:
@@ -112,7 +113,10 @@ export default {
         },
 
         $_setObject() {
-            if (!this.form.useAllEmployees) {
+            if (
+                !this.form.useAllEmployees &&
+                this.entity.selected != undefined
+            ) {
                 delete this.form.userIds;
                 this.$_setUserIdList();
             }
