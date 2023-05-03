@@ -12,6 +12,8 @@ import httpService from '@/services/axios/httpService';
 
 import baseConfigHelper from '@/helpers/baseConfigHelper';
 
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
+
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
@@ -34,7 +36,6 @@ export default {
             form: this.$_Object(),
             pendingList: [],
             loading: false,
-            warningMessage: undefined,
         };
     },
 
@@ -75,6 +76,13 @@ export default {
             delete this.entity.selected.abilityIdList;
             delete this.entity.selected.abilityList;
             this.entity.step = 1;
+        },
+
+        $_validateEntity() {
+            let result =
+                this.form.userIds.length > 0 && this.form.ability.length > 0;
+
+            return result;
         },
 
         $_setUserIdList() {
@@ -122,25 +130,18 @@ export default {
 
         $_sendToApi() {
             this.$_setObject();
-            this.warningMessage = undefined;
 
-            switch (true) {
-                case this.form.userIds.length == 0:
-                    this.warningMessage =
-                        'Debe seleccionar al menos un colaborador.';
+            if (this.$_validateEntity()) {
+                if (this.pendingList.length > 0) {
                     this.$_open();
-                    break;
-                case this.form.ability.length == 0:
-                    this.warningMessage =
-                        'Debe seleccionar un indicador que posea al menos un micro-indicador.';
-                    this.$_open();
-                    break;
-                case this.pendingList.length > 0:
-                    this.$_open();
-                    break;
-                default:
+                } else {
                     this.$_sendRequest();
-                    break;
+                }
+            } else {
+                baseNotificationsHelper.Message(
+                    true,
+                    'Es requerido al menos un colaborador y un indicador para realizar la acción'
+                );
             }
         },
 
@@ -183,42 +184,16 @@ export default {
             :isDrawer="false"
         >
             <div slot="Content">
-                <v-card flat height="100%" width="100%" v-if="warningMessage">
-                    <v-card-title> ¡Atención! </v-card-title>
-                    <v-card-subtitle>
-                        Para continuar con el proceso debe tomar en cuenta lo
-                        siguiente:
-                    </v-card-subtitle>
-                    <v-card-text>
-                        <div class="px-2 pb-08">
-                            <v-icon class="pb-1 pl-0" color="yellowWarning900"
-                                >mdi-alert-circle-outline</v-icon
-                            >
-                            <span class="black--text pl-1">{{
-                                warningMessage
-                            }}</span>
-                        </div>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-row justify="end">
-                            <BaseCustomsButtonsGrid
-                                label="Cancelar"
-                                :fnMethod="$_open"
-                                icon="mdi-close-circle-outline"
-                            />
-                        </v-row>
-                    </v-card-actions>
-                </v-card>
                 <v-card
                     flat
                     height="100%"
                     width="100%"
-                    v-else-if="pendingList.length > 0"
+                    v-if="pendingList.length > 0"
                 >
                     <v-card-title> Indicadores pendientes </v-card-title>
                     <v-card-subtitle>
                         Los siguientes Indicadores no poseen ningún
-                        micro-indicador seleccionado, por lo tanto se van a
+                        micro-indicador seleccionado,por lo tanto se van a
                         omitir
                     </v-card-subtitle>
                     <v-card-text>
@@ -275,6 +250,7 @@ export default {
                         <BaseTextArea
                             label="Comentario"
                             v-model.trim="form.comment"
+                            :validate="['optionalText']"
                             :max="255"
                             :min="1"
                             counter="255"

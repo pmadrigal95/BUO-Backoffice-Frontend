@@ -219,7 +219,7 @@ export default {
                     ? undefined
                     : this.user.companyId;
             this.entity.departamentoId = undefined;
-            this.filterCompanyKey = this.filterCompanyKey + 1;
+            this.filterCompanyKey++;
             this.$_setProps();
         },
 
@@ -263,8 +263,8 @@ export default {
                                         label="Empresa"
                                         :setting="companySetting"
                                         v-model.number="entity.organizacionId"
-                                        :validate="['requiered']"
                                         :key="filterCompanyKey"
+                                        :validate="['requiered']"
                                     />
                                 </v-col>
                                 <v-col cols="12">
@@ -311,7 +311,7 @@ export default {
                             :fnMethod="$_returnToUser"
                             icon="mdi-account-group-outline"
                         />
-                        
+
                         <BaseCustomsButtonsGrid
                             label="Filtro Avanzado"
                             :fnMethod="$_showAdvFilter"
