@@ -323,10 +323,36 @@ export default {
                                             />
                                         </v-col>
                                         <v-col cols="12">
-                                            <BaseSwitch
-                                                v-model="form.sendNotification"
-                                                label="Enviar notificación."
-                                            />
+                                            <v-tooltip top>
+                                                <template
+                                                    v-slot:activator="{
+                                                        on,
+                                                        attrs,
+                                                    }"
+                                                >
+                                                    <div
+                                                        v-bind="attrs"
+                                                        v-on="on"
+                                                    >
+                                                        <BaseSwitch
+                                                            v-model="
+                                                                form.sendNotification
+                                                            "
+                                                            label="Enviar notificación."
+                                                        />
+                                                    </div>
+                                                </template>
+                                                <span
+                                                    >La opción de enviar
+                                                    notificación a los
+                                                    colaboradores
+                                                    <strong
+                                                        >solo se tomará en
+                                                        cuenta si el estado es
+                                                        sin validar
+                                                    </strong></span
+                                                >
+                                            </v-tooltip>
                                         </v-col>
                                         <v-col cols="12">
                                             <BaseRadioGroup

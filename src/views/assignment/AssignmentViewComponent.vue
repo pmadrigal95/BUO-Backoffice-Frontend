@@ -30,6 +30,9 @@ const BaseCustomsButtonsGrid = () =>
 const DisplayViewComponent = () =>
     import('@/views/assignment/components/DisplayViewComponent');
 
+const HelperViewComponent = () =>
+    import('@/views/assignment/components/HelperViewComponent');
+
 export default {
     name: 'AssignmentViewComponent',
 
@@ -40,6 +43,7 @@ export default {
         BaseCustomsButtonsGrid,
         BaseNotFoundContent,
         DisplayViewComponent,
+        HelperViewComponent,
     },
 
     data() {
@@ -318,6 +322,8 @@ export default {
                             :outlined="!show"
                             icon="mdi-filter-cog-outline"
                         />
+
+                        <HelperViewComponent />
                     </v-row>
                     <div class="pt-3">
                         <BaseNotFoundContent
