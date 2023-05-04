@@ -100,6 +100,14 @@ export default {
         >
             <v-expansion-panel-header class="buo-expansion-panel-header">
                 <v-list-item>
+                    <v-list-item-avatar class="mr-1">
+                        <v-img
+                            src="https://buo-resources.s3.us-east-2.amazonaws.com/certification/HabilityAwardBUO.svg"
+                            max-height="100%"
+                            max-width="100%"
+                            contain
+                        />
+                    </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-title class="BUO-Paragraph-Medium">{{
                             item.definicion

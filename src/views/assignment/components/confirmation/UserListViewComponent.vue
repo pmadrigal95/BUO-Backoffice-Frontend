@@ -8,6 +8,9 @@
 
 import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
 
+const BaseCustomsButtonsGrid = () =>
+    import('@/components/core/grids/BaseCustomsButtonsGrid');
+
 export default {
     name: 'UserListViewComponent',
 
@@ -18,9 +21,14 @@ export default {
         },
     },
 
+    components: {
+        BaseCustomsButtonsGrid,
+    },
+
     data() {
         return {
             key: 0,
+            useAllEmployees: true,
         };
     },
 
@@ -51,12 +59,22 @@ export default {
                 this.entity.selected.userList.filter((x) => x.userId != index);
             this.key++;
         },
+
+        $_returnToUserFilter() {
+            delete this.entity.selected;
+            this.entity.step = 0;
+        },
     },
 };
 </script>
 
 <template>
-    <v-card flat height="300" class="overflow-auto">
+    <v-card
+        flat
+        height="300"
+        class="overflow-auto"
+        v-if="entity?.selected?.userList.length > 0"
+    >
         <v-list two-line :key="key">
             <v-list-item v-for="(item, i) in entity.selected.userList" :key="i">
                 <v-list-item-avatar :color="color(i)">
@@ -85,4 +103,21 @@ export default {
             </v-list-item>
         </v-list>
     </v-card>
+    <v-row class="ml-1" v-else>
+        <v-col cols="12">
+            <BaseSwitch
+                :disabled="true"
+                v-model="useAllEmployees"
+                label="Asignar a todos sus colaboradores."
+            />
+        </v-col>
+        <v-col cols="12">
+            <BaseCustomsButtonsGrid
+                label="Buscar y seleccionar Colaboradores"
+                :fnMethod="$_returnToUserFilter"
+                icon="mdi-account-search"
+                block
+            />
+        </v-col>
+    </v-row>
 </template>

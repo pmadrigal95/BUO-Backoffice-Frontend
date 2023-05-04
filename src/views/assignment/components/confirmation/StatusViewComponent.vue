@@ -12,8 +12,6 @@ import httpService from '@/services/axios/httpService';
 
 import baseConfigHelper from '@/helpers/baseConfigHelper';
 
-import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
-
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
@@ -67,6 +65,7 @@ export default {
     methods: {
         $_Object() {
             return {
+                sendNotification: true,
                 comment: undefined,
                 statusID: undefined,
             };
@@ -76,13 +75,6 @@ export default {
             delete this.entity.selected.abilityIdList;
             delete this.entity.selected.abilityList;
             this.entity.step = 1;
-        },
-
-        $_validateEntity() {
-            let result =
-                this.form.userIds.length > 0 && this.form.ability.length > 0;
-
-            return result;
         },
 
         $_setUserIdList() {
@@ -131,17 +123,10 @@ export default {
         $_sendToApi() {
             this.$_setObject();
 
-            if (this.$_validateEntity()) {
-                if (this.pendingList.length > 0) {
-                    this.$_open();
-                } else {
-                    this.$_sendRequest();
-                }
+            if (this.pendingList.length > 0) {
+                this.$_open();
             } else {
-                baseNotificationsHelper.Message(
-                    true,
-                    'Es requerido al menos un colaborador y un indicador para realizar la acción'
-                );
+                this.$_sendRequest();
             }
         },
 
@@ -152,6 +137,8 @@ export default {
                 abilities: this.form.ability,
                 estadoId: this.form.statusID,
                 comentario: this.form.comment,
+                enviarNotificacion: this.form.sendNotification,
+                useAllEmployees: !this.form.userIds.length > 0,
                 usuarioModificaId: this.user.userId,
             };
         },
@@ -190,13 +177,23 @@ export default {
                     width="100%"
                     v-if="pendingList.length > 0"
                 >
-                    <v-card-title> Indicadores pendientes </v-card-title>
+                    <v-card-title>
+                        ¡Atención indicadores pendientes!
+                    </v-card-title>
                     <v-card-subtitle>
-                        Los siguientes Indicadores no poseen ningún
-                        micro-indicador seleccionado,por lo tanto se van a
-                        omitir
+                        Para continuar con el proceso debe tomar en cuenta lo
+                        siguiente:
                     </v-card-subtitle>
+
                     <v-card-text>
+                        <p>
+                            {{
+                                form.ability.length > 0
+                                    ? 'Los siguientes Indicadores no poseen ningún micro-indicador seleccionado,por lo tanto se van a omitir'
+                                    : 'Los siguientes Indicadores no poseen ningún micro-indicador seleccionado, debe seleccionar un indicador que posea al menos un micro-indicador.'
+                            }}
+                        </p>
+
                         <v-list>
                             <v-list-item
                                 v-for="(item, i) in pendingList"
@@ -222,11 +219,12 @@ export default {
                     <v-card-actions>
                         <v-row justify="end">
                             <BaseCustomsButtonsGrid
-                                label="Cancelar"
+                                label="Cerrar"
                                 :fnMethod="$_open"
                                 icon="mdi-close-circle-outline"
                             />
                             <BaseCustomsButtonsGrid
+                                v-if="form.ability.length > 0"
                                 label="Omitir y continuar"
                                 :outlined="false"
                                 :fnMethod="$_sendRequest"
@@ -254,6 +252,12 @@ export default {
                             :max="255"
                             :min="1"
                             counter="255"
+                        />
+                    </v-col>
+                    <v-col cols="12">
+                        <BaseSwitch
+                            v-model="form.sendNotification"
+                            label="Enviar notificación."
                         />
                     </v-col>
                     <v-col cols="12">

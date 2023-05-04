@@ -87,14 +87,6 @@ export default {
             };
         },
 
-        $_validateEntity() {
-            let result =
-                this.form.userIds.length > 0 &&
-                this.entity.selected.userList.length > 0;
-
-            return result;
-        },
-
         $_setUserIdList() {
             this.form.userIds = this.entity.selected.userList.map(
                 (x) => x.userId
