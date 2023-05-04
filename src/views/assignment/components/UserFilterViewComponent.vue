@@ -99,14 +99,14 @@ export default {
                         type: 'bool',
                         align: 'center',
                         value: 'conPda',
-                        show: false,
+                        show: true,
                     },
                     {
                         text: 'Estado',
                         align: 'center',
                         type: 'chip',
                         value: 'nombreEstado',
-                        show: true,
+                        show: false,
                     },
                     {
                         text: 'Identificación',

@@ -50,6 +50,11 @@ export default {
             default: true,
         },
 
+        block: {
+            type: Boolean,
+            default: false,
+        },
+
         loading: {
             type: Boolean,
             default: false,
@@ -76,6 +81,7 @@ export default {
         :dark="outlined ? false : true"
         :loading="loading"
         small
+        :block="block"
         @click="$_Method"
     >
         {{ label }}

@@ -12,8 +12,6 @@ import httpService from '@/services/axios/httpService';
 
 import baseConfigHelper from '@/helpers/baseConfigHelper';
 
-import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
-
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
@@ -46,6 +44,7 @@ export default {
             key: 0,
             view: 0,
             loading: false,
+            formModal: 1,
         };
     },
 
@@ -79,6 +78,8 @@ export default {
             return {
                 comment: undefined,
                 statusID: undefined,
+                sendNotification: true,
+                useAllEmployees: true,
                 ability: {
                     definicion: undefined,
                     categoriaId: undefined,
@@ -116,6 +117,8 @@ export default {
                 },
                 estadoId: this.form.statusID,
                 comentario: this.form.comment,
+                enviarNotificacion: this.form.sendNotification,
+                useAllEmployees: !this.form.userIds.length > 0,
                 usuarioModificaId: this.user.userId,
             };
         },
@@ -138,14 +141,7 @@ export default {
         $_sendToApi() {
             this.$_setObject();
 
-            if (this.$_validateEntity()) {
-                this.$_sendRequest();
-            } else {
-                baseNotificationsHelper.Message(
-                    true,
-                    'Es requerido al menos un colaborador para realizar la acción'
-                );
-            }
+            this.$_sendRequest();
         },
 
         $_tryOpen() {
@@ -155,13 +151,14 @@ export default {
                 this.entity?.selected?.userList &&
                 this.entity?.selected?.userList.length > 0
             ) {
-                this.form = this.$_Object();
                 this.$_open();
-                this.view++;
+                this.$_changeModal(true);
             }
         },
 
         $_open() {
+            this.form = this.$_Object();
+            this.view++;
             this.$refs['popUp'].$_openModal();
         },
 
@@ -169,6 +166,37 @@ export default {
             this.entity.selected.userList =
                 this.entity.selected.userList.filter((x) => x.userId != index);
             this.key++;
+        },
+
+        $_changeModal(value) {
+            this.formModal = value;
+        },
+
+        $_massiveOpen() {
+            this.$_changeModal(false);
+            this.$_open();
+        },
+
+        $_setUserListEmpty() {
+            const result = this.entity?.selected?.userList != undefined;
+            if (result) {
+                this.entity.selected.userList = [];
+            } else {
+                this.entity.selected = {
+                    userList: [],
+                };
+            }
+        },
+
+        $_massiveUserToNewAbility() {
+            this.$_setUserListEmpty();
+            this.$_changeModal(true);
+        },
+
+        $_massiveUserToAbility() {
+            this.$_setUserListEmpty();
+            this.$_open();
+            this.entity.step = 1;
         },
     },
 };
@@ -181,128 +209,194 @@ export default {
             :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '600'"
             scrollable
         >
-            <div slot="Content">
-                <BaseSkeletonLoader v-if="loading" type="article, actions" />
-                <BaseForm :method="$_sendToApi" :cancel="$_open" v-else>
-                    <div slot="body" :key="view">
-                        <div
-                            class="text-left BUO-Heading-Small blue900--text mb-2"
-                        >
-                            Crear nuevo Indicador
-                        </div>
-                        <v-card outlined flat class="rounded-lg mb-5">
-                            <v-card-text>
-                                <v-row dense>
-                                    <v-col cols="12">
-                                        <BaseInput
-                                            label="Definición"
-                                            :max="200"
-                                            v-model.trim="
-                                                form.ability.definicion
-                                            "
-                                            :validate="['text']"
-                                        />
-                                    </v-col>
-                                    <v-col cols="12">
-                                        <BaseInputTreeview
-                                            label="Categoría"
-                                            v-model.number="
-                                                form.ability.categoriaId
-                                            "
-                                            :readonly="!entity.organizacionId"
-                                            :editText="
-                                                form.ability.nombreCategoria
-                                            "
-                                            itemText="nombre"
-                                            itemChildren="subCategorias"
-                                            :endpoint="`categoria/findAllTree/${entity.organizacionId}`"
-                                            :validate="['requiered']"
-                                        />
-                                    </v-col>
-                                </v-row>
-                            </v-card-text>
-                        </v-card>
-                        <div
-                            class="text-left BUO-Heading-Small blue900--text mb-2"
-                        >
-                            Detalles de asignación
-                        </div>
-                        <v-card outlined flat class="rounded-lg">
-                            <v-card-text>
-                                <v-row dense>
-                                    <v-col
-                                        cols="12"
-                                        v-if="
-                                            entity?.selected?.userList.length >
-                                            0
-                                        "
-                                        :key="key"
-                                    >
-                                        <div
-                                            class="text-left BUO-Paragraph-Large black--text"
-                                        >
-                                            Colaboradores
-                                        </div>
-                                        <div class="pb-3">
-                                            <v-chip-group column>
+            <div slot="Content" :key="view">
+                <div v-if="formModal">
+                    <BaseSkeletonLoader
+                        v-if="loading"
+                        type="article, actions"
+                    />
+                    <BaseForm :method="$_sendToApi" :cancel="$_open" v-else>
+                        <div slot="body" :key="view">
+                            <div
+                                class="text-left BUO-Heading-Small blue900--text mb-2"
+                            >
+                                Crear nuevo Indicador
+                            </div>
+                            <v-card outlined flat class="rounded-lg mb-5">
+                                <v-card-text>
+                                    <v-row dense>
+                                        <v-col cols="12">
+                                            <BaseInput
+                                                label="Definición"
+                                                :max="200"
+                                                v-model.trim="
+                                                    form.ability.definicion
+                                                "
+                                                :validate="['text']"
+                                            />
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <BaseInputTreeview
+                                                label="Categoría"
+                                                v-model.number="
+                                                    form.ability.categoriaId
+                                                "
+                                                :readonly="
+                                                    !entity.organizacionId
+                                                "
+                                                :editText="
+                                                    form.ability.nombreCategoria
+                                                "
+                                                itemText="nombre"
+                                                itemChildren="subCategorias"
+                                                :endpoint="`categoria/findAllTree/${entity.organizacionId}`"
+                                                :validate="['requiered']"
+                                            />
+                                        </v-col>
+                                    </v-row>
+                                </v-card-text>
+                            </v-card>
+                            <div
+                                class="text-left BUO-Heading-Small blue900--text mb-2"
+                            >
+                                Detalles de asignación
+                            </div>
+                            <v-card outlined flat class="rounded-lg">
+                                <v-card-text>
+                                    <v-row dense>
+                                        <v-col cols="12">
+                                            <div
+                                                v-if="
+                                                    entity?.selected?.userList
+                                                        .length > 0
+                                                "
+                                                :key="key"
+                                            >
                                                 <div
-                                                    v-for="(item, i) in entity
-                                                        .selected.userList"
-                                                    :key="i"
+                                                    class="text-left BUO-Paragraph-Large black--text"
                                                 >
-                                                    <v-chip
-                                                        class="py-1 black--text BUO-Label-Small"
-                                                        style="
-                                                            height: auto;
-                                                            white-space: normal;
-                                                        "
-                                                        close
-                                                        close-icon="mdi-close"
-                                                        @click="
-                                                            $_delete(
-                                                                item.userId
-                                                            )
-                                                        "
-                                                        @click:close="
-                                                            $_delete(
-                                                                item.userId
-                                                            )
-                                                        "
-                                                    >
-                                                        {{ item.name }}
-                                                    </v-chip>
+                                                    Colaboradores
                                                 </div>
-                                            </v-chip-group>
-                                        </div>
-                                    </v-col>
-                                    <v-col cols="12">
-                                        <BaseTextArea
-                                            label="Comentario"
-                                            v-model.trim="form.comment"
-                                            :validate="['optionalText']"
-                                            :max="255"
-                                            :min="1"
-                                            counter="255"
-                                        />
-                                    </v-col>
-                                    <v-col cols="12">
-                                        <BaseRadioGroup
-                                            v-model="form.statusID"
-                                            :endpoint="statusList"
-                                            :validate="['requiered']"
-                                        />
-                                    </v-col>
-                                </v-row>
-                            </v-card-text>
-                        </v-card>
+                                                <div class="pb-3">
+                                                    <v-chip-group column>
+                                                        <div
+                                                            v-for="(
+                                                                item, i
+                                                            ) in entity.selected
+                                                                .userList"
+                                                            :key="i"
+                                                        >
+                                                            <v-chip
+                                                                class="py-1 black--text BUO-Label-Small"
+                                                                style="
+                                                                    height: auto;
+                                                                    white-space: normal;
+                                                                "
+                                                                close
+                                                                close-icon="mdi-close"
+                                                                @click="
+                                                                    $_delete(
+                                                                        item.userId
+                                                                    )
+                                                                "
+                                                                @click:close="
+                                                                    $_delete(
+                                                                        item.userId
+                                                                    )
+                                                                "
+                                                            >
+                                                                {{ item.name }}
+                                                            </v-chip>
+                                                        </div>
+                                                    </v-chip-group>
+                                                </div>
+                                            </div>
+                                            <BaseSwitch
+                                                :disabled="true"
+                                                v-else
+                                                v-model="form.useAllEmployees"
+                                                label="Asignar el nuevo
+                                                indicador a todos sus
+                                                colaboradores."
+                                            />
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <BaseTextArea
+                                                label="Comentario"
+                                                v-model.trim="form.comment"
+                                                :validate="['optionalText']"
+                                                :max="255"
+                                                :min="1"
+                                                counter="255"
+                                            />
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <BaseSwitch
+                                                v-model="form.sendNotification"
+                                                label="Enviar notificación."
+                                            />
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <BaseRadioGroup
+                                                v-model="form.statusID"
+                                                :endpoint="statusList"
+                                                :validate="['requiered']"
+                                            />
+                                        </v-col>
+                                    </v-row>
+                                </v-card-text>
+                            </v-card>
+                        </div>
+                    </BaseForm>
+                </div>
+                <div class="pt-5" v-else>
+                    <div class="text-left BUO-Heading-Small blue900--text mb-2">
+                        Asignación Masiva
                     </div>
-                </BaseForm>
+                    <div
+                        class="text-left BUO-Paragraph-Medium black--text mb-2"
+                    >
+                        La asignación masiva de colaboradores permite asignar o
+                        reasignar nuevos indicadores o indicadores existentes de
+                        una manera eficaz.
+                    </div>
+                    <v-card outlined flat class="rounded-lg mt-5">
+                        <v-card-subtitle class="text-left">
+                            Sí desea asignar a todos sus colaboradores, debe
+                            seleccionar alguna de las siguientes opciones.
+                        </v-card-subtitle>
+                        <v-card-text>
+                            <BaseCustomsButtonsGrid
+                                :outlined="false"
+                                label="Asignar nuevo Indicador"
+                                :fnMethod="$_massiveUserToNewAbility"
+                                icon="mdi-shield-plus"
+                                block
+                            />
+
+                            <BaseCustomsButtonsGrid
+                                :outlined="false"
+                                label="Asignar Indicador existente"
+                                :fnMethod="$_massiveUserToAbility"
+                                icon="mdi-shield"
+                                block
+                                class="mt-5"
+                            />
+                        </v-card-text>
+                    </v-card>
+                </div>
             </div>
         </BasePopUp>
         <BaseCustomsButtonsGrid
             label="Crear nuevo Indicador"
             :fnMethod="$_tryOpen"
             icon="mdi-shield"
+        />
+
+        <BaseCustomsButtonsGrid
+            label="Asignación Masiva"
+            :fnMethod="$_massiveOpen"
+            icon="mdi-office-building-plus"
         />
     </div>
 </template>
