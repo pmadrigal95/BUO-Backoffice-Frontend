@@ -137,7 +137,7 @@ export default {
                 abilities: this.form.ability,
                 estadoId: this.form.statusID,
                 comentario: this.form.comment,
-                enviarNotificacion: this.form.sendNotification,
+                enviarNotificacion: this.form.sendNotification === true,
                 useAllEmployees: !this.form.userIds.length > 0,
                 usuarioModificaId: this.user.userId,
             };
