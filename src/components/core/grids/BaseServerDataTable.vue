@@ -1023,9 +1023,12 @@ export default {
                                         <v-expansion-panel-header
                                             class="buo-expansion-panel-header"
                                             v-if="
-                                                header.type != 'hidden' &&
-                                                header.type != 'color' &&
-                                                header.type != 'percentage'
+                                                (header.type != 'hidden' &&
+                                                    header.type != 'color' &&
+                                                    header.type !=
+                                                        'percentage') ||
+                                                header.isFilterable ||
+                                                header.isFilterable == undefined
                                             "
                                         >
                                             <div
@@ -1272,147 +1275,157 @@ export default {
                         </th>
 
                         <th v-for="header in headers" :key="header.text">
-                            <!-- @helper:  Filter type Text -->
                             <div
                                 v-if="
-                                    header.type == undefined ||
-                                    header.type == 'chip'
+                                    header.isFilterable ||
+                                    header.isFilterable == undefined
                                 "
-                                class="px-1 py-2"
                             >
-                                <v-text-field
-                                    outlined
-                                    dense
-                                    v-model="filters[header.value]"
-                                    v-if="showSearch"
-                                    clearable
-                                    clear-icon="mdi-close-circle"
-                                ></v-text-field>
-                            </div>
-
-                            <!-- @helper:  Filter type Number -->
-                            <div
-                                v-else-if="header.type == 'number'"
-                                class="px-1 py-2"
-                            >
-                                <v-text-field
-                                    outlined
-                                    dense
-                                    v-model="filters[header.value]"
-                                    v-if="showSearch"
-                                    clearable
-                                    clear-icon="mdi-close-circle"
-                                    type="number"
-                                ></v-text-field>
-                            </div>
-
-                            <!-- @helper:  Filter type Hidden -->
-                            <div v-else-if="header.type == 'hidden'">
-                                <input
-                                    type="hidden"
-                                    v-if="showSearch"
-                                    v-model="filters[header.value]"
-                                />
-                            </div>
-
-                            <!-- @helper:  Filter type Boolean -->
-                            <div
-                                v-else-if="header.type == 'bool'"
-                                class="px-1 py-2"
-                            >
-                                <v-autocomplete
-                                    dense
-                                    clearable
-                                    outlined
-                                    clear-icon="mdi-close-circle"
-                                    v-model="filters[header.value]"
-                                    :items="$_boolList"
-                                    item-value="id"
-                                    v-if="showSearch"
+                                <!-- @helper:  Filter type Text -->
+                                <div
+                                    v-if="
+                                        header.type == undefined ||
+                                        header.type == 'chip'
+                                    "
+                                    class="px-1 py-2"
                                 >
-                                    <template v-slot:selection="data">
-                                        <v-icon
-                                            :color="data.item.color"
-                                            :input-value="data.item"
-                                        >
-                                            {{ data.item.icon }}
-                                        </v-icon>
-                                    </template>
+                                    <v-text-field
+                                        outlined
+                                        dense
+                                        v-model="filters[header.value]"
+                                        v-if="showSearch"
+                                        clearable
+                                        clear-icon="mdi-close-circle"
+                                    ></v-text-field>
+                                </div>
 
-                                    <template v-slot:item="data">
-                                        <v-layout justify-center align-center>
+                                <!-- @helper:  Filter type Number -->
+                                <div
+                                    v-else-if="header.type == 'number'"
+                                    class="px-1 py-2"
+                                >
+                                    <v-text-field
+                                        outlined
+                                        dense
+                                        v-model="filters[header.value]"
+                                        v-if="showSearch"
+                                        clearable
+                                        clear-icon="mdi-close-circle"
+                                        type="number"
+                                    ></v-text-field>
+                                </div>
+
+                                <!-- @helper:  Filter type Hidden -->
+                                <div v-else-if="header.type == 'hidden'">
+                                    <input
+                                        type="hidden"
+                                        v-if="showSearch"
+                                        v-model="filters[header.value]"
+                                    />
+                                </div>
+
+                                <!-- @helper:  Filter type Boolean -->
+                                <div
+                                    v-else-if="header.type == 'bool'"
+                                    class="px-1 py-2"
+                                >
+                                    <v-autocomplete
+                                        dense
+                                        clearable
+                                        outlined
+                                        clear-icon="mdi-close-circle"
+                                        v-model="filters[header.value]"
+                                        :items="$_boolList"
+                                        item-value="id"
+                                        v-if="showSearch"
+                                    >
+                                        <template v-slot:selection="data">
                                             <v-icon
                                                 :color="data.item.color"
                                                 :input-value="data.item"
                                             >
                                                 {{ data.item.icon }}
                                             </v-icon>
-                                        </v-layout>
-                                    </template>
-                                </v-autocomplete>
-                            </div>
+                                        </template>
 
-                            <!-- @helper:  Filter type bigint -->
-                            <div
-                                v-else-if="header.type == 'bigint'"
-                                class="px-1 py-2"
-                            >
-                                <!-- @BaseInput -->
-                                <BaseInput
-                                    label
-                                    dense
-                                    v-model="filters[header.value]"
-                                    mask="###########"
-                                    clearable
-                                />
-                            </div>
+                                        <template v-slot:item="data">
+                                            <v-layout
+                                                justify-center
+                                                align-center
+                                            >
+                                                <v-icon
+                                                    :color="data.item.color"
+                                                    :input-value="data.item"
+                                                >
+                                                    {{ data.item.icon }}
+                                                </v-icon>
+                                            </v-layout>
+                                        </template>
+                                    </v-autocomplete>
+                                </div>
 
-                            <!-- @helper:  Filter type int -->
-                            <div
-                                v-else-if="header.type == 'int'"
-                                class="px-1 py-2"
-                            >
-                                <!-- @BaseInput -->
-                                <BaseInput
-                                    outlined
-                                    label
-                                    dense
-                                    v-model="filters[header.value]"
-                                    mask="##########"
-                                    clearable
-                                />
-                            </div>
+                                <!-- @helper:  Filter type bigint -->
+                                <div
+                                    v-else-if="header.type == 'bigint'"
+                                    class="px-1 py-2"
+                                >
+                                    <!-- @BaseInput -->
+                                    <BaseInput
+                                        label
+                                        dense
+                                        v-model="filters[header.value]"
+                                        mask="###########"
+                                        clearable
+                                    />
+                                </div>
 
-                            <!-- @helper:  Filter type smallint -->
-                            <div
-                                v-else-if="header.type == 'smallint'"
-                                class="px-1 py-2"
-                            >
-                                <!-- @BaseInput -->
-                                <BaseInput
-                                    outlined
-                                    label
-                                    dense
-                                    v-model="filters[header.value]"
-                                    mask="#####"
-                                    clearable
-                                />
-                            </div>
+                                <!-- @helper:  Filter type int -->
+                                <div
+                                    v-else-if="header.type == 'int'"
+                                    class="px-1 py-2"
+                                >
+                                    <!-- @BaseInput -->
+                                    <BaseInput
+                                        outlined
+                                        label
+                                        dense
+                                        v-model="filters[header.value]"
+                                        mask="##########"
+                                        clearable
+                                    />
+                                </div>
 
-                            <!-- @helper:  Filter type tinyint -->
-                            <div
-                                v-else-if="header.type == 'tinyint'"
-                                class="px-1 py-2"
-                            >
-                                <!-- @BaseInput -->
-                                <BaseInput
-                                    outlined
-                                    label
-                                    dense
-                                    clearable
-                                    v-model="filters[header.value]"
-                                    mask="###"
-                                />
+                                <!-- @helper:  Filter type smallint -->
+                                <div
+                                    v-else-if="header.type == 'smallint'"
+                                    class="px-1 py-2"
+                                >
+                                    <!-- @BaseInput -->
+                                    <BaseInput
+                                        outlined
+                                        label
+                                        dense
+                                        v-model="filters[header.value]"
+                                        mask="#####"
+                                        clearable
+                                    />
+                                </div>
+
+                                <!-- @helper:  Filter type tinyint -->
+                                <div
+                                    v-else-if="header.type == 'tinyint'"
+                                    class="px-1 py-2"
+                                >
+                                    <!-- @BaseInput -->
+                                    <BaseInput
+                                        outlined
+                                        label
+                                        dense
+                                        clearable
+                                        v-model="filters[header.value]"
+                                        mask="###"
+                                    />
+                                </div>
                             </div>
                         </th>
                     </tr>
