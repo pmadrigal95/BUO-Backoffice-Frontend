@@ -28,26 +28,59 @@ export default {
     computed: {
         ...mapGetters('security', ['permissionList', 'loadingSecurity']),
 
-        filterList() {
-            let originalList = JSON.parse(JSON.stringify(this.permissionList));
-            originalList = originalList.filter(
-                (x) =>
-                    x.acciones.filter(
-                        (item) => item === baseSecurityHelper.$_read
-                    ) &&
-                    x.activo &&
-                    x.rutaURL != null &&
-                    x.nombre != 'HomeViewComponent'
-            );
+        categoriesMenu() {
+            return [
+                {
+                    name: 'People Analytics',
+                    list: [
+                        'SearchPeopleByAbilityViewComponent',
+                        'SearchAbilitiesByDepartmentOrPersonViewComponent',
+                        'ProfileViewComponent',
+                        'AssignmentViewComponent',
+                        'ApprovalViewComponent',
+                    ],
+                },
+                {
+                    name: 'Administración',
+                    list: [
+                        'CompanyViewComponent',
+                        'UserViewComponent',
+                        'DepartmentViewComponent',
+                        'CategoryViewComponent',
+                        'AbilityViewComponent',
+                        'MicroAbilityViewComponent',
+                        'PromotionalCodesViewComponent',
+                    ],
+                },
+            ];
+        },
 
-            originalList.push({
-                nombreUI: 'Cerrar sesión',
-                icono: 'login-variant',
-                btnRequired: false,
-                rutaURL: 'LoginViewComponent',
+        menuList() {
+            let result = [
+                {
+                    name: 'People Analytics',
+                    list: [],
+                },
+                {
+                    name: 'Administración',
+                    list: [],
+                },
+            ];
+
+            this.categoriesMenu.forEach((x) => {
+                const index = result
+                    .map(function (e) {
+                        return e.name;
+                    })
+                    .indexOf(x.name);
+
+                x.list.forEach((view) => {
+                    const insert = baseSecurityHelper.$_getObjectById(view);
+                    insert && result[index].list.push(insert);
+                });
             });
 
-            return originalList;
+            return result;
         },
 
         componentProps() {
@@ -74,73 +107,143 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="¡Hola!" subtitle="¿Qué quieres hacer hoy?">
+    <BaseCardViewComponent>
         <div slot="card-text">
             <BaseSkeletonLoader v-if="loadingSecurity" type="list-item" />
-            <div v-else>
-                <div v-if="$vuetify.breakpoint.mdAndUp">
-                    <div
-                        v-for="(array, i) in $_chuckSize(filterList)"
-                        :key="i"
-                        class="pb-4"
+            <v-card flat color="transparent" v-else>
+                <v-layout justify-end
+                    ><v-btn
+                        class="ma-1 no-uppercase rounded-lg"
+                        depressed
+                        color="white"
+                        :to="{ name: 'LoginViewComponent' }"
                     >
-                        <v-layout justify-center>
-                            <div v-for="(item, i) in array" :key="i">
-                                <BaseCardMenuViewComponent
-                                    :icon="item.icono"
-                                    :to="item.rutaURL"
-                                    :subtitle="item.nombreUI"
-                                    :positionSubtitle="
-                                        componentProps.positionSubtitle
-                                    "
-                                    :fontTypeSubtitle="
-                                        componentProps.fontTypeSubtitle
-                                    "
-                                    :min-width="componentProps.width"
-                                    :max-width="componentProps.width"
-                                    :min-height="componentProps.heigh"
-                                    :centerBotton="componentProps.centerBotton"
-                                    :centerIcon="componentProps.centerIcon"
-                                    :large="componentProps.large"
-                                    :btnRequired="item?.btnRequired"
-                                    :description="item.descripcion"
-                                    :positionDescription="
-                                        componentProps.positionDescription
-                                    "
-                                    :fontTypeDescription="
-                                        componentProps.fontTypeDescription
-                                    "
-                                />
-                            </div>
-                        </v-layout>
+                        <span class="primary--text"> Cerrar sesión </span>
+                        <v-icon small right dark color="primary">
+                            mdi-login-variant
+                        </v-icon>
+                    </v-btn></v-layout
+                >
+                <v-card-title class="BUO-Heading-Large blue900--text">
+                    ¡Hola!
+                </v-card-title>
+                <v-card-subtitle class="BUO-Paragraph-Large black--text"
+                    >¿Qué quieres hacer hoy?</v-card-subtitle
+                >
+                <div v-if="$vuetify.breakpoint.mdAndUp">
+                    <div v-for="(menu, i) in menuList" :key="i">
+                        <v-card flat color="transparent">
+                            <v-card-title
+                                class="BUO-Heading-Small blue900--text"
+                            >
+                                {{ menu.name }}
+                            </v-card-title>
+
+                            <v-card-text>
+                                <div
+                                    v-for="(array, i) in $_chuckSize(menu.list)"
+                                    :key="i"
+                                    class="pb-4"
+                                >
+                                    <v-layout justify-start>
+                                        <div
+                                            v-for="(item, i) in array"
+                                            :key="i"
+                                        >
+                                            <BaseCardMenuViewComponent
+                                                :icon="item.icono"
+                                                :to="item.rutaURL"
+                                                :subtitle="item.nombreUI"
+                                                :positionSubtitle="
+                                                    componentProps.positionSubtitle
+                                                "
+                                                :fontTypeSubtitle="
+                                                    componentProps.fontTypeSubtitle
+                                                "
+                                                :min-width="
+                                                    componentProps.width
+                                                "
+                                                :max-width="
+                                                    componentProps.width
+                                                "
+                                                :min-height="
+                                                    componentProps.heigh
+                                                "
+                                                :centerBotton="
+                                                    componentProps.centerBotton
+                                                "
+                                                :centerIcon="
+                                                    componentProps.centerIcon
+                                                "
+                                                :large="componentProps.large"
+                                                :btnRequired="item?.btnRequired"
+                                                :description="item.descripcion"
+                                                :positionDescription="
+                                                    componentProps.positionDescription
+                                                "
+                                                :fontTypeDescription="
+                                                    componentProps.fontTypeDescription
+                                                "
+                                            />
+                                        </div>
+                                    </v-layout>
+                                </div>
+                            </v-card-text>
+                        </v-card>
                     </div>
                 </div>
-                <v-row v-else-if="$vuetify.breakpoint.mobile" dense>
-                    <v-col cols="12" v-for="(item, i) in filterList" :key="i">
-                        <BaseCardMenuViewComponent
-                            :icon="item.icono"
-                            :to="item.rutaURL"
-                            :subtitle="item.nombreUI"
-                            min-width="100%"
-                            :max-width="componentProps.width"
-                            :min-height="componentProps.heigh"
-                            :positionSubtitle="componentProps.positionSubtitle"
-                            :fontTypeSubtitle="componentProps.fontTypeSubtitle"
-                            :centerBotton="componentProps.centerBotton"
-                            :centerIcon="componentProps.centerIcon"
-                            :large="componentProps.large"
-                            :btnRequired="item?.btnRequired"
-                            :description="item.descripcion"
-                            :positionDescription="
-                                componentProps.positionDescription
-                            "
-                            :fontTypeDescription="
-                                componentProps.fontTypeDescription
-                            "
-                        />
-                    </v-col>
-                </v-row>
-            </div>
+                <div v-else-if="$vuetify.breakpoint.mobile">
+                    <div v-for="(menu, i) in menuList" :key="i">
+                        <v-card flat color="transparent">
+                            <v-card-title
+                                class="BUO-Heading-Small blue900--text"
+                            >
+                                {{ menu.name }}
+                            </v-card-title>
+
+                            <v-card-text>
+                                <v-row dense>
+                                    <v-col
+                                        cols="12"
+                                        v-for="(item, i) in menu.list"
+                                        :key="i"
+                                    >
+                                        <BaseCardMenuViewComponent
+                                            :icon="item.icono"
+                                            :to="item.rutaURL"
+                                            :subtitle="item.nombreUI"
+                                            min-width="100%"
+                                            :max-width="componentProps.width"
+                                            :min-height="componentProps.heigh"
+                                            :positionSubtitle="
+                                                componentProps.positionSubtitle
+                                            "
+                                            :fontTypeSubtitle="
+                                                componentProps.fontTypeSubtitle
+                                            "
+                                            :centerBotton="
+                                                componentProps.centerBotton
+                                            "
+                                            :centerIcon="
+                                                componentProps.centerIcon
+                                            "
+                                            :large="componentProps.large"
+                                            :btnRequired="item?.btnRequired"
+                                            :description="item.descripcion"
+                                            :positionDescription="
+                                                componentProps.positionDescription
+                                            "
+                                            :fontTypeDescription="
+                                                componentProps.fontTypeDescription
+                                            "
+                                        />
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
+                        </v-card>
+                    </div>
+                </div>
+            </v-card>
         </div>
     </BaseCardViewComponent>
 </template>
