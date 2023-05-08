@@ -123,7 +123,7 @@ export default {
         $_sendToApi() {
             this.$_setObject();
 
-            if (this.pendingList.length > 0) {
+            if (this.pendingList.length > 0 || this.form.ability <= 0) {
                 this.$_open();
             } else {
                 this.$_sendRequest();
@@ -175,7 +175,7 @@ export default {
                     flat
                     height="100%"
                     width="100%"
-                    v-if="pendingList.length > 0"
+                    v-if="pendingList.length > 0 || form.ability <= 0"
                 >
                     <v-card-title>
                         ¡Atención indicadores pendientes!
@@ -186,7 +186,11 @@ export default {
                     </v-card-subtitle>
 
                     <v-card-text>
-                        <p>
+                        <p v-if="form.ability <= 0">
+                            Debe seleccionar un indicador que posea al menos un
+                            micro-indicador.
+                        </p>
+                        <p v-else>
                             {{
                                 form.ability.length > 0
                                     ? 'Los siguientes Indicadores no poseen ningún micro-indicador seleccionado,por lo tanto se van a omitir'
