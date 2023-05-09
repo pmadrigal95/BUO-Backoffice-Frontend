@@ -132,7 +132,11 @@ export default {
                 >
                 <div v-if="$vuetify.breakpoint.mdAndUp">
                     <div v-for="(menu, i) in menuList" :key="i">
-                        <v-card flat color="transparent">
+                        <v-card
+                            flat
+                            color="transparent"
+                            v-if="menu.list.length > 0"
+                        >
                             <v-card-title
                                 class="BUO-Heading-Small blue900--text"
                             >
@@ -194,7 +198,11 @@ export default {
                 </div>
                 <div v-else-if="$vuetify.breakpoint.mobile">
                     <div v-for="(menu, i) in menuList" :key="i">
-                        <v-card flat color="transparent">
+                        <v-card
+                            flat
+                            color="transparent"
+                            v-if="menu.list.length > 0"
+                        >
                             <v-card-title
                                 class="BUO-Heading-Small blue900--text"
                             >
