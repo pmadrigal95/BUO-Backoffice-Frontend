@@ -10,10 +10,15 @@ import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
+
+const BaseInputDataTable = () =>
+    import('@/components/core/forms/BaseInputDataTable');
 
 const BaseInputTreeview = () =>
     import('@/components/core/treeview/BaseInputTreeview');
@@ -35,6 +40,7 @@ export default {
 
     components: {
         BaseCustomsButtonsGrid,
+        BaseInputDataTable,
         BaseInputTreeview,
     },
 
@@ -51,6 +57,14 @@ export default {
 
     computed: {
         ...mapGetters('authentication', ['user']),
+
+        userSetting() {
+            return baseFilterSettingsHelper.$_setUserSetting(
+                this.entity.organizacionId,
+                this.entity.departamentoId,
+                false
+            );
+        },
 
         statusList() {
             return [
@@ -320,6 +334,13 @@ export default {
                                             <BaseSwitch
                                                 v-model="needTutor"
                                                 label="Delegar Supervisión."
+                                            />
+                                        </v-col>
+                                        <v-col cols="12" v-if="needTutor">
+                                            <BaseInputDataTable
+                                                label="Supervisor(es)"
+                                                :setting="userSetting"
+                                                v-model="form.tutors"
                                             />
                                         </v-col>
                                         <v-col cols="12">
