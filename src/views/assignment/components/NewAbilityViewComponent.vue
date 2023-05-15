@@ -41,6 +41,7 @@ export default {
     data() {
         return {
             form: this.$_Object(),
+            needTutor: false,
             key: 0,
             view: 0,
             loading: false,
@@ -80,6 +81,7 @@ export default {
                 statusID: undefined,
                 sendNotification: true,
                 useAllEmployees: true,
+                tutors: undefined,
                 ability: {
                     definicion: undefined,
                     categoriaId: undefined,
@@ -279,7 +281,9 @@ export default {
                                                             :key="i"
                                                         >
                                                             <v-chip
-                                                                class="py-1 black--text BUO-Label-Small"
+                                                                color="blue900"
+                                                                outlined
+                                                                class="py-1 BUO-Label-Small"
                                                                 style="
                                                                     height: auto;
                                                                     white-space: normal;
@@ -310,6 +314,12 @@ export default {
                                                 label="Asignar el nuevo
                                                 indicador a todos sus
                                                 colaboradores."
+                                            />
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <BaseSwitch
+                                                v-model="needTutor"
+                                                label="Delegar Supervisión."
                                             />
                                         </v-col>
                                         <v-col cols="12">
