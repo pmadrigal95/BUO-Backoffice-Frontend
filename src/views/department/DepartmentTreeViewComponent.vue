@@ -166,281 +166,294 @@ export default {
                     </v-card-title>
 
                     <v-card-text>
-                        <v-layout
-                            justify-space-between
-                            v-if="$vuetify.breakpoint.mdAndUp"
-                        >
-                            <v-card
-                                flat
-                                height="300"
-                                width="100%"
-                                class="overflow-hidden"
-                            >
-                                <v-card-text>
-                                    <section v-if="department.descripcion">
-                                        <div
-                                            class="pb-2 black--text BUO-Paragraph-Small"
-                                        >
-                                            Descripción
-                                        </div>
-                                        <div class="pb-2 black--text BUO-Label">
-                                            {{ department.descripcion }}
-                                        </div>
-                                        <v-divider></v-divider>
-                                    </section>
-
-                                    <section
-                                        v-if="
-                                            department.adminsDepartamento &&
-                                            department.adminsDepartamento
-                                                .length > 0
-                                        "
-                                    >
-                                        <div class="py-2">
+                        <v-row v-if="$vuetify.breakpoint.mdAndUp">
+                            <v-col cols="8">
+                                <v-card
+                                    flat
+                                    height="300"
+                                    width="100%"
+                                    class="overflow-auto"
+                                >
+                                    <v-card-text>
+                                        <section v-if="department.descripcion">
                                             <div
-                                                class="py-1grey500--text BUO-Label-Small"
+                                                class="pb-2 black--text BUO-Paragraph-Small"
                                             >
-                                                {{
-                                                    department
-                                                        .adminsDepartamento
-                                                        .length > 1
-                                                        ? 'Administradores'
-                                                        : 'Administrador'
-                                                }}
+                                                Descripción
                                             </div>
-                                            <section
-                                                v-if="
-                                                    department
-                                                        .adminsDepartamento
-                                                        .length === 1
-                                                "
+                                            <div
+                                                class="pb-2 black--text BUO-Label"
                                             >
-                                                <v-list-item class="px-2">
-                                                    <v-list-item-avatar>
-                                                        <v-avatar
-                                                            :color="
-                                                                user.colorAvatar
+                                                {{ department.descripcion }}
+                                            </div>
+                                            <v-divider></v-divider>
+                                        </section>
+
+                                        <section
+                                            v-if="
+                                                department.adminsDepartamento &&
+                                                department.adminsDepartamento
+                                                    .length > 0
+                                            "
+                                        >
+                                            <div class="py-2">
+                                                <div
+                                                    class="py-1grey500--text BUO-Label-Small"
+                                                >
+                                                    {{
+                                                        department
+                                                            .adminsDepartamento
+                                                            .length > 1
+                                                            ? 'Administradores'
+                                                            : 'Administrador'
+                                                    }}
+                                                </div>
+                                                <section
+                                                    v-if="
+                                                        department
+                                                            .adminsDepartamento
+                                                            .length === 1
+                                                    "
+                                                >
+                                                    <v-list-item class="px-2">
+                                                        <v-list-item-avatar>
+                                                            <v-avatar
+                                                                :color="
+                                                                    user.colorAvatar
+                                                                "
+                                                            >
+                                                                <span
+                                                                    class="white--text BUO-Paragraph-Medium-SemiBold"
+                                                                    >{{
+                                                                        $_setInitials(
+                                                                            department
+                                                                                .adminsDepartamento[0]
+                                                                                .nombre
+                                                                        )
+                                                                    }}</span
+                                                                >
+                                                            </v-avatar>
+                                                        </v-list-item-avatar>
+
+                                                        <v-list-item-content>
+                                                            <v-list-item-title
+                                                                class="black--text BUO-Label-Small-SemiBold"
+                                                                >{{
+                                                                    department
+                                                                        .adminsDepartamento[0]
+                                                                        .nombre
+                                                                }}</v-list-item-title
+                                                            >
+                                                        </v-list-item-content>
+                                                    </v-list-item>
+                                                    <div
+                                                        class="py-1 black--text BUO-Label-Small"
+                                                    >
+                                                        <v-layout
+                                                            justify-space-between
+                                                        >
+                                                            <div
+                                                                v-if="
+                                                                    department
+                                                                        .adminsDepartamento[0]
+                                                                        .correo
+                                                                "
+                                                            >
+                                                                <v-icon
+                                                                    class="pb-1"
+                                                                    color="primary"
+                                                                    small
+                                                                    >mdi-email-outline</v-icon
+                                                                >
+                                                                {{
+                                                                    department
+                                                                        .adminsDepartamento[0]
+                                                                        .correo
+                                                                }}
+                                                            </div>
+                                                            <div
+                                                                v-if="
+                                                                    department
+                                                                        .adminsDepartamento[0]
+                                                                        .telefono
+                                                                "
+                                                            >
+                                                                <v-icon
+                                                                    class="pb-1"
+                                                                    color="primary"
+                                                                    small
+                                                                    >mdi-cellphone</v-icon
+                                                                >
+                                                                {{
+                                                                    department
+                                                                        .adminsDepartamento[0]
+                                                                        .telefono
+                                                                }}
+                                                            </div>
+                                                        </v-layout>
+                                                    </div>
+                                                </section>
+                                                <section v-else>
+                                                    <v-expansion-panels
+                                                        flat
+                                                        focusable
+                                                    >
+                                                        <v-expansion-panel
+                                                            v-for="admin in department.adminsDepartamento"
+                                                            :key="
+                                                                admin.usuarioId
                                                             "
                                                         >
-                                                            <span
-                                                                class="white--text BUO-Paragraph-Medium-SemiBold"
-                                                                >{{
-                                                                    $_setInitials(
-                                                                        department
-                                                                            .adminsDepartamento[0]
-                                                                            .nombre
-                                                                    )
-                                                                }}</span
+                                                            <v-expansion-panel-header
+                                                                class="pa-0"
                                                             >
-                                                        </v-avatar>
-                                                    </v-list-item-avatar>
+                                                                <v-list-item
+                                                                    class="buo-headerAbility-position"
+                                                                >
+                                                                    <v-list-item-avatar>
+                                                                        <v-avatar
+                                                                            size="35"
+                                                                            :color="
+                                                                                user.colorAvatar
+                                                                            "
+                                                                        >
+                                                                            <span
+                                                                                class="white--text BUO-Paragraph-Medium-SemiBold"
+                                                                                >{{
+                                                                                    $_setInitials(
+                                                                                        admin.nombre
+                                                                                    )
+                                                                                }}</span
+                                                                            >
+                                                                        </v-avatar>
+                                                                    </v-list-item-avatar>
 
-                                                    <v-list-item-content>
-                                                        <v-list-item-title
-                                                            class="black--text BUO-Label-Small-SemiBold"
-                                                            >{{
-                                                                department
-                                                                    .adminsDepartamento[0]
-                                                                    .nombre
-                                                            }}</v-list-item-title
-                                                        >
-                                                    </v-list-item-content>
-                                                </v-list-item>
+                                                                    <v-list-item-content>
+                                                                        <v-list-item-title
+                                                                            class="black--text BUO-Label-Small-SemiBold"
+                                                                            >{{
+                                                                                admin.nombre
+                                                                            }}</v-list-item-title
+                                                                        >
+                                                                    </v-list-item-content>
+                                                                </v-list-item>
+                                                            </v-expansion-panel-header>
+                                                            <v-expansion-panel-content>
+                                                                <div
+                                                                    class="py-1 black--text BUO-Label-Small"
+                                                                >
+                                                                    <v-layout
+                                                                        justify-space-between
+                                                                    >
+                                                                        <div
+                                                                            v-if="
+                                                                                admin.correo
+                                                                            "
+                                                                        >
+                                                                            <v-icon
+                                                                                class="pb-1"
+                                                                                color="primary"
+                                                                                small
+                                                                                >mdi-email-outline</v-icon
+                                                                            >
+                                                                            {{
+                                                                                admin.correo
+                                                                            }}
+                                                                        </div>
+                                                                        <div
+                                                                            v-if="
+                                                                                admin.telefono
+                                                                            "
+                                                                        >
+                                                                            <v-icon
+                                                                                class="pb-1"
+                                                                                color="primary"
+                                                                                small
+                                                                                >mdi-cellphone</v-icon
+                                                                            >
+                                                                            {{
+                                                                                admin.telefono
+                                                                            }}
+                                                                        </div>
+                                                                    </v-layout>
+                                                                </div>
+                                                            </v-expansion-panel-content>
+                                                        </v-expansion-panel>
+                                                    </v-expansion-panels>
+                                                </section>
+                                            </div>
+                                            <v-divider></v-divider>
+                                        </section>
+                                        <section
+                                            v-if="
+                                                department.cantidadColaboradores
+                                            "
+                                        >
+                                            <div class="py-2">
+                                                <div
+                                                    class="py-1 grey500--text BUO-Label-Small"
+                                                >
+                                                    Colaboradores:
+                                                </div>
                                                 <div
                                                     class="py-1 black--text BUO-Label-Small"
                                                 >
-                                                    <v-layout
-                                                        justify-space-between
+                                                    <v-icon
+                                                        class="pb-1"
+                                                        color="primary"
+                                                        small
+                                                        >mdi-account</v-icon
                                                     >
-                                                        <div
-                                                            v-if="
-                                                                department
-                                                                    .adminsDepartamento[0]
-                                                                    .correo
-                                                            "
-                                                        >
-                                                            <v-icon
-                                                                class="pb-1"
-                                                                color="primary"
-                                                                small
-                                                                >mdi-email-outline</v-icon
-                                                            >
-                                                            {{
-                                                                department
-                                                                    .adminsDepartamento[0]
-                                                                    .correo
-                                                            }}
-                                                        </div>
-                                                        <div
-                                                            v-if="
-                                                                department
-                                                                    .adminsDepartamento[0]
-                                                                    .telefono
-                                                            "
-                                                        >
-                                                            <v-icon
-                                                                class="pb-1"
-                                                                color="primary"
-                                                                small
-                                                                >mdi-cellphone</v-icon
-                                                            >
-                                                            {{
-                                                                department
-                                                                    .adminsDepartamento[0]
-                                                                    .telefono
-                                                            }}
-                                                        </div>
-                                                    </v-layout>
+                                                    {{
+                                                        `${department.cantidadColaboradores} Colaboradores`
+                                                    }}
                                                 </div>
-                                            </section>
-                                            <section v-else>
-                                                <v-expansion-panels flat>
-                                                    <v-expansion-panel
-                                                        v-for="admin in department.adminsDepartamento"
-                                                        :key="admin.usuarioId"
-                                                    >
-                                                        <v-expansion-panel-header>
-                                                            <v-list-item
-                                                                class="px-2"
-                                                            >
-                                                                <v-list-item-avatar>
-                                                                    <v-avatar
-                                                                        :color="
-                                                                            user.colorAvatar
-                                                                        "
-                                                                    >
-                                                                        <span
-                                                                            class="white--text BUO-Paragraph-Medium-SemiBold"
-                                                                            >{{
-                                                                                $_setInitials(
-                                                                                    admin.nombre
-                                                                                )
-                                                                            }}</span
-                                                                        >
-                                                                    </v-avatar>
-                                                                </v-list-item-avatar>
-
-                                                                <v-list-item-content>
-                                                                    <v-list-item-title
-                                                                        class="black--text BUO-Label-Small-SemiBold"
-                                                                        >{{
-                                                                            admin.nombre
-                                                                        }}</v-list-item-title
-                                                                    >
-                                                                </v-list-item-content>
-                                                            </v-list-item>
-                                                        </v-expansion-panel-header>
-                                                        <v-expansion-panel-content>
-                                                            <div
-                                                                class="py-1 black--text BUO-Label-Small"
-                                                            >
-                                                                <v-layout
-                                                                    justify-space-between
-                                                                >
-                                                                    <div
-                                                                        v-if="
-                                                                            admin.correo
-                                                                        "
-                                                                    >
-                                                                        <v-icon
-                                                                            class="pb-1"
-                                                                            color="primary"
-                                                                            small
-                                                                            >mdi-email-outline</v-icon
-                                                                        >
-                                                                        {{
-                                                                            admin.correo
-                                                                        }}
-                                                                    </div>
-                                                                    <div
-                                                                        v-if="
-                                                                            admin.telefono
-                                                                        "
-                                                                    >
-                                                                        <v-icon
-                                                                            class="pb-1"
-                                                                            color="primary"
-                                                                            small
-                                                                            >mdi-cellphone</v-icon
-                                                                        >
-                                                                        {{
-                                                                            admin.telefono
-                                                                        }}
-                                                                    </div>
-                                                                </v-layout>
-                                                            </div>
-                                                        </v-expansion-panel-content>
-                                                    </v-expansion-panel>
-                                                </v-expansion-panels>
-                                            </section>
-                                        </div>
-                                        <v-divider></v-divider>
-                                    </section>
-                                    <section
-                                        v-if="department.cantidadColaboradores"
-                                    >
-                                        <div class="py-2">
-                                            <div
-                                                class="py-1 grey500--text BUO-Label-Small"
-                                            >
-                                                Colaboradores:
                                             </div>
-                                            <div
-                                                class="py-1 black--text BUO-Label-Small"
-                                            >
-                                                <v-icon
-                                                    class="pb-1"
-                                                    color="primary"
-                                                    small
-                                                    >mdi-account</v-icon
-                                                >
-                                                {{
-                                                    `${department.cantidadColaboradores} Colaboradores`
-                                                }}
-                                            </div>
-                                        </div>
-                                        <v-divider></v-divider>
-                                    </section>
-                                </v-card-text>
-                            </v-card>
-                            <v-card
-                                flat
-                                height="300"
-                                width="70%"
-                                class="overflow-hidden pl-1"
-                                v-if="
-                                    department.subDepartamentos &&
-                                    department.subDepartamentos.length > 0
-                                "
-                            >
-                                <v-card-text>
-                                    <div
-                                        class="py-2 black--text BUO-Paragraph-Small-SemiBold"
-                                    >
-                                        Sub-Niveles
-                                    </div>
-                                    <div>
+                                            <v-divider></v-divider>
+                                        </section>
+                                    </v-card-text>
+                                </v-card>
+                            </v-col>
+                            <v-col cols="4">
+                                <v-card
+                                    flat
+                                    height="300"
+                                    width="100%"
+                                    class="overflow-auto pr-1"
+                                    v-if="
+                                        department.subDepartamentos &&
+                                        department.subDepartamentos.length > 0
+                                    "
+                                >
+                                    <v-card-text>
                                         <div
-                                            v-for="(
-                                                item, i
-                                            ) in department.subDepartamentos"
-                                            :key="i"
-                                            class="py-2"
+                                            class="py-2 black--text BUO-Paragraph-Small-SemiBold"
                                         >
-                                            <v-chip
-                                                class="py-1 black--text BUO-Label-Small"
-                                                style="
-                                                    height: auto;
-                                                    white-space: normal;
-                                                "
-                                            >
-                                                {{ item.nombre }}
-                                            </v-chip>
+                                            Sub-Niveles
                                         </div>
-                                    </div>
-                                </v-card-text></v-card
-                            >
-                        </v-layout>
+                                        <div>
+                                            <div
+                                                v-for="(
+                                                    item, i
+                                                ) in department.subDepartamentos"
+                                                :key="i"
+                                                class="py-2"
+                                            >
+                                                <v-chip
+                                                    class="py-2 black--text BUO-Label-Small"
+                                                    style="
+                                                        height: auto;
+                                                        white-space: normal;
+                                                    "
+                                                >
+                                                    {{ item.nombre }}
+                                                </v-chip>
+                                            </div>
+                                        </div>
+                                    </v-card-text></v-card
+                                >
+                            </v-col>
+                        </v-row>
                         <v-row v-else-if="$vuetify.breakpoint.mobile" dense>
                             <v-col cols="12" v-if="department.descripcion">
                                 <div
@@ -509,8 +522,9 @@ export default {
                                         <div
                                             class="py-1 black--text BUO-Label-Small"
                                         >
-                                            <v-layout justify-space-between>
-                                                <div
+                                            <v-row>
+                                                <v-col
+                                                    cols="12"
                                                     v-if="
                                                         department
                                                             .adminsDepartamento[0]
@@ -528,8 +542,9 @@ export default {
                                                             .adminsDepartamento[0]
                                                             .correo
                                                     }}
-                                                </div>
-                                                <div
+                                                </v-col>
+                                                <v-col
+                                                    cols="12"
                                                     v-if="
                                                         department
                                                             .adminsDepartamento[0]
@@ -547,8 +562,8 @@ export default {
                                                             .adminsDepartamento[0]
                                                             .telefono
                                                     }}
-                                                </div>
-                                            </v-layout>
+                                                </v-col>
+                                            </v-row>
                                         </div>
                                     </section>
                                     <section v-else>
@@ -556,6 +571,7 @@ export default {
                                             <v-expansion-panel
                                                 v-for="admin in department.adminsDepartamento"
                                                 :key="admin.usuarioId"
+                                                class="buo-headerAbility-position"
                                             >
                                                 <v-expansion-panel-header>
                                                     <v-list-item class="px-2">
@@ -590,10 +606,9 @@ export default {
                                                     <div
                                                         class="py-1 black--text BUO-Label-Small"
                                                     >
-                                                        <v-layout
-                                                            justify-space-between
-                                                        >
-                                                            <div
+                                                        <v-row>
+                                                            <v-col
+                                                                cols="12"
                                                                 v-if="
                                                                     admin.correo
                                                                 "
@@ -607,8 +622,9 @@ export default {
                                                                 {{
                                                                     admin.correo
                                                                 }}
-                                                            </div>
-                                                            <div
+                                                            </v-col>
+                                                            <v-col
+                                                                cols="12"
                                                                 v-if="
                                                                     admin.telefono
                                                                 "
@@ -622,8 +638,8 @@ export default {
                                                                 {{
                                                                     admin.telefono
                                                                 }}
-                                                            </div>
-                                                        </v-layout>
+                                                            </v-col>
+                                                        </v-row>
                                                     </div>
                                                 </v-expansion-panel-content>
                                             </v-expansion-panel>
