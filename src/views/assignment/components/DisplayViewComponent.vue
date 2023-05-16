@@ -62,6 +62,10 @@ export default {
         </v-window-item>
 
         <v-window-item :value="2">
+            <UserFilterViewComponent :entity="entity" />
+        </v-window-item>
+
+        <v-window-item :value="3">
             <ConfirmationViewComponent
                 :entity="entity"
                 :key="key"

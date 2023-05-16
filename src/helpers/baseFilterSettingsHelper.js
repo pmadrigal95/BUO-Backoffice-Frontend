@@ -5,6 +5,43 @@
  */
 
 /**
+ * Configuracion extraParams
+ */
+const extraParams = ({ companyId, userId, qualificationId, statusId }) => {
+    let array = [];
+
+    if (companyId) {
+        array.push({
+            name: 'organizacionId',
+            value: companyId,
+        });
+    }
+
+    if (userId) {
+        array.push({
+            name: 'usuarioId',
+            value: userId,
+        });
+    }
+
+    if (qualificationId) {
+        array.push({
+            name: 'cualificacionId',
+            value: qualificationId,
+        });
+    }
+
+    if (statusId) {
+        array.push({
+            name: 'estadoId',
+            value: statusId,
+        });
+    }
+
+    return array;
+};
+
+/**
  * Configuracion BaseServerDataTable
  */
 const userSetting = (companyId, departmentId, singleSelect) => {
@@ -115,10 +152,18 @@ const userSetting = (companyId, departmentId, singleSelect) => {
         ],
         key: 'id',
         singleSelect: singleSelect,
+        multiSelect: !singleSelect,
     };
 };
 
 export const baseFilterSettingsHelper = {
+    /**
+     * Configuracion extraParams
+     */
+    $_setExtraParams({ companyId, userId, qualificationId, statusId }) {
+        return extraParams({ companyId, userId, qualificationId, statusId });
+    },
+
     /**
      * Configuracion BaseServerDataTable
      */

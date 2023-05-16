@@ -244,6 +244,12 @@ export default {
                     break;
             }
         },
+
+        $_goBack() {
+            delete this.entity.selected.abilityIdList;
+            delete this.entity.selected.abilityList;
+            this.entity.step = 1;
+        },
     },
 };
 </script>
@@ -252,8 +258,10 @@ export default {
     <div>
         <v-layout justify-start>
             <StepViewComponent
-                icon="mdi-numeric-1-circle"
-                description="Seleccionar colaboradores"
+                :icon="`mdi-numeric-${entity.step === 0 ? '1' : '3'}-circle`"
+                :description="`Seleccionar ${
+                    entity.step === 0 ? 'colaboradores' : 'Supervisores'
+                }`"
                 iconColor="greenC900"
                 font="grey700--text BUO-Paragraph-Medium"
             />
@@ -273,10 +281,18 @@ export default {
                     <NewAbilityViewComponent
                         :entity="entity"
                         :fn="$_newAbility"
-                        v-if="abilityPermission"
+                        v-if="abilityPermission && entity.step === 0"
                     />
 
-                    <v-btn fab x-small elevation="0" disabled>
+                    <v-btn
+                        fab
+                        x-small
+                        elevation="0"
+                        class="mx-1"
+                        color="primary"
+                        @click="$_goBack"
+                        :disabled="entity.step === 0"
+                    >
                         <v-icon dark> mdi-chevron-left </v-icon>
                     </v-btn>
 
@@ -296,7 +312,7 @@ export default {
                     <NewAbilityViewComponent
                         :entity="entity"
                         :fn="$_newAbility"
-                        v-if="abilityPermission"
+                        v-if="abilityPermission && entity.step === 0"
                     />
 
                     <v-btn fab x-small elevation="0" disabled>
