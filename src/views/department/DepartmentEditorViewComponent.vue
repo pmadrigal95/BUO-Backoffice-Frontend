@@ -232,6 +232,7 @@ export default {
                     },
                 ],
                 key: 'id',
+                multiSelect: true,
             };
         },
     },
@@ -274,7 +275,7 @@ export default {
          */
         $_forceUpdateComponente() {
             this.entity.padreId = undefined;
-            this.entity.usuarioAdminId = undefined;
+            this.entity.usuarioAdminIds = undefined;
             this.componentKey = this.componentKey + 1;
         },
 
@@ -301,7 +302,7 @@ export default {
                 descripcion: undefined,
                 etiquetaNivel: undefined,
                 estadoId: 2,
-                usuarioAdminId: undefined,
+                usuarioAdminIds: undefined,
                 usuarioModificaId: undefined,
             };
         },
@@ -418,7 +419,7 @@ export default {
                                 :extraParams="extraParams"
                                 :readonly="extraParams == undefined"
                                 :editText="entity.nombreUsuarioAdmin"
-                                v-model.number="entity.usuarioAdminId"
+                                v-model="entity.usuarioAdminIds"
                                 :key="componentKey"
                             />
                         </v-col>
