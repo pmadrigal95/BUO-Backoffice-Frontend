@@ -83,6 +83,12 @@ export default {
             );
         },
 
+        $_setTutorIdList() {
+            this.form.tutorIds =
+                this.entity?.selected?.tutorList &&
+                this.entity?.selected?.tutorList.map((x) => x.userId);
+        },
+
         $_setAbilityMicro() {
             this.form.ability = [];
             this.entity.selected.abilityList.filter((x) => {
@@ -109,11 +115,14 @@ export default {
         $_setObject() {
             delete this.form.userIds;
             delete this.form.ability;
+            delete this.form.tutorIds;
             this.pendingList = [];
 
             this.$_setUserIdList();
 
             this.$_setAbilityMicro();
+
+            this.$_setTutorIdList();
         },
 
         $_open() {
@@ -131,9 +140,10 @@ export default {
         },
 
         $_requestObject() {
-            return {
+            const result = {
                 organizacionId: this.entity.organizacionId,
                 userIds: this.form.userIds,
+                tutorIds: this.form.tutorIds,
                 abilities: this.form.ability,
                 estadoId: this.form.statusID,
                 comentario: this.form.comment,
@@ -141,6 +151,8 @@ export default {
                 useAllEmployees: !this.form.userIds.length > 0,
                 usuarioModificaId: this.user.userId,
             };
+
+            return result;
         },
 
         $_sendRequest() {

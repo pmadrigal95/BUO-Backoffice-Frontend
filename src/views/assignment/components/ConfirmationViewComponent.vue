@@ -20,6 +20,9 @@ const StatusViewComponent = () =>
 const UserListViewComponent = () =>
     import('@/views/assignment/components/confirmation/UserListViewComponent');
 
+const TutorListViewComponent = () =>
+    import('@/views/assignment/components/confirmation/TutorListViewComponent');
+
 export default {
     name: 'ConfirmationViewComponent',
 
@@ -34,6 +37,7 @@ export default {
         StepViewComponent,
         StatusViewComponent,
         UserListViewComponent,
+        TutorListViewComponent,
         AbilityListViewComponent,
     },
 
@@ -45,9 +49,8 @@ export default {
 
     methods: {
         $_goBack() {
-            delete this.entity.selected.abilityIdList;
-            delete this.entity.selected.abilityList;
-            this.entity.step = 1;
+            delete this.entity.selected.tutorList;
+            this.entity.step = 2;
         },
     },
 };
@@ -57,7 +60,7 @@ export default {
     <div>
         <v-layout justify-space-between>
             <StepViewComponent
-                icon="mdi-numeric-3-circle"
+                icon="mdi-numeric-4-circle"
                 description="Seleccionar Micro-Indicadores"
                 iconColor="greenC900"
                 font="grey700--text BUO-Paragraph-Medium"
@@ -114,6 +117,28 @@ export default {
                         :abilityIdList="entity.selected.abilityIdList"
                         :entity="entity"
                     />
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+
+            <v-expansion-panel
+                v-if="
+                    entity.selected.tutorList &&
+                    entity.selected.tutorList.length > 0
+                "
+            >
+                <v-expansion-panel-header
+                    ><div
+                        :class="[
+                            $vuetify.breakpoint.smAndDown
+                                ? 'BUO-Paragraph-Large'
+                                : 'BUO-Heading-Small',
+                        ]"
+                    >
+                        Supervisores
+                    </div></v-expansion-panel-header
+                >
+                <v-expansion-panel-content>
+                    <TutorListViewComponent :entity="entity" />
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
