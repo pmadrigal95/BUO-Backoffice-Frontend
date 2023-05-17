@@ -77,7 +77,7 @@ export default {
          * editText
          */
         editText: {
-            type: [String, Number],
+            type: [String, Number, Array],
             default: null,
         },
 
@@ -124,6 +124,8 @@ export default {
     data() {
         return {
             text: this.editText,
+
+            model: this.value,
 
             /**
              * Densidad de las filas Grid
@@ -241,9 +243,11 @@ export default {
             if (this.$_returnMultiSelect() == true) {
                 let array = this.$_insertIntoArray(params);
                 const result =
-                    this.value != undefined
-                        ? [...new Set(array.concat(this.value))]
+                    this.model != undefined
+                        ? [...new Set(array.concat(this.model))]
                         : array;
+
+                //TODO: eliminar Duplicados del text de mejor manera
 
                 this.text =
                     this.text != undefined
@@ -393,8 +397,8 @@ export default {
          */
         $_deleteChip(id) {
             this.text = this.text.filter((item) => item.id != id);
-            const result = this.value.filter((item) => item != id);
-            this.$_updateValue(result);
+            this.model = this.model.filter((item) => item != id);
+            this.$_updateValue(this.model);
         },
     },
 };

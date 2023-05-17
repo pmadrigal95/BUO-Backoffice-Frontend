@@ -311,6 +311,18 @@ export default {
             this.entity.usuarioModificaId = this.user.userId;
         },
 
+        $_setAdminUserListToEditor() {
+            this.entity.usuarioAdminIds =
+                this.entity?.adminsDepartamento &&
+                this.entity?.adminsDepartamento.map((x) => x.usuarioId);
+
+            this.entity.usuarioAdminNames =
+                this.entity?.adminsDepartamento &&
+                this.entity?.adminsDepartamento.map((x) => {
+                    return { id: x.usuarioId, nombreCompleto: x.nombre };
+                });
+        },
+
         /**
          * Determinar si Es nuevo / editor
          */
@@ -327,6 +339,8 @@ export default {
                             {},
                             response.data
                         );
+
+                        this.$_setAdminUserListToEditor();
                     }
                 });
             }
@@ -418,7 +432,7 @@ export default {
                                 :setting="userSetting"
                                 :extraParams="extraParams"
                                 :readonly="extraParams == undefined"
-                                :editText="entity.nombreUsuarioAdmin"
+                                :editText="entity.usuarioAdminNames"
                                 v-model="entity.usuarioAdminIds"
                                 :key="componentKey"
                             />
