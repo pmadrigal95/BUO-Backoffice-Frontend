@@ -71,6 +71,7 @@ export default {
          */
         value: {
             requiered: true,
+            type: [String, Number, Array],
         },
 
         /**
@@ -123,9 +124,7 @@ export default {
 
     data() {
         return {
-            text: this.editText,
-
-            model: this.value,
+            text: Array.isArray(this.editText) ? undefined : this.editText,
 
             /**
              * Densidad de las filas Grid
@@ -215,6 +214,8 @@ export default {
                     this.normalRules = this.validate;
             }
         }
+
+        this.$_insertPreviousValues();
     },
 
     methods: {
@@ -233,6 +234,10 @@ export default {
             return array;
         },
 
+        $_insertPreviousValues() {
+            Array.isArray(this.editText) && this.$_getData(this.editText);
+        },
+
         /**
          * Método del clic
          */
@@ -242,12 +247,16 @@ export default {
              */
             if (this.$_returnMultiSelect() == true) {
                 let array = this.$_insertIntoArray(params);
-                const result =
-                    this.model != undefined
-                        ? [...new Set(array.concat(this.model))]
-                        : array;
 
-                //TODO: eliminar Duplicados del text de mejor manera
+                if (this.value && this.value.some((r) => array.includes(r))) {
+                    this.$_openModal();
+                    return;
+                }
+
+                const result =
+                    this.value != undefined
+                        ? [...new Set(array.concat(this.value))]
+                        : array;
 
                 this.text =
                     this.text != undefined
@@ -273,7 +282,8 @@ export default {
          * Abrir modal
          */
         $_openModal() {
-            this.$refs[this.refpopUp].$_openModal();
+            this.$refs[this.refpopUp] &&
+                this.$refs[this.refpopUp].$_openModal();
         },
 
         /**
@@ -397,8 +407,8 @@ export default {
          */
         $_deleteChip(id) {
             this.text = this.text.filter((item) => item.id != id);
-            this.model = this.model.filter((item) => item != id);
-            this.$_updateValue(this.model);
+            const result = this.value.filter((item) => item != id);
+            this.$_updateValue(result);
         },
     },
 };

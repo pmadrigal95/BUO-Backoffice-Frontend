@@ -312,10 +312,6 @@ export default {
         },
 
         $_setAdminUserListToEditor() {
-            this.entity.usuarioAdminIds =
-                this.entity?.adminsDepartamento &&
-                this.entity?.adminsDepartamento.map((x) => x.usuarioId);
-
             this.entity.usuarioAdminNames =
                 this.entity?.adminsDepartamento &&
                 this.entity?.adminsDepartamento.map((x) => {
@@ -352,12 +348,12 @@ export default {
             let object = BaseArrayHelper.SetObject({}, this.entity);
 
             httpService.post('departamento/save', object).then((response) => {
-                this.loading = false;
-
                 if (response != undefined) {
                     //Logica JS luego de la acción exitosa!!!
                     this.$_returnToFilter();
                 }
+
+                this.loading = false;
             });
         },
 
