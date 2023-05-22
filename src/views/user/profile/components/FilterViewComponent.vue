@@ -18,6 +18,9 @@ const BaseServerDataTable = () =>
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
+const RadarViewComponent = () =>
+    import('@/views/b2b/filter/common/graph/RadarViewComponent');
+
 export default {
     name: 'ProfileFilterViewComponent',
 
@@ -29,8 +32,16 @@ export default {
     },
 
     components: {
+        RadarViewComponent,
         BaseServerDataTable,
         BaseCustomsButtonsGrid,
+    },
+
+    data() {
+        return {
+            usuarioIdList: undefined,
+            componentKey: 0,
+        };
     },
 
     computed: {
@@ -146,6 +157,7 @@ export default {
                     },
                 ],
                 key: 'id',
+                singleSelect: false,
             };
         },
 
@@ -195,23 +207,63 @@ export default {
                     break;
             }
         },
+
+        $_userDetails(params) {
+            const row = params ? [params.selected] : this.$_GetRow();
+
+            switch (true) {
+                case row.length == 0:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
+                    break;
+
+                case row.length > 0 && row.length < 4:
+                    this.usuarioIdList = row.map((element) => element.id);
+                    this.componentKey++;
+                    break;
+
+                default:
+                    baseNotificationsHelper.Message(
+                        true,
+                        'Puedes seleccionar hasta un máximo de tres colaboradores.'
+                    );
+                    break;
+            }
+        },
     },
 };
 </script>
 
 <template>
-    <BaseServerDataTable
-        ref="ProfileFilter"
-        :setting="setting"
-        :extraParams="extraParams"
-        :fnDoubleClick="$_viewProfile"
-    >
-        <div slot="btns">
-            <BaseCustomsButtonsGrid
-                label="Ver Perfil"
-                :fnMethod="$_viewProfile"
-                icon="mdi-chevron-right"
-            />
-        </div>
-    </BaseServerDataTable>
+    <section>
+        <BaseServerDataTable
+            ref="ProfileFilter"
+            :setting="setting"
+            :extraParams="extraParams"
+            :fnDoubleClick="$_viewProfile"
+        >
+            <div slot="btns">
+                <BaseCustomsButtonsGrid
+                    label="Ver Perfil"
+                    :fnMethod="$_viewProfile"
+                    icon="mdi-chevron-right"
+                />
+
+                <BaseCustomsButtonsGrid
+                    label="Comparar PDA"
+                    :outlined="false"
+                    :fnMethod="$_userDetails"
+                    icon="mdi-account-group-outline"
+                />
+            </div>
+        </BaseServerDataTable>
+
+        <RadarViewComponent
+            :key="componentKey"
+            :usuarioIdList="usuarioIdList"
+            v-if="usuarioIdList && usuarioIdList.length > 0"
+        />
+    </section>
 </template>
