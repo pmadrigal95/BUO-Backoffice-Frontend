@@ -12,6 +12,8 @@ import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
@@ -45,14 +47,9 @@ export default {
          * Extra Params
          */
         extraParams() {
-            return this.entity.organizacionId
-                ? [
-                      {
-                          name: 'organizacionId',
-                          value: this.entity.organizacionId,
-                      },
-                  ]
-                : undefined;
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity.organizacionId,
+            });
         },
 
         /**
@@ -159,80 +156,10 @@ export default {
          * Configuracion BaseServerDataTable
          */
         userSetting() {
-            return {
-                endpoint: 'user/findBy',
-                columns: [
-                    {
-                        text: 'Nombre Completo',
-                        align: 'start',
-                        value: 'nombreCompleto',
-                        show: true,
-                    },
-                    {
-                        text: 'Correo',
-                        align: 'start',
-                        value: 'correo',
-                        show: true,
-                    },
-                    {
-                        text: 'País',
-                        align: 'start',
-                        value: 'nombrePais',
-                        show: false,
-                    },
-                    {
-                        text: 'Empresa',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        show: false,
-                    },
-                    {
-                        text: 'Estado',
-                        type: 'chip',
-                        align: 'center',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Wallet Activo',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'walletActivo',
-                        show: false,
-                    },
-                    {
-                        text: 'Identificación',
-                        align: 'center',
-                        value: 'identificacion',
-                        show: false,
-                    },
-                    {
-                        text: 'Género',
-                        align: 'center',
-                        value: 'nombreGenero',
-                        show: false,
-                    },
-                    {
-                        text: 'Ciudad',
-                        align: 'center',
-                        value: 'ciudad',
-                        show: false,
-                    },
-                    {
-                        text: 'Teléfono',
-                        align: 'center',
-                        value: 'telefono',
-                        show: false,
-                    },
-                    {
-                        text: 'Username',
-                        align: 'center',
-                        value: 'username',
-                        show: false,
-                    },
-                ],
-                key: 'id',
-            };
+            return baseFilterSettingsHelper.$_setUserSetting({
+                companyId: this.user.companyId,
+                singleSelect: false,
+            });
         },
     },
 
@@ -274,7 +201,7 @@ export default {
          */
         $_forceUpdateComponente() {
             this.entity.padreId = undefined;
-            this.entity.usuarioAdminId = undefined;
+            this.entity.usuarioAdminIds = undefined;
             this.componentKey = this.componentKey + 1;
         },
 
@@ -301,13 +228,21 @@ export default {
                 descripcion: undefined,
                 etiquetaNivel: undefined,
                 estadoId: 2,
-                usuarioAdminId: undefined,
+                usuarioAdminIds: undefined,
                 usuarioModificaId: undefined,
             };
         },
 
         $_setToUser() {
             this.entity.usuarioModificaId = this.user.userId;
+        },
+
+        $_setAdminUserListToEditor() {
+            this.entity.usuarioAdminNames =
+                this.entity?.adminsDepartamento &&
+                this.entity?.adminsDepartamento.map((x) => {
+                    return { id: x.usuarioId, nombreCompleto: x.nombre };
+                });
         },
 
         /**
@@ -326,6 +261,8 @@ export default {
                             {},
                             response.data
                         );
+
+                        this.$_setAdminUserListToEditor();
                     }
                 });
             }
@@ -337,12 +274,12 @@ export default {
             let object = BaseArrayHelper.SetObject({}, this.entity);
 
             httpService.post('departamento/save', object).then((response) => {
-                this.loading = false;
-
                 if (response != undefined) {
                     //Logica JS luego de la acción exitosa!!!
                     this.$_returnToFilter();
                 }
+
+                this.loading = false;
             });
         },
 
@@ -416,9 +353,10 @@ export default {
                                 label="Administrador"
                                 :setting="userSetting"
                                 :extraParams="extraParams"
+                                itemText="nombreCompleto"
                                 :readonly="extraParams == undefined"
-                                :editText="entity.nombreUsuarioAdmin"
-                                v-model.number="entity.usuarioAdminId"
+                                :editText="entity.usuarioAdminNames"
+                                v-model="entity.usuarioAdminIds"
                                 :key="componentKey"
                             />
                         </v-col>

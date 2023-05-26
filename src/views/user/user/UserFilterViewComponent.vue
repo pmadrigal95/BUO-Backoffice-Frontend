@@ -12,6 +12,8 @@ import httpService from '@/services/axios/httpService';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
@@ -37,120 +39,24 @@ export default {
     },
 
     computed: {
-        ...mapGetters('authentication', ['user', 'buoId']),
+        ...mapGetters('authentication', ['user']),
+
+        extraParams() {
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: baseFilterSettingsHelper.$_getCompanyId(
+                    this.user.companyId,
+                    this.organizacionId
+                ),
+            });
+        },
 
         /**
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return {
-                endpoint: 'user/findBy',
-                columns: [
-                    {
-                        text: 'Nombre',
-                        align: 'start',
-                        value: 'nombre',
-                        show: false,
-                    },
-                    {
-                        text: 'Primer Apellido',
-                        align: 'start',
-                        value: 'primerApellido',
-                        show: false,
-                    },
-                    {
-                        text: 'Segundo Apellido',
-                        align: 'start',
-                        value: 'segundoApellido',
-                        show: false,
-                    },
-                    {
-                        text: 'Nombre Completo',
-                        align: 'start',
-                        value: 'nombreCompleto',
-                        show: true,
-                    },
-                    {
-                        text: 'Correo',
-                        align: 'start',
-                        value: 'correo',
-                        show: true,
-                    },
-                    {
-                        text: 'País',
-                        align: 'start',
-                        value: 'nombrePais',
-                        show: false,
-                    },
-                    {
-                        text: 'Estado',
-                        align: 'center',
-                        type: 'chip',
-                        value: 'nombreEstado',
-                        show: false,
-                    },
-                    {
-                        text: 'Wallet Activo',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'walletActivo',
-                        show: true,
-                    },
-                    {
-                        text: 'Test PDA',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'conPda',
-                        show: true,
-                    },
-                    {
-                        text: 'Identificación',
-                        align: 'center',
-                        value: 'identificacion',
-                        show: false,
-                    },
-                    {
-                        text: 'Género',
-                        align: 'center',
-                        value: 'nombreGenero',
-                        show: false,
-                    },
-                    {
-                        text: 'Ciudad',
-                        align: 'center',
-                        value: 'ciudad',
-                        show: false,
-                    },
-                    {
-                        text: 'Teléfono',
-                        align: 'center',
-                        value: 'telefono',
-                        show: false,
-                    },
-                    {
-                        text: 'Username',
-                        align: 'center',
-                        value: 'username',
-                        show: false,
-                    },
-                    {
-                        text: 'Empresa',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        show:
-                            this.user.companyId === this.buoId &&
-                            this.$router.currentRoute.name !=
-                                'CompanyDashboardViewComponent',
-                    },
-                    {
-                        text: 'Área / Departamento',
-                        align: 'start',
-                        value: 'nombreDepartamento',
-                        show: false,
-                    },
-                ],
-                key: 'id',
-            };
+            return baseFilterSettingsHelper.$_setUserSetting({
+                companyId: this.user.companyId,
+            });
         },
 
         permission() {
@@ -159,23 +65,6 @@ export default {
                 [baseSecurityHelper.$_write, baseSecurityHelper.$_upload]
             );
             return result;
-        },
-
-        extraParams() {
-            let array = [];
-            if (this.user.companyId != this.buoId && !this.organizacionId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.user.companyId,
-                });
-            } else if (this.organizacionId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.organizacionId,
-                });
-            }
-
-            return array.length > 0 ? array : undefined;
         },
     },
 

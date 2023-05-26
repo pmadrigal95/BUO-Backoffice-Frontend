@@ -10,10 +10,17 @@ import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 import baseConfigHelper from '@/helpers/baseConfigHelper';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
+
+const BaseInputDataTable = () =>
+    import('@/components/core/forms/BaseInputDataTable');
 
 const BaseInputTreeview = () =>
     import('@/components/core/treeview/BaseInputTreeview');
@@ -35,12 +42,14 @@ export default {
 
     components: {
         BaseCustomsButtonsGrid,
+        BaseInputDataTable,
         BaseInputTreeview,
     },
 
     data() {
         return {
             form: this.$_Object(),
+            needTutor: false,
             key: 0,
             view: 0,
             loading: false,
@@ -50,6 +59,23 @@ export default {
 
     computed: {
         ...mapGetters('authentication', ['user']),
+
+        extraParams() {
+            return (
+                this.entity.organizacionId &&
+                baseFilterSettingsHelper.$_setExtraParams({
+                    companyId: this.entity.organizacionId,
+                })
+            );
+        },
+
+        userSetting() {
+            return baseFilterSettingsHelper.$_setUserSetting({
+                companyId: this.entity.organizacionId,
+                departmentId: this.entity.departamentoId,
+                singleSelect: false,
+            });
+        },
 
         statusList() {
             return [
@@ -80,6 +106,7 @@ export default {
                 statusID: undefined,
                 sendNotification: true,
                 useAllEmployees: true,
+                tutors: undefined,
                 ability: {
                     definicion: undefined,
                     categoriaId: undefined,
@@ -111,6 +138,9 @@ export default {
                 comentario: this.form.comment,
                 enviarNotificacion: this.form.sendNotification === true,
                 useAllEmployees: !this.form.userIds.length > 0,
+                tutors: this.needTutor
+                    ? this.form.tutors.length > 0 && this.form.tutors
+                    : undefined,
                 usuarioModificaId: this.user.userId,
             };
         },
@@ -130,8 +160,25 @@ export default {
                 });
         },
 
+        $_validateTutors() {
+            if (!this.needTutor) {
+                delete this.form.tutors;
+                return false;
+            }
+
+            return this.form.userIds.some((r) => this.form.tutors.includes(r));
+        },
+
         $_sendToApi() {
             this.$_setObject();
+
+            if (this.$_validateTutors()) {
+                baseNotificationsHelper.Message(
+                    true,
+                    '¡Cuidado!, No puedes asignar un supervisor si lo has seleccionado previamente para asignar un indicador.'
+                );
+                return;
+            }
 
             this.$_sendRequest();
         },
@@ -279,7 +326,9 @@ export default {
                                                             :key="i"
                                                         >
                                                             <v-chip
-                                                                class="py-1 black--text BUO-Label-Small"
+                                                                color="blue900"
+                                                                outlined
+                                                                class="py-1 BUO-Label-Small"
                                                                 style="
                                                                     height: auto;
                                                                     white-space: normal;
@@ -310,6 +359,23 @@ export default {
                                                 label="Asignar el nuevo
                                                 indicador a todos sus
                                                 colaboradores."
+                                            />
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <BaseSwitch
+                                                v-model="needTutor"
+                                                label="Delegar Supervisión."
+                                            />
+                                        </v-col>
+                                        <v-col cols="12" v-if="needTutor">
+                                            <BaseInputDataTable
+                                                label="Supervisor(es)"
+                                                :extraParams="extraParams"
+                                                :readonly="!extraParams"
+                                                itemText="nombreCompleto"
+                                                :setting="userSetting"
+                                                v-model="form.tutors"
+                                                :validate="['requiered']"
                                             />
                                         </v-col>
                                         <v-col cols="12">

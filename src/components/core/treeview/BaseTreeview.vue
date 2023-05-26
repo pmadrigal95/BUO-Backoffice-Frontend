@@ -562,9 +562,13 @@ export default {
                 :transition="transition"
             >
                 <template slot="label" slot-scope="{ item }">
-                    <div @click="$_setSelected(item)" style="cursor: pointer">
+                    <span
+                        class="buo-word-break"
+                        @click="$_setSelected(item)"
+                        style="cursor: pointer"
+                    >
                         {{ item[itemText] }}
-                    </div>
+                    </span>
                 </template>
             </v-treeview>
             <v-alert
@@ -606,3 +610,15 @@ export default {
         </v-card-actions>
     </v-card>
 </template>
+
+<style>
+.v-treeview-node__content,
+.v-treeview-node__label {
+    flex-shrink: 1;
+    word-break: break-all;
+    white-space: unset;
+}
+.v-treeview-node__root {
+    height: auto;
+}
+</style>

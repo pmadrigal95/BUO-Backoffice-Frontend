@@ -71,13 +71,14 @@ export default {
          */
         value: {
             requiered: true,
+            type: [String, Number, Array],
         },
 
         /**
          * editText
          */
         editText: {
-            type: [String, Number],
+            type: [String, Number, Array],
             default: null,
         },
 
@@ -123,7 +124,7 @@ export default {
 
     data() {
         return {
-            text: this.editText,
+            text: Array.isArray(this.editText) ? undefined : this.editText,
 
             /**
              * Densidad de las filas Grid
@@ -213,6 +214,8 @@ export default {
                     this.normalRules = this.validate;
             }
         }
+
+        this.$_insertPreviousValues();
     },
 
     methods: {
@@ -231,6 +234,10 @@ export default {
             return array;
         },
 
+        $_insertPreviousValues() {
+            Array.isArray(this.editText) && this.$_getData(this.editText);
+        },
+
         /**
          * Método del clic
          */
@@ -240,6 +247,12 @@ export default {
              */
             if (this.$_returnMultiSelect() == true) {
                 let array = this.$_insertIntoArray(params);
+
+                if (this.value && this.value.some((r) => array.includes(r))) {
+                    this.$_openModal();
+                    return;
+                }
+
                 const result =
                     this.value != undefined
                         ? [...new Set(array.concat(this.value))]
@@ -269,7 +282,8 @@ export default {
          * Abrir modal
          */
         $_openModal() {
-            this.$refs[this.refpopUp].$_openModal();
+            this.$refs[this.refpopUp] &&
+                this.$refs[this.refpopUp].$_openModal();
         },
 
         /**
