@@ -70,11 +70,11 @@ export default {
         },
 
         userSetting() {
-            return baseFilterSettingsHelper.$_setUserSetting(
-                this.entity.organizacionId,
-                this.entity.departamentoId,
-                false
-            );
+            return baseFilterSettingsHelper.$_setUserSetting({
+                companyId: this.entity.organizacionId,
+                departmentId: this.entity.departamentoId,
+                singleSelect: false,
+            });
         },
 
         statusList() {

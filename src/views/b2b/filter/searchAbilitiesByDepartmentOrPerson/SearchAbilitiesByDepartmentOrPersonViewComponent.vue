@@ -12,6 +12,8 @@ import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 const BaseNotFoundContent = () =>
     import('@/components/core/cards/BaseNotFoundContent');
 
@@ -62,14 +64,9 @@ export default {
          * Extra Params
          */
         extraParams() {
-            return this.entity.organizacionId
-                ? [
-                      {
-                          name: 'organizacionId',
-                          value: `${this.entity.organizacionId}`,
-                      },
-                  ]
-                : undefined;
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity.organizacionId,
+            });
         },
 
         companySetting() {
@@ -173,95 +170,11 @@ export default {
          * Configuracion BaseServerDataTable
          */
         userSetting() {
-            return {
-                endpoint: this.entity.departamentoId
-                    ? `user/findByDeep/${this.entity.departamentoId}`
-                    : 'user/findBy',
-                columns: [
-                    {
-                        text: 'Nombre Completo',
-                        align: 'start',
-                        value: 'nombreCompleto',
-                        show: true,
-                    },
-                    {
-                        text: 'Correo',
-                        align: 'start',
-                        value: 'correo',
-                        show: true,
-                    },
-                    {
-                        text: 'País',
-                        align: 'start',
-                        value: 'nombrePais',
-                        show: false,
-                    },
-                    {
-                        text: 'Empresa',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        show: false,
-                    },
-                    {
-                        text: 'Estado',
-                        type: 'chip',
-                        align: 'center',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Wallet Activo',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'walletActivo',
-                        show: false,
-                    },
-                    {
-                        text: 'Identificación',
-                        align: 'center',
-                        value: 'identificacion',
-                        show: false,
-                    },
-                    {
-                        text: 'Género',
-                        align: 'center',
-                        value: 'nombreGenero',
-                        show: false,
-                    },
-                    {
-                        text: 'Ciudad',
-                        align: 'center',
-                        value: 'ciudad',
-                        show: false,
-                    },
-                    {
-                        text: 'Teléfono',
-                        align: 'center',
-                        value: 'telefono',
-                        show: false,
-                    },
-                    {
-                        text: 'Username',
-                        align: 'center',
-                        value: 'username',
-                        show: false,
-                    },
-                    {
-                        text: 'Empresa',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        show: this.user.companyId === this.buoId,
-                    },
-                    {
-                        text: 'Área / Departamento',
-                        align: 'start',
-                        value: 'nombreDepartamento',
-                        show: this.entity.departamentoId != undefined,
-                    },
-                ],
-                key: 'id',
-                multiSelect: true,
-            };
+            return baseFilterSettingsHelper.$_setUserSetting({
+                companyId: this.entity.organizacionId,
+                departmentId: this.entity.departamentoId,
+                singleSelect: false,
+            });
         },
 
         permission() {
@@ -400,6 +313,7 @@ export default {
                                         label="Colaboradores"
                                         :setting="userSetting"
                                         :extraParams="extraParams"
+                                        itemText="nombreCompleto"
                                         :readonly="extraParams == undefined"
                                         :editText="entity.nombre"
                                         v-model="entity.usuarioId"

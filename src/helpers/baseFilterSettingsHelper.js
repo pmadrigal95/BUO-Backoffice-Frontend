@@ -5,6 +5,25 @@
  */
 
 /**
+ * Organizacion BUO
+ */
+
+const buoId = 1;
+
+/**
+ * Get companyId
+ */
+const getCompanyId = (userCompanyId, companyId) => {
+    if (userCompanyId !== buoId && !companyId) {
+        return userCompanyId;
+    }
+
+    if (companyId) {
+        return companyId;
+    }
+};
+
+/**
  * Configuracion extraParams
  */
 const extraParams = ({ companyId, userId, qualificationId, statusId }) => {
@@ -44,7 +63,7 @@ const extraParams = ({ companyId, userId, qualificationId, statusId }) => {
 /**
  * Configuracion BaseServerDataTable
  */
-const userSetting = (companyId, departmentId, singleSelect) => {
+const userSetting = ({ companyId, departmentId, singleSelect }) => {
     return {
         endpoint: departmentId
             ? `user/findByDeep/${departmentId}`
@@ -54,7 +73,7 @@ const userSetting = (companyId, departmentId, singleSelect) => {
                 text: 'Empresa',
                 align: 'start',
                 value: 'nombreOrganizacion',
-                show: companyId === 1,
+                show: companyId === buoId,
             },
             {
                 text: 'Área / Departamento',
@@ -164,6 +183,13 @@ const userSetting = (companyId, departmentId, singleSelect) => {
 
 export const baseFilterSettingsHelper = {
     /**
+     * Configuracion companyId
+     */
+    $_getCompanyId(userCompanyId, companyId) {
+        return getCompanyId(userCompanyId, companyId);
+    },
+
+    /**
      * Configuracion extraParams
      */
     $_setExtraParams({ companyId, userId, qualificationId, statusId }) {
@@ -173,7 +199,7 @@ export const baseFilterSettingsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
-    $_setUserSetting(companyId, departmentId, singleSelect) {
-        return userSetting(companyId, departmentId, singleSelect);
+    $_setUserSetting({ companyId, departmentId, singleSelect }) {
+        return userSetting({ companyId, departmentId, singleSelect });
     },
 };

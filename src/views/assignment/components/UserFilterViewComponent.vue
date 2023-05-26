@@ -8,11 +8,13 @@
 
 import { mapGetters } from 'vuex';
 
-import baseLocalHelper from '@/helpers/baseLocalHelper.js';
+import baseLocalHelper from '@/helpers/baseLocalHelper';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
+
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
@@ -42,130 +44,24 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        extraParams() {
+            return (
+                this.entity.organizacionId &&
+                baseFilterSettingsHelper.$_setExtraParams({
+                    companyId: this.entity.organizacionId,
+                })
+            );
+        },
+
         /**
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return {
-                endpoint: this.entity.departamentoId
-                    ? `user/findByDeep/${this.entity.departamentoId}`
-                    : 'user/findBy',
-                columns: [
-                    {
-                        text: 'Nombre',
-                        align: 'start',
-                        value: 'nombre',
-                        show: false,
-                    },
-                    {
-                        text: 'Primer Apellido',
-                        align: 'start',
-                        value: 'primerApellido',
-                        show: false,
-                    },
-                    {
-                        text: 'Segundo Apellido',
-                        align: 'start',
-                        value: 'segundoApellido',
-                        show: false,
-                    },
-                    {
-                        text: 'Nombre Completo',
-                        align: 'start',
-                        value: 'nombreCompleto',
-                        show: true,
-                    },
-                    {
-                        text: 'Correo',
-                        align: 'start',
-                        value: 'correo',
-                        show: true,
-                    },
-                    {
-                        text: 'País',
-                        align: 'start',
-                        value: 'nombrePais',
-                        show: false,
-                    },
-                    {
-                        text: 'Wallet Activo',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'walletActivo',
-                        show: true,
-                    },
-                    {
-                        text: 'Test PDA',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'conPda',
-                        show: true,
-                    },
-                    {
-                        text: 'Estado',
-                        align: 'center',
-                        type: 'chip',
-                        value: 'nombreEstado',
-                        show: false,
-                    },
-                    {
-                        text: 'Identificación',
-                        align: 'center',
-                        value: 'identificacion',
-                        show: false,
-                    },
-                    {
-                        text: 'Género',
-                        align: 'center',
-                        value: 'nombreGenero',
-                        show: false,
-                    },
-                    {
-                        text: 'Ciudad',
-                        align: 'center',
-                        value: 'ciudad',
-                        show: false,
-                    },
-                    {
-                        text: 'Teléfono',
-                        align: 'center',
-                        value: 'telefono',
-                        show: false,
-                    },
-                    {
-                        text: 'Username',
-                        align: 'center',
-                        value: 'username',
-                        show: false,
-                    },
-                    {
-                        text: 'Empresa',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        show: this.user.companyId === this.buoId,
-                    },
-                    {
-                        text: 'Área / Departamento',
-                        align: 'start',
-                        value: 'nombreDepartamento',
-                        show: this.entity.departamentoId != undefined,
-                    },
-                ],
-                key: 'id',
+            return baseFilterSettingsHelper.$_setUserSetting({
+                companyId: this.entity.organizacionId,
+                departmentId: this.entity.departamentoId,
                 singleSelect: false,
-            };
-        },
-
-        extraParams() {
-            let array = [];
-            if (this.entity.organizacionId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.entity.organizacionId,
-                });
-            }
-
-            return array.length > 0 ? array : undefined;
+            });
         },
 
         abilityPermission() {
