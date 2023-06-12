@@ -113,9 +113,10 @@ export default {
             <v-card flat color="transparent" v-else>
                 <v-layout justify-end
                     ><v-btn
-                        class="ma-1 no-uppercase rounded-lg"
+                        class="ma-1 no-uppercase rounded-lg Buo-White-Background"
                         depressed
-                        color="white"
+                        outlined
+                        color="primary"
                         :to="{ name: 'LoginViewComponent' }"
                     >
                         <span class="primary--text"> Cerrar sesión </span>

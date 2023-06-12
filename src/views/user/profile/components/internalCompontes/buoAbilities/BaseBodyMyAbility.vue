@@ -84,24 +84,23 @@ export default {
 </script>
 
 <template>
-    <v-row>
-        <v-card flat>
-            <v-card-text
-                class="BUO-Paragraph-Medium buo-none-word-break black--text"
-            >
-                {{ ability.proposito }}
-            </v-card-text>
+    <v-card flat>
+        <v-card-text
+            class="BUO-Paragraph-Medium buo-none-word-break black--text"
+            v-if="ability.proposito"
+        >
+            {{ ability.proposito }}
+        </v-card-text>
 
-            <BaseShareableMicroSkillStatusList
-                v-if="totalPendingList.length > 0"
-                :list="totalPendingList"
-                :type="inProgressCode"
-            />
-            <BaseShareableMicroSkillStatusList
-                v-if="totalValidatedList.length > 0"
-                :list="totalValidatedList"
-                :type="validatedCode"
-            />
-        </v-card>
-    </v-row>
+        <BaseShareableMicroSkillStatusList
+            v-if="totalPendingList.length > 0"
+            :list="totalPendingList"
+            :type="inProgressCode"
+        />
+        <BaseShareableMicroSkillStatusList
+            v-if="totalValidatedList.length > 0"
+            :list="totalValidatedList"
+            :type="validatedCode"
+        />
+    </v-card>
 </template>

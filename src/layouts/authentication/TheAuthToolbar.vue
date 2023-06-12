@@ -1,6 +1,14 @@
 <script>
+import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
+
 export default {
     name: 'TheToolbar',
+
+    methods: {
+        $_landing() {
+            baseSharedFnHelper.$_redirect('');
+        },
+    },
 };
 </script>
 
@@ -9,11 +17,13 @@ export default {
         <v-spacer />
 
         <v-img
-            :src="require('@/assets/app/common/logo-buo.png')"
+            src="https://buo-resources.s3.us-east-2.amazonaws.com/compartidos/logo-buo.png"
             class="mr-3"
             contain
             max-width="150"
             width="100%"
+            @click="$_landing"
+            style="cursor: pointer"
         />
     </v-toolbar>
 </template>

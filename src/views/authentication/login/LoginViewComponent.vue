@@ -10,9 +10,11 @@ import googleSDK from '@/services/socialMedia/google-SDK';
 
 import facebookSDK from '@/services/socialMedia/facebook-SDK';
 
-import baseLocalHelper from '@/helpers/baseLocalHelper.js';
+import baseLocalHelper from '@/helpers/baseLocalHelper';
 
-import baseArrayHelper from '@/helpers/baseArrayHelper.js';
+import baseArrayHelper from '@/helpers/baseArrayHelper';
+
+import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
@@ -96,8 +98,8 @@ export default {
             this.showPassword = !this.showPassword;
         },
 
-        $_goToRoute(route) {
-            this.$router.push({ name: route });
+        $_goToRoute() {
+            baseSharedFnHelper.$_redirect('common/#/ResetPassword');
         },
 
         $_facebookAuth() {
@@ -183,11 +185,7 @@ export default {
                                                 >
                                                     ¿Olvidaste tu contraseña?
                                                     <a
-                                                        @click="
-                                                            $_goToRoute(
-                                                                'ResetPasswordViewComponent'
-                                                            )
-                                                        "
+                                                        @click="$_goToRoute"
                                                         @click.stop
                                                     >
                                                         Ingresa aquí

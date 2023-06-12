@@ -5,8 +5,20 @@
  * @displayName TheFooter
  */
 
+import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
+
 export default {
     name: 'TheFooter',
+
+    methods: {
+        $_termsAndConditions() {
+            baseSharedFnHelper.$_redirect('TermsAndConditions');
+        },
+
+        $_landing() {
+            baseSharedFnHelper.$_redirect('');
+        },
+    },
 };
 </script>
 
@@ -23,11 +35,27 @@ export default {
             <v-col cols="12" md="11" class="BUO-Paragraph-XSmall">
                 <p>Certificaciones Digitales Buo SA de CV</p>
                 <p>©{{ new Date().getFullYear() }} Derechos Reservados</p>
-                <p v-if="$vuetify.breakpoint.mdAndUp">
+                <p
+                    v-if="$vuetify.breakpoint.mdAndUp"
+                    @click="$_termsAndConditions"
+                    style="cursor: pointer"
+                >
                     Política de Privacidad | Términos del Servicio
                 </p>
-                <p v-if="$vuetify.breakpoint.mobile">Política de Privacidad</p>
-                <p v-if="$vuetify.breakpoint.mobile">Términos del Servicio</p>
+                <p
+                    @click="$_termsAndConditions"
+                    style="cursor: pointer"
+                    v-if="$vuetify.breakpoint.mobile"
+                >
+                    Política de Privacidad
+                </p>
+                <p
+                    @click="$_termsAndConditions"
+                    style="cursor: pointer"
+                    v-if="$vuetify.breakpoint.mobile"
+                >
+                    Términos del Servicio
+                </p>
             </v-col>
             <v-col cols="1" v-if="$vuetify.breakpoint.mdAndUp">
                 <v-layout align-end justify-end>
@@ -35,7 +63,9 @@ export default {
                         contain
                         max-width="25%"
                         width="100%"
-                        :src="require('@/assets/app/common/buoLogo.svg')"
+                        src="https://buo-resources.s3.us-east-2.amazonaws.com/compartidos/buoLogo.svg"
+                        @click="$_landing"
+                        style="cursor: pointer"
                     ></v-img>
                 </v-layout>
             </v-col>

@@ -31,8 +31,8 @@ export default {
                 <v-img
                     contain
                     height="350"
-                    :src="require('@/assets/errors/403.png')"
-                    :lazy-src="require('@/assets/errors/403.png')"
+                    src="https://buo-resources.s3.us-east-2.amazonaws.com/compartidos/403.png"
+                    lazy-src="https://buo-resources.s3.us-east-2.amazonaws.com/compartidos/403.png"
                 ></v-img>
             </v-col>
 
