@@ -5,16 +5,20 @@
  * @displayName BaseMicroSkillStatusList
  */
 
+import baseConfigHelper from '@/helpers/baseConfigHelper';
+
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 
 const BaseGroupAvatar = () =>
     import('@/components/core/avatars/BaseGroupAvatar');
 
 export default {
-    name: 'BaseShareableHeaderMyAbility',
+    name: 'BaseMicroSkillStatusList',
 
     props: {
-
+        /**
+         * Habilidad
+         */
         list: {
             type: Array,
             required: true,
@@ -29,9 +33,6 @@ export default {
     data() {
         return {
             key: null,
-            validatedCode: 5,
-            inProgressCode: 4,
-            notValidatedCode: 3,
         };
     },
 
@@ -40,6 +41,10 @@ export default {
     },
 
     computed: {
+        inProgressCode() {
+            return baseConfigHelper.$_statusCode.certifying;
+        },
+
         listClean() {
             return baseSharedFnHelper.$_removeDuplicates(
                 this.list,
@@ -84,6 +89,95 @@ export default {
 
 <template>
     <div>
+        <BasePopUp
+            ref="popUp"
+            :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '45%'"
+            :isDrawer="false"
+            scrollable
+        >
+            <div slot="Content">
+                <v-card
+                    color="transparent"
+                    flat
+                    max-width="100%"
+                    max-height="100%"
+                >
+                    <v-card-title
+                        :class="[
+                            $vuetify.breakpoint.smAndDown
+                                ? 'BUO-Heading-Small'
+                                : 'BUO-Paragrap-Large',
+                        ]"
+                    >
+                        Detalles de validación
+                    </v-card-title>
+
+                    <v-card-text
+                        v-for="(item, i) in groupBycompetitionId(key)"
+                        :key="i"
+                    >
+                        <v-card flat max-width="100%" max-height="100%">
+                            <v-card-title> Empresa </v-card-title>
+                            <div>
+                                <v-layout justify-space-between align-center>
+                                    <v-card-subtitle
+                                        :class="[
+                                            $vuetify.breakpoint.smAndDown
+                                                ? 'BUO-Paragrap-Medium'
+                                                : 'BUO-Paragrap-Large',
+                                        ]"
+                                    >
+                                        {{ item.nombreOrganizacion }}
+                                    </v-card-subtitle>
+
+                                    <div
+                                        class="__avatar"
+                                        :style="[{ border: '2px solid white' }]"
+                                    >
+                                        <v-img
+                                            max-height="100%"
+                                            max-width="100%"
+                                            contain
+                                            :src="item.logo"
+                                            alt=""
+                                            v-if="item.logo != null"
+                                        />
+
+                                        <v-avatar tile color="primary" v-else>
+                                            <span class="white--text">{{
+                                                item.nombreOrganizacion.charAt(
+                                                    0
+                                                )
+                                            }}</span>
+                                        </v-avatar>
+                                    </div>
+                                </v-layout>
+                            </div>
+
+                            <v-divider></v-divider>
+
+                            <v-card-title>
+                                {{
+                                    type === inProgressCode
+                                        ? 'Fecha'
+                                        : 'Fecha de validación'
+                                }}
+                            </v-card-title>
+                            <v-card-subtitle
+                                :class="[
+                                    $vuetify.breakpoint.smAndDown
+                                        ? 'BUO-Paragrap-Medium'
+                                        : 'BUO-Paragrap-Large',
+                                ]"
+                            >
+                                {{ item.fechaEstadoFormato }}
+                            </v-card-subtitle>
+                        </v-card>
+                    </v-card-text>
+                </v-card>
+            </div>
+        </BasePopUp>
+
         <v-card color="transparent" flat max-width="100%" max-height="100%">
             <v-card-text>
                 <v-row>
@@ -96,6 +190,36 @@ export default {
                             class="rounded-lg"
                             light
                         >
+                            <v-card-title>
+                                <v-layout justify-start align-start>
+                                    <v-img
+                                        style="
+                                            top: -21px;
+                                            position: relative !important;
+                                        "
+                                        contain
+                                        :max-width="
+                                            $vuetify.breakpoint.mobile
+                                                ? '30%'
+                                                : '8%'
+                                        "
+                                        :src="`https://buo-resources.s3.us-east-2.amazonaws.com/wallet/${
+                                            type === inProgressCode
+                                                ? 'progress'
+                                                : 'validated'
+                                        }.svg`"
+                                    />
+                                </v-layout>
+                                <v-layout justify-end>
+                                    <v-btn
+                                        icon
+                                        @click="$_openModal(item.competenciaId)"
+                                    >
+                                        <v-icon> mdi-dots-vertical </v-icon>
+                                    </v-btn>
+                                </v-layout>
+                            </v-card-title>
+
                             <v-card-subtitle>{{
                                 type === inProgressCode
                                     ? 'En proceso'
@@ -108,8 +232,8 @@ export default {
                                         ? 'BUO-Paragraph-Small black--text'
                                         : 'BUO-Paragraph-Medium black--text',
                                 ]"
-                                v-text="item.definicion"
-                            />
+                                >{{ item.definicion }}</v-card-text
+                            >
                             <div>
                                 <v-card-title
                                     :class="[

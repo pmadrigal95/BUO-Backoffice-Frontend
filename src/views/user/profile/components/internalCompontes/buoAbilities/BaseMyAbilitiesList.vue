@@ -2,15 +2,15 @@
 /**
  * Descripción: Componente Lista Expandible
  *
- * @displayName BaseMySkillsList
+ * @displayName BaseShareableMyAbilitiesList
  */
 
-const BaseHeaderMySkill = () =>
+const BaseShareableHeaderMyAbility = () =>
     import(
         '@/views/user/profile/components/internalCompontes/buoAbilities/BaseHeaderMyAbility'
     );
 
-const BaseBodyMySkill = () =>
+const BaseShareableBodyMyAbility = () =>
     import(
         '@/views/user/profile/components/internalCompontes/buoAbilities/BaseBodyMyAbility'
     );
@@ -32,29 +32,33 @@ export default {
     },
 
     components: {
-        BaseHeaderMySkill,
-        BaseBodyMySkill,
+        BaseShareableHeaderMyAbility,
         BaseNotFoundContent,
+        BaseShareableBodyMyAbility,
     },
 };
 </script>
 
 <template>
     <div>
-        <v-expansion-panels flat v-if="myAbilitiesList.length > 0">
+        <!-- @ Use Loanding... -->
+        <BaseSkeletonLoader v-if="!myAbilitiesList" type="list-item" />
+
+        <v-expansion-panels flat v-else-if="myAbilitiesList.length > 0">
             <v-expansion-panel
                 v-for="ability in myAbilitiesList"
                 :key="ability.cualificacionId"
             >
                 <v-expansion-panel-header class="buo-expansion-panel-header">
-                    <BaseHeaderMySkill :ability="ability" />
+                    <BaseShareableHeaderMyAbility :ability="ability" />
                 </v-expansion-panel-header>
 
                 <v-expansion-panel-content>
-                    <BaseBodyMySkill :ability="ability" />
+                    <BaseShareableBodyMyAbility :ability="ability" />
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
+
         <BaseNotFoundContent
             v-else-if="myAbilitiesList.length <= 0"
             msg="Actualmente el colaborador no posee indicadores en esta categoría."

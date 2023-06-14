@@ -5,9 +5,9 @@
  * @displayName BaseBodyMyAbility
  */
 
-import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
-
 import baseConfigHelper from '@/helpers/baseConfigHelper';
+
+import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 
 const BaseShareableMicroSkillStatusList = () =>
     import(
@@ -38,6 +38,10 @@ export default {
 
         inProgressCode() {
             return baseConfigHelper.$_statusCode.certifying;
+        },
+
+        notValidatedCode() {
+            return baseConfigHelper.$_statusCode.uncertified;
         },
 
         totalPendingList() {
@@ -101,6 +105,12 @@ export default {
             v-if="totalValidatedList.length > 0"
             :list="totalValidatedList"
             :type="validatedCode"
+        />
+
+        <BaseShareableMicroSkillStatusList
+            v-if="totalValidatedList.length > 0"
+            :list="totalValidatedList"
+            :type="notValidatedCode"
         />
     </v-card>
 </template>
