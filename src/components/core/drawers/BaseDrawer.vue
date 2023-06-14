@@ -130,9 +130,9 @@ export default {
                 <v-list-item-title class="BUO-Paragraph-Medium-SemiBold">{{
                     usernameDisplay
                 }}</v-list-item-title>
-                <v-list-item-subtitle class="BUO-Label-XSmall"
-                    >BUO Backoffice</v-list-item-subtitle
-                >
+                <v-list-item-subtitle class="BUO-Label-XSmall">{{
+                    user.email
+                }}</v-list-item-subtitle>
             </v-list-item-content>
             <v-btn
                 icon

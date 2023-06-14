@@ -116,26 +116,12 @@ export default {
                 <v-col cols="12">
                     <v-card-text>
                         <v-col cols="12" sm="12" offset-md="1">
-                            <h1
-                                class="neutral--text"
-                                :class="[
-                                    $vuetify.breakpoint.smAndDown
-                                        ? 'BUO-Display-Medium'
-                                        : 'BUO-Display-Large',
-                                ]"
-                            >
-                                ¡Hola!
+                            <h1 class="neutral--text BUO-Display-small">
+                                ¡Bienvenido a Buo para empresas!
                             </h1>
 
-                            <div
-                                class="neutral--text"
-                                :class="[
-                                    $vuetify.breakpoint.smAndDown
-                                        ? 'BUO-Heading-Small'
-                                        : 'BUO-Paragraph-Large',
-                                ]"
-                            >
-                                Iniciar sesión - Backoffice
+                            <div class="neutral--text BUO-Paragraph-Large pt-3">
+                                Ingrese su cuenta para iniciar sesión
                             </div>
                         </v-col>
                         <v-row align-content="center" justify="center">
