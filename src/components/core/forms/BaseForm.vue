@@ -5,6 +5,8 @@
  * @displayName BaseForm
  */
 
+import { mapGetters } from 'vuex';
+
 import baseLocalHelper from '@/helpers/baseLocalHelper';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -115,6 +117,8 @@ export default {
             refForm: 'BaseForm_',
         };
     },
+
+    computed: { ...mapGetters('theme', ['app']) },
 
     created() {
         /**
@@ -235,7 +239,7 @@ export default {
                 <v-btn
                     class="mt-5 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                     elevation="0"
-                    color="primary"
+                    :color="app ? 'white' : 'primary'"
                     :large="isLarge"
                     :small="isSmall"
                     outlined
@@ -265,7 +269,7 @@ export default {
                 :large="isLarge"
                 :small="isSmall"
                 outlined
-                color="primary"
+                :color="app ? 'white' : 'primary'"
                 @click="$_Cancel"
                 v-if="showCancel"
             >

@@ -41,6 +41,8 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user']),
 
+        ...mapGetters('theme', ['app']),
+
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
                 companyId: baseFilterSettingsHelper.$_getCompanyId(
@@ -164,6 +166,7 @@ export default {
                         label="Carga Masiva"
                         :fnMethod="$_fnLoad"
                         icon="mdi-table-arrow-up"
+                        :color="app ? 'blueProgress600' : 'blue800'"
                     />
                 </div>
             </BaseServerDataTable>

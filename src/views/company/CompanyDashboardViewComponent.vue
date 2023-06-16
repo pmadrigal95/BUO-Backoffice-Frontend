@@ -52,6 +52,8 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('theme', ['app']),
+
         companyPermission() {
             const result = baseSecurityHelper.$_ReadPermission(
                 'CompanyViewComponent',
@@ -154,7 +156,7 @@ export default {
             <div slot="top-actions">
                 <v-layout justify-end align-center v-if="companyPermission">
                     <v-btn
-                        color="blue800"
+                        :color="app ? 'blueProgress600' : 'blue800'"
                         class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                         text
                         @click="$_companyEditor"
@@ -169,7 +171,8 @@ export default {
             <div slot="card-text">
                 <v-expansion-panels multiple flat v-model="panel">
                     <v-expansion-panel v-if="userPermission">
-                        <v-expansion-panel-header color="clouds"
+                        <v-expansion-panel-header
+                            :color="app ? 'transparent' : 'clouds'"
                             ><div
                                 :class="[
                                     $vuetify.breakpoint.smAndDown
@@ -180,14 +183,17 @@ export default {
                                 Colaboradores
                             </div></v-expansion-panel-header
                         >
-                        <v-expansion-panel-content color="clouds">
+                        <v-expansion-panel-content
+                            :color="app ? 'transparent' : 'clouds'"
+                        >
                             <UserFilterViewComponent
                                 :organizacionId="$router.currentRoute.params.Id"
                             />
                         </v-expansion-panel-content>
                     </v-expansion-panel>
                     <v-expansion-panel v-if="abilityPermission">
-                        <v-expansion-panel-header color="clouds"
+                        <v-expansion-panel-header
+                            :color="app ? 'transparent' : 'clouds'"
                             ><div
                                 :class="[
                                     $vuetify.breakpoint.smAndDown
@@ -198,14 +204,17 @@ export default {
                                 Indicadores
                             </div></v-expansion-panel-header
                         >
-                        <v-expansion-panel-content color="clouds">
+                        <v-expansion-panel-content
+                            :color="app ? 'transparent' : 'clouds'"
+                        >
                             <AbilityFilterViewComponent
                                 :organizacionId="$router.currentRoute.params.Id"
                             />
                         </v-expansion-panel-content>
                     </v-expansion-panel>
                     <v-expansion-panel v-if="departmentPermission">
-                        <v-expansion-panel-header color="clouds"
+                        <v-expansion-panel-header
+                            :color="app ? 'transparent' : 'clouds'"
                             ><div
                                 :class="[
                                     $vuetify.breakpoint.smAndDown
@@ -216,7 +225,9 @@ export default {
                                 Estructura Organizacional
                             </div></v-expansion-panel-header
                         >
-                        <v-expansion-panel-content color="clouds">
+                        <v-expansion-panel-content
+                            :color="app ? 'transparent' : 'clouds'"
+                        >
                             <v-layout justify-end class="pb-3">
                                 <v-btn
                                     elevation="0"

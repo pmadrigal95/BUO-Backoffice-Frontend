@@ -29,6 +29,7 @@ export default {
                 >
                     <template v-slot:activator="{ on, attrs }">
                         <v-list-group
+                            :color="app ? 'blueProgress600' : 'blue800'"
                             v-bind="attrs"
                             v-on="on"
                             :prepend-icon="
@@ -39,8 +40,15 @@ export default {
                         >
                             <v-list-item-content slot="activator">
                                 <v-list-item-title
-                                    class="BUO-Paragraph-Small"
-                                    >{{ item.nombreUI }}</v-list-item-title
+                                    ><span
+                                        class="BUO-Paragraph-Small-SemiBold"
+                                        :class="[
+                                            app
+                                                ? 'white--text'
+                                                : 'grey700--text',
+                                        ]"
+                                        >{{ item.nombreUI }}</span
+                                    ></v-list-item-title
                                 >
                             </v-list-item-content>
                             <TheRecursiveListMenu
@@ -49,7 +57,11 @@ export default {
                             />
                         </v-list-group>
                     </template>
-                    <span>{{ item.nombreUI }}</span>
+                    <span
+                        class="BUO-Paragraph-Small-SemiBold"
+                        :class="[app ? 'white--text' : 'grey700--text']"
+                        >{{ item.nombreUI }}</span
+                    >
                 </v-tooltip>
                 <v-tooltip right v-else :key="single">
                     <template v-slot:activator="{ on, attrs }">
@@ -63,13 +75,24 @@ export default {
                             </v-list-item-icon>
                             <v-list-item-content>
                                 <v-list-item-title
-                                    class="BUO-Paragraph-Small-SemiBold"
-                                    >{{ item.nombreUI }}</v-list-item-title
+                                    ><span
+                                        class="BUO-Paragraph-Small-SemiBold"
+                                        :class="[
+                                            app
+                                                ? 'white--text'
+                                                : 'grey700--text',
+                                        ]"
+                                        >{{ item.nombreUI }}</span
+                                    ></v-list-item-title
                                 >
                             </v-list-item-content>
                         </v-list-item>
                     </template>
-                    <span>{{ item.nombreUI }}</span>
+                    <span
+                        class="BUO-Paragraph-Small-SemiBold"
+                        :class="[app ? 'white--text' : 'grey700--text']"
+                        >{{ item.nombreUI }}</span
+                    >
                 </v-tooltip>
             </template>
         </v-list-item-group>

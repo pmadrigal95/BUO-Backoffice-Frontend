@@ -28,6 +28,8 @@ export default {
     computed: {
         ...mapGetters('security', ['permissionList', 'loadingSecurity']),
 
+        ...mapGetters('theme', ['app']),
+
         categoriesMenu() {
             return [
                 {
@@ -87,8 +89,12 @@ export default {
             return {
                 positionSubtitle: 'align-center',
                 positionDescription: 'text-center',
-                fontTypeSubtitle: 'BUO-Paragraph-Small-SemiBold black--text',
-                fontTypeDescription: 'BUO-Paragraph-Small black--text',
+                fontTypeSubtitle: this.app
+                    ? 'BUO-Paragraph-Small-SemiBold white--text'
+                    : 'BUO-Paragraph-Small-SemiBold black--text',
+                fontTypeDescription: this.app
+                    ? 'BUO-Paragraph-Small-SemiBold blueProgress600--text'
+                    : 'BUO-Paragraph-Small-SemiBold black--text',
                 width: '320',
                 heigh: '200',
                 centerBotton: true,
@@ -113,22 +119,29 @@ export default {
             <v-card flat color="transparent" v-else>
                 <v-layout justify-end
                     ><v-btn
-                        class="ma-1 no-uppercase rounded-lg Buo-White-Background"
+                        class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Medium-SemiBold"
+                        :class="[app ? 'grey700' : 'Buo-White-Background']"
+                        elevation="0"
                         depressed
                         outlined
-                        color="primary"
+                        :color="app ? 'white' : 'primary'"
                         :to="{ name: 'LoginViewComponent' }"
                     >
-                        <span class="primary--text"> Cerrar sesión </span>
-                        <v-icon small right dark color="primary">
-                            mdi-login-variant
-                        </v-icon>
+                        <span class="BUO-Paragraph-Small-SemiBold">
+                            Cerrar sesión
+                        </span>
+                        <v-icon small right dark> mdi-login-variant </v-icon>
                     </v-btn></v-layout
                 >
-                <v-card-title class="BUO-Heading-Large blue900--text">
+                <v-card-title
+                    class="BUO-Heading-Large"
+                    :class="[app ? 'blueProgress600--text' : 'blue900--text']"
+                >
                     ¡Hola!
                 </v-card-title>
-                <v-card-subtitle class="BUO-Paragraph-Large black--text"
+                <v-card-subtitle
+                    class="BUO-Paragraph-Large"
+                    :class="[app ? 'white--text' : 'black--text']"
                     >¿Qué quieres hacer hoy?</v-card-subtitle
                 >
                 <div v-if="$vuetify.breakpoint.mdAndUp">
@@ -139,7 +152,12 @@ export default {
                             v-if="menu.list.length > 0"
                         >
                             <v-card-title
-                                class="BUO-Heading-Small blue900--text"
+                                class="BUO-Heading-Small"
+                                :class="[
+                                    app
+                                        ? 'blueProgress600--text'
+                                        : 'blue900--text',
+                                ]"
                             >
                                 {{ menu.name }}
                             </v-card-title>
@@ -205,7 +223,12 @@ export default {
                             v-if="menu.list.length > 0"
                         >
                             <v-card-title
-                                class="BUO-Heading-Small blue900--text"
+                                class="BUO-Heading-Small"
+                                :class="[
+                                    app
+                                        ? 'blueProgress600--text'
+                                        : 'blue900--text',
+                                ]"
                             >
                                 {{ menu.name }}
                             </v-card-title>

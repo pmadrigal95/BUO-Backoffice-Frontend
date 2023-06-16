@@ -55,6 +55,8 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('theme', ['app']),
+
         /**
          * Configuracion BaseInputDataTable
          */
@@ -399,7 +401,10 @@ export default {
                         <v-row dense>
                             <v-col cols="12">
                                 <p
-                                    class="BUO-Paragraph-Large-SemiBold grey700--text"
+                                    class="BUO-Paragraph-Large-SemiBold"
+                                    :class="[
+                                        app ? 'white--text' : 'grey700--text',
+                                    ]"
                                 >
                                     Seleccione la categoría
                                 </p>
@@ -421,7 +426,7 @@ export default {
                             elevation="0"
                             large
                             outlined
-                            color="primary"
+                            :color="app ? 'blueProgress600' : 'blue800'"
                             @click="$_clean"
                             :block="$vuetify.breakpoint.mobile"
                         >
@@ -463,7 +468,12 @@ export default {
                             <v-row dense>
                                 <v-col cols="12">
                                     <p
-                                        class="BUO-Paragraph-Large-SemiBold grey700--text"
+                                        class="BUO-Paragraph-Large-SemiBold"
+                                        :class="[
+                                            app
+                                                ? 'white--text'
+                                                : 'grey700--text',
+                                        ]"
                                     >
                                         Seleccione la categoría
                                     </p>
@@ -494,7 +504,7 @@ export default {
                                 elevation="0"
                                 large
                                 outlined
-                                color="primary"
+                                :color="app ? 'blueProgress600' : 'blue800'"
                                 @click="$_clean"
                                 :block="$vuetify.breakpoint.mobile"
                             >

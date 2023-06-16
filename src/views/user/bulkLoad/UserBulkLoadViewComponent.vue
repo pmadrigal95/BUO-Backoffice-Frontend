@@ -285,7 +285,7 @@ export default {
                                     icon="mdi-numeric-1-circle"
                                     description="Selecciona la empresa."
                                     iconColor="greenC900"
-                                    font="grey700--text BUO-Paragraph-Medium"
+                                    font="BUO-Paragraph-Medium"
                                     :validate="['requiered']"
                                 ></StepViewComponent>
                             </v-col>
@@ -313,7 +313,7 @@ export default {
                                     }-circle`"
                                     description="Descarga el siguiente archivo Excel."
                                     iconColor="greenC900"
-                                    font="grey700--text BUO-Paragraph-Medium"
+                                    font=" BUO-Paragraph-Medium"
                                 ></StepViewComponent>
                             </v-col>
 
@@ -358,7 +358,7 @@ export default {
                                     icon="mdi-numeric-3-circle"
                                     description="Edita el mismo archivo con los datos de tus colaboradores, siguiendo el formato del archivo sin alterarlo."
                                     iconColor="greenC900"
-                                    font="grey700--text BUO-Paragraph-Medium"
+                                    font="BUO-Paragraph-Medium"
                                 ></StepViewComponent>
                             </v-col>
 
@@ -367,7 +367,7 @@ export default {
                                     icon="mdi-numeric-4-circle"
                                     description="Sube el archivo editado."
                                     iconColor="greenC900"
-                                    font="grey700--text BUO-Paragraph-Medium"
+                                    font="BUO-Paragraph-Medium"
                                 ></StepViewComponent>
                             </v-col>
 

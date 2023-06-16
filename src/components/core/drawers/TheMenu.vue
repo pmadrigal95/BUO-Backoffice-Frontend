@@ -21,6 +21,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         ...mapGetters('security', ['permissionListTEMP', 'loadingSecurity']),
     },
 };
@@ -37,8 +39,12 @@ export default {
                         <v-icon>mdi-login-variant</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                        <v-list-item-title class="BUO-Paragraph-Small-SemiBold"
-                            >Cerrar sesión</v-list-item-title
+                        <v-list-item-title
+                            ><span
+                                class="BUO-Paragraph-Small-SemiBold"
+                                :class="[app ? 'white--text' : 'grey700--text']"
+                                >Cerrar sesión</span
+                            ></v-list-item-title
                         >
                     </v-list-item-content>
                 </v-list-item></v-list

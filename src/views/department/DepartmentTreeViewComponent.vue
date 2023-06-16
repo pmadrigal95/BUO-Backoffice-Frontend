@@ -40,6 +40,8 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('theme', ['app']),
+
         write() {
             const result = baseSecurityHelper.$_ReadPermission(
                 'DepartmentViewComponent',
@@ -142,8 +144,10 @@ export default {
                             label="Editar"
                             :fnMethod="$_Editor"
                             icon="mdi-square-edit-outline"
+                            :color="app ? 'blueProgress600' : 'blue800'"
                         />
                         <BaseCustomsButtonsGrid
+                            :color="app ? 'blueProgress600' : 'blue800'"
                             label="Eliminar"
                             :fnMethod="$_delete"
                             icon="mdi-delete-outline"
@@ -177,12 +181,22 @@ export default {
                                     <v-card-text>
                                         <section v-if="department.descripcion">
                                             <div
-                                                class="pb-2 black--text BUO-Paragraph-Small"
+                                                class="pb-2 BUO-Paragraph-Small"
+                                                :class="[
+                                                    app
+                                                        ? 'white--text'
+                                                        : 'black--text',
+                                                ]"
                                             >
                                                 Descripción
                                             </div>
                                             <div
-                                                class="pb-2 black--text BUO-Label"
+                                                class="pb-2 BUO-Label"
+                                                :class="[
+                                                    app
+                                                        ? 'white--text'
+                                                        : 'black--text',
+                                                ]"
                                             >
                                                 {{ department.descripcion }}
                                             </div>
@@ -198,7 +212,12 @@ export default {
                                         >
                                             <div class="py-2">
                                                 <div
-                                                    class="py-1grey500--text BUO-Label-Small"
+                                                    class="py-1 BUO-Label-Small"
+                                                    :class="[
+                                                        app
+                                                            ? 'blueProgress600--text'
+                                                            : 'grey500--text',
+                                                    ]"
                                                 >
                                                     {{
                                                         department
@@ -237,7 +256,12 @@ export default {
 
                                                         <v-list-item-content>
                                                             <v-list-item-title
-                                                                class="black--text BUO-Label-Small-SemiBold"
+                                                                class="BUO-Label-Small-SemiBold"
+                                                                :class="[
+                                                                    app
+                                                                        ? 'white--text'
+                                                                        : 'black--text',
+                                                                ]"
                                                                 >{{
                                                                     department
                                                                         .adminsDepartamento[0]
@@ -247,7 +271,12 @@ export default {
                                                         </v-list-item-content>
                                                     </v-list-item>
                                                     <div
-                                                        class="py-1 black--text BUO-Label-Small"
+                                                        class="py-1 BUO-Label-Small"
+                                                        :class="[
+                                                            app
+                                                                ? 'white--text'
+                                                                : 'black--text',
+                                                        ]"
                                                     >
                                                         <v-layout
                                                             justify-space-between
@@ -330,7 +359,12 @@ export default {
 
                                                                     <v-list-item-content>
                                                                         <v-list-item-title
-                                                                            class="black--text BUO-Label-Small-SemiBold"
+                                                                            class="BUO-Label-Small-SemiBold"
+                                                                            :class="[
+                                                                                app
+                                                                                    ? 'white--text'
+                                                                                    : 'black--text',
+                                                                            ]"
                                                                             >{{
                                                                                 admin.nombre
                                                                             }}</v-list-item-title
@@ -340,7 +374,12 @@ export default {
                                                             </v-expansion-panel-header>
                                                             <v-expansion-panel-content>
                                                                 <div
-                                                                    class="py-1 black--text BUO-Label-Small"
+                                                                    class="py-1 BUO-Label-Small"
+                                                                    :class="[
+                                                                        app
+                                                                            ? 'white--text'
+                                                                            : 'black--text',
+                                                                    ]"
                                                                 >
                                                                     <v-layout
                                                                         justify-space-between
@@ -391,12 +430,22 @@ export default {
                                         >
                                             <div class="py-2">
                                                 <div
-                                                    class="py-1 grey500--text BUO-Label-Small"
+                                                    class="py-1 BUO-Label-Small"
+                                                    :class="[
+                                                        app
+                                                            ? 'blueProgress600--text'
+                                                            : 'grey500--text',
+                                                    ]"
                                                 >
                                                     Colaboradores:
                                                 </div>
                                                 <div
-                                                    class="py-1 black--text BUO-Label-Small"
+                                                    class="py-1 BUO-Label-Small"
+                                                    :class="[
+                                                        app
+                                                            ? 'white--text'
+                                                            : 'grey700--text',
+                                                    ]"
                                                 >
                                                     <v-icon
                                                         class="pb-1"
@@ -426,11 +475,16 @@ export default {
                                     "
                                 >
                                     <v-card-text>
-                                        <div
-                                            class="py-2 black--text BUO-Paragraph-Small-SemiBold"
+                                        <section
+                                            class="py-2 BUO-Paragraph-Small-SemiBold"
+                                            :class="[
+                                                app
+                                                    ? 'white--text'
+                                                    : 'black--text',
+                                            ]"
                                         >
                                             Sub-Niveles
-                                        </div>
+                                        </section>
                                         <div>
                                             <div
                                                 v-for="(
@@ -440,7 +494,12 @@ export default {
                                                 class="py-2"
                                             >
                                                 <v-chip
-                                                    class="py-2 black--text BUO-Label-Small"
+                                                    class="py-2 BUO-Label-Small"
+                                                    :class="[
+                                                        app
+                                                            ? 'white--text'
+                                                            : 'black--text',
+                                                    ]"
                                                     style="
                                                         height: auto;
                                                         white-space: normal;
@@ -457,11 +516,19 @@ export default {
                         <v-row v-else-if="$vuetify.breakpoint.mobile" dense>
                             <v-col cols="12" v-if="department.descripcion">
                                 <div
-                                    class="pb-2 black--text BUO-Paragraph-Small"
+                                    class="pb-2 BUO-Paragraph-Small"
+                                    :class="[
+                                        app ? 'white--text' : 'black--text',
+                                    ]"
                                 >
                                     Descripcion
                                 </div>
-                                <div class="pb-2 black--text BUO-Label">
+                                <div
+                                    class="pb-2 BUO-Label"
+                                    :class="[
+                                        app ? 'white--text' : 'black--text',
+                                    ]"
+                                >
                                     {{ department.descripcion }}
                                 </div>
                                 <v-divider></v-divider>
@@ -475,7 +542,12 @@ export default {
                             >
                                 <div class="py-2">
                                     <div
-                                        class="py-1grey500--text BUO-Label-Small"
+                                        class="py-1 grey500--text BUO-Label-Small"
+                                        :class="[
+                                            app
+                                                ? 'blueProgress600--text'
+                                                : 'grey500--text',
+                                        ]"
                                     >
                                         {{
                                             department.adminsDepartamento
@@ -510,7 +582,12 @@ export default {
 
                                             <v-list-item-content>
                                                 <v-list-item-title
-                                                    class="black--text BUO-Label-Small-SemiBold"
+                                                    class="BUO-Label-Small-SemiBold"
+                                                    :class="[
+                                                        app
+                                                            ? 'white--text'
+                                                            : 'black--text',
+                                                    ]"
                                                     >{{
                                                         department
                                                             .adminsDepartamento[0]
@@ -520,7 +597,12 @@ export default {
                                             </v-list-item-content>
                                         </v-list-item>
                                         <div
-                                            class="py-1 black--text BUO-Label-Small"
+                                            class="py-1 BUO-Label-Small"
+                                            :class="[
+                                                app
+                                                    ? 'white--text'
+                                                    : 'black--text',
+                                            ]"
                                         >
                                             <v-row>
                                                 <v-col
@@ -594,7 +676,12 @@ export default {
 
                                                         <v-list-item-content>
                                                             <v-list-item-title
-                                                                class="black--text BUO-Label-Small-SemiBold"
+                                                                class="BUO-Label-Small-SemiBold"
+                                                                :class="[
+                                                                    app
+                                                                        ? 'white--text'
+                                                                        : 'black--text',
+                                                                ]"
                                                                 >{{
                                                                     admin.nombre
                                                                 }}</v-list-item-title
@@ -604,7 +691,12 @@ export default {
                                                 </v-expansion-panel-header>
                                                 <v-expansion-panel-content>
                                                     <div
-                                                        class="py-1 black--text BUO-Label-Small"
+                                                        class="py-1 BUO-Label-Small"
+                                                        :class="[
+                                                            app
+                                                                ? 'white--text'
+                                                                : 'black--text',
+                                                        ]"
                                                     >
                                                         <v-row>
                                                             <v-col
@@ -654,12 +746,20 @@ export default {
                                     v-if="department.cantidadColaboradores"
                                 >
                                     <div
-                                        class="py-1 grey500--text BUO-Label-Small"
+                                        class="py-1 BUO-Label-Small"
+                                        :class="[
+                                            app
+                                                ? 'blueProgress600--text'
+                                                : 'grey500--text',
+                                        ]"
                                     >
                                         Colaboradores:
                                     </div>
                                     <div
-                                        class="py-1 black--text BUO-Label-Small"
+                                        class="py-1 BUO-Label-Small"
+                                        :class="[
+                                            app ? 'white--text' : 'black--text',
+                                        ]"
                                     >
                                         <v-icon
                                             class="pb-1"
@@ -684,7 +784,10 @@ export default {
                                 "
                             >
                                 <div
-                                    class="py-2 black--text BUO-Paragraph-Small-SemiBold"
+                                    class="py-2 BUO-Paragraph-Small-SemiBold"
+                                    :class="[
+                                        app ? 'white--text' : 'black--text',
+                                    ]"
                                 >
                                     Sub-Niveles
                                 </div>
@@ -697,7 +800,12 @@ export default {
                                         class="py-2"
                                     >
                                         <v-chip
-                                            class="py-1 black--text BUO-Label-Small"
+                                            class="py-1 BUO-Label-Small"
+                                            :class="[
+                                                app
+                                                    ? 'white--text'
+                                                    : 'black--text',
+                                            ]"
                                             style="
                                                 height: auto;
                                                 white-space: normal;

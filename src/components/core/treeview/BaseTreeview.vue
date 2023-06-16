@@ -5,6 +5,8 @@
  * @displayName BaseTreeview
  */
 
+import { mapGetters } from 'vuex';
+
 import { v4 as uuidv4 } from 'uuid';
 
 import httpService from '@/services/axios/httpService';
@@ -357,6 +359,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         listeners() {
             return {
                 ...this.$listeners,
@@ -586,7 +590,7 @@ export default {
             <v-layout align-end justify-end>
                 <v-btn
                     class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                    color="blue900"
+                    :color="app ? 'blueProgress600' : 'blue900'"
                     elevation="0"
                     outlined
                     small
@@ -598,7 +602,7 @@ export default {
                 <v-btn
                     class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                     elevation="0"
-                    color="blue900"
+                    color="blue800"
                     dark
                     small
                     @click="$_SelectedFooter"

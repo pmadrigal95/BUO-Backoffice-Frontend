@@ -5,6 +5,8 @@
  * @displayName BaseCardViewComponent
  */
 
+import { mapGetters } from 'vuex';
+
 export default {
     name: 'BaseCardViewComponent',
 
@@ -40,6 +42,8 @@ export default {
         },
     },
 
+    computed: { ...mapGetters('theme', ['app']) },
+
     methods: {
         /**
          * Volver al pantalla anterior
@@ -70,7 +74,7 @@ export default {
                         v-if="btnAction != undefined"
                     >
                         <v-btn
-                            color="blue800"
+                            :color="app ? 'blueProgress600' : 'blue800'"
                             class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                             text
                             @click="$_return"

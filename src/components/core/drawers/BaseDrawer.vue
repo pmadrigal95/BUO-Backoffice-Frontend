@@ -29,6 +29,8 @@ export default {
 
         ...mapGetters('navbar', ['status']),
 
+        ...mapGetters('theme', ['app']),
+
         usernameDisplay() {
             const usernameSplit = this.user.name
                 ? this.user.name.split(' ')
@@ -127,12 +129,16 @@ export default {
             </v-list-item-avatar>
 
             <v-list-item-content>
-                <v-list-item-title class="BUO-Paragraph-Medium-SemiBold">{{
-                    usernameDisplay
-                }}</v-list-item-title>
-                <v-list-item-subtitle class="BUO-Label-XSmall">{{
-                    user.email
-                }}</v-list-item-subtitle>
+                <v-list-item-title
+                    class="BUO-Paragraph-Medium-SemiBold"
+                    :class="[app ? 'white--text' : 'grey700--text']"
+                    >{{ usernameDisplay }}</v-list-item-title
+                >
+                <v-list-item-subtitle
+                    class="BUO-Label-XSmall"
+                    :class="[app ? 'blueProgress600--text' : 'grey600--text']"
+                    >{{ user.email }}</v-list-item-subtitle
+                >
             </v-list-item-content>
             <v-btn
                 icon
