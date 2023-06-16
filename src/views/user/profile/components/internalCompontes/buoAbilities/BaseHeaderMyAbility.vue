@@ -66,7 +66,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <section class="py-1">
         <v-layout justify-start v-if="ability">
             <v-list-item Two-line class="buo-headerAbility-position">
                 <v-list-item-avatar size="45">
@@ -74,13 +74,18 @@ export default {
                         v-if="ability.estadoId == inProgressCode"
                         size="45"
                         width="3"
+                        rotate="90"
                         :value="Math.round(ability.porcentajeCertificado * 100)"
                         :color="
                             $_color(
                                 Math.round(ability.porcentajeCertificado * 100)
                             )
                         "
-                        >{{ Math.round(ability.porcentajeCertificado * 100) }}%
+                        ><span class="BUO-Label-XSmall"
+                            >{{
+                                Math.round(ability.porcentajeCertificado * 100)
+                            }}%</span
+                        >
                     </v-progress-circular>
 
                     <v-icon
@@ -101,31 +106,41 @@ export default {
                 </v-list-item-avatar>
                 <v-list-item-content class="ms-n3">
                     <v-list-item-title
-                        class="BUO-Paragraph-Medium buo-white-space"
-                        ><b>{{ ability.nombreCualificacion }}</b>
+                        ><span
+                            class="BUO-Paragraph-Medium-SemiBold buo-white-space grey700--text"
+                            >{{ ability.nombreCualificacion }}</span
+                        >
                     </v-list-item-title>
-                    <v-list-item-subtitle class="BUO-Label-XSmall"
-                        ><div v-if="ability.estadoId === notValidatedCode">
+                    <v-list-item-subtitle
+                        ><section
+                            v-if="ability.estadoId === notValidatedCode"
+                            class="BUO-Label-XSmall grey600--text"
+                        >
                             Pendiente ({{ ability.totalDisponibles }})
-                        </div>
-                        <div v-if="ability.estadoId === inProgressCode">
+                        </section>
+                        <section
+                            v-if="ability.estadoId === inProgressCode"
+                            class="BUO-Label-XSmall grey600--text"
+                        >
                             Por Aprobar ({{ ability.totalPendientes }}) /
                             Disponibles ({{ ability.totalDisponibles }})
-                        </div>
-                        <div v-if="ability.estadoId === validatedCode">
-                            {{ ability.totalValidadas }} habilidades validadas
-                        </div>
+                        </section>
+                        <section
+                            v-if="ability.estadoId === validatedCode"
+                            class="BUO-Label-XSmall grey600--text"
+                        >
+                            {{ ability.totalValidadas }} indicadores validados
+                        </section>
                     </v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
         </v-layout>
         <v-card flat color="transparent" style="right: -8px !important">
-            <span class="BUO-Label-XSmall">Validado por: </span>
+            <span class="BUO-Label-XSmall grey600--text">Validado por: </span>
             <BaseGroupAvatar
                 borderColor="white"
                 :avatars="$_avatarList(ability.listaOrganizacionVerificacion)"
             ></BaseGroupAvatar>
         </v-card>
-        <br />
-    </div>
+    </section>
 </template>

@@ -40,7 +40,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <section>
         <!-- @ Use Loanding... -->
         <BaseSkeletonLoader v-if="!myAbilitiesList" type="list-item" />
 
@@ -60,8 +60,8 @@ export default {
         </v-expansion-panels>
 
         <BaseNotFoundContent
-            v-else-if="myAbilitiesList.length <= 0"
             msg="Actualmente el colaborador no posee indicadores en esta categoría."
+            v-else
         />
-    </div>
+    </section>
 </template>

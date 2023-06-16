@@ -222,22 +222,24 @@ export default {
                                             >
                                         </v-list-item-avatar>
                                         <v-list-item-content>
-                                            <v-list-item-title
-                                                class="BUO-Paragraph-Small buo-word-break buo-white-space black--text"
-                                            >
-                                                <div
+                                            <v-list-item-title>
+                                                <section
                                                     class="d-flex flex-no-wrap justify-space-between buo-word-break"
                                                 >
-                                                    <span>
+                                                    <span
+                                                        class="BUO-Paragraph-Small-SemiBold buo-word-break buo-white-space grey500--text"
+                                                    >
                                                         {{ item.habilidad }}
                                                     </span>
-                                                    <span>
+                                                    <span
+                                                        class="BUO-Paragraph-Small-SemiBold buo-word-break buo-white-space grey500--text"
+                                                    >
                                                         {{
                                                             item.porcentajeNaturalHabilidadFormato +
                                                             '%'
                                                         }}
                                                     </span>
-                                                </div>
+                                                </section>
                                                 <v-progress-linear
                                                     rounded
                                                     :value="

@@ -90,7 +90,7 @@ export default {
 <template>
     <v-card flat>
         <v-card-text
-            class="BUO-Paragraph-Medium buo-none-word-break black--text"
+            class="BUO-Paragraph-Small buo-none-word-break black--text"
             v-if="ability.proposito"
         >
             {{ ability.proposito }}
@@ -105,12 +105,6 @@ export default {
             v-if="totalValidatedList.length > 0"
             :list="totalValidatedList"
             :type="validatedCode"
-        />
-
-        <BaseShareableMicroSkillStatusList
-            v-if="totalValidatedList.length > 0"
-            :list="totalValidatedList"
-            :type="notValidatedCode"
         />
     </v-card>
 </template>
