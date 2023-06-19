@@ -12,7 +12,7 @@ export default {
 
     methods: {
         $_termsAndConditions() {
-            baseSharedFnHelper.$_redirect('TermsAndConditions');
+            baseSharedFnHelper.$_redirect('termsandconditions');
         },
 
         $_landing() {
