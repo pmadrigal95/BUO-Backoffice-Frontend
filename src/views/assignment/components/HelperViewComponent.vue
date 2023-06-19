@@ -6,6 +6,8 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
 export default {
     name: 'HelperViewComponent',
 
@@ -14,11 +16,13 @@ export default {
             this.$refs.popUp.$_openModal();
         },
     },
+
+    computed: { ...mapGetters('theme', ['app']) },
 };
 </script>
 
 <template>
-    <div>
+    <section>
         <!-- @Componente:  BaseDialog-->
         <BasePopUp
             ref="popUp"
@@ -28,25 +32,36 @@ export default {
         >
             <div slot="Content">
                 <v-card flat>
-                    <v-card-title class="BUO-Heading-Small blue900--text"
+                    <v-card-title
+                        class="BUO-Heading-Small"
+                        :class="[
+                            app ? 'blueProgress600--text' : 'blue900--text',
+                        ]"
                         >Módulo Asignaciones</v-card-title
                     >
-                    <v-card-text class="black--text">
-                        <div class="pb-4">
+                    <v-card-text
+                        :class="[app ? 'white--text' : 'grey700--text']"
+                    >
+                        <section class="pb-4">
                             Para continuar con el proceso debe tomar en cuenta
                             lo siguiente:
-                        </div>
-                        <div>
+                        </section>
+                        <section>
                             <v-expansion-panels flat>
                                 <v-expansion-panel>
                                     <v-expansion-panel-header
                                         ><span
-                                            class="BUO-Paragraph-Large blue900--text"
+                                            class="BUO-Paragraph-Large"
+                                            :class="[
+                                                app
+                                                    ? 'blueProgress600--text'
+                                                    : 'blue900--text',
+                                            ]"
                                             >Crear nuevo Indicador</span
                                         >
                                     </v-expansion-panel-header>
                                     <v-expansion-panel-content>
-                                        <div
+                                        <section
                                             class="BUO-Label-Small grey500--text"
                                         >
                                             <p>
@@ -59,13 +74,18 @@ export default {
                                                 nuevo y no verifica si ya existe
                                                 otro con el mismo nombre.
                                             </p>
-                                        </div>
+                                        </section>
                                     </v-expansion-panel-content>
                                 </v-expansion-panel>
                                 <v-expansion-panel>
                                     <v-expansion-panel-header
                                         ><span
-                                            class="BUO-Paragraph-Large blue900--text"
+                                            class="BUO-Paragraph-Large"
+                                            :class="[
+                                                app
+                                                    ? 'blueProgress600--text'
+                                                    : 'blue900--text',
+                                            ]"
                                             >Asignar Indicador existente
                                         </span></v-expansion-panel-header
                                     >
@@ -85,7 +105,12 @@ export default {
                                 <v-expansion-panel>
                                     <v-expansion-panel-header
                                         ><span
-                                            class="BUO-Paragraph-Large blue900--text"
+                                            class="BUO-Paragraph-Large"
+                                            :class="[
+                                                app
+                                                    ? 'blueProgress600--text'
+                                                    : 'blue900--text',
+                                            ]"
                                             >Asignación masiva</span
                                         ></v-expansion-panel-header
                                     >
@@ -113,7 +138,7 @@ export default {
                                     </v-expansion-panel-content>
                                 </v-expansion-panel>
                             </v-expansion-panels>
-                        </div>
+                        </section>
                     </v-card-text>
                     <v-card-actions>
                         <v-btn
@@ -147,5 +172,5 @@ export default {
             </template>
             <span>Ayuda</span>
         </v-tooltip>
-    </div>
+    </section>
 </template>

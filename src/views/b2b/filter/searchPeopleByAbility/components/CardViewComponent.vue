@@ -6,6 +6,8 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
 import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
@@ -35,6 +37,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         extraParams() {
             let array = [];
             if (this.entity.organizacionId) {
@@ -56,7 +60,12 @@ export default {
 
         componentProps() {
             return {
-                fontTypeSubtitle: 'BUO-Paragraph-Medium-SemiBold black--text',
+                fontTypeSubtitle: `BUO-Paragraph-Medium-SemiBold ${
+                    this.app ? 'white--text' : ' black--text'
+                }`,
+                fontTypeDescription: `${
+                    this.app ? 'blueProgress600--text' : ' grey600--text'
+                }`,
                 width: '228',
                 height: '120',
             };
@@ -114,12 +123,15 @@ export default {
 
 <template>
     <BaseSkeletonLoader v-if="loading" type="list-item" />
-    <div v-else-if="list && list.length > 0">
+    <section v-else-if="list && list.length > 0">
         <v-row justify="start" class="pl-3">
             <v-col cols="12" md="8">
-                <div class="BUO-Heading-Small blue900--text">
+                <section
+                    class="BUO-Heading-Small"
+                    :class="[app ? 'blueProgress600--text' : 'blue900--text']"
+                >
                     Encontramos el talento que estás buscando
-                </div>
+                </section>
             </v-col>
         </v-row>
         <v-layout
@@ -127,18 +139,21 @@ export default {
             v-if="$vuetify.breakpoint.mdAndUp"
             class="py-5"
         >
-            <div v-for="(item, i) in list" :key="i">
-                <div @click="$_toProfile(item.usuarioId)">
+            <section v-for="(item, i) in list" :key="i">
+                <section @click="$_toProfile(item.usuarioId)">
                     <BaseCardMenuViewComponent
                         :icon="`numeric-${i + 1}-circle`"
                         :subtitle="item.nombre"
                         :description="item.nombreDepartamento"
                         :fontTypeSubtitle="componentProps.fontTypeSubtitle"
+                        :fontTypeDescription="
+                            componentProps.fontTypeDescription
+                        "
                         :min-width="componentProps.width"
                         :minHeight="componentProps.height"
                     />
-                </div>
-            </div>
+                </section>
+            </section>
         </v-layout>
         <v-layout
             justify-center
@@ -147,19 +162,22 @@ export default {
         >
             <v-slide-group>
                 <v-slide-item v-for="(item, i) in list" :key="i">
-                    <div @click="$_toProfile(item.usuarioId)">
+                    <section @click="$_toProfile(item.usuarioId)">
                         <BaseCardMenuViewComponent
                             :icon="`numeric-${i + 1}-circle`"
                             :subtitle="item.nombre"
                             :description="item.nombreDepartamento"
                             :fontTypeSubtitle="componentProps.fontTypeSubtitle"
+                            :fontTypeDescription="
+                                componentProps.fontTypeDescription
+                            "
                             :min-width="componentProps.width"
                             :minHeight="componentProps.height"
                         />
-                    </div>
+                    </section>
                 </v-slide-item>
             </v-slide-group>
         </v-layout>
         <v-divider class="my-3"></v-divider>
-    </div>
+    </section>
 </template>

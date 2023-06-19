@@ -256,7 +256,7 @@ export default {
     >
         {{ message }}
         <template v-slot:action="{ attrs }">
-            <v-btn color="red" text v-bind="attrs" @click="$_openSnackbar">
+            <v-btn color="error" text v-bind="attrs" @click="$_openSnackbar">
                 X
             </v-btn>
         </template>

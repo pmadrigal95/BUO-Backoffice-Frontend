@@ -6,6 +6,8 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
 import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
@@ -36,6 +38,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         setting() {
             return {
                 endpoint: `ability/findBy/${
@@ -99,12 +103,15 @@ export default {
 </script>
 
 <template>
-    <div v-if="entity">
+    <section v-if="entity">
         <v-row justify="start" class="pl-3">
             <v-col cols="12" md="8">
-                <div class="BUO-Heading-Small blue900--text">
+                <section
+                    class="BUO-Heading-Small"
+                    :class="[app ? 'blueProgress600--text' : 'blue900--text']"
+                >
                     Todos los indicadores
-                </div>
+                </section>
             </v-col>
         </v-row>
         <ScaleHelperViewComponent />
@@ -123,5 +130,5 @@ export default {
                 />
             </div>
         </BaseServerDataTable>
-    </div>
+    </section>
 </template>

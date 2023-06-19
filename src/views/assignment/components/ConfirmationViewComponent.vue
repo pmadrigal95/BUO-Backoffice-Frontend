@@ -63,7 +63,7 @@ export default {
                 icon="mdi-numeric-4-circle"
                 description="Seleccionar Micro-Indicadores"
                 iconColor="greenC900"
-                font="grey700--text BUO-Paragraph-Medium"
+                font="BUO-Paragraph-Medium"
             />
             <div>
                 <v-btn

@@ -7,6 +7,9 @@
 
 const BaseRadarChart = () => import('@/components/core/charts/BaseRadarChart');
 
+const darkTheme = '#282828';
+const lightTheme = '#fff';
+
 export default {
     name: 'MultiplePDARadarChart',
 
@@ -18,6 +21,11 @@ export default {
         chartData: {
             type: Object,
             required: true,
+        },
+
+        dark: {
+            type: Boolean,
+            default: false,
         },
     },
 
@@ -46,6 +54,8 @@ export default {
                             display: false,
                         },
                         pointLabels: {
+                            color: () => (this.dark ? lightTheme : darkTheme),
+
                             font: {
                                 size: this.$vuetify.breakpoint.smAndDown
                                     ? 10

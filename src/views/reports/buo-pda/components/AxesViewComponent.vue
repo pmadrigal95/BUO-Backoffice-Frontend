@@ -1,4 +1,6 @@
 <script>
+import { mapGetters } from 'vuex';
+
 const BasePdaSlider = () => import('@/components/pda/BasePdaSlider');
 
 export default {
@@ -14,12 +16,16 @@ export default {
     components: {
         BasePdaSlider,
     },
+
+    computed: { ...mapGetters('theme', ['app']) },
 };
 </script>
 
 <template>
-    <v-card flat>
-        <v-card-title class="grey700--text BUO-Paragraph-Large-SemiBold"
+    <v-card flat color="transparent">
+        <v-card-title
+            class="BUO-Paragraph-Large-SemiBold"
+            :class="[app ? 'white--text' : 'grey700--text']"
             >Ejes de comportamiento</v-card-title
         >
         <v-card-text>
@@ -30,14 +36,18 @@ export default {
                     v-for="item in entity.ejePDADTOSet"
                     :key="item.id"
                 >
-                    <v-card flat>
+                    <v-card flat color="transparent">
                         <v-card-title
-                            class="buo-word-break black--text BUO-Label-Small-SemiBold"
+                            class="buo-word-break BUO-Label-Small-SemiBold"
+                            :class="[app ? 'white--text' : 'black--text']"
                         >
                             {{ item.nombreUI }}
                         </v-card-title>
                         <v-card-subtitle
                             class="buo-word-break BUO-Label-Small pt-3"
+                            :class="[
+                                app ? 'blueProgress600--text' : 'grey600--text',
+                            ]"
                         >
                             {{ item.descripcionEje }}
                         </v-card-subtitle>
@@ -54,10 +64,24 @@ export default {
                                         : 'BUO-Paragraph-Medium',
                                 ]"
                             >
-                                <span>
+                                <span
+                                    class="BUO-Label-Small"
+                                    :class="[
+                                        app
+                                            ? 'blueProgress600--text'
+                                            : 'grey600--text',
+                                    ]"
+                                >
                                     {{ item.etiquetaIzquierda }}
                                 </span>
-                                <span>
+                                <span
+                                    class="BUO-Label-Small"
+                                    :class="[
+                                        app
+                                            ? 'blueProgress600--text'
+                                            : 'grey600--text',
+                                    ]"
+                                >
                                     {{ item.etiquetaDerecha }}
                                 </span>
                             </div>

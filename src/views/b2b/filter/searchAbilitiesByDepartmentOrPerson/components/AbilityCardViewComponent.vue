@@ -6,6 +6,8 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
 import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
@@ -33,6 +35,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         extraParams() {
             let array = [];
             if (this.entity.organizacionId) {
@@ -54,7 +58,12 @@ export default {
 
         componentProps() {
             return {
-                fontTypeSubtitle: 'BUO-Paragraph-Medium-SemiBold black--text',
+                fontTypeSubtitle: `BUO-Paragraph-Medium-SemiBold ${
+                    this.app ? 'white--text' : ' black--text'
+                }`,
+                fontTypeDescription: `${
+                    this.app ? 'blueProgress600--text' : ' grey600--text'
+                }`,
                 width: '250',
                 height: '150',
             };
@@ -104,10 +113,15 @@ export default {
         >
             <v-row justify="start" class="pl-3">
                 <v-col cols="12" md="8">
-                    <div class="BUO-Heading-Small blue900--text">
+                    <section
+                        class="BUO-Heading-Small"
+                        :class="[
+                            app ? 'blueProgress600--text' : 'blue900--text',
+                        ]"
+                    >
                         Las
                         <span class="greenC800--text">más</span> desarrolladas
-                    </div>
+                    </section>
                 </v-col>
             </v-row>
             <v-layout
@@ -122,6 +136,9 @@ export default {
                         :subtitle="item.definicionCualificacion"
                         :description="item.descripcion"
                         :fontTypeSubtitle="componentProps.fontTypeSubtitle"
+                        :fontTypeDescription="
+                            componentProps.fontTypeDescription
+                        "
                         :min-width="componentProps.width"
                         :minHeight="componentProps.height"
                         :max-width="componentProps.width"
@@ -148,6 +165,9 @@ export default {
                                 :fontTypeSubtitle="
                                     componentProps.fontTypeSubtitle
                                 "
+                                :fontTypeDescription="
+                                    componentProps.fontTypeDescription
+                                "
                                 :min-width="componentProps.width"
                                 :minHeight="componentProps.height"
                                 :max-width="componentProps.width"
@@ -166,11 +186,16 @@ export default {
         >
             <v-row justify="start" class="pl-3">
                 <v-col cols="12" md="8">
-                    <div class="BUO-Heading-Small blue900--text">
+                    <section
+                        class="BUO-Heading-Small"
+                        :class="[
+                            app ? 'blueProgress600--text' : 'blue900--text',
+                        ]"
+                    >
                         Las
                         <span class="redError900--text">menos</span>
                         desarrolladas
-                    </div>
+                    </section>
                 </v-col>
             </v-row>
             <v-layout
@@ -178,19 +203,25 @@ export default {
                 v-if="$vuetify.breakpoint.mdAndUp"
                 class="py-5"
             >
-                <div v-for="(item, i) in objectForm.bottomAbilities" :key="i">
+                <section
+                    v-for="(item, i) in objectForm.bottomAbilities"
+                    :key="i"
+                >
                     <BaseCardMenuViewComponent
                         iconColor="redError900"
                         :icon="`numeric-${i + 1}-circle`"
                         :subtitle="item.definicionCualificacion"
                         :description="item.descripcion"
                         :fontTypeSubtitle="componentProps.fontTypeSubtitle"
+                        :fontTypeDescription="
+                            componentProps.fontTypeDescription
+                        "
                         :min-width="componentProps.width"
                         :minHeight="componentProps.height"
                         :max-width="componentProps.width"
                         :maxHeight="componentProps.height"
                     />
-                </div>
+                </section>
             </v-layout>
             <v-layout
                 justify-center
@@ -202,7 +233,7 @@ export default {
                         v-for="(item, i) in objectForm.bottomAbilities"
                         :key="i"
                     >
-                        <div>
+                        <section>
                             <BaseCardMenuViewComponent
                                 iconColor="redError900"
                                 :icon="`numeric-${i + 1}-circle`"
@@ -211,12 +242,15 @@ export default {
                                 :fontTypeSubtitle="
                                     componentProps.fontTypeSubtitle
                                 "
+                                :fontTypeDescription="
+                                    componentProps.fontTypeDescription
+                                "
                                 :min-width="componentProps.width"
                                 :minHeight="componentProps.height"
                                 :max-width="componentProps.width"
                                 :maxHeight="componentProps.height"
                             />
-                        </div>
+                        </section>
                     </v-slide-item>
                 </v-slide-group>
             </v-layout>

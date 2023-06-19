@@ -6,6 +6,8 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
 import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
@@ -49,6 +51,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         setting() {
             return {
                 endpoint: `abilityDetails/findBy/${
@@ -140,7 +144,10 @@ export default {
     >
         <v-row justify="start" class="pl-3" dense>
             <v-col cols="12" md="8">
-                <div class="BUO-Heading-Small blue900--text">
+                <section
+                    class="BUO-Heading-Small"
+                    :class="[app ? 'blueProgress600--text' : 'blue900--text']"
+                >
                     <v-btn
                         fab
                         dark
@@ -148,13 +155,13 @@ export default {
                         outlined
                         class="mb-1"
                         elevation="0"
-                        color="primary"
+                        :color="app ? 'blueProgress600' : 'blue800'"
                         @click="$_goBack"
                     >
                         <v-icon dark> mdi-chevron-left </v-icon>
                     </v-btn>
                     {{ entity.definicionCualificacion }}
-                </div>
+                </section>
             </v-col>
         </v-row>
 

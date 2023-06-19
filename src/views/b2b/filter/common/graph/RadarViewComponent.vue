@@ -5,13 +5,17 @@
  * @displayName RadarViewComponent
  *
  */
+
+import { mapGetters } from 'vuex';
+
 import baseFnChart from '@/components/pda/baseFnChart';
 
 import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
-const MultiplePDARadarChart = () => import('@/components/pda/MultiplePDARadarChart');
+const MultiplePDARadarChart = () =>
+    import('@/components/pda/MultiplePDARadarChart');
 
 const BaseNotFoundContent = () =>
     import('@/components/core/cards/BaseNotFoundContent');
@@ -36,8 +40,18 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         chartData() {
             return baseFnChart.$_createObject(this.list);
+        },
+    },
+
+    watch: {
+        app: {
+            handler() {
+                this.key++;
+            },
         },
     },
 
@@ -74,16 +88,21 @@ export default {
     <div v-else-if="list && list.length > 0">
         <v-row justify="start" class="pl-3 pb-8">
             <v-col cols="12" md="8">
-                <div class="BUO-Heading-Small blue900--text">
+                <section
+                    class="BUO-Heading-Small"
+                    :class="[app ? 'blueProgress600--text' : 'blue900--text']"
+                >
                     Comparación de indicadores PDA
-                </div>
+                </section>
             </v-col>
         </v-row>
 
         <MultiplePDARadarChart
             :chartData="chartData"
             v-if="chartData != undefined && chartData.labels != null"
-            class="py-2"
+            :dark="app ? true : false"
+            class="pb-3"
+            :key="key"
         />
         <BaseNotFoundContent
             v-else

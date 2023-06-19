@@ -6,6 +6,8 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
 import httpService from '@/services/axios/httpService';
 
 export default {
@@ -28,11 +30,22 @@ export default {
             key: 0,
             panel: [],
             loading: false,
+            key1: 0,
         };
     },
 
+    computed: { ...mapGetters('theme', ['app']) },
+
     created() {
         this.$_setCompleteObject();
+    },
+
+    watch: {
+        app: {
+            handler() {
+                this.key1++;
+            },
+        },
     },
 
     methods: {
@@ -129,7 +142,13 @@ export default {
             </v-expansion-panel-header>
             <v-expansion-panel-content>
                 <v-list rounded>
-                    <v-list-item-group active-class="primary--text" multiple>
+                    <v-list-item-group
+                        :active-class="
+                            app ? 'blueProgress600--text' : 'blue800--text'
+                        "
+                        multiple
+                        :key="key1"
+                    >
                         <template v-for="element in item.competencias">
                             <v-list-item
                                 :key="element.id"

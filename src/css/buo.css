@@ -282,7 +282,7 @@ html {
 
 /*Event for active*/
 .v-tab--active {
-    background: #ffffff;
+    /* background: #ffffff; */
     border: 2px solid #003f5e;
 }
 

@@ -5,6 +5,8 @@
  * @displayName BaseBodyMyAbility
  */
 
+import { mapGetters } from 'vuex';
+
 import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
@@ -32,6 +34,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         validatedCode() {
             return baseConfigHelper.$_statusCode.certificate;
         },
@@ -90,7 +94,8 @@ export default {
 <template>
     <v-card flat>
         <v-card-text
-            class="BUO-Paragraph-Small buo-none-word-break black--text"
+            class="BUO-Paragraph-Small buo-none-word-break"
+            :class="[app ? 'white--text' : 'black--text']"
             v-if="ability.proposito"
         >
             {{ ability.proposito }}

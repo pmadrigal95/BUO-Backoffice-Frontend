@@ -1,4 +1,6 @@
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
     name: 'HeaderViewComponent',
 
@@ -8,15 +10,21 @@ export default {
             requiered: true,
         },
     },
+
+    computed: { ...mapGetters('theme', ['app']) },
 };
 </script>
 
 <template>
-    <v-card flat>
-        <v-row justify="start">
-            <div class="BUO-Label-XSmall grey600--text">Reporte BUO - PDA</div>
+    <v-card flat color="transparent">
+        <v-row justify="start" class="pb-5">
+            <section
+                class="BUO-Label-XSmall"
+                :class="[app ? 'blueProgress600--text' : 'grey600--text']"
+            >
+                Reporte BUO - PDA
+            </section>
         </v-row>
-        <br />
         <v-row dense>
             <img
                 v-if="entity.pda && entity.pda.hotcakeSimpleURL"
@@ -24,40 +32,70 @@ export default {
                 width="70"
                 :src="entity.pda.hotcakeSimpleURL"
             />
-            <div class="px-10">
-                <div class="BUO-Heading-XSmall grey700--text">
+            <section class="px-10">
+                <section
+                    class="BUO-Heading-XSmall"
+                    :class="[app ? 'white--text' : 'grey700--text']"
+                >
                     {{ entity.nombreCompleto }}
-                </div>
-                <div class="pt-2">
+                </section>
+                <section class="pt-2">
                     <v-layout>
-                        <div class="pr-3" v-if="entity.pda">
-                            <div class="BUO-Label-XSmall grey600--text pb-1">
+                        <section class="pr-3" v-if="entity.pda">
+                            <section
+                                class="BUO-Label-XSmall pb-1"
+                                :class="[
+                                    app
+                                        ? 'blueProgress600--text'
+                                        : 'grey600--text',
+                                ]"
+                            >
                                 Eres una persona:
-                            </div>
+                            </section>
                             <v-chip
                                 outlined
                                 color="grey500"
                                 class="BUO-Label-XSmall-SemiBold"
                             >
-                                {{ entity.pda.perfilPDAVisual }}
+                                <span
+                                    :class="[
+                                        app
+                                            ? 'blueProgress600--text'
+                                            : 'grey600--text',
+                                    ]"
+                                    >{{ entity.pda.perfilPDAVisual }}</span
+                                >
                             </v-chip>
-                        </div>
+                        </section>
                         <v-divider vertical></v-divider>
                         <div class="pl-3" v-if="entity.pda">
-                            <div class="BUO-Label-XSmall grey600--text pb-1">
+                            <section
+                                class="BUO-Label-XSmall pb-1"
+                                :class="[
+                                    app
+                                        ? 'blueProgress600--text'
+                                        : 'grey600--text',
+                                ]"
+                            >
                                 Tu super poder es:
-                            </div>
+                            </section>
                             <v-chip
                                 color="grey500"
                                 outlined
                                 class="BUO-Label-XSmall-SemiBold"
-                            >
-                                {{ entity.pda.superpoder }}
+                                ><span
+                                    :class="[
+                                        app
+                                            ? 'blueProgress600--text'
+                                            : 'grey600--text',
+                                    ]"
+                                    >{{ entity.pda.superpoder }}</span
+                                >
                             </v-chip>
                         </div>
                     </v-layout>
-                </div>
-            </div>
+                </section>
+            </section>
         </v-row>
     </v-card>
 </template>

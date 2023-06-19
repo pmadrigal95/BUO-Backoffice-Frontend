@@ -5,6 +5,8 @@
  * @displayName BaseHeaderMyAbility
  */
 
+import { mapGetters } from 'vuex';
+
 import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper.js';
@@ -30,6 +32,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         validatedCode() {
             return baseConfigHelper.$_statusCode.certificate;
         },
@@ -107,27 +111,37 @@ export default {
                 <v-list-item-content class="ms-n3">
                     <v-list-item-title
                         ><span
-                            class="BUO-Paragraph-Medium-SemiBold buo-white-space grey700--text"
+                            class="BUO-Paragraph-Medium-SemiBold buo-white-space"
+                            :class="[app ? 'white--text' : 'grey700--text']"
                             >{{ ability.nombreCualificacion }}</span
                         >
                     </v-list-item-title>
                     <v-list-item-subtitle
                         ><section
                             v-if="ability.estadoId === notValidatedCode"
-                            class="BUO-Label-XSmall grey600--text"
+                            class="BUO-Label-XSmall"
+                            :class="[
+                                app ? 'blueProgress600--text' : 'grey600--text',
+                            ]"
                         >
                             Pendiente ({{ ability.totalDisponibles }})
                         </section>
                         <section
                             v-if="ability.estadoId === inProgressCode"
-                            class="BUO-Label-XSmall grey600--text"
+                            class="BUO-Label-XSmall"
+                            :class="[
+                                app ? 'blueProgress600--text' : 'grey600--text',
+                            ]"
                         >
                             Por Aprobar ({{ ability.totalPendientes }}) /
                             Disponibles ({{ ability.totalDisponibles }})
                         </section>
                         <section
                             v-if="ability.estadoId === validatedCode"
-                            class="BUO-Label-XSmall grey600--text"
+                            class="BUO-Label-XSmall"
+                            :class="[
+                                app ? 'blueProgress600--text' : 'grey600--text',
+                            ]"
                         >
                             {{ ability.totalValidadas }} indicadores validados
                         </section>
@@ -136,7 +150,11 @@ export default {
             </v-list-item>
         </v-layout>
         <v-card flat color="transparent" style="right: -8px !important">
-            <span class="BUO-Label-XSmall grey600--text">Validado por: </span>
+            <span
+                class="BUO-Label-XSmall"
+                :class="[app ? 'blueProgress600--text' : 'grey600--text']"
+                >Validado por:
+            </span>
             <BaseGroupAvatar
                 borderColor="white"
                 :avatars="$_avatarList(ability.listaOrganizacionVerificacion)"

@@ -1,4 +1,6 @@
 <script>
+import { mapGetters } from 'vuex';
+
 const PDARadarChart = () => import('@/components/pda/PDARadarChart.vue');
 
 export default {
@@ -14,13 +16,25 @@ export default {
     components: {
         PDARadarChart,
     },
+
+    computed: { ...mapGetters('theme', ['app']) },
+
+    watch: {
+        app: {
+            handler() {
+                this.key++;
+            },
+        },
+    },
 };
 </script>
 
 <template>
-    <v-card flat class="pt-6">
+    <v-card flat class="pt-6" color="transparent">
         <v-card flat outlined class="rounded-lg">
-            <v-card-title class="grey700--text BUO-Paragraph-Large"
+            <v-card-title
+                class="BUO-Paragraph-Large"
+                :class="[app ? 'white--text' : 'grey700--text']"
                 >Tus indicadores</v-card-title
             >
 
@@ -32,14 +46,15 @@ export default {
                             entity.perfilPDA.toLowerCase()
                         ]
                     "
-                    :dark="false"
+                    :dark="app ? true : false"
+                    :key="key"
                 />
                 <v-alert
                     text
                     outlined
                     :color="entity.perfilPDA.toLowerCase()"
                     type="warning"
-                    class="rounded-lg"
+                    class="rounded-lg mt-9"
                     dismissible
                     :class="[
                         $vuetify.breakpoint.smAndDown
@@ -47,17 +62,21 @@ export default {
                             : 'BUO-Paragraph-Medium',
                     ]"
                 >
-                    <div class="black--text"><b>Importante</b></div>
-                    <div class="black--text">
+                    <section :class="[app ? 'white--text' : 'black--text']">
+                        <b>Importante</b>
+                    </section>
+                    <section :class="[app ? 'white--text' : 'grey700--text']">
                         El porcentaje en cada indicador no indica la falta o
                         presencia de la misma, sino cuanto esfuerzo toma
                         desempeñar ese indicador.
-                    </div>
+                    </section>
                 </v-alert>
             </v-card-text>
         </v-card>
-        <v-card flat>
-            <v-card-title class="grey700--text BUO-Paragraph-Large"
+        <v-card flat color="transparent">
+            <v-card-title
+                class="BUO-Paragraph-Large"
+                :class="[app ? 'white--text' : 'grey700--text']"
                 >Indicadores</v-card-title
             >
             <v-card-text>
@@ -77,22 +96,24 @@ export default {
                                     >
                                 </v-list-item-avatar>
                                 <v-list-item-content>
-                                    <v-list-item-title
-                                        class="BUO-Paragraph-Small buo-word-break buo-white-space black--text"
-                                    >
-                                        <div
+                                    <v-list-item-title>
+                                        <section
                                             class="d-flex flex-no-wrap justify-space-between buo-word-break"
                                         >
-                                            <span>
+                                            <span
+                                                class="BUO-Paragraph-Small-SemiBold buo-word-break buo-white-space grey500--text"
+                                            >
                                                 {{ item.habilidad }}
                                             </span>
-                                            <span>
+                                            <span
+                                                class="BUO-Paragraph-Small-SemiBold buo-word-break buo-white-space grey500--text"
+                                            >
                                                 {{
                                                     item.porcentajeNaturalHabilidadFormato +
                                                     '%'
                                                 }}
                                             </span>
-                                        </div>
+                                        </section>
                                         <v-progress-linear
                                             rounded
                                             :value="
@@ -105,7 +126,14 @@ export default {
                                     </v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
-                            <div class="pr-5 pl-7 black--text BUO-Label-XSmall">
+                            <div
+                                class="pr-5 pl-7 BUO-Label-XSmall"
+                                :class="[
+                                    app
+                                        ? 'blueProgress600--text'
+                                        : 'grey600--text',
+                                ]"
+                            >
                                 {{ item.caracteristicas }}
                             </div>
                         </div>

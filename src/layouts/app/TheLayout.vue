@@ -96,7 +96,7 @@ export default {
                     fixed
                     bottom
                     right
-                    :color="app ? 'greenC900' : 'blue900'"
+                    :color="app ? 'greenA900' : 'blue900'"
                     @click="toTop"
                 >
                     <v-icon>mdi-chevron-up</v-icon>

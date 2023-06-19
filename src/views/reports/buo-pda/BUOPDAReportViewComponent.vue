@@ -57,6 +57,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         ...mapGetters('authentication', ['user', 'buoId']),
 
         extraParams() {
@@ -365,7 +367,12 @@ export default {
                             <v-row dense>
                                 <v-col cols="12">
                                     <p
-                                        class="BUO-Paragraph-Large-SemiBold grey700--text"
+                                        class="BUO-Paragraph-Large-SemiBold"
+                                        :class="[
+                                            app
+                                                ? 'white--text'
+                                                : 'grey700--text',
+                                        ]"
                                     >
                                         Seleccione la
                                         {{
@@ -402,9 +409,9 @@ export default {
                                 elevation="0"
                                 large
                                 outlined
-                                color="primary"
                                 @click="$_clean"
                                 :block="$vuetify.breakpoint.mobile"
+                                :color="app ? 'blueProgress600' : 'blue800'"
                             >
                                 Limpiar
                             </v-btn>
@@ -426,6 +433,7 @@ export default {
                         label="Ver Reporte"
                         :fnMethod="$_userDetails"
                         icon="mdi-chevron-right"
+                        :color="app ? 'blueProgress600' : 'blue800'"
                     />
 
                     <BaseCustomsButtonsGrid
@@ -434,6 +442,7 @@ export default {
                         :fnMethod="$_downloadMultipleFiles"
                         icon="mdi-download"
                         :loading="loading[0].value"
+                        :color="app ? 'blueProgress600' : 'blue800'"
                     />
 
                     <BaseCustomsButtonsGrid

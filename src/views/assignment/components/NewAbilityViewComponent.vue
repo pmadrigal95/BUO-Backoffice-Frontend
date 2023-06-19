@@ -58,6 +58,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         ...mapGetters('authentication', ['user']),
 
         extraParams() {
@@ -242,7 +244,7 @@ export default {
 </script>
 
 <template>
-    <div v-if="entity.organizacionId">
+    <section v-if="entity.organizacionId">
         <BasePopUp
             ref="popUp"
             :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '600'"
@@ -256,11 +258,16 @@ export default {
                     />
                     <BaseForm :method="$_sendToApi" :cancel="$_open" v-else>
                         <div slot="body" :key="view">
-                            <div
-                                class="text-left BUO-Heading-Small blue900--text mb-2"
+                            <section
+                                class="text-left BUO-Heading-Small mb-2"
+                                :class="[
+                                    app
+                                        ? 'blueProgress600--text'
+                                        : 'blue900--text',
+                                ]"
                             >
                                 Crear nuevo Indicador
-                            </div>
+                            </section>
                             <v-card outlined flat class="rounded-lg mb-5">
                                 <v-card-text>
                                     <v-row dense>
@@ -295,27 +302,37 @@ export default {
                                     </v-row>
                                 </v-card-text>
                             </v-card>
-                            <div
-                                class="text-left BUO-Heading-Small blue900--text mb-2"
+                            <section
+                                class="text-left BUO-Heading-Small mb-2"
+                                :class="[
+                                    app
+                                        ? 'blueProgress600--text'
+                                        : 'blue900--text',
+                                ]"
                             >
                                 Detalles de asignación
-                            </div>
+                            </section>
                             <v-card outlined flat class="rounded-lg">
                                 <v-card-text>
                                     <v-row dense>
                                         <v-col cols="12">
-                                            <div
+                                            <section
                                                 v-if="
                                                     entity?.selected?.userList
                                                         .length > 0
                                                 "
                                                 :key="key"
                                             >
-                                                <div
-                                                    class="text-left BUO-Paragraph-Large black--text"
+                                                <section
+                                                    class="text-left BUO-Paragraph-Large"
+                                                    :class="[
+                                                        app
+                                                            ? 'white--text'
+                                                            : 'black--text',
+                                                    ]"
                                                 >
                                                     Colaboradores
-                                                </div>
+                                                </section>
                                                 <div class="pb-3">
                                                     <v-chip-group column>
                                                         <div
@@ -326,7 +343,11 @@ export default {
                                                             :key="i"
                                                         >
                                                             <v-chip
-                                                                color="blue900"
+                                                                :color="
+                                                                    app
+                                                                        ? 'blueProgress600'
+                                                                        : 'blue900'
+                                                                "
                                                                 outlined
                                                                 class="py-1 BUO-Label-Small"
                                                                 style="
@@ -351,7 +372,7 @@ export default {
                                                         </div>
                                                     </v-chip-group>
                                                 </div>
-                                            </div>
+                                            </section>
                                             <BaseSwitch
                                                 :disabled="true"
                                                 v-else
@@ -433,17 +454,23 @@ export default {
                         </div>
                     </BaseForm>
                 </div>
-                <div class="pt-5" v-else>
-                    <div class="text-left BUO-Heading-Small blue900--text mb-2">
+                <section class="pt-5" v-else>
+                    <section
+                        class="text-left BUO-Heading-Small mb-2"
+                        :class="[
+                            app ? 'blueProgress600--text' : 'blue900--text',
+                        ]"
+                    >
                         Asignación Masiva
-                    </div>
-                    <div
+                    </section>
+                    <section
                         class="text-left BUO-Paragraph-Medium black--text mb-2"
+                        :class="[app ? 'white--text' : 'black--text']"
                     >
                         La asignación masiva de colaboradores permite asignar o
                         reasignar nuevos indicadores o indicadores existentes de
                         una manera eficaz.
-                    </div>
+                    </section>
                     <v-card outlined flat class="rounded-lg mt-5">
                         <v-card-subtitle class="text-left">
                             Sí desea asignar a todos sus colaboradores, debe
@@ -468,19 +495,22 @@ export default {
                             />
                         </v-card-text>
                     </v-card>
-                </div>
+                </section>
             </div>
         </BasePopUp>
+
         <BaseCustomsButtonsGrid
             label="Crear nuevo Indicador"
             :fnMethod="$_tryOpen"
             icon="mdi-shield"
+            :color="app ? 'blueProgress600' : 'blue800'"
         />
 
         <BaseCustomsButtonsGrid
             label="Asignación Masiva"
             :fnMethod="$_massiveOpen"
             icon="mdi-office-building-plus"
+            :color="app ? 'blueProgress600' : 'blue800'"
         />
-    </div>
+    </section>
 </template>

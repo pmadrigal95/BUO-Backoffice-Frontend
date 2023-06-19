@@ -49,6 +49,8 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user']),
 
+        ...mapGetters('theme', ['app']),
+
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
                 companyId: this.entity.organizacionId,
@@ -141,6 +143,7 @@ export default {
                     label="Ver Perfil"
                     :fnMethod="$_viewProfile"
                     icon="mdi-chevron-right"
+                    :color="app ? 'blueProgress600' : 'blue800'"
                 />
 
                 <BaseCustomsButtonsGrid

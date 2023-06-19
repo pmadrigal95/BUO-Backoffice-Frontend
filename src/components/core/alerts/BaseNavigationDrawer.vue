@@ -5,6 +5,8 @@
  * @displayName BaseNavigationDrawer
  */
 
+import { mapGetters } from 'vuex';
+
 export default {
     name: 'BaseNavigationDrawer',
 
@@ -28,6 +30,8 @@ export default {
         };
     },
 
+    computed: { ...mapGetters('theme', ['app']) },
+
     methods: {
         $_openModal() {
             this.dialog = !this.dialog;
@@ -45,6 +49,7 @@ export default {
         temporary
         :width="width"
         class="rounded-l-xl"
+        :color="app ? '#1e1e1e' : 'white'"
     >
         <v-card max-height="100%" max-width="100%" flat class="rounded-b-0">
             <v-toolbar dense flat class="fixed-bar" v-if="!persistent">
@@ -52,7 +57,7 @@ export default {
                 <v-btn
                     class="no-uppercase rounded-lg"
                     text
-                    color="blue800"
+                    :color="app ? 'blueProgress600' : 'blue800'"
                     @click="$_openModal()"
                 >
                     Cerrar

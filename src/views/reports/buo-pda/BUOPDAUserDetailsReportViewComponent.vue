@@ -6,6 +6,8 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
 import baseFnFile from '@/helpers/baseFnFile';
 
 import httpService from '@/services/axios/httpService';
@@ -53,6 +55,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         permission() {
             const result = baseSecurityHelper.$_ReadPermission(
                 'BUOPDAReportViewComponent',
@@ -162,11 +166,12 @@ export default {
                 :fnMethod="$_sendToApi"
                 icon="mdi-download"
                 :loading="loadingBtn"
+                :color="app ? 'blueProgress600' : 'blue800'"
             />
         </div>
         <div slot="card-text">
             <BaseSkeletonLoader v-if="loading" type="article, actions" />
-            <v-card flat v-else>
+            <v-card flat color="transparent" v-else>
                 <v-card-text>
                     <HeaderViewComponent :entity="entity" />
 

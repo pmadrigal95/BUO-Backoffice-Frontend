@@ -6,6 +6,8 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
 const ProfileDetailsViewComponent = () =>
     import(
         '@/views/user/profile/components/internalCompontes/ProfileDetailsViewComponent'
@@ -25,6 +27,8 @@ export default {
         ProfileDetailsViewComponent,
     },
 
+    computed: { ...mapGetters('theme', ['app']) },
+
     methods: {
         $_goBack() {
             delete this.entity.userId;
@@ -38,7 +42,7 @@ export default {
     <div v-if="entity && entity.userId">
         <v-layout justify-start class="my-4 pl-6">
             <v-btn
-                color="blue800"
+                :color="app ? 'blueProgress600' : 'blue800'"
                 class="no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                 text
                 @click="$_goBack"

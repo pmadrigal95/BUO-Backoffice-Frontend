@@ -49,6 +49,8 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('theme', ['app']),
+
         companySetting() {
             return {
                 endpoint: 'organizacion/findBy',
@@ -252,7 +254,7 @@ export default {
                                 elevation="0"
                                 large
                                 outlined
-                                color="primary"
+                                :color="app ? 'blueProgress600' : 'blue800'"
                                 @click="$_clean"
                                 :block="$vuetify.breakpoint.mobile"
                             >
@@ -273,12 +275,12 @@ export default {
                             icon="mdi-filter-cog-outline"
                         />
                     </v-row>
-                    <div class="pt-3">
+                    <section class="pt-3">
                         <DisplayViewComponent
                             :key="componentKey"
                             :entity="propEntity"
                         />
-                    </div>
+                    </section>
                 </v-card-text>
             </v-card>
         </div>

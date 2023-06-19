@@ -62,6 +62,8 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('theme', ['app']),
+
         /**
          * Extra Params
          */
@@ -414,7 +416,7 @@ export default {
                                 elevation="0"
                                 large
                                 outlined
-                                color="primary"
+                                :color="app ? 'blueProgress600' : 'blue800'"
                                 @click="$_clean"
                                 :block="$vuetify.breakpoint.mobile"
                             >
@@ -432,6 +434,7 @@ export default {
                             label="Administrar colaboradores"
                             :fnMethod="$_returnToFilter"
                             icon="mdi-account-group-outline"
+                            :color="app ? 'blueProgress600' : 'blue800'"
                         />
 
                         <BaseCustomsButtonsGrid
@@ -441,7 +444,7 @@ export default {
                             icon="mdi-filter-cog-outline"
                         />
                     </v-row>
-                    <div class="pt-3">
+                    <section class="pt-3">
                         <BaseNotFoundContent
                             v-if="!propEntity"
                             msg="Selecciona los indicadores que debe tener la persona que buscas"
@@ -451,7 +454,7 @@ export default {
                             :key="componentKey"
                             :entity="propEntity"
                         />
-                    </div>
+                    </section>
                 </v-card-text>
             </v-card>
         </div>

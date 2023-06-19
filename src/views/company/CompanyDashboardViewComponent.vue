@@ -172,7 +172,7 @@ export default {
                 <v-expansion-panels multiple flat v-model="panel">
                     <v-expansion-panel v-if="userPermission">
                         <v-expansion-panel-header
-                            :color="app ? 'transparent' : 'clouds'"
+                            :color="app ? 'background' : 'clouds'"
                             ><div
                                 :class="[
                                     $vuetify.breakpoint.smAndDown
@@ -184,7 +184,7 @@ export default {
                             </div></v-expansion-panel-header
                         >
                         <v-expansion-panel-content
-                            :color="app ? 'transparent' : 'clouds'"
+                            :color="app ? 'background' : 'clouds'"
                         >
                             <UserFilterViewComponent
                                 :organizacionId="$router.currentRoute.params.Id"
@@ -193,7 +193,7 @@ export default {
                     </v-expansion-panel>
                     <v-expansion-panel v-if="abilityPermission">
                         <v-expansion-panel-header
-                            :color="app ? 'transparent' : 'clouds'"
+                            :color="app ? 'background' : 'clouds'"
                             ><div
                                 :class="[
                                     $vuetify.breakpoint.smAndDown
@@ -205,7 +205,7 @@ export default {
                             </div></v-expansion-panel-header
                         >
                         <v-expansion-panel-content
-                            :color="app ? 'transparent' : 'clouds'"
+                            :color="app ? 'background' : 'clouds'"
                         >
                             <AbilityFilterViewComponent
                                 :organizacionId="$router.currentRoute.params.Id"
@@ -214,7 +214,7 @@ export default {
                     </v-expansion-panel>
                     <v-expansion-panel v-if="departmentPermission">
                         <v-expansion-panel-header
-                            :color="app ? 'transparent' : 'clouds'"
+                            :color="app ? 'background' : 'clouds'"
                             ><div
                                 :class="[
                                     $vuetify.breakpoint.smAndDown
@@ -226,7 +226,7 @@ export default {
                             </div></v-expansion-panel-header
                         >
                         <v-expansion-panel-content
-                            :color="app ? 'transparent' : 'clouds'"
+                            :color="app ? 'background' : 'clouds'"
                         >
                             <v-layout justify-end class="pb-3">
                                 <v-btn

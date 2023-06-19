@@ -58,6 +58,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         ...mapGetters('authentication', ['user', 'buoId']),
 
         /**
@@ -328,7 +330,7 @@ export default {
                                 elevation="0"
                                 large
                                 outlined
-                                color="primary"
+                                :color="app ? 'blueProgress600' : 'blue800'"
                                 @click="$_clean"
                                 :block="$vuetify.breakpoint.mobile"
                             >
@@ -346,6 +348,7 @@ export default {
                             label="Administrar Indicadores"
                             :fnMethod="$_returnToFilter"
                             icon="mdi-shield-star"
+                            :color="app ? 'blueProgress600' : 'blue800'"
                         />
 
                         <BaseCustomsButtonsGrid

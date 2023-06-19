@@ -8,6 +8,8 @@
  * @displayName BaseServerDataTable
  */
 
+import { mapGetters } from 'vuex';
+
 import httpService from '@/services/axios/httpService';
 
 import baseLocalHelper from '@/helpers/baseLocalHelper';
@@ -294,6 +296,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         $_boolList() {
             return [
                 {
@@ -1258,7 +1262,10 @@ export default {
                                 :class="showSearch ? 'btnSearch' : undefined"
                                 icon
                             >
-                                <v-icon color="black">mdi-magnify</v-icon>
+                                <v-icon
+                                    :color="app ? 'blueProgress600' : 'blue800'"
+                                    >mdi-magnify</v-icon
+                                >
                             </v-btn>
                         </th>
                         <!-- @helper:  clean all the filters -->
@@ -1268,7 +1275,8 @@ export default {
                                 icon
                                 @click="$_cleanFilters"
                             >
-                                <v-icon color="black"
+                                <v-icon
+                                    :color="app ? 'blueProgress600' : 'blue800'"
                                     >mdi-close-circle-outline</v-icon
                                 >
                             </v-btn>
@@ -1641,7 +1649,7 @@ export default {
                 <v-btn
                     class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                     elevation="0"
-                    :color="color"
+                    :color="app ? 'blueProgress600' : 'blue800'"
                     outlined
                     small
                     @click="$_CancelFooter"

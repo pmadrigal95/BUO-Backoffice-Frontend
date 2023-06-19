@@ -43,6 +43,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         ...mapGetters('authentication', ['user', 'buoId']),
 
         companySetting() {
@@ -198,7 +200,12 @@ export default {
                             <v-row dense>
                                 <v-col cols="12">
                                     <p
-                                        class="BUO-Paragraph-Large-SemiBold grey700--text"
+                                        class="BUO-Paragraph-Large-SemiBold"
+                                        :class="[
+                                            app
+                                                ? 'white--text'
+                                                : 'grey700--text',
+                                        ]"
                                     >
                                         Seleccione la empresa
                                     </p>
@@ -219,7 +226,7 @@ export default {
                                 elevation="0"
                                 large
                                 outlined
-                                color="primary"
+                                :color="app ? 'blueProgress600' : 'blue800'"
                                 @click="$_clean"
                                 :block="$vuetify.breakpoint.mobile"
                             >
@@ -251,6 +258,7 @@ export default {
                             height="25"
                             class="pa-6 pt-5"
                             flat
+                            :color="app ? 'white' : 'primary'"
                         >
                             <v-tabs-slider color="transparent"></v-tabs-slider>
                             <v-tab class="rounded-pill no-uppercase"

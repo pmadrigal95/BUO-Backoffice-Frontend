@@ -280,23 +280,13 @@ export default {
                         </v-btn>
                     </v-layout>
 
-                    <v-card-title
-                        :class="[
-                            $vuetify.breakpoint.smAndDown
-                                ? 'BUO-Heading-Small'
-                                : 'BUO-Heading-Medium',
-                        ]"
-                    >
+                    <v-card-title class="BUO-Heading-XSmall">
                         {{ $_Object.title + ' ' + $_Object.item }}
                     </v-card-title>
 
                     <v-card-text
                         v-if="$_Object.desc"
-                        :class="[
-                            $vuetify.breakpoint.smAndDown
-                                ? 'BUO-Paragraph-Medium'
-                                : 'BUO-Paragraph-Large',
-                        ]"
+                        class="BUO-Paragraph-Medium"
                     >
                         {{ $_Object.desc }}
                     </v-card-text>
@@ -312,7 +302,8 @@ export default {
                                         dark
                                         block
                                         @click="fn"
-                                        class="no-uppercase rounded-lg"
+                                        class="no-uppercase rounded-lg BUO-Paragraph-Medium-SemiBold"
+                                        elevation="0"
                                         >Si, {{ $_Object.title }}</v-btn
                                     >
                                 </v-layout>
@@ -325,7 +316,7 @@ export default {
                                         block
                                         outlined
                                         @click="$_openModal"
-                                        class="no-uppercase rounded-lg"
+                                        class="no-uppercase rounded-lg BUO-Paragraph-Medium-SemiBold"
                                         >Cancelar</v-btn
                                     >
                                     <!-- @slot Agregar botones después del Btn principal -->

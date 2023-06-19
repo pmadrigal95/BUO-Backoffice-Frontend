@@ -5,6 +5,8 @@
  * @displayName BaseMicroSkillStatusList
  */
 
+import { mapGetters } from 'vuex';
+
 import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
@@ -41,6 +43,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         inProgressCode() {
             return baseConfigHelper.$_statusCode.certifying;
         },
@@ -102,7 +106,10 @@ export default {
                     max-width="100%"
                     max-height="100%"
                 >
-                    <v-card-title class="BUO-Heading-XSmall grey700--text">
+                    <v-card-title
+                        class="BUO-Heading-XSmall"
+                        :class="[app ? 'white--text' : 'grey700--text']"
+                    >
                         Detalles de validación
                     </v-card-title>
 
@@ -112,14 +119,20 @@ export default {
                     >
                         <v-card flat max-width="100%" max-height="100%">
                             <v-card-title
-                                class="BUO-Label-XSmall-SemiBold grey700--text"
+                                class="BUO-Label-XSmall-SemiBold"
+                                :class="[app ? 'white--text' : 'grey700--text']"
                             >
                                 Empresa
                             </v-card-title>
                             <section>
                                 <v-layout justify-space-between align-center>
                                     <v-card-subtitle
-                                        class="BUO-Paragrap-Medium grey700--text"
+                                        class="BUO-Paragrap-Medium"
+                                        :class="[
+                                            app
+                                                ? 'white--text'
+                                                : 'grey700--text',
+                                        ]"
                                     >
                                         {{ item.nombreOrganizacion }}
                                     </v-card-subtitle>
@@ -151,7 +164,8 @@ export default {
                             <v-divider></v-divider>
 
                             <v-card-title
-                                class="BUO-Label-XSmall-SemiBold grey700--text"
+                                class="BUO-Label-XSmall-SemiBold"
+                                :class="[app ? 'white--text' : 'grey700--text']"
                             >
                                 {{
                                     type === inProgressCode
@@ -160,7 +174,8 @@ export default {
                                 }}
                             </v-card-title>
                             <v-card-subtitle
-                                class="BUO-Paragrap-Medium grey700--text"
+                                class="BUO-Paragrap-Medium"
+                                :class="[app ? 'white--text' : 'grey700--text']"
                             >
                                 {{ item.fechaEstadoFormato }}
                             </v-card-subtitle>
@@ -178,7 +193,7 @@ export default {
                             flat
                             max-width="100%"
                             max-height="100%"
-                            color="grey200"
+                            :color="app ? 'grey700' : 'grey200'"
                             class="rounded-lg"
                             light
                         >
@@ -205,6 +220,9 @@ export default {
                                 <v-layout justify-end>
                                     <v-btn
                                         icon
+                                        :color="
+                                            app ? 'blueProgress600' : 'black'
+                                        "
                                         @click="$_openModal(item.competenciaId)"
                                     >
                                         <v-icon> mdi-dots-vertical </v-icon>
@@ -213,7 +231,12 @@ export default {
                             </v-card-title>
 
                             <v-card-subtitle
-                                class="BUO-Label-XSmall grey500--text"
+                                class="BUO-Label-XSmall"
+                                :class="[
+                                    app
+                                        ? 'blueProgress600--text'
+                                        : 'grey500--text',
+                                ]"
                                 >{{
                                     type === inProgressCode
                                         ? 'En proceso'
@@ -222,12 +245,16 @@ export default {
                             >
 
                             <v-card-text
-                                class="BUO-Paragraph-Small-SemiBold grey700--text"
+                                class="BUO-Paragraph-Small-SemiBold"
+                                :class="[app ? 'white--text' : 'grey700--text']"
                                 >{{ item.definicion }}</v-card-text
                             >
                             <div>
                                 <v-card-title
-                                    class="BUO-Label-XSmall-SemiBold grey700--text"
+                                    class="BUO-Label-XSmall-SemiBold"
+                                    :class="[
+                                        app ? 'white--text' : 'grey700--text',
+                                    ]"
                                 >
                                     {{
                                         type === inProgressCode
@@ -237,7 +264,10 @@ export default {
                                 </v-card-title>
 
                                 <v-card-subtitle
-                                    class="BUO-Paragrap-Medium grey700--text"
+                                    class="BUO-Paragrap-Medium"
+                                    :class="[
+                                        app ? 'white--text' : 'grey700--text',
+                                    ]"
                                     ><v-layout
                                         justify-space-between
                                         align-center

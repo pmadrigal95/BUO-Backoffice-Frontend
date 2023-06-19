@@ -5,6 +5,8 @@
  * @displayName PdaAbilityViewComponent
  */
 
+import { mapGetters } from 'vuex';
+
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import httpService from '@/services/axios/httpService';
@@ -42,9 +44,9 @@ export default {
             skillsList: undefined,
             pda: undefined,
             loading: false,
+            key: 0,
         };
     },
-
     components: {
         PDARadarChart,
         BaseCustomsButtonsGrid,
@@ -58,10 +60,20 @@ export default {
             );
             return result;
         },
+
+        ...mapGetters('theme', ['app']),
     },
 
     created() {
         this.$_reviewStatus();
+    },
+
+    watch: {
+        app: {
+            handler() {
+                this.key++;
+            },
+        },
     },
 
     methods: {
@@ -128,9 +140,12 @@ export default {
     >
         <v-row class="pb-5">
             <v-col cols="12" md="8" class="d-flex align-self-end">
-                <div class="grey700--text BUO-Paragraph-Large-SemiBold pl-6">
+                <section
+                    class="BUO-Paragraph-Large-SemiBold pl-6"
+                    :class="[app ? 'white--text' : 'grey700--text']"
+                >
                     Indicadores PDA
-                </div>
+                </section>
             </v-col>
             <v-col cols="12" md="4" class="d-flex justify-end">
                 <BaseCustomsButtonsGrid
@@ -138,6 +153,7 @@ export default {
                     :fnMethod="$_fnSendReportPDA"
                     icon="mdi-share-variant-outline"
                     v-if="permission"
+                    :color="app ? 'blueProgress600' : 'blue800'"
                 />
             </v-col>
         </v-row>
@@ -150,41 +166,66 @@ export default {
                     width="70"
                     :src="pda.hotcakeSimpleURL"
                 />
-                <div class="px-8">
-                    <div class="pt-2">
+                <section class="px-8">
+                    <section class="pt-2">
                         <v-layout>
-                            <div class="pr-3" v-if="pda">
-                                <div
-                                    class="BUO-Label-XSmall grey600--text pb-1"
+                            <section class="pr-3" v-if="pda">
+                                <section
+                                    class="BUO-Label-XSmall pb-1"
+                                    :class="[
+                                        app
+                                            ? 'blueProgress600--text'
+                                            : 'grey600--text',
+                                    ]"
                                 >
                                     Eres una persona:
-                                </div>
+                                </section>
                                 <v-chip
                                     outlined
                                     color="grey500"
                                     class="BUO-Label-XSmall-SemiBold"
                                 >
-                                    {{ pda.perfilPDAVisual }}
+                                    <span
+                                        :class="[
+                                            app
+                                                ? 'white--text'
+                                                : 'grey700--text',
+                                        ]"
+                                        >{{ pda.perfilPDAVisual }}</span
+                                    >
                                 </v-chip>
-                            </div>
+                            </section>
                             <v-divider vertical></v-divider>
-                            <div class="pl-3" v-if="pda">
-                                <div
-                                    class="BUO-Label-XSmall grey600--text pb-1"
+                            <section class="pl-3" v-if="pda">
+                                <section
+                                    class="BUO-Label-XSmall pb-1"
+                                    :class="[
+                                        app
+                                            ? 'blueProgress600--text'
+                                            : 'grey600--text',
+                                    ]"
                                 >
                                     Tu super poder es:
-                                </div>
+                                </section>
                                 <v-chip
                                     color="grey500"
                                     outlined
                                     class="BUO-Label-XSmall-SemiBold"
                                 >
-                                    {{ pda.superpoder }}
+                                    <span
+                                        :class="[
+                                            app
+                                                ? 'white--text'
+                                                : 'grey700--text',
+                                        ]"
+                                    >
+                                        {{ pda.superpoder }}</span
+                                    >
                                 </v-chip>
-                            </div>
+                            </section>
                         </v-layout>
-                    </div>
-                </div>
+                    </section>
+                </section>
             </v-row>
 
             <v-col cols="12" class="pt-6">
@@ -193,13 +234,16 @@ export default {
                     :profile="
                         $vuetify.theme.themes.light[pda.perfilPDA.toLowerCase()]
                     "
-                    :dark="false"
+                    :dark="app ? true : false"
+                    :key="key"
                 />
             </v-col>
 
             <v-col cols="12" class="px-5 pb-10">
                 <v-card flat>
-                    <v-card-title class="grey700--text BUO-Paragraph-Large pt-6"
+                    <v-card-title
+                        class="BUO-Paragraph-Large pt-6"
+                        :class="[app ? 'white--text' : 'grey700--text']"
                         >Indicadores principales</v-card-title
                     >
                     <v-card-text>
@@ -210,7 +254,7 @@ export default {
                                 v-for="item in skillsList"
                                 :key="item.id"
                             >
-                                <div>
+                                <section>
                                     <v-list-item
                                         class="buo-headerAbility-position"
                                         ><v-list-item-avatar>
@@ -252,12 +296,15 @@ export default {
                                             </v-list-item-title>
                                         </v-list-item-content>
                                     </v-list-item>
-                                    <div
-                                        class="pr-5 pl-7 black--text BUO-Label-XSmall"
+                                    <section
+                                        class="pr-5 pl-7 BUO-Label-XSmall"
+                                        :class="[
+                                            app ? 'white--text' : 'black--text',
+                                        ]"
                                     >
                                         {{ item.caracteristicas }}
-                                    </div>
-                                </div>
+                                    </section>
+                                </section>
                             </v-col>
                         </v-row>
                     </v-card-text>

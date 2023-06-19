@@ -5,6 +5,8 @@
  * @displayName BaseBottomSheet
  */
 
+import { mapGetters } from 'vuex';
+
 export default {
     name: 'BaseBottomSheet',
 
@@ -151,6 +153,8 @@ export default {
         };
     },
 
+    computed: { ...mapGetters('theme', ['app']) },
+
     methods: {
         $_openModal() {
             this.dialog = !this.dialog;
@@ -193,7 +197,7 @@ export default {
                     <v-btn
                         class="no-uppercase rounded-lg"
                         text
-                        color="blue800"
+                        :color="app ? 'blueProgress600' : 'blue800'"
                         @click="$_openModal()"
                     >
                         Cerrar

@@ -188,7 +188,7 @@ export default {
                 icon="mdi-numeric-2-circle"
                 description="Seleccionar Indicadores"
                 iconColor="greenC900"
-                font="grey700--text BUO-Paragraph-Medium"
+                font="BUO-Paragraph-Medium"
             />
         </v-layout>
 

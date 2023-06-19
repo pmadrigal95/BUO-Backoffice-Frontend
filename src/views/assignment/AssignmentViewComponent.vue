@@ -57,6 +57,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         ...mapGetters('authentication', ['user', 'buoId']),
 
         companySetting() {
@@ -289,7 +291,7 @@ export default {
                                 elevation="0"
                                 large
                                 outlined
-                                color="primary"
+                                :color="app ? 'blueProgress600' : 'blue800'"
                                 @click="$_clean"
                                 :block="$vuetify.breakpoint.mobile"
                             >
@@ -307,6 +309,7 @@ export default {
                             label="Administrar Indicadores"
                             :fnMethod="$_returnToAbility"
                             icon="mdi-shield-star"
+                            :color="app ? 'blueProgress600' : 'blue800'"
                         />
 
                         <BaseCustomsButtonsGrid
@@ -314,6 +317,7 @@ export default {
                             label="Administrar Colaboradores"
                             :fnMethod="$_returnToUser"
                             icon="mdi-account-group-outline"
+                            :color="app ? 'blueProgress600' : 'blue800'"
                         />
 
                         <BaseCustomsButtonsGrid
@@ -325,7 +329,7 @@ export default {
 
                         <HelperViewComponent />
                     </v-row>
-                    <div class="pt-3">
+                    <section class="pt-3">
                         <BaseNotFoundContent
                             v-if="
                                 !entity.organizacionId ||
@@ -338,7 +342,7 @@ export default {
                             :entity="propEntity"
                             v-else
                         />
-                    </div>
+                    </section>
                 </v-card-text>
             </v-card>
         </div>

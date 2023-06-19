@@ -42,6 +42,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         ...mapGetters('authentication', ['user', 'buoId']),
 
         extraParams() {
@@ -195,7 +197,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <section>
         <v-layout justify-start>
             <StepViewComponent
                 :icon="`mdi-numeric-${entity.step === 0 ? '1' : '3'}-circle`"
@@ -203,7 +205,7 @@ export default {
                     entity.step === 0 ? 'colaboradores' : 'Supervisores'
                 }`"
                 iconColor="greenC900"
-                font="grey700--text BUO-Paragraph-Medium"
+                font="BUO-Paragraph-Medium"
             />
         </v-layout>
 
@@ -248,7 +250,7 @@ export default {
                     </v-btn>
                 </v-layout>
 
-                <div v-else>
+                <section v-else>
                     <NewAbilityViewComponent
                         :entity="entity"
                         :fn="$_newAbility"
@@ -269,8 +271,8 @@ export default {
                     >
                         <v-icon dark> mdi-chevron-right </v-icon>
                     </v-btn>
-                </div>
+                </section>
             </div>
         </BaseServerDataTable>
-    </div>
+    </section>
 </template>

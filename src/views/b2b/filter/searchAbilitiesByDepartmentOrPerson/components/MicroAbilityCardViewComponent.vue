@@ -6,6 +6,8 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
 import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
@@ -33,6 +35,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         extraParams() {
             let array = [];
             if (this.entity.organizacionId) {
@@ -61,7 +65,12 @@ export default {
 
         componentProps() {
             return {
-                fontTypeSubtitle: 'BUO-Paragraph-Medium-SemiBold black--text',
+                fontTypeSubtitle: `BUO-Paragraph-Medium-SemiBold ${
+                    this.app ? 'white--text' : ' black--text'
+                }`,
+                fontTypeDescription: `${
+                    this.app ? 'blueProgress600--text' : ' grey600--text'
+                }`,
                 width: '228',
                 height: '120',
             };
@@ -112,7 +121,7 @@ export default {
             class="py-5"
         >
             <div v-for="(item, i) in list" :key="i">
-                <div>
+                <section>
                     <BaseCardMenuViewComponent
                         icon="shield"
                         :iconColor="`${
@@ -124,10 +133,13 @@ export default {
                         :subtitle="item.definicion"
                         :description="item.descripcion"
                         :fontTypeSubtitle="componentProps.fontTypeSubtitle"
+                        :fontTypeDescription="
+                            componentProps.fontTypeDescription
+                        "
                         :min-width="componentProps.width"
                         :minHeight="componentProps.height"
                     />
-                </div>
+                </section>
             </div>
         </v-layout>
         <v-layout
@@ -137,7 +149,7 @@ export default {
         >
             <v-slide-group>
                 <v-slide-item v-for="(item, i) in list" :key="i">
-                    <div>
+                    <section>
                         <BaseCardMenuViewComponent
                             icon="shield"
                             :iconColor="`${
@@ -149,10 +161,13 @@ export default {
                             :subtitle="item.definicion"
                             :description="item.descripcion"
                             :fontTypeSubtitle="componentProps.fontTypeSubtitle"
+                            :fontTypeDescription="
+                                componentProps.fontTypeDescription
+                            "
                             :min-width="componentProps.width"
                             :minHeight="componentProps.height"
                         />
-                    </div>
+                    </section>
                 </v-slide-item>
             </v-slide-group>
         </v-layout>

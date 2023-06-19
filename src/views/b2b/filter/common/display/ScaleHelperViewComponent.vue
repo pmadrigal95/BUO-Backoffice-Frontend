@@ -6,12 +6,16 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
 import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
 
 export default {
     name: 'ScaleHelperViewComponent',
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         scale() {
             const palette =
                 baseDataVisualizationColorsHelper.$_getColorByName('darkGreen');
@@ -67,7 +71,7 @@ export default {
             <div slot="Content">
                 <v-card flat>
                     <v-card-title>Escala de Dominio</v-card-title>
-                    <v-card-text class="black--text">
+                    <v-card-text :class="[app ? 'white--text' : 'black--text']">
                         <div class="pb-4">
                             Cada indicador en Buo está compuesto por micro
                             indicadores que permiten medir el nivel de dominio
@@ -87,13 +91,19 @@ export default {
                             <v-icon :color="item.color" class="pb-1 pr-1" small
                                 >mdi-circle</v-icon
                             >
-                            <strong class="black--text"
+                            <strong
+                                :class="[app ? 'white--text' : 'black--text']"
                                 >{{ item.name }} =
                             </strong>
 
-                            <span class="black--text">{{
-                                item.description
-                            }}</span>
+                            <span
+                                :class="[
+                                    app
+                                        ? 'blueProgress600--text'
+                                        : 'black--text',
+                                ]"
+                                >{{ item.description }}</span
+                            >
                         </div>
                     </v-card-text>
                     <v-card-actions>
@@ -114,7 +124,10 @@ export default {
                 <v-icon :color="item.color" class="pb-1 pr-1" small
                     >mdi-circle</v-icon
                 >
-                <span class="black--text">{{ item.name }}</span>
+                <span
+                    :class="[app ? 'blueProgress600--text' : 'black--text']"
+                    >{{ item.name }}</span
+                >
             </div>
             <div class="px-1">
                 <v-tooltip bottom>
