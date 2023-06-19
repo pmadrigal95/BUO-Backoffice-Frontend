@@ -35,6 +35,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         ...mapGetters('authentication', ['user', 'buoId']),
 
         /**
@@ -239,6 +241,7 @@ export default {
                         label="Ver más"
                         :fnMethod="$_companyDashboard"
                         icon="mdi-chevron-right"
+                        :color="app ? 'blueProgress600' : 'blue900'"
                     />
                 </div>
             </BaseServerDataTable>
