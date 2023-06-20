@@ -4,6 +4,9 @@
  *
  * @displayName IndicatorsViewComponent
  */
+
+import { mapGetters } from 'vuex';
+
 const BaseStadisticCard = () =>
     import('@/components/core/cards/BaseStadisticCard');
 
@@ -22,6 +25,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         list() {
             return this.entity?.indicatorsData.filter(
                 (x) => x.indicadorId != 8
@@ -44,7 +49,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <section>
         <BasePopUp
             ref="popUp"
             :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '80%'"
@@ -61,7 +66,7 @@ export default {
                         md="4"
                     >
                         <BaseStadisticCard
-                            color="clouds"
+                            :color="app ? 'background' : 'clouds'"
                             :title="item.titulo"
                             :subtitle="item.subtitulo"
                             :icon="item.imagenUrl"
@@ -100,5 +105,5 @@ export default {
                 />
             </v-col>
         </v-row>
-    </div>
+    </section>
 </template>

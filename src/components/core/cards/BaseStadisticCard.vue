@@ -5,6 +5,8 @@
  * @displayName BaseStadisticCard
  */
 
+import { mapGetters } from 'vuex';
+
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 
 export default {
@@ -63,6 +65,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         $_percentage() {
             return `${this.percentage.toFixed(2)} %`;
         },
@@ -95,18 +99,26 @@ export default {
             >
                 <v-layout justify-start>
                     <v-icon
-                        color="blue800"
+                        :color="app ? 'blueProgress600' : 'blue800'"
                         large
                         class="pr-6 align-self-center"
                         >{{ `mdi-${icon}` }}</v-icon
                     >
-                    <div class="align-self-center">
+                    <section class="align-self-center">
                         <div class="pb-4">
-                            <h1 class="blue800--text BUO-Heading-XSmall">
+                            <h1
+                                class="BUO-Heading-XSmall"
+                                :class="[
+                                    app
+                                        ? 'blueProgress600--text'
+                                        : 'blue800--text',
+                                ]"
+                            >
                                 {{ valueFormat }}
                             </h1>
                             <h1
-                                class="black--text BUO-Paragraph-Small-SemiBold"
+                                class="BUO-Paragraph-Small-SemiBold"
+                                :class="[app ? 'white--text' : 'grey700--text']"
                             >
                                 {{ subtitle }}
                             </h1>
@@ -137,12 +149,22 @@ export default {
                                         <v-card-text class="pt-6 pb-2">
                                             <div class="pb-4">
                                                 <h1
-                                                    class="blue800--text BUO-Heading-XSmall"
+                                                    class="BUO-Heading-XSmall"
+                                                    :class="[
+                                                        app
+                                                            ? 'blueProgress600--text'
+                                                            : 'blue800--text',
+                                                    ]"
                                                 >
                                                     {{ previousValueFormat }}
                                                 </h1>
                                                 <h1
-                                                    class="black--text BUO-Paragraph-Small-SemiBold"
+                                                    class="BUO-Paragraph-Small-SemiBold"
+                                                    :class="[
+                                                        app
+                                                            ? 'white--text'
+                                                            : 'grey700--text',
+                                                    ]"
                                                 >
                                                     Periodo Anterior
                                                 </h1>
@@ -158,7 +180,7 @@ export default {
                                 >
                             </p>
                         </div>
-                    </div>
+                    </section>
                 </v-layout>
             </v-card-text>
         </v-card>

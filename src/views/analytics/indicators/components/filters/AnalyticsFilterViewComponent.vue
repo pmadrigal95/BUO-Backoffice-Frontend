@@ -5,6 +5,8 @@
  * @displayName AnalyticsFilterViewComponent
  */
 
+import { mapGetters } from 'vuex';
+
 const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
 
 export default {
@@ -33,6 +35,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         $_mode() {
             return this.entity.filter.isAccumulated ? 'Acumulado' : 'Períodos';
         },
@@ -172,7 +176,7 @@ export default {
                     class="rounded-t-xl"
                     app
                     fixed
-                    color="white"
+                    color="transparent"
                     dark
                 >
                     <v-layout justify-center>
@@ -201,7 +205,7 @@ export default {
                     <v-btn
                         class="no-uppercase rounded-lg"
                         text
-                        color="blue800"
+                        :color="app ? 'blueProgress600' : 'blue800'"
                         @click="$_change_buo_analytics_mode"
                     >
                         <v-icon left>mdi-swap-vertical-circle-outline</v-icon>
@@ -213,7 +217,7 @@ export default {
                     <v-btn
                         class="no-uppercase rounded-lg"
                         text
-                        color="blue800"
+                        :color="app ? 'blueProgress600' : 'blue800'"
                         @click="$_open"
                     >
                         Filtrar
@@ -229,7 +233,7 @@ export default {
                             <v-btn
                                 class="no-uppercase rounded-lg"
                                 text
-                                color="blue800"
+                                :color="app ? 'blueProgress600' : 'blue800'"
                                 v-bind="attrs"
                                 v-on="on"
                             >
@@ -242,7 +246,12 @@ export default {
                             <v-list>
                                 <v-list-item>
                                     <v-list-item-avatar>
-                                        <v-icon color="blue800"
+                                        <v-icon
+                                            :color="
+                                                app
+                                                    ? 'blueProgress600'
+                                                    : 'blue800'
+                                            "
                                             >mdi-calendar-outline</v-icon
                                         >
                                     </v-list-item-avatar>
@@ -264,7 +273,12 @@ export default {
                             <v-list>
                                 <v-list-item>
                                     <v-list-item-avatar>
-                                        <v-icon color="blue800"
+                                        <v-icon
+                                            :color="
+                                                app
+                                                    ? 'blueProgress600'
+                                                    : 'blue800'
+                                            "
                                             >mdi-calendar-today-outline</v-icon
                                         >
                                     </v-list-item-avatar>
@@ -282,7 +296,11 @@ export default {
                             </v-list>
                         </v-card>
                     </v-menu>
-                    <v-btn icon color="blue800" @click="$_sendToAPI">
+                    <v-btn
+                        icon
+                        :color="app ? 'blueProgress600' : 'blue800'"
+                        @click="$_sendToAPI"
+                    >
                         <v-icon small>mdi-autorenew</v-icon>
                     </v-btn>
                 </div>

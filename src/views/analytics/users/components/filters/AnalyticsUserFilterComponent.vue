@@ -5,6 +5,8 @@
  * @displayName AnalyticsUserFilterComponent
  */
 
+import { mapGetters } from 'vuex';
+
 const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
 
 export default {
@@ -25,6 +27,8 @@ export default {
     components: {
         BaseDatePicker,
     },
+
+    computed: { ...mapGetters('theme', ['app']) },
 
     methods: {
         $_open() {
@@ -108,13 +112,17 @@ export default {
                 <v-btn
                     class="no-uppercase rounded-lg BUO-Paragraph-Small"
                     text
-                    color="blue800"
+                    :color="app ? 'blueProgress600' : 'blue800'"
                     @click="$_open"
                 >
                     Filtrar
                     <v-icon right>mdi-tune</v-icon>
                 </v-btn>
-                <v-btn icon color="blue800" @click="fn">
+                <v-btn
+                    icon
+                    :color="app ? 'blueProgress600' : 'blue800'"
+                    @click="fn"
+                >
                     <v-icon small>mdi-autorenew</v-icon>
                 </v-btn>
             </v-row>

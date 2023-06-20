@@ -36,6 +36,7 @@ export default {
         return {
             loading: false,
             list: undefined,
+            key: 0,
         };
     },
 
