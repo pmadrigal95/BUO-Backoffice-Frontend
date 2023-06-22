@@ -57,11 +57,9 @@ export default {
                             />
                         </v-list-group>
                     </template>
-                    <span
-                        class="BUO-Paragraph-Small-SemiBold"
-                        :class="[app ? 'white--text' : 'grey700--text']"
-                        >{{ item.nombreUI }}</span
-                    >
+                    <span class="BUO-Paragraph-Small-SemiBold">{{
+                        item.nombreUI
+                    }}</span>
                 </v-tooltip>
                 <v-tooltip right v-else :key="single">
                     <template v-slot:activator="{ on, attrs }">

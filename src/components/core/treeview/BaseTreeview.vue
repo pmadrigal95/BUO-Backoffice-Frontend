@@ -17,6 +17,8 @@ import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 import baseArrayHelper from '@/helpers/baseArrayHelper';
 
+import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
+
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 export default {
@@ -480,13 +482,22 @@ export default {
         /**
          * Eventos click y DBClick
          */
-        $_setSelected(row) {
+        $_setSelected() {
+            const filter = [...this.$refs[this.refTree]?.activeCache][0];
+            const row =
+                filter != undefined &&
+                baseSharedFnHelper.$_findNestedObj(
+                    this.items,
+                    this.itemKey,
+                    filter
+                );
+
             this.clickCount++;
             if (this.clickCount === 1) {
                 this.clickTimer = setTimeout(() => {
                     this.clickCount = 0;
 
-                    var index = baseArrayHelper.GetObjIndex(this.selected, row);
+                    let index = baseArrayHelper.GetObjIndex(this.selected, row);
 
                     if (index === -1) {
                         this.selected = [];
@@ -499,16 +510,17 @@ export default {
                         this.selected.length > 0 ? this.selected[0] : undefined
                     );
                 }, this.delay);
-            } else if (this.clickCount === 2) {
-                clearTimeout(this.clickTimer);
-
-                this.clickCount = 0;
-
-                if (this.fnDoubleClick != undefined) {
-                    this.fnDoubleClick(row);
-                }
-                this.selected = [];
             }
+            // else if (this.clickCount === 2) {
+            //     clearTimeout(this.clickTimer);
+
+            //     this.clickCount = 0;
+
+            //     if (this.fnDoubleClick != undefined) {
+            //         this.fnDoubleClick(row);
+            //     }
+            //     this.selected = [];
+            // }
         },
     },
 };
@@ -564,13 +576,10 @@ export default {
                 :selection-type="selectionType"
                 :shaped="shaped"
                 :transition="transition"
+                @update:active="$_setSelected"
             >
-                <template slot="label" slot-scope="{ item }">
-                    <span
-                        class="buo-word-break"
-                        @click="$_setSelected(item)"
-                        style="cursor: pointer"
-                    >
+                <template v-slot:label="{ item }">
+                    <span class="buo-word-break" style="cursor: pointer">
                         {{ item[itemText] }}
                     </span>
                 </template>

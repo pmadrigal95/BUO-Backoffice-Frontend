@@ -258,7 +258,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <section>
         <BasePopUp
             :ref="refpopUp"
             :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '60%'"
@@ -307,5 +307,5 @@ export default {
             clear-icon="mdi-close-circle"
             :validate-on-blur="validateOnBlur"
         />
-    </div>
+    </section>
 </template>
