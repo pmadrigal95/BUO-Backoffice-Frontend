@@ -93,12 +93,14 @@ export default {
 
     methods: {
         $_fnSendReportPDA() {
-            sharingLinks.$_share(
-                this.link,
-                `BUO ${this.userName}`,
-                this.$refs.BuoShareableLink.$_open,
-                false
-            );
+            if (this.link) {
+                sharingLinks.$_share(
+                    this.link,
+                    `BUO ${this.userName}`,
+                    this.$refs.BuoShareableLink.$_open,
+                    false
+                );
+            }
         },
 
         copyURL() {
@@ -128,10 +130,13 @@ export default {
 
         $_requestLink() {
             this.loadingBtn = true;
+            let data = this.userId
+                ? this.userId
+                : this.$router.currentRoute.params.Id;
             if (!this.link) {
                 httpService
                     .post('user/createShareableLink', {
-                        usuarioId: this.$router.currentRoute.params.Id,
+                        usuarioId: data,
                     })
                     .then((response) => {
                         this.loadingBtn = false;

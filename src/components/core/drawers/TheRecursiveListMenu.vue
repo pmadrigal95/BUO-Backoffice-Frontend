@@ -86,11 +86,9 @@ export default {
                             </v-list-item-content>
                         </v-list-item>
                     </template>
-                    <span
-                        class="BUO-Paragraph-Small-SemiBold"
-                        :class="[app ? 'white--text' : 'grey700--text']"
-                        >{{ item.nombreUI }}</span
-                    >
+                    <span class="BUO-Paragraph-Small-SemiBold">{{
+                        item.nombreUI
+                    }}</span>
                 </v-tooltip>
             </template>
         </v-list-item-group>
