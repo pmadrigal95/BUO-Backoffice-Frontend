@@ -7,7 +7,6 @@
 /**
  * Organizacion BUO
  */
-
 const buoId = 1;
 
 /**
@@ -391,6 +390,52 @@ const abilitySetting = ({
 /**
  * Configuracion BaseServerDataTable
  */
+const microAbilitySetting = ({ key, companyId, singleSelect, isFilter }) => {
+    return {
+        endpoint: 'competencia/findBy',
+        columns: [
+            {
+                text: 'Indicador',
+                align: 'start',
+                value: 'definicionCualificacion',
+                show: true,
+            },
+            {
+                text: 'Definición',
+                align: 'start',
+                value: 'definicion',
+                show: true,
+            },
+            {
+                text: 'Interna',
+                type: 'bool',
+                align: 'center',
+                value: 'esInterna',
+                show: companyId === this.buoId,
+            },
+            {
+                text: 'Empresa',
+                align: 'start',
+                value: 'nombreOrganizacion',
+                show: companyId === this.buoId,
+            },
+            {
+                text: 'Estado',
+                align: 'center',
+                type: 'chip',
+                value: 'nombreEstado',
+                show: isFilter ? false : true,
+            },
+        ],
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
 const dinamycAbilitySetting = ({ departmentId, singleSelect }) => {
     return {
         endpoint: `ability/findBy/${departmentId ? departmentId : '0'}`,
@@ -406,6 +451,18 @@ const dinamycAbilitySetting = ({ departmentId, singleSelect }) => {
 const dinamycMicroAbilitySetting = ({ departmentId, singleSelect }) => {
     return {
         endpoint: `abilityDetails/findBy/${departmentId ? departmentId : '0'}`,
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+        dynamic: true,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const dinamycTalentSetting = ({ departmentId, singleSelect }) => {
+    return {
+        endpoint: `talent/findBy/${departmentId ? departmentId : '0'}`,
         singleSelect: singleSelect,
         multiSelect: !singleSelect,
         dynamic: true,
@@ -495,6 +552,244 @@ const approvalSetting = ({ key, companyId, singleSelect, isFilter }) => {
     };
 };
 
+/**
+ * Configuracion BaseServerDataTable
+ */
+const categorySetting = ({ key, companyId, singleSelect, isFilter }) => {
+    return {
+        endpoint: 'categoria/findBy',
+        columns: [
+            {
+                text: 'Nivel Superior',
+                align: 'start',
+                value: 'nombrePadre',
+                show: isFilter ? false : true,
+            },
+            {
+                text: 'Nombre',
+                align: 'start',
+                value: 'nombre',
+                show: true,
+            },
+            {
+                text: 'Descripción',
+                align: 'start',
+                value: 'descripcion',
+                show: false,
+            },
+            {
+                text: 'Empresa',
+                align: 'start',
+                value: 'nombreOrganizacion',
+                show: companyId === this.buoId,
+            },
+            {
+                text: 'Interna',
+                type: 'bool',
+                align: 'center',
+                value: 'esInterna',
+                show: companyId === this.buoId,
+            },
+            {
+                text: 'Estado',
+                align: 'center',
+                type: 'chip',
+                value: 'nombreEstado',
+                show: isFilter ? false : true,
+            },
+            {
+                text: 'Creado por',
+                align: 'start',
+                value: 'nombreUsuarioModifica',
+                show: false,
+            },
+        ],
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const departmentSetting = ({ key, companyId, singleSelect, isFilter }) => {
+    return {
+        endpoint: 'departamento/findBy',
+        columns: [
+            {
+                text: 'Nivel Superior',
+                align: 'start',
+                value: 'etiquetaNivelPadre',
+                show: false,
+            },
+            {
+                text: 'Nivel',
+                align: 'start',
+                value: 'etiquetaNivel',
+                show: false,
+            },
+            {
+                text: 'Nombre',
+                align: 'start',
+                value: 'nombre',
+                show: true,
+            },
+            {
+                text: 'Área / Departamento',
+                align: 'start',
+                value: 'nombrePadre',
+                show: true,
+            },
+            {
+                text: 'Empresa',
+                align: 'start',
+                value: 'nombreOrganizacion',
+                show: companyId === this.buoId,
+            },
+            {
+                text: 'Administrador',
+                align: 'start',
+                value: 'nombreUsuarioAdmin',
+                show: isFilter ? true : false,
+            },
+            {
+                text: 'Correo Administrador',
+                align: 'start',
+                value: 'correoUsuarioAdmin',
+                show: isFilter ? true : false,
+            },
+            {
+                text: 'Teléfono Administrador',
+                align: 'start',
+                value: 'telefonoUsuarioAdmin',
+                show: false,
+            },
+            {
+                text: 'Colaboradores',
+                align: 'end',
+                value: 'cantidadColaboradores',
+                show: isFilter ? false : true,
+            },
+            {
+                text: 'Descripción',
+                align: 'start',
+                value: 'descripcion',
+                show: false,
+            },
+            {
+                text: 'Estado',
+                align: 'center',
+                type: 'chip',
+                value: 'nombreEstado',
+                show: isFilter ? false : true,
+            },
+            {
+                text: 'Creado por',
+                align: 'start',
+                value: 'nombreUsuarioModifica',
+                show: false,
+            },
+        ],
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const promotionalCodeSetting = ({ key, singleSelect, isFilter }) => {
+    return {
+        endpoint: 'codigoPromocion/findBy',
+        columns: [
+            {
+                text: 'Código',
+                align: 'start',
+                value: 'codigo',
+                show: true,
+            },
+            {
+                text: 'Nombre Producto',
+                align: 'start',
+                value: 'nombreProducto',
+                show: true,
+            },
+            {
+                text: 'Compra Gratis',
+                align: 'center',
+                type: 'bool',
+                value: 'compraGratis',
+                show: true,
+            },
+            {
+                text: 'Monto Descuento',
+                type: 'number',
+                align: 'end',
+                value: 'montoDescuento',
+                show: false,
+            },
+            {
+                text: 'Porcentaje Descuento',
+                type: 'number',
+                align: 'end',
+                value: 'porcentajeDescuento',
+                show: false,
+            },
+            {
+                text: 'Licencia',
+                type: 'bool',
+                align: 'center',
+                value: 'esLicencia',
+                show: true,
+            },
+            {
+                text: 'Fecha Expiración',
+                align: 'start',
+                value: 'fechaExpiracionFormato',
+                show: false,
+            },
+            {
+                text: 'Uso Máximo',
+                type: 'number',
+                align: 'end',
+                value: 'usoMaximo',
+                show: false,
+            },
+            {
+                text: 'Uso Actual',
+                type: 'number',
+                align: 'end',
+                value: 'usoActual',
+                show: isFilter ? true : false,
+            },
+            {
+                text: 'Estado',
+                align: 'center',
+                type: 'chip',
+                value: 'nombreEstado',
+                show: isFilter ? true : false,
+            },
+            {
+                text: 'Fecha Creación',
+                align: 'start',
+                value: 'fechaCreacionFormato',
+                show: false,
+            },
+            {
+                text: 'Creado Por',
+                align: 'start',
+                value: 'nombreUsuario',
+                show: false,
+            },
+        ],
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
 export const baseFilterSettingsHelper = {
     /**
      * Configuracion companyId
@@ -552,6 +847,13 @@ export const baseFilterSettingsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
+    $_setMicroAbilitySetting({ key, companyId, singleSelect, isFilter }) {
+        return microAbilitySetting({ key, companyId, singleSelect, isFilter });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
     $_setDinamycAbilitySetting({ departmentId, singleSelect }) {
         return dinamycAbilitySetting({ departmentId, singleSelect });
     },
@@ -566,7 +868,35 @@ export const baseFilterSettingsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
+    $_setDinamycTalentSetting({ departmentId, singleSelect }) {
+        return dinamycTalentSetting({ departmentId, singleSelect });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
     $_setApprovalSetting({ key, companyId, singleSelect, isFilter }) {
         return approvalSetting({ key, companyId, singleSelect, isFilter });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setCategorySetting({ key, companyId, singleSelect, isFilter }) {
+        return categorySetting({ key, companyId, singleSelect, isFilter });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDepartmentSetting({ key, companyId, singleSelect, isFilter }) {
+        return departmentSetting({ key, companyId, singleSelect, isFilter });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setPromotionalCodeSetting({ key, singleSelect, isFilter }) {
+        return promotionalCodeSetting({ key, singleSelect, isFilter });
     },
 };
