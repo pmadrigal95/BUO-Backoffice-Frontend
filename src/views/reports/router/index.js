@@ -3,6 +3,8 @@
  */
 import buoPdaRoutes from '@/views/reports/buo-pda/router/index';
 
-const routes = [...buoPdaRoutes];
+import assessmentRoutes from '@/views/reports/assessment/router/index';
+
+const routes = [...buoPdaRoutes, ...assessmentRoutes];
 
 export default routes;

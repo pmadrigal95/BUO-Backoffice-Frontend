@@ -63,7 +63,13 @@ const extraParams = ({ companyId, userId, qualificationId, statusId }) => {
 /**
  * Configuracion BaseServerDataTable
  */
-const userSetting = ({ companyId, departmentId, singleSelect }) => {
+const userSetting = ({
+    key,
+    companyId,
+    departmentId,
+    singleSelect,
+    isFilter,
+}) => {
     return {
         endpoint: departmentId
             ? `user/findByDeep/${departmentId}`
@@ -128,21 +134,21 @@ const userSetting = ({ companyId, departmentId, singleSelect }) => {
                 type: 'bool',
                 align: 'center',
                 value: 'walletActivo',
-                show: true,
+                show: isFilter ? false : true,
             },
             {
                 text: 'Test PDA',
                 type: 'bool',
                 align: 'center',
                 value: 'conPda',
-                show: true,
+                show: isFilter ? false : true,
             },
             {
                 text: 'Estado',
                 align: 'center',
                 type: 'chip',
                 value: 'nombreEstado',
-                show: false,
+                show: isFilter ? false : true,
             },
             {
                 text: 'Identificación',
@@ -172,10 +178,318 @@ const userSetting = ({ companyId, departmentId, singleSelect }) => {
                 text: 'Fecha Activación',
                 align: 'start',
                 value: 'fechaActivacionFormato',
-                show: true,
+                show: isFilter ? false : true,
             },
         ],
-        key: 'id',
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const companySetting = ({ key, singleSelect, isFilter }) => {
+    return {
+        endpoint: 'organizacion/findBy',
+        columns: [
+            {
+                text: 'Nombre',
+                align: 'start',
+                value: 'nombre',
+                show: true,
+            },
+            {
+                text: 'Nombre Contacto',
+                align: 'start',
+                value: 'nombreContacto',
+                show: isFilter ? true : false,
+            },
+            {
+                text: 'Correo Contacto',
+                align: 'start',
+                value: 'correoContacto',
+                show: isFilter ? true : false,
+            },
+            {
+                text: 'Token Colaborador',
+                type: 'number',
+                align: 'start',
+                value: 'tokenUsuario',
+                show: false,
+            },
+            {
+                text: 'Colaboradores',
+                type: 'number',
+                align: 'end',
+                value: 'totalUsuarios',
+                show: isFilter ? false : true,
+            },
+            {
+                text: 'Wallets Activas',
+                type: 'number',
+                align: 'end',
+                value: 'walletsActivas',
+                show: isFilter ? false : true,
+            },
+            {
+                text: 'Certifica Inmediato',
+                type: 'bool',
+                align: 'center',
+                value: 'certificaInmediato',
+                show: false,
+            },
+            {
+                text: 'Mostrar Puestos Genéricos',
+                type: 'bool',
+                align: 'center',
+                value: 'mostrarPuestosGenericos',
+                show: false,
+            },
+            {
+                text: 'Demo',
+                type: 'bool',
+                align: 'center',
+                value: 'esClienteDemo',
+                show: true,
+            },
+            {
+                text: 'Estado',
+                align: 'center',
+                type: 'chip',
+                value: 'nombreEstado',
+                show: true,
+            },
+            {
+                text: 'Industria',
+                align: 'start',
+                value: 'nombreIndustria',
+                show: false,
+            },
+            {
+                text: 'País',
+                align: 'start',
+                value: 'nombrePais',
+                show: false,
+            },
+            {
+                text: 'Ciudad',
+                align: 'start',
+                value: 'ciudad',
+                show: false,
+            },
+            {
+                text: 'Descripción',
+                align: 'start',
+                value: 'descripcion',
+                show: false,
+            },
+        ],
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const abilitySetting = ({
+    key,
+    companyId,
+    categoryId,
+    singleSelect,
+    isFilter,
+}) => {
+    return {
+        endpoint: categoryId
+            ? `cualificacion/findByDeep/${categoryId}`
+            : 'cualificacion/findBy',
+        columns: [
+            {
+                text: 'Definición',
+                align: 'start',
+                value: 'definicion',
+                show: true,
+            },
+            {
+                text: 'Descripción',
+                align: 'start',
+                value: 'otroNombre',
+                show: false,
+            },
+            {
+                text: 'Propósito',
+                align: 'start',
+                value: 'proposito',
+                show: false,
+            },
+            {
+                text: 'Ámbito Ocupacional',
+                align: 'start',
+                value: 'ambitoOcupacional',
+                show: false,
+            },
+            {
+                text: 'Link',
+                align: 'start',
+                value: 'link',
+                show: false,
+            },
+            {
+                text: 'Interna',
+                type: 'bool',
+                align: 'center',
+                value: 'esInterna',
+                show: companyId === buoId,
+            },
+            {
+                text: 'Categoría',
+                align: 'start',
+                value: 'nombreCategoria',
+                show: true,
+            },
+            {
+                text: 'Categoría Superior',
+                align: 'start',
+                value: 'nombreCategoriaPadre',
+                show: false,
+            },
+            {
+                text: 'Empresa',
+                align: 'start',
+                value: 'nombreOrganizacion',
+                show: companyId === buoId,
+            },
+            {
+                text: 'Tipo',
+                align: 'start',
+                value: 'nombreTipoCualificacion',
+                show: false,
+            },
+            {
+                text: 'Estado',
+                align: 'center',
+                type: 'chip',
+                value: 'nombreEstado',
+                show: isFilter ? false : true,
+            },
+            {
+                text: 'Modificado Por',
+                align: 'start',
+                value: 'nombreUsuarioModifica',
+                show: false,
+            },
+        ],
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const dinamycAbilitySetting = ({ departmentId, singleSelect }) => {
+    return {
+        endpoint: `ability/findBy/${departmentId ? departmentId : '0'}`,
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+        dynamic: true,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const dinamycMicroAbilitySetting = ({ departmentId, singleSelect }) => {
+    return {
+        endpoint: `abilityDetails/findBy/${departmentId ? departmentId : '0'}`,
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+        dynamic: true,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const approvalSetting = ({ key, companyId, singleSelect, isFilter }) => {
+    return {
+        endpoint: 'empleadoCompetencia/findBy',
+        columns: [
+            {
+                text: 'Nombre Empleado',
+                align: 'start',
+                value: 'nombreEmpleado',
+                show: true,
+            },
+            {
+                text: 'Indicador',
+                align: 'start',
+                value: 'definicionCualificacion',
+                show: true,
+            },
+            {
+                text: 'Micro-Indicador',
+                align: 'start',
+                value: 'definicionCompetencia',
+                show: true,
+            },
+            {
+                text: 'Empresa',
+                align: 'start',
+                value: 'nombreOrganizacion',
+                show: companyId === this.buoId,
+            },
+            {
+                text: 'Área / Departamento',
+                align: 'start',
+                value: 'nombreDepartamento',
+                show: false,
+            },
+            {
+                text: 'Comentario',
+                align: 'start',
+                value: 'comentario',
+                show: false,
+            },
+            {
+                text: 'Comentario Usuario',
+                align: 'start',
+                value: 'comentarioUsuario',
+                show: false,
+            },
+            {
+                text: 'Estado',
+                type: 'chip',
+                align: 'center',
+                value: 'nombreEstado',
+                show: false,
+            },
+            {
+                text: 'Carga Masiva',
+                type: 'bool',
+                align: 'center',
+                value: 'esCargaMasiva',
+                show: false,
+            },
+            {
+                text: 'Fecha Ingreso',
+                align: 'start',
+                value: 'ingresadoFormato',
+                show: false,
+            },
+            {
+                text: 'Categoría',
+                align: 'start',
+                value: 'nombreCategoria',
+                show: isFilter ? true : false,
+            },
+        ],
+
+        key: key ? key : 'id',
         singleSelect: singleSelect,
         multiSelect: !singleSelect,
     };
@@ -199,7 +513,60 @@ export const baseFilterSettingsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
-    $_setUserSetting({ companyId, departmentId, singleSelect }) {
-        return userSetting({ companyId, departmentId, singleSelect });
+    $_setUserSetting(key, companyId, departmentId, singleSelect, isFilter) {
+        return userSetting(
+            key,
+            companyId,
+            departmentId,
+            singleSelect,
+            isFilter
+        );
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setCompanySetting({ key, singleSelect, isFilter }) {
+        return companySetting({ key, singleSelect, isFilter });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setAbilitySetting({
+        key,
+        companyId,
+        categoryId,
+        singleSelect,
+        isFilter,
+    }) {
+        return abilitySetting({
+            key,
+            companyId,
+            categoryId,
+            singleSelect,
+            isFilter,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDinamycAbilitySetting({ departmentId, singleSelect }) {
+        return dinamycAbilitySetting({ departmentId, singleSelect });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDinamycMicroAbilitySetting({ departmentId, singleSelect }) {
+        return dinamycMicroAbilitySetting({ departmentId, singleSelect });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setApprovalSetting({ key, companyId, singleSelect, isFilter }) {
+        return approvalSetting({ key, companyId, singleSelect, isFilter });
     },
 };
