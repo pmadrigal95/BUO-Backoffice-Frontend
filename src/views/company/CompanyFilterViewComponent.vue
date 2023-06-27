@@ -16,6 +16,8 @@ import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
@@ -43,103 +45,7 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return {
-                endpoint: 'organizacion/findBy',
-                columns: [
-                    {
-                        text: 'Nombre',
-                        align: 'start',
-                        value: 'nombre',
-                        show: true,
-                    },
-                    {
-                        text: 'Nombre Contacto',
-                        align: 'start',
-                        value: 'nombreContacto',
-                        show: false,
-                    },
-                    {
-                        text: 'Correo Contacto',
-                        align: 'start',
-                        value: 'correoContacto',
-                        show: false,
-                    },
-                    {
-                        text: 'Token Colaborador',
-                        type: 'number',
-                        align: 'start',
-                        value: 'tokenUsuario',
-                        show: false,
-                    },
-                    {
-                        text: 'Colaboradores',
-                        type: 'number',
-                        align: 'end',
-                        value: 'totalUsuarios',
-                        show: true,
-                    },
-                    {
-                        text: 'Wallets Activas',
-                        type: 'number',
-                        align: 'end',
-                        value: 'walletsActivas',
-                        show: true,
-                    },
-                    {
-                        text: 'Certifica Inmediato',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'certificaInmediato',
-                        show: false,
-                    },
-                    {
-                        text: 'Mostrar Puestos Genéricos',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'mostrarPuestosGenericos',
-                        show: false,
-                    },
-                    {
-                        text: 'Demo',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'esClienteDemo',
-                        show: true,
-                    },
-                    {
-                        text: 'Estado',
-                        align: 'center',
-                        type: 'chip',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Industria',
-                        align: 'start',
-                        value: 'nombreIndustria',
-                        show: false,
-                    },
-                    {
-                        text: 'País',
-                        align: 'start',
-                        value: 'nombrePais',
-                        show: false,
-                    },
-                    {
-                        text: 'Ciudad',
-                        align: 'start',
-                        value: 'ciudad',
-                        show: false,
-                    },
-                    {
-                        text: 'Descripción',
-                        align: 'start',
-                        value: 'descripcion',
-                        show: false,
-                    },
-                ],
-                key: 'id',
-            };
+            return baseFilterSettingsHelper.$_setCompanySetting({});
         },
 
         write() {

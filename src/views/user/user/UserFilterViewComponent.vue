@@ -45,10 +45,10 @@ export default {
 
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
-                companyId: baseFilterSettingsHelper.$_getCompanyId(
-                    this.user.companyId,
-                    this.organizacionId
-                ),
+                companyId: baseFilterSettingsHelper.$_getCompanyId({
+                    userCompanyId: this.user.companyId,
+                    companyId: this.organizacionId,
+                }),
             });
         },
 

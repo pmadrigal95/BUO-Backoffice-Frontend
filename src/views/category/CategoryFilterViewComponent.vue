@@ -12,6 +12,8 @@ import httpService from '@/services/axios/httpService';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
@@ -38,68 +40,18 @@ export default {
         },
 
         extraParams() {
-            let array = [];
-            if (this.user.companyId != this.buoId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.user.companyId,
-                });
-            }
-
-            return array.length > 0 ? array : undefined;
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId:
+                    this.user.companyId != this.buoId
+                        ? this.user.companyId
+                        : undefined,
+            });
         },
 
         setting() {
-            return {
-                endpoint: 'categoria/findBy',
-                columns: [
-                    {
-                        text: 'Nivel Superior',
-                        align: 'start',
-                        value: 'nombrePadre',
-                        show: true,
-                    },
-                    {
-                        text: 'Nombre',
-                        align: 'start',
-                        value: 'nombre',
-                        show: true,
-                    },
-                    {
-                        text: 'Descripción',
-                        align: 'start',
-                        value: 'descripcion',
-                        show: false,
-                    },
-                    {
-                        text: 'Empresa',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        show: this.user.companyId === this.buoId,
-                    },
-                    {
-                        text: 'Interna',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'esInterna',
-                        show: this.user.companyId === this.buoId,
-                    },
-                    {
-                        text: 'Estado',
-                        align: 'center',
-                        type: 'chip',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Creado por',
-                        align: 'start',
-                        value: 'nombreUsuarioModifica',
-                        show: false,
-                    },
-                ],
-                key: 'id',
-            };
+            return baseFilterSettingsHelper.$_setCategorySetting({
+                companyId: this.user.companyId,
+            });
         },
     },
 

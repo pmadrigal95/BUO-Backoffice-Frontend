@@ -12,13 +12,15 @@ const buoId = 1;
 /**
  * Get companyId
  */
-const getCompanyId = (userCompanyId, companyId) => {
+const getCompanyId = ({ userCompanyId, companyId, filterCompanyId }) => {
     if (userCompanyId !== buoId && !companyId) {
         return userCompanyId;
     }
 
     if (companyId) {
         return companyId;
+    } else if (filterCompanyId) {
+        return filterCompanyId;
     }
 };
 
@@ -411,13 +413,13 @@ const microAbilitySetting = ({ key, companyId, singleSelect, isFilter }) => {
                 type: 'bool',
                 align: 'center',
                 value: 'esInterna',
-                show: companyId === this.buoId,
+                show: companyId === buoId,
             },
             {
                 text: 'Empresa',
                 align: 'start',
                 value: 'nombreOrganizacion',
-                show: companyId === this.buoId,
+                show: companyId === buoId,
             },
             {
                 text: 'Estado',
@@ -498,7 +500,7 @@ const approvalSetting = ({ key, companyId, singleSelect, isFilter }) => {
                 text: 'Empresa',
                 align: 'start',
                 value: 'nombreOrganizacion',
-                show: companyId === this.buoId,
+                show: companyId === buoId,
             },
             {
                 text: 'Área / Departamento',
@@ -581,14 +583,14 @@ const categorySetting = ({ key, companyId, singleSelect, isFilter }) => {
                 text: 'Empresa',
                 align: 'start',
                 value: 'nombreOrganizacion',
-                show: companyId === this.buoId,
+                show: companyId === buoId,
             },
             {
                 text: 'Interna',
                 type: 'bool',
                 align: 'center',
                 value: 'esInterna',
-                show: companyId === this.buoId,
+                show: companyId === buoId,
             },
             {
                 text: 'Estado',
@@ -645,7 +647,7 @@ const departmentSetting = ({ key, companyId, singleSelect, isFilter }) => {
                 text: 'Empresa',
                 align: 'start',
                 value: 'nombreOrganizacion',
-                show: companyId === this.buoId,
+                show: companyId === buoId,
             },
             {
                 text: 'Administrador',
@@ -794,8 +796,8 @@ export const baseFilterSettingsHelper = {
     /**
      * Configuracion companyId
      */
-    $_getCompanyId(userCompanyId, companyId) {
-        return getCompanyId(userCompanyId, companyId);
+    $_getCompanyId({ userCompanyId, companyId, filterCompanyId }) {
+        return getCompanyId({ userCompanyId, companyId, filterCompanyId });
     },
 
     /**

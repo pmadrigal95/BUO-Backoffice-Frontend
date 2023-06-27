@@ -12,6 +12,8 @@ import httpService from '@/services/axios/httpService';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
@@ -39,48 +41,23 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        extraParams() {
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: baseFilterSettingsHelper.$_getCompanyId({
+                    userCompanyId: this.user.companyId,
+                    companyId: this.organizacionId,
+                }),
+                qualificationId: this.cualificacionId,
+            });
+        },
+
         /**
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return {
-                endpoint: 'competencia/findBy',
-                columns: [
-                    {
-                        text: 'Indicador',
-                        align: 'start',
-                        value: 'definicionCualificacion',
-                        show: true,
-                    },
-                    {
-                        text: 'Definición',
-                        align: 'start',
-                        value: 'definicion',
-                        show: true,
-                    },
-                    {
-                        text: 'Interna',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'esInterna',
-                        show: this.user.companyId === this.buoId,
-                    },
-                    {
-                        text: 'Empresa',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        show: this.user.companyId === this.buoId,
-                    },
-                    {
-                        text: 'Estado',
-                        align: 'center',
-                        type: 'chip',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                ],
-                key: 'id',
-            };
+            return baseFilterSettingsHelper.$_setMicroAbilitySetting({
+                companyId: this.user.companyId,
+            });
         },
 
         write() {
@@ -89,30 +66,6 @@ export default {
                 baseSecurityHelper.$_write
             );
             return result;
-        },
-
-        extraParams() {
-            let array = [];
-            if (this.user.companyId != this.buoId && !this.organizacionId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.user.companyId,
-                });
-            } else if (this.organizacionId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.organizacionId,
-                });
-            }
-
-            if (this.cualificacionId) {
-                array.push({
-                    name: 'cualificacionId',
-                    value: this.cualificacionId,
-                });
-            }
-
-            return array.length > 0 ? array : undefined;
         },
     },
 

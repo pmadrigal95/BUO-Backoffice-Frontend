@@ -18,6 +18,8 @@ import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
@@ -67,109 +69,21 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return {
-                endpoint: 'empleadoCompetencia/findBy',
-                columns: [
-                    {
-                        text: 'Nombre Empleado',
-                        align: 'start',
-                        value: 'nombreEmpleado',
-                        show: true,
-                    },
-                    {
-                        text: 'Indicador',
-                        align: 'start',
-                        value: 'definicionCualificacion',
-                        show: true,
-                    },
-                    {
-                        text: 'Micro-Indicador',
-                        align: 'start',
-                        value: 'definicionCompetencia',
-                        show: true,
-                    },
-                    {
-                        text: 'Empresa',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        show: this.user.companyId === this.buoId,
-                    },
-                    {
-                        text: 'Área / Departamento',
-                        align: 'start',
-                        value: 'nombreDepartamento',
-                        show: false,
-                    },
-                    {
-                        text: 'Comentario',
-                        align: 'start',
-                        value: 'comentario',
-                        show: false,
-                    },
-                    {
-                        text: 'Comentario Usuario',
-                        align: 'start',
-                        value: 'comentarioUsuario',
-                        show: false,
-                    },
-                    {
-                        text: 'Estado',
-                        type: 'chip',
-                        align: 'center',
-                        value: 'nombreEstado',
-                        show: false,
-                    },
-                    {
-                        text: 'Carga Masiva',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'esCargaMasiva',
-                        show: false,
-                    },
-                    {
-                        text: 'Fecha Ingreso',
-                        align: 'start',
-                        value: 'ingresadoFormato',
-                        show: false,
-                    },
-                    {
-                        text: 'Categoría',
-                        align: 'start',
-                        value: 'nombreCategoria',
-                        show: false,
-                    },
-                ],
-                key: 'id',
-
+            return baseFilterSettingsHelper.$_setApprovalSetting({
+                companyId: this.user.companyId,
                 singleSelect: false,
-            };
+            });
         },
 
         extraParams() {
-            let array = [];
-
-            if (this.organizacionId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.organizacionId,
-                });
-            }
-
-            if (this.statusCode) {
-                array.push({
-                    name: 'estadoId',
-                    value: this.statusCode,
-                });
-            }
-
-            if (this.user.companyId != this.buoId && this.user.userId) {
-                array.push({
-                    name: 'userId',
-                    value: this.user.userId,
-                });
-            }
-
-            return array.length > 0 ? array : undefined;
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.organizacionId,
+                statusId: this.statusCode,
+                userId:
+                    this.user.companyId != this.buoId && this.user.userId
+                        ? this.user.userId
+                        : undefined,
+            });
         },
 
         permission() {

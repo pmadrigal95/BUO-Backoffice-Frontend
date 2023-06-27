@@ -12,6 +12,8 @@ import httpService from '@/services/axios/httpService';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
@@ -33,7 +35,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters('authentication', ['user', 'buoId']),
+        ...mapGetters('authentication', ['user']),
 
         write() {
             const result = baseSecurityHelper.$_ReadPermission(
@@ -43,106 +45,19 @@ export default {
             return result;
         },
 
-        setting() {
-            return {
-                endpoint: 'departamento/findBy',
-                columns: [
-                    {
-                        text: 'Nivel Superior',
-                        align: 'start',
-                        value: 'etiquetaNivelPadre',
-                        show: false,
-                    },
-                    {
-                        text: 'Nivel',
-                        align: 'start',
-                        value: 'etiquetaNivel',
-                        show: false,
-                    },
-                    {
-                        text: 'Nombre',
-                        align: 'start',
-                        value: 'nombre',
-                        show: true,
-                    },
-                    {
-                        text: 'Área / Departamento',
-                        align: 'start',
-                        value: 'nombrePadre',
-                        show: true,
-                    },
-                    {
-                        text: 'Empresa',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        show:
-                            this.user.companyId === this.buoId &&
-                            this.$router.currentRoute.name !=
-                                'CompanyDashboardViewComponent',
-                    },
-                    {
-                        text: 'Administrador',
-                        align: 'start',
-                        value: 'nombreUsuarioAdmin',
-                        show: false,
-                    },
-                    {
-                        text: 'Correo Administrador',
-                        align: 'start',
-                        value: 'correoUsuarioAdmin',
-                        show: false,
-                    },
-                    {
-                        text: 'Teléfono Administrador',
-                        align: 'start',
-                        value: 'telefonoUsuarioAdmin',
-                        show: false,
-                    },
-                    {
-                        text: 'Colaboradores',
-                        align: 'end',
-                        value: 'cantidadColaboradores',
-                        show: true,
-                    },
-                    {
-                        text: 'Descripción',
-                        align: 'start',
-                        value: 'descripcion',
-                        show: false,
-                    },
-                    {
-                        text: 'Estado',
-                        align: 'center',
-                        type: 'chip',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Creado por',
-                        align: 'start',
-                        value: 'nombreUsuarioModifica',
-                        show: false,
-                    },
-                ],
-                key: 'id',
-            };
+        extraParams() {
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: baseFilterSettingsHelper.$_getCompanyId({
+                    userCompanyId: this.user.companyId,
+                    companyId: this.organizacionId,
+                }),
+            });
         },
 
-        extraParams() {
-            let array = [];
-            if (this.user.companyId != this.buoId && !this.organizacionId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.user.companyId,
-                });
-            } else if (this.organizacionId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.organizacionId,
-                });
-            }
-
-            return array.length > 0 ? array : undefined;
+        setting() {
+            return baseFilterSettingsHelper.$_setDepartmentSetting({
+                companyId: this.user.companyId,
+            });
         },
     },
 
