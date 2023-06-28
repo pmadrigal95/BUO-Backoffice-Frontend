@@ -302,11 +302,16 @@ const abilitySetting = ({
     categoryId,
     singleSelect,
     isFilter,
+    method,
 }) => {
+    const finalApi = method
+        ? method
+        : categoryId
+        ? `cualificacion/findByDeep/${categoryId}`
+        : 'cualificacion/findBy';
+
     return {
-        endpoint: categoryId
-            ? `cualificacion/findByDeep/${categoryId}`
-            : 'cualificacion/findBy',
+        endpoint: finalApi,
         columns: [
             {
                 text: 'Definición',
@@ -361,7 +366,7 @@ const abilitySetting = ({
                 text: 'Empresa',
                 align: 'start',
                 value: 'nombreOrganizacion',
-                show: companyId === buoId,
+                show: method ? true : companyId === buoId,
             },
             {
                 text: 'Tipo',
@@ -836,6 +841,7 @@ export const baseFilterSettingsHelper = {
         categoryId,
         singleSelect,
         isFilter,
+        method,
     }) {
         return abilitySetting({
             key,
@@ -843,6 +849,7 @@ export const baseFilterSettingsHelper = {
             categoryId,
             singleSelect,
             isFilter,
+            method,
         });
     },
 

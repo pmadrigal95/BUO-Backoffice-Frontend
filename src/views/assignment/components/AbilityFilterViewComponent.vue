@@ -12,6 +12,8 @@ import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
@@ -40,102 +42,16 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return {
-                endpoint: 'cualificacion/findBy',
-                columns: [
-                    {
-                        text: 'Definición',
-                        align: 'start',
-                        value: 'definicion',
-                        show: true,
-                    },
-                    {
-                        text: 'Descripción',
-                        align: 'start',
-                        value: 'otroNombre',
-                        show: false,
-                    },
-                    {
-                        text: 'Propósito',
-                        align: 'start',
-                        value: 'proposito',
-                        show: false,
-                    },
-                    {
-                        text: 'Ámbito Ocupacional',
-                        align: 'start',
-                        value: 'ambitoOcupacional',
-                        show: false,
-                    },
-                    {
-                        text: 'Link',
-                        align: 'start',
-                        value: 'link',
-                        show: false,
-                    },
-                    {
-                        text: 'Interna',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'esInterna',
-                        show: this.user.companyId === this.buoId,
-                    },
-                    {
-                        text: 'Categoría',
-                        align: 'start',
-                        value: 'nombreCategoria',
-                        show: true,
-                    },
-                    {
-                        text: 'Categoría Superior',
-                        align: 'start',
-                        value: 'nombreCategoriaPadre',
-                        show: false,
-                    },
-                    {
-                        text: 'Empresa',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        show:
-                            this.user.companyId === this.buoId &&
-                            this.$router.currentRoute.name !=
-                                'CompanyDashboardViewComponent',
-                    },
-                    {
-                        text: 'Tipo',
-                        align: 'start',
-                        value: 'nombreTipoCualificacion',
-                        show: false,
-                    },
-                    {
-                        text: 'Estado',
-                        align: 'center',
-                        type: 'chip',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Modificado Por',
-                        align: 'start',
-                        value: 'nombreUsuarioModifica',
-                        show: false,
-                    },
-                ],
-                key: 'id',
+            return baseFilterSettingsHelper.$_setAbilitySetting({
+                companyId: this.user.companyId,
                 singleSelect: false,
-            };
+            });
         },
 
         extraParams() {
-            let array = [];
-            if (this.entity.organizacionId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.entity.organizacionId,
-                });
-            }
-
-            return array.length > 0 ? array : undefined;
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity.organizacionId,
+            });
         },
     },
 

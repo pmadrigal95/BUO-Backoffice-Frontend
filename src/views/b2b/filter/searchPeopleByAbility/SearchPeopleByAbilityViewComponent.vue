@@ -16,6 +16,8 @@ import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 const BaseNotFoundContent = () =>
     import('@/components/core/cards/BaseNotFoundContent');
 
@@ -68,195 +70,24 @@ export default {
          * Extra Params
          */
         extraParams() {
-            return this.entity.organizacionId
-                ? [
-                      {
-                          name: 'organizacionId',
-                          value: `${this.entity.organizacionId}`,
-                      },
-                  ]
-                : undefined;
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity.organizacionId,
+            });
         },
 
         companySetting() {
-            return {
-                endpoint: 'organizacion/findBy',
-                columns: [
-                    {
-                        text: 'Nombre',
-                        align: 'start',
-                        value: 'nombre',
-                        show: true,
-                    },
-                    {
-                        text: 'Nombre Contacto',
-                        align: 'start',
-                        value: 'nombreContacto',
-                        show: true,
-                    },
-                    {
-                        text: 'Correo Contacto',
-                        align: 'start',
-                        value: 'correoContacto',
-                        show: true,
-                    },
-                    {
-                        text: 'Token Colaborador',
-                        align: 'start',
-                        value: 'tokenUsuario',
-                        show: false,
-                    },
-                    {
-                        text: 'Colaboradores',
-                        align: 'end',
-                        value: 'totalUsuarios',
-                        show: false,
-                    },
-                    {
-                        text: 'Wallets Activas',
-                        align: 'end',
-                        value: 'walletsActivas',
-                        show: false,
-                    },
-                    {
-                        text: 'Certifica Inmediato',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'certificaInmediato',
-                        show: false,
-                    },
-                    {
-                        text: 'Mostrar Puestos Genéricos',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'mostrarPuestosGenericos',
-                        show: false,
-                    },
-                    {
-                        text: 'Demo',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'esClienteDemo',
-                        show: true,
-                    },
-                    {
-                        text: 'Estado',
-                        type: 'chip',
-                        align: 'center',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Industria',
-                        align: 'start',
-                        value: 'nombreIndustria',
-                        show: false,
-                    },
-                    {
-                        text: 'País',
-                        align: 'start',
-                        value: 'nombrePais',
-                        show: false,
-                    },
-                    {
-                        text: 'Ciudad',
-                        align: 'start',
-                        value: 'ciudad',
-                        show: false,
-                    },
-                    {
-                        text: 'Descripción',
-                        align: 'start',
-                        value: 'descripcion',
-                        show: false,
-                    },
-                ],
-                key: 'id',
-            };
+            return baseFilterSettingsHelper.$_setCompanySetting({
+                isFilter: true,
+                singleSelect: true,
+            });
         },
 
         abilitySetting() {
-            return {
-                endpoint: 'cualificacion/findByFilter',
-                columns: [
-                    {
-                        text: 'Definición',
-                        align: 'start',
-                        value: 'definicion',
-                        show: true,
-                    },
-                    {
-                        text: 'Descripción',
-                        align: 'start',
-                        value: 'otroNombre',
-                        show: false,
-                    },
-                    {
-                        text: 'Propósito',
-                        align: 'start',
-                        value: 'proposito',
-                        show: false,
-                    },
-                    {
-                        text: 'Ámbito Ocupacional',
-                        align: 'start',
-                        value: 'ambitoOcupacional',
-                        show: false,
-                    },
-                    {
-                        text: 'Link',
-                        align: 'start',
-                        value: 'link',
-                        show: false,
-                    },
-                    {
-                        text: 'Interna',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'esInterna',
-                        show: this.user.companyId === this.buoId,
-                    },
-                    {
-                        text: 'Categoría',
-                        align: 'start',
-                        value: 'nombreCategoria',
-                        show: true,
-                    },
-                    {
-                        text: 'Categoría Superior',
-                        align: 'start',
-                        value: 'nombreCategoriaPadre',
-                        show: false,
-                    },
-                    {
-                        text: 'Empresa',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        show: true,
-                    },
-                    {
-                        text: 'Tipo',
-                        align: 'start',
-                        value: 'nombreTipoCualificacion',
-                        show: false,
-                    },
-                    {
-                        text: 'Estado',
-                        align: 'center',
-                        type: 'chip',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Modificado Por',
-                        align: 'start',
-                        value: 'nombreUsuarioModifica',
-                        show: false,
-                    },
-                ],
-                key: 'id',
-                multiSelect: true,
-            };
+            return baseFilterSettingsHelper.$_setAbilitySetting({
+                method: 'cualificacion/findByFilter',
+                isFilter: true,
+                singleSelect: false,
+            });
         },
 
         permission() {

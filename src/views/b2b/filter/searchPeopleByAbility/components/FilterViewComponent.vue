@@ -12,6 +12,8 @@ import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
@@ -52,34 +54,17 @@ export default {
         ...mapGetters('theme', ['app']),
 
         setting() {
-            return {
-                endpoint: `talent/findBy/${
-                    this.entity.departamentoId
-                        ? this.entity.departamentoId
-                        : '0'
-                }`,
+            return baseFilterSettingsHelper.$_setDinamycTalentSetting({
+                departmentId: this.entity.departamentoId,
                 singleSelect: false,
-                dynamic: true,
-            };
+            });
         },
 
         extraParams() {
-            let array = [];
-            if (this.entity.organizacionId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.entity.organizacionId,
-                });
-            }
-
-            if (this.entity.cualificacionId) {
-                array.push({
-                    name: 'cualificacionId',
-                    value: this.entity.cualificacionId.join('|'),
-                });
-            }
-
-            return array.length > 0 ? array : undefined;
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity.organizacionId,
+                qualificationId: this.entity.cualificacionId.join('|'),
+            });
         },
     },
 
