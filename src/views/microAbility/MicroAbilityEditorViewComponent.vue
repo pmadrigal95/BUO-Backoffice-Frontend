@@ -12,6 +12,8 @@ import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
@@ -41,200 +43,30 @@ export default {
          * Extra Params
          */
         extraParams() {
-            return this.entity.organizacionId
-                ? [
-                      {
-                          name: 'organizacionId',
-                          value: this.entity.organizacionId,
-                      },
-                  ]
-                : undefined;
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity.organizacionId,
+            });
         },
 
         /**
          * Configuracion BaseInputDataTable
          */
         companySetting() {
-            return {
-                endpoint: 'organizacion/findBy',
-                columns: [
-                    {
-                        text: 'Nombre',
-                        align: 'start',
-                        value: 'nombre',
-                        show: true,
-                    },
-                    {
-                        text: 'Nombre Contacto',
-                        align: 'start',
-                        value: 'nombreContacto',
-                        show: true,
-                    },
-                    {
-                        text: 'Correo Contacto',
-                        align: 'start',
-                        value: 'correoContacto',
-                        show: true,
-                    },
-                    {
-                        text: 'Token Colaborador',
-                        align: 'start',
-                        value: 'tokenUsuario',
-                        show: false,
-                    },
-                    {
-                        text: 'Colaboradores',
-                        align: 'end',
-                        value: 'totalUsuarios',
-                        show: false,
-                    },
-                    {
-                        text: 'Wallets Activas',
-                        align: 'end',
-                        value: 'walletsActivas',
-                        show: false,
-                    },
-                    {
-                        text: 'Certifica Inmediato',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'certificaInmediato',
-                        show: false,
-                    },
-                    {
-                        text: 'Mostrar Puestos Genéricos',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'mostrarPuestosGenericos',
-                        show: false,
-                    },
-                    {
-                        text: 'Demo',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'esClienteDemo',
-                        show: true,
-                    },
-                    {
-                        text: 'Estado',
-                        type: 'chip',
-                        align: 'center',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Industria',
-                        align: 'start',
-                        value: 'nombreIndustria',
-                        show: false,
-                    },
-                    {
-                        text: 'País',
-                        align: 'start',
-                        value: 'nombrePais',
-                        show: false,
-                    },
-                    {
-                        text: 'Ciudad',
-                        align: 'start',
-                        value: 'ciudad',
-                        show: false,
-                    },
-                    {
-                        text: 'Descripción',
-                        align: 'start',
-                        value: 'descripcion',
-                        show: false,
-                    },
-                ],
-                key: 'id',
-            };
+            return baseFilterSettingsHelper.$_setCompanySetting({
+                isFilter: true,
+                singleSelect: true,
+            });
         },
 
         /**
          * Configuracion BaseServerDataTable
          */
         abilitySetting() {
-            return {
-                endpoint: 'cualificacion/findBy',
-                columns: [
-                    {
-                        text: 'Definición',
-                        align: 'start',
-                        value: 'definicion',
-                        show: true,
-                    },
-                    {
-                        text: 'Descripción',
-                        align: 'start',
-                        value: 'otroNombre',
-                        show: false,
-                    },
-                    {
-                        text: 'Propósito',
-                        align: 'start',
-                        value: 'proposito',
-                        show: false,
-                    },
-                    {
-                        text: 'Ámbito Ocupacional',
-                        align: 'start',
-                        value: 'ambitoOcupacional',
-                        show: false,
-                    },
-                    {
-                        text: 'Link',
-                        align: 'start',
-                        value: 'link',
-                        show: false,
-                    },
-                    {
-                        text: 'Interna',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'esInterna',
-                        show: true,
-                    },
-                    {
-                        text: 'Categoría',
-                        align: 'start',
-                        value: 'nombreCategoria',
-                        show: true,
-                    },
-                    {
-                        text: 'Categoría Superior',
-                        align: 'start',
-                        value: 'nombreCategoriaPadre',
-                        show: false,
-                    },
-                    {
-                        text: 'Empresa',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        show: false,
-                    },
-                    {
-                        text: 'Tipo',
-                        align: 'start',
-                        value: 'nombreTipoCualificacion',
-                        show: false,
-                    },
-                    {
-                        text: 'Estado',
-                        type: 'chip',
-                        align: 'center',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Modificado Por',
-                        align: 'start',
-                        value: 'nombreUsuarioModifica',
-                        show: false,
-                    },
-                ],
-                key: 'id',
-            };
+            return baseFilterSettingsHelper.$_setAbilitySetting({
+                companyId: this.user.companyId,
+                isFilter: true,
+                singleSelect: true,
+            });
         },
     },
 

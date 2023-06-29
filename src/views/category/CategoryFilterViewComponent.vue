@@ -40,12 +40,12 @@ export default {
         },
 
         extraParams() {
-            return baseFilterSettingsHelper.$_setExtraParams({
-                companyId:
-                    this.user.companyId != this.buoId
-                        ? this.user.companyId
-                        : undefined,
-            });
+            return (
+                this.user.companyId != this.buoId &&
+                baseFilterSettingsHelper.$_setExtraParams({
+                    companyId: this.user.companyId,
+                })
+            );
         },
 
         setting() {

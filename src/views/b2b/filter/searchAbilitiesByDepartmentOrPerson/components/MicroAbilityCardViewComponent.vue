@@ -12,6 +12,8 @@ import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 const BaseCardMenuViewComponent = () =>
     import('@/components/core/cards/BaseCardMenuViewComponent');
 
@@ -38,29 +40,12 @@ export default {
         ...mapGetters('theme', ['app']),
 
         extraParams() {
-            let array = [];
-            if (this.entity.organizacionId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.entity.organizacionId,
-                });
-            }
-
-            if (this.entity.cualificacionId) {
-                array.push({
-                    name: 'cualificacionId',
-                    value: this.entity.cualificacionId,
-                });
-            }
-
-            if (this.entity.usuarioId) {
-                array.push({
-                    name: 'usuarioId',
-                    value: this.entity.usuarioId.join('|'),
-                });
-            }
-
-            return array.length > 0 ? array : undefined;
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity.organizacionId,
+                userId:
+                    this.entity.usuarioId && this.entity.usuarioId.join('|'),
+                qualificationId: this.entity.cualificacionId,
+            });
         },
 
         componentProps() {

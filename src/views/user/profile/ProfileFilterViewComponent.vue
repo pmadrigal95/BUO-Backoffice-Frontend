@@ -10,6 +10,8 @@ import { mapGetters } from 'vuex';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
@@ -52,100 +54,10 @@ export default {
         ...mapGetters('theme', ['app']),
 
         companySetting() {
-            return {
-                endpoint: 'organizacion/findBy',
-                columns: [
-                    {
-                        text: 'Nombre',
-                        align: 'start',
-                        value: 'nombre',
-                        show: true,
-                    },
-                    {
-                        text: 'Nombre Contacto',
-                        align: 'start',
-                        value: 'nombreContacto',
-                        show: true,
-                    },
-                    {
-                        text: 'Correo Contacto',
-                        align: 'start',
-                        value: 'correoContacto',
-                        show: true,
-                    },
-                    {
-                        text: 'Token Colaborador',
-                        align: 'start',
-                        value: 'tokenUsuario',
-                        show: false,
-                    },
-                    {
-                        text: 'Colaboradores',
-                        align: 'end',
-                        value: 'totalUsuarios',
-                        show: false,
-                    },
-                    {
-                        text: 'Wallets Activas',
-                        align: 'end',
-                        value: 'walletsActivas',
-                        show: false,
-                    },
-                    {
-                        text: 'Certifica Inmediato',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'certificaInmediato',
-                        show: false,
-                    },
-                    {
-                        text: 'Mostrar Puestos Genéricos',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'mostrarPuestosGenericos',
-                        show: false,
-                    },
-                    {
-                        text: 'Demo',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'esClienteDemo',
-                        show: true,
-                    },
-                    {
-                        text: 'Estado',
-                        type: 'chip',
-                        align: 'center',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Industria',
-                        align: 'start',
-                        value: 'nombreIndustria',
-                        show: false,
-                    },
-                    {
-                        text: 'País',
-                        align: 'start',
-                        value: 'nombrePais',
-                        show: false,
-                    },
-                    {
-                        text: 'Ciudad',
-                        align: 'start',
-                        value: 'ciudad',
-                        show: false,
-                    },
-                    {
-                        text: 'Descripción',
-                        align: 'start',
-                        value: 'descripcion',
-                        show: false,
-                    },
-                ],
-                key: 'id',
-            };
+            return baseFilterSettingsHelper.$_setCompanySetting({
+                isFilter: true,
+                singleSelect: true,
+            });
         },
     },
 

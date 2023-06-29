@@ -65,7 +65,8 @@ export default {
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
                 companyId: this.entity.organizacionId,
-                userId: this.entity.usuarioId.join('|'),
+                userId:
+                    this.entity.usuarioId && this.entity.usuarioId.join('|'),
                 qualificationId: this.entity.cualificacionId,
             });
         },

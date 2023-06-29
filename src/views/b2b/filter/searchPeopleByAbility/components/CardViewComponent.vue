@@ -14,6 +14,8 @@ import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 const BaseCardMenuViewComponent = () =>
     import('@/components/core/cards/BaseCardMenuViewComponent');
 
@@ -40,22 +42,12 @@ export default {
         ...mapGetters('theme', ['app']),
 
         extraParams() {
-            let array = [];
-            if (this.entity.organizacionId) {
-                array.push({
-                    name: 'organizacionId',
-                    value: this.entity.organizacionId,
-                });
-            }
-
-            if (this.entity.cualificacionId) {
-                array.push({
-                    name: 'cualificacionId',
-                    value: this.entity.cualificacionId.join('|'),
-                });
-            }
-
-            return array.length > 0 ? array : undefined;
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity.organizacionId,
+                qualificationId:
+                    this.entity.cualificacionId &&
+                    this.entity.cualificacionId.join('|'),
+            });
         },
 
         componentProps() {
