@@ -84,6 +84,7 @@ export default {
 
         abilitySetting() {
             return baseFilterSettingsHelper.$_setAbilitySetting({
+                companyId: this.user.companyId,
                 method: 'cualificacion/findByFilter',
                 isFilter: true,
                 singleSelect: false,

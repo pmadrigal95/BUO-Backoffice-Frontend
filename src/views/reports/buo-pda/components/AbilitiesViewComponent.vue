@@ -17,6 +17,12 @@ export default {
         PDARadarChart,
     },
 
+    data() {
+        return {
+            key: 0,
+        };
+    },
+
     computed: { ...mapGetters('theme', ['app']) },
 
     watch: {

@@ -149,7 +149,7 @@ const userSetting = ({
                 align: 'center',
                 type: 'chip',
                 value: 'nombreEstado',
-                show: isFilter ? false : true,
+                show: false,
             },
             {
                 text: 'Identificación',
@@ -366,7 +366,7 @@ const abilitySetting = ({
                 text: 'Empresa',
                 align: 'start',
                 value: 'nombreOrganizacion',
-                show: method ? true : companyId === buoId,
+                show: method ? true : isFilter ? false : companyId === buoId,
             },
             {
                 text: 'Tipo',
@@ -379,7 +379,7 @@ const abilitySetting = ({
                 align: 'center',
                 type: 'chip',
                 value: 'nombreEstado',
-                show: isFilter ? false : true,
+                show: false,
             },
             {
                 text: 'Modificado Por',
@@ -424,14 +424,14 @@ const microAbilitySetting = ({ key, companyId, singleSelect, isFilter }) => {
                 text: 'Empresa',
                 align: 'start',
                 value: 'nombreOrganizacion',
-                show: companyId === buoId,
+                show: isFilter ? false : companyId === buoId,
             },
             {
                 text: 'Estado',
                 align: 'center',
                 type: 'chip',
                 value: 'nombreEstado',
-                show: isFilter ? false : true,
+                show: false,
             },
         ],
         key: key ? key : 'id',
@@ -602,7 +602,7 @@ const categorySetting = ({ key, companyId, singleSelect, isFilter }) => {
                 align: 'center',
                 type: 'chip',
                 value: 'nombreEstado',
-                show: isFilter ? false : true,
+                show: false,
             },
             {
                 text: 'Creado por',
@@ -689,7 +689,7 @@ const departmentSetting = ({ key, companyId, singleSelect, isFilter }) => {
                 align: 'center',
                 type: 'chip',
                 value: 'nombreEstado',
-                show: isFilter ? false : true,
+                show: false,
             },
             {
                 text: 'Creado por',
@@ -776,7 +776,7 @@ const promotionalCodeSetting = ({ key, singleSelect, isFilter }) => {
                 align: 'center',
                 type: 'chip',
                 value: 'nombreEstado',
-                show: isFilter ? true : false,
+                show: false,
             },
             {
                 text: 'Fecha Creación',

@@ -6,6 +6,8 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
 import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
@@ -43,6 +45,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         microabilityPermission() {
             const result = baseSecurityHelper.$_ReadPermission(
                 'MicroAbilityViewComponent'
@@ -120,8 +124,15 @@ export default {
 </script>
 
 <template>
-    <div v-if="$router.currentRoute.params.Id">
-        <v-tabs v-model="tab" right show-arrows height="25" class="pa-3">
+    <section v-if="$router.currentRoute.params.Id">
+        <v-tabs
+            v-model="tab"
+            right
+            show-arrows
+            height="25"
+            class="pa-3 background"
+            :color="app ? 'white' : 'primary'"
+        >
             <v-tabs-slider color="transparent"></v-tabs-slider>
             <v-tab class="rounded-pill no-uppercase"> Indicador </v-tab>
             <v-tab
@@ -132,7 +143,7 @@ export default {
             </v-tab>
         </v-tabs>
 
-        <v-tabs-items v-model="tab" class="pa-5">
+        <v-tabs-items v-model="tab" class="pa-5 background">
             <v-tab-item>
                 <BaseCardViewComponent
                     title="Indicador"
@@ -162,7 +173,7 @@ export default {
                 />
             </v-tab-item>
         </v-tabs-items>
-    </div>
+    </section>
 
     <BaseCardViewComponent
         v-else

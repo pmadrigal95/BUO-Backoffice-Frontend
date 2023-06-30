@@ -44,6 +44,7 @@ export default {
         setting() {
             return baseFilterSettingsHelper.$_setAbilitySetting({
                 companyId: this.user.companyId,
+                isFilter: true,
                 singleSelect: false,
             });
         },

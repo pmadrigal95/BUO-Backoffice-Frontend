@@ -286,6 +286,10 @@ html {
     border: 2px solid #003f5e;
 }
 
+.v-tabs-bar {
+    background-color: transparent !important;
+}
+
 /*
 * Progress Bar Request API
 */

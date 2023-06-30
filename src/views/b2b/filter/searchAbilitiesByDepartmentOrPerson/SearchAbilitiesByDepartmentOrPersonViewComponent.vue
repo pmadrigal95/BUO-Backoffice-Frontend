@@ -85,6 +85,7 @@ export default {
             return baseFilterSettingsHelper.$_setUserSetting({
                 companyId: this.entity.organizacionId,
                 departmentId: this.entity.departamentoId,
+                isFilter: true,
                 singleSelect: false,
             });
         },
@@ -226,7 +227,7 @@ export default {
                                         :setting="userSetting"
                                         :extraParams="extraParams"
                                         itemText="nombreCompleto"
-                                        :readonly="extraParams == undefined"
+                                        :readonly="!entity.organizacionId"
                                         :editText="entity.nombre"
                                         v-model="entity.usuarioId"
                                         :key="filterKey"

@@ -68,6 +68,7 @@ export default {
         userSetting() {
             return baseFilterSettingsHelper.$_setUserSetting({
                 companyId: this.user.companyId,
+                isFilter: true,
                 singleSelect: false,
             });
         },
