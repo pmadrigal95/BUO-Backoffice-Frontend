@@ -11,10 +11,10 @@ import httpService from '@/services/axios/httpService';
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
 const FormAbilityViewComponent = () =>
-    import('@/views/ability/components/FormAbilityViewComponent');
+    import('@/views/ability/components/editor/FormAbilityViewComponent');
 
 const AddMicroAbilityViewComponent = () =>
-    import('@/views/ability/components/AddMicroAbilityViewComponent');
+    import('@/views/ability/components/editor/AddMicroAbilityViewComponent');
 
 export default {
     name: 'AddAbilityViewComponent',

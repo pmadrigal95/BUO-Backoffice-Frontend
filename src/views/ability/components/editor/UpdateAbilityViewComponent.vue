@@ -11,7 +11,7 @@ import httpService from '@/services/axios/httpService';
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
 const FormAbilityViewComponent = () =>
-    import('@/views/ability/components/FormAbilityViewComponent');
+    import('@/views/ability/components/editor/FormAbilityViewComponent');
 
 export default {
     name: 'UpdateAbilityViewComponent',

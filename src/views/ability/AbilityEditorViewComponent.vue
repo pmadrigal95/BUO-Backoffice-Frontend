@@ -18,10 +18,10 @@ const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
 const AddAbilityViewComponent = () =>
-    import('@/views/ability/components/AddAbilityViewComponent');
+    import('@/views/ability/components/editor/AddAbilityViewComponent');
 
 const UpdateAbilityViewComponent = () =>
-    import('@/views/ability/components/UpdateAbilityViewComponent');
+    import('@/views/ability/components/editor/UpdateAbilityViewComponent');
 
 const MicroAbilityFilterViewComponent = () =>
     import('@/views/microAbility/MicroAbilityFilterViewComponent');
