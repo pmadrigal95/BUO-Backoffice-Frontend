@@ -18,7 +18,10 @@ const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
 const BaseCustomsButtonsGrid = () =>
-    import('@/components/core/grids/BaseCustomsButtonsGrid.vue');
+    import('@/components/core/grids/BaseCustomsButtonsGrid');
+
+const AssessmentViewComponent = () =>
+    import('@/views/user/user/components/AssessmentViewComponent');
 
 export default {
     name: 'FilterViewComponent',
@@ -32,6 +35,7 @@ export default {
     components: {
         BaseServerDataTable,
         BaseCustomsButtonsGrid,
+        AssessmentViewComponent,
     },
 
     computed: {
@@ -144,6 +148,8 @@ export default {
                 icon="mdi-table-arrow-up"
                 :color="app ? 'blueProgress600' : 'blue800'"
             />
+
+            <AssessmentViewComponent />
         </div>
     </BaseServerDataTable>
 </template>
