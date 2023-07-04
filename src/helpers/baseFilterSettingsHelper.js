@@ -707,6 +707,70 @@ const departmentSetting = ({ key, companyId, singleSelect, isFilter }) => {
 /**
  * Configuracion BaseServerDataTable
  */
+const assessmentTypeSetting = ({ key, companyId, singleSelect, isFilter }) => {
+    return {
+        endpoint: 'tipoPrueba/findBy',
+        columns: [
+            {
+                text: 'Empresa',
+                align: 'start',
+                value: 'nombreOrganizacion',
+                show: companyId === buoId,
+            },
+            {
+                text: 'Departamento',
+                align: 'start',
+                value: 'nombreDepartamento',
+                show: false,
+            },
+            {
+                text: 'Nivel Superior',
+                align: 'start',
+                value: 'nombrePadre',
+                show: isFilter ? false : true,
+            },
+            {
+                text: 'Nombre',
+                align: 'start',
+                value: 'nombre',
+                show: true,
+            },
+            {
+                text: 'Descripción',
+                align: 'start',
+                value: 'descripcion',
+                show: false,
+            },
+            {
+                text: 'Interna',
+                type: 'bool',
+                align: 'center',
+                value: 'esInterna',
+                show: companyId === buoId,
+            },
+            {
+                text: 'Estado',
+                align: 'center',
+                type: 'chip',
+                value: 'nombreEstado',
+                show: false,
+            },
+            {
+                text: 'Creado Por',
+                align: 'start',
+                value: 'nombreUsuarioCrea',
+                show: false,
+            },
+        ],
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
 const promotionalCodeSetting = ({ key, singleSelect, isFilter }) => {
     return {
         endpoint: 'codigoPromocion/findBy',
@@ -900,6 +964,18 @@ export const baseFilterSettingsHelper = {
      */
     $_setDepartmentSetting({ key, companyId, singleSelect, isFilter }) {
         return departmentSetting({ key, companyId, singleSelect, isFilter });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setAssessmentTypeSetting({ key, companyId, singleSelect, isFilter }) {
+        return assessmentTypeSetting({
+            key,
+            companyId,
+            singleSelect,
+            isFilter,
+        });
     },
 
     /**

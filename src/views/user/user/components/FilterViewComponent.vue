@@ -10,7 +10,11 @@ import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
+import baseLocalHelper from '@/helpers/baseLocalHelper';
+
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
@@ -38,6 +42,12 @@ export default {
         AssessmentViewComponent,
     },
 
+    data() {
+        return {
+            entity: {},
+        };
+    },
+
     computed: {
         ...mapGetters('authentication', ['user']),
 
@@ -58,6 +68,7 @@ export default {
         setting() {
             return baseFilterSettingsHelper.$_setUserSetting({
                 companyId: this.user.companyId,
+                singleSelect: false,
             });
         },
 
@@ -74,10 +85,10 @@ export default {
         /**
          * Body Request
          */
-        $_createBodyRequestDelete(row) {
+        $_createBodyRequestDelete(id) {
             const request = {
                 userId: this.user.userId,
-                id: row[0].id,
+                id: id,
             };
             return request;
         },
@@ -86,13 +97,18 @@ export default {
          * Desactive Function
          */
         $_fnDesactiveUser(row) {
-            httpService
-                .post('user/deactivate', this.$_createBodyRequestDelete(row))
-                .then((response) => {
-                    if (response != undefined) {
-                        this.$refs.UserFilter.$_ParamsToAPI();
-                    }
-                });
+            row.forEach((element) => {
+                httpService
+                    .post(
+                        'user/deactivate',
+                        this.$_createBodyRequestDelete(element.id)
+                    )
+                    .then((response) => {
+                        if (response != undefined) {
+                            this.$refs.UserFilter.$_ParamsToAPI();
+                        }
+                    });
+            });
         },
 
         $_setQuery() {
@@ -127,6 +143,73 @@ export default {
                 query: this.$_setQuery(),
             });
         },
+
+        $_validateSameCompany(row) {
+            const array = row.filter(
+                (element) => element.organizacionId != row[0].organizacionId
+            );
+
+            return array.length === 0;
+        },
+
+        $_setEntity(row) {
+            if (this.$_validateSameCompany(row)) {
+                this.entity.companyId = row[0].organizacionId;
+                this.entity.userList = row.map((element) => {
+                    return {
+                        userId: element.id,
+                        name: element.nombreCompleto,
+                        companyId: element.organizacionId,
+                    };
+                });
+            } else {
+                baseNotificationsHelper.Message(
+                    true,
+                    baseLocalHelper.$_MsgErrorAction
+                );
+            }
+        },
+
+        /**
+         * Get a registry
+         */
+        $_GetRow() {
+            return this.$refs.UserFilter.$data.selected;
+        },
+
+        $_setAssessment() {
+            const row = this.$_GetRow();
+
+            switch (true) {
+                case row.length == 0:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
+                    break;
+
+                case row.length > 0:
+                    this.$_setEntity(row);
+                    break;
+            }
+        },
+
+        $_setAssessments() {
+            this.entity.companyId = baseFilterSettingsHelper.$_getCompanyId({
+                userCompanyId: this.user.companyId,
+                companyId: this.organizacionId,
+            });
+        },
+
+        $_setAssessmentByType(type) {
+            this.entity = {};
+
+            if (type) {
+                this.$_setAssessment();
+            } else {
+                this.$_setAssessments();
+            }
+        },
     },
 };
 </script>
@@ -141,15 +224,21 @@ export default {
         :fnDelete="permission?.Write ? $_fnDesactiveUser : undefined"
     >
         <div slot="btns">
-            <BaseCustomsButtonsGrid
-                v-if="permission?.Upload"
-                label="Carga Masiva"
-                :fnMethod="$_fnLoad"
-                icon="mdi-table-arrow-up"
-                :color="app ? 'blueProgress600' : 'blue800'"
-            />
+            <v-row class="pl-3 pt-3">
+                <BaseCustomsButtonsGrid
+                    v-if="permission?.Upload"
+                    label="Carga Masiva"
+                    :fnMethod="$_fnLoad"
+                    icon="mdi-table-arrow-up"
+                    :color="app ? 'blueProgress600' : 'blue900'"
+                />
 
-            <AssessmentViewComponent />
+                <AssessmentViewComponent
+                    :entity="entity"
+                    :organizacionId="organizacionId"
+                    :fn="$_setAssessmentByType"
+                />
+            </v-row>
         </div>
     </BaseServerDataTable>
 </template>

@@ -20,8 +20,9 @@ import approvalRoutes from '@/views/approval/router';
 
 import analyticsRoutes from '@/views/analytics/router';
 
-
 import assignmentRoutes from '@/views/assignment/router';
+
+import assessmentRoutes from '@/views/assessment/router';
 
 import departmentRoutes from '@/views/department/router';
 
@@ -46,6 +47,7 @@ const routes = [
             ...companyRoutes,
             ...analyticsRoutes,
             ...assignmentRoutes,
+            ...assessmentRoutes,
             ...departmentRoutes,
             ...microAbilityRoutes,
             ...promotionalCodesRoutes,

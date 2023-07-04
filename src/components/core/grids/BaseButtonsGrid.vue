@@ -170,14 +170,14 @@ export default {
             :justify-end="!rows"
             align-content-center
         >
-            <div
+            <section
                 style="display: flex; flex-wrap: wrap; align-content: center"
                 class="BUO-Label-Small ma-2 d-flex justify-start mb-6"
                 v-if="rows && $vuetify.breakpoint.mdAndUp"
             >
                 {{ rows }}
-            </div>
-            <div
+            </section>
+            <section
                 :class="[
                     $vuetify.breakpoint.mdAndUp && 'd-flex justify-end mb-6',
                 ]"
@@ -247,7 +247,7 @@ export default {
                 </v-btn>
                 <!-- @slot Use este slot para agregar más botones -->
                 <slot name="btns"></slot>
-            </div>
+            </section>
         </v-layout>
     </v-row>
 </template>
