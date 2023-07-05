@@ -1,8 +1,8 @@
 <script>
 /**
- * Descripción: Pantalla Filtro Tipo de Assessments
+ * Descripción: Pantalla Filtro Assessments
  *
- * @displayName AssessmentTypeFilterViewComponent
+ * @displayName AssessmentFilterViewComponent
  *
  */
 
@@ -21,7 +21,7 @@ const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
 export default {
-    name: 'AssessmentTypeFilterViewComponent',
+    name: 'AssessmentFilterViewComponent',
 
     components: {
         BaseCardViewComponent,
@@ -93,7 +93,7 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="Tipos de assessments">
+    <BaseCardViewComponent title="Assessments">
         <div slot="card-text">
             <BaseServerDataTable
                 ref="Filter"
