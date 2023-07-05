@@ -49,7 +49,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters('authentication', ['user']),
+        ...mapGetters('authentication', ['user', 'buoId']),
 
         ...mapGetters('theme', ['app']),
 
@@ -154,6 +154,7 @@ export default {
 
         $_setEntity(row) {
             if (this.$_validateSameCompany(row)) {
+                this.entity.isMultiple = false;
                 this.entity.companyId = row[0].organizacionId;
                 this.entity.userList = row.map((element) => {
                     return {
@@ -195,6 +196,15 @@ export default {
         },
 
         $_setAssessments() {
+            if (this.user.companyId === this.buoId && !this.organizacionId) {
+                baseNotificationsHelper.Message(
+                    true,
+                    baseLocalHelper.$_MsgErrorAction
+                );
+                return;
+            }
+
+            this.entity.isMultiple = true;
             this.entity.companyId = baseFilterSettingsHelper.$_getCompanyId({
                 userCompanyId: this.user.companyId,
                 companyId: this.organizacionId,

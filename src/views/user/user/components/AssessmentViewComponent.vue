@@ -43,6 +43,8 @@ export default {
     computed: {
         ...mapGetters('theme', ['app']),
 
+        ...mapGetters('authentication', ['user', 'buoId']),
+
         actions() {
             return [
                 {
@@ -55,7 +57,7 @@ export default {
                     id: 2,
                     icon: 'pencil-box-multiple-outline',
                     value: 'Asignación Masiva',
-                    fn: this.$_setAssessment,
+                    fn: this.$_setAssessments,
                 },
             ];
         },
@@ -63,11 +65,15 @@ export default {
 
     watch: {
         /**
-         * Actualizar calendarios
+         * Actualizar Dialog
          */
         entity: {
-            handler(value) {
-                console.log(value);
+            handler(newValue, oldValue) {
+                if (newValue && newValue.companyId) {
+                    this.$_reviewStatus(newValue);
+                }
+
+                console.log(oldValue);
             },
             immediate: true,
             deep: true,
@@ -82,12 +88,13 @@ export default {
         },
 
         $_open() {
-            this.$refs['popUp'].$_openModal();
+            if (!this.$refs['popUp'].$_checkStatus()) {
+                this.$refs['popUp'].$_openModal();
+            }
         },
 
         $_setAssessment() {
             this.fn(true);
-            this.$_open();
         },
 
         $_setAssessments() {
@@ -102,6 +109,28 @@ export default {
         },
 
         $_sendToApi() {},
+
+        $_openAssessment(value) {
+            if (value.userList && value.userList.length > 0) {
+                this.$_open();
+            }
+        },
+
+        $_openAssessments() {
+            if (this.user.companyId === this.buoId && !this.organizacionId) {
+                return;
+            }
+
+            this.$_open();
+        },
+
+        $_reviewStatus(value) {
+            if (value.isMultiple) {
+                this.$_openAssessments(value);
+            } else {
+                this.$_openAssessment(value);
+            }
+        },
     },
 };
 </script>
@@ -112,6 +141,10 @@ export default {
             ref="popUp"
             :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '600'"
             scrollable
+            :isDrawer="
+                this.$router.currentRoute.name !==
+                'CompanyDashboardViewComponent'
+            "
         >
             <div slot="Content">
                 <BaseSkeletonLoader v-if="loading" type="article, actions" />
