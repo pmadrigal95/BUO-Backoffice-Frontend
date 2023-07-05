@@ -3,20 +3,18 @@
  */
 const routes = [
     {
-        path: '/Assessments/Type/Filter',
-        name: 'AssessmentTypeFilterViewComponent',
-        component:
-            'assessment/assessmentType/AssessmentTypeFilterViewComponent',
+        path: '/Assessments/Filter',
+        name: 'AssessmentFilterViewComponent',
+        component: 'assessment/assessment/AssessmentFilterViewComponent',
         meta: {
             module: 'CategoryViewComponent',
         },
     },
 
     {
-        path: '/Assessments/Type/Editor/:Id?',
-        name: 'AssessmentTypeEditorViewComponent',
-        component:
-            'assessment/assessmentType/AssessmentTypeEditorViewComponent',
+        path: '/Assessments/Editor/:Id?',
+        name: 'AssessmentEditorViewComponent',
+        component: 'assessment/assessment/AssessmentEditorViewComponent',
         meta: {
             module: 'CategoryViewComponent',
         },

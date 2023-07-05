@@ -1,8 +1,8 @@
 <script>
 /**
- * Descripción: Pantalla Editor Tipo de Assessments
+ * Descripción: Pantalla Editor Assessments
  *
- * @displayName AssessmentTypeEditorViewComponent
+ * @displayName AssessmentEditorViewComponent
  *
  */
 
@@ -24,7 +24,7 @@ const BaseInputTreeview = () =>
     import('@/components/core/treeview/BaseInputTreeview');
 
 export default {
-    name: 'AssessmentTypeEditorViewComponent',
+    name: 'AssessmentEditorViewComponent',
 
     components: {
         BaseInputTreeview,
@@ -53,10 +53,10 @@ export default {
         },
     },
 
-    watch: {
+    /* watch: {
         /**
          * Actualizar calendarios
-         */
+         
         'entity.organizacionId': {
             handler(newValue, oldValue) {
                 if (oldValue) {
@@ -66,6 +66,7 @@ export default {
             immediate: true,
         },
     },
+    */
 
     created() {
         /**
@@ -94,11 +95,11 @@ export default {
          */
         $_Object() {
             return {
-                id: 0,
-                padreId: undefined,
+                id: undefined,
                 nombre: undefined,
                 descripcion: undefined,
-                esInterna: undefined,
+                tipoPruebaId: undefined,
+                enlace: undefined,
                 estadoId: 2,
                 organizacionId: undefined,
                 usuarioModificaId: undefined,
@@ -117,7 +118,7 @@ export default {
             if (data) {
                 //HttpServices a la vista para obtener Vista
                 this.loading = true;
-                httpService.get(`tipoPrueba/${data}`).then((response) => {
+                httpService.get(`prueba/${data}`).then((response) => {
                     this.loading = false;
                     if (response != undefined) {
                         // Encontro la entidad
@@ -135,7 +136,7 @@ export default {
             this.$_setToUser();
             let object = BaseArrayHelper.SetObject({}, this.entity);
 
-            httpService.post('tipoPrueba/save', object).then((response) => {
+            httpService.post('prueba/save', object).then((response) => {
                 this.loading = false;
 
                 if (response != undefined) {
@@ -146,7 +147,7 @@ export default {
         },
 
         /**
-         * Function to return the PromotionalCodesFilterViewComponent
+         * Function to return the AssessmentFilterViewComponent
          */
         $_returnToFilter() {
             this.$router.back();
@@ -157,7 +158,7 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="Tipos de assessments"
+        title="Assessments"
         :btnAction="$_returnToFilter"
         class="mx-auto"
         md="6"
@@ -186,17 +187,24 @@ export default {
                                 label="Nombre"
                                 v-model.number="entity.nombre"
                                 :validate="['text']"
+                                :max="200"
                             />
                         </v-col>
                         <v-col cols="12">
                             <BaseInputTreeview
-                                label="Nivel Superior"
-                                v-model.number="entity.padreId"
-                                :editText="entity.nombrePadre"
-                                :readonly="!entity.organizacionId"
+                                label="Tipo de assessment"
+                                v-model.number="entity.tipoPruebaId"
                                 itemText="nombre"
                                 itemChildren="subCategorias"
                                 :endpoint="`tipoPrueba/findAllTreeForm/${entity.organizacionId}`"
+                                :validate="['requiered']"
+                            />
+                        </v-col>
+                        <v-col cols="12">
+                            <BaseInput
+                                label="Enlace"
+                                v-model.number="entity.enlace"
+                                :validate="['optionalText']"
                             />
                         </v-col>
                         <v-col cols="12">
@@ -204,8 +212,8 @@ export default {
                                 label="Descripción general"
                                 v-model.trim="entity.descripcion"
                                 :validate="['optionalText']"
-                                :max="250"
-                                counter="250"
+                                :max="200"
+                                counter="200"
                             />
                         </v-col>
                         <v-col cols="12" v-if="user.companyId === buoId">

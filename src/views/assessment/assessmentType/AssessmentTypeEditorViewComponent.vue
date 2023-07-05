@@ -146,7 +146,7 @@ export default {
         },
 
         /**
-         * Function to return the PromotionalCodesFilterViewComponent
+         * Function to return the AssessmentTypeFilterViewComponent
          */
         $_returnToFilter() {
             this.$router.back();
@@ -186,6 +186,7 @@ export default {
                                 label="Nombre"
                                 v-model.number="entity.nombre"
                                 :validate="['text']"
+                                :max="100"
                             />
                         </v-col>
                         <v-col cols="12">
@@ -204,8 +205,8 @@ export default {
                                 label="Descripción general"
                                 v-model.trim="entity.descripcion"
                                 :validate="['optionalText']"
-                                :max="250"
-                                counter="250"
+                                :max="200"
+                                counter="200"
                             />
                         </v-col>
                         <v-col cols="12" v-if="user.companyId === buoId">
