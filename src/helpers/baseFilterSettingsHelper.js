@@ -771,6 +771,153 @@ const assessmentTypeSetting = ({ key, companyId, singleSelect, isFilter }) => {
 /**
  * Configuracion BaseServerDataTable
  */
+const assessmentSetting = ({
+    key,
+    companyId,
+    assessmentTypeId,
+    singleSelect,
+    isFilter,
+}) => {
+    return {
+        endpoint: assessmentTypeId
+            ? `prueba/findByDeep/${assessmentTypeId}`
+            : 'prueba/findBy',
+        columns: [
+            {
+                text: 'Empresa',
+                align: 'start',
+                value: 'nombreOrganizacion',
+                show: companyId === buoId,
+            },
+            {
+                text: 'Departamento',
+                align: 'start',
+                value: 'nombreDepartamento',
+                show: false,
+            },
+            {
+                text: 'Tipo',
+                align: 'start',
+                value: 'nombreTipoPrueba',
+                show: isFilter ? false : true,
+            },
+            {
+                text: 'Assessment',
+                align: 'start',
+                value: 'nombre',
+                show: true,
+            },
+            {
+                text: 'Descripción',
+                align: 'start',
+                value: 'descripcion',
+                show: false,
+            },
+            {
+                text: 'Enlace',
+                align: 'start',
+                value: 'enlace',
+                show: false,
+            },
+            {
+                text: 'Estado',
+                align: 'center',
+                type: 'chip',
+                value: 'nombreEstado',
+                show: false,
+            },
+            {
+                text: 'Creado Por',
+                align: 'start',
+                value: 'nombreUsuarioCrea',
+                show: false,
+            },
+        ],
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const userAssessmentSetting = ({
+    key,
+    companyId,
+    departmentId,
+    singleSelect,
+    isFilter,
+}) => {
+    return {
+        endpoint: departmentId
+            ? `usuarioPrueba/findByDeep/${departmentId}`
+            : 'usuarioPrueba/findBy',
+        columns: [
+            {
+                text: 'Empresa',
+                align: 'start',
+                value: 'nombreOrganizacion',
+                show: companyId === buoId,
+            },
+            {
+                text: 'Área / Departamento',
+                align: 'start',
+                value: 'nombreDepartamento',
+                show: departmentId != undefined,
+            },
+            {
+                text: 'Nombre',
+                align: 'start',
+                value: 'nombreUsuario',
+                show: true,
+            },
+            {
+                text: 'Correo',
+                align: 'start',
+                value: 'correo',
+                show: isFilter ? true : false,
+            },
+            {
+                text: 'Tipo',
+                align: 'start',
+                value: 'nombreTipoPrueba',
+                show: true,
+            },
+            {
+                text: 'Assessment',
+                align: 'start',
+                value: 'nombrePrueba',
+                show: true,
+            },
+            {
+                text: 'Resultado',
+                align: 'center',
+                value: 'resultado',
+                show: true,
+            },
+            {
+                text: 'Fecha Asignación',
+                align: 'start',
+                value: 'fechaAsignacionFormato',
+                show: false,
+            },
+            {
+                text: 'Fecha Completado',
+                align: 'start',
+                value: 'fechaCompletadaFormato',
+                show: false,
+            },
+        ],
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
 const promotionalCodeSetting = ({ key, singleSelect, isFilter }) => {
     return {
         endpoint: 'codigoPromocion/findBy',
@@ -973,6 +1120,44 @@ export const baseFilterSettingsHelper = {
         return assessmentTypeSetting({
             key,
             companyId,
+            singleSelect,
+            isFilter,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setAssessmentSetting({
+        key,
+        companyId,
+        assessmentTypeId,
+        singleSelect,
+        isFilter,
+    }) {
+        return assessmentSetting({
+            key,
+            companyId,
+            assessmentTypeId,
+            singleSelect,
+            isFilter,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setUserAssessmentSetting({
+        key,
+        companyId,
+        departmentId,
+        singleSelect,
+        isFilter,
+    }) {
+        return userAssessmentSetting({
+            key,
+            companyId,
+            departmentId,
             singleSelect,
             isFilter,
         });
