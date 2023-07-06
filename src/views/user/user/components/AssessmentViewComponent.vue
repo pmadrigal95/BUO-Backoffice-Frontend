@@ -8,6 +8,11 @@
 
 import { mapGetters } from 'vuex';
 
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
+const BaseInputDataTable = () =>
+    import('@/components/core/forms/BaseInputDataTable');
+
 const BaseInputTreeview = () =>
     import('@/components/core/treeview/BaseInputTreeview');
 
@@ -30,12 +35,13 @@ export default {
         },
     },
 
-    components: { BaseInputTreeview },
+    components: { BaseInputDataTable, BaseInputTreeview },
 
     data() {
         return {
             key: 0,
             loading: false,
+            componentKey: 0,
             form: this.$_Object(),
         };
     },
@@ -61,6 +67,27 @@ export default {
                 },
             ];
         },
+
+        /**
+         * Extra Params
+         */
+        extraParams() {
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity.companyId,
+            });
+        },
+
+        /**
+         * Configuracion BaseServerDataTable
+         */
+        assessmentSetting() {
+            return baseFilterSettingsHelper.$_setAssessmentSetting({
+                companyId: this.user.companyId,
+                assessmentTypeId: this.form.assessmentTypeId,
+                isFilter: true,
+                singleSelect: true,
+            });
+        },
     },
 
     watch: {
@@ -69,21 +96,30 @@ export default {
          */
         entity: {
             handler(newValue, oldValue) {
-                if (newValue && newValue.companyId) {
+                if (newValue && newValue.companyId && newValue != oldValue) {
                     this.$_reviewStatus(newValue);
                 }
-
-                console.log(oldValue);
             },
             immediate: true,
             deep: true,
+        },
+
+        'form.assessmentTypeId': {
+            handler(newValue, oldValue) {
+                if (oldValue) {
+                    this.$_forceUpdateComponente();
+                }
+            },
+            immediate: true,
         },
     },
 
     methods: {
         $_Object() {
             return {
-                type: undefined,
+                assessmentTypeId: undefined,
+                assessmentId: undefined,
+                userIdList: undefined,
             };
         },
 
@@ -111,7 +147,7 @@ export default {
         $_sendToApi() {},
 
         $_openAssessment(value) {
-            if (value.userList && value.userList.length > 0) {
+            if (value.list && value.list.length > 0) {
                 this.$_open();
             }
         },
@@ -130,6 +166,11 @@ export default {
             } else {
                 this.$_openAssessment(value);
             }
+        },
+
+        $_forceUpdateComponente() {
+            this.form.assessmentId = undefined;
+            this.componentKey = this.componentKey + 1;
         },
     },
 };
@@ -166,11 +207,24 @@ export default {
                                         <BaseInputTreeview
                                             v-if="entity && entity.companyId"
                                             label="Tipo de assessment"
-                                            v-model.number="form.type"
+                                            v-model.number="
+                                                form.assessmentTypeId
+                                            "
                                             itemText="nombre"
-                                            itemChildren="subCategorias"
+                                            itemChildren="subTipos"
                                             :endpoint="`tipoPrueba/findAllTree/${entity.companyId}`"
                                             :validate="['requiered']"
+                                        />
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <BaseInputDataTable
+                                            label="Assessment"
+                                            :setting="assessmentSetting"
+                                            :extraParams="extraParams"
+                                            itemText="nombre"
+                                            :readonly="!form.assessmentTypeId"
+                                            v-model.number="form.assessmentId"
+                                            :key="componentKey"
                                         />
                                     </v-col>
                                 </v-row>
@@ -190,8 +244,8 @@ export default {
                                     <v-col cols="12">
                                         <section
                                             v-if="
-                                                entity.userList &&
-                                                entity?.userList.length > 0
+                                                entity.list &&
+                                                entity?.list.length > 0
                                             "
                                             :key="key"
                                         >
@@ -210,7 +264,7 @@ export default {
                                                     <div
                                                         v-for="(
                                                             item, i
-                                                        ) in entity.userList"
+                                                        ) in entity.list"
                                                         :key="i"
                                                     >
                                                         <v-chip
