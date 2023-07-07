@@ -8,6 +8,8 @@
 
 import { mapGetters } from 'vuex';
 
+import httpService from '@/services/axios/httpService';
+
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
 const BaseInputDataTable = () =>
@@ -73,7 +75,7 @@ export default {
          */
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
-                companyId: this.entity.companyId,
+                companyId: this.entity?.companyId,
             });
         },
 
@@ -104,6 +106,25 @@ export default {
             deep: true,
         },
 
+        'entity.list': {
+            handler(newValue, oldValue) {
+                if (
+                    newValue &&
+                    newValue.length == 0 &&
+                    oldValue &&
+                    oldValue.length > 0
+                ) {
+                    if (
+                        this.user.companyId === this.buoId &&
+                        !this.organizacionId
+                    ) {
+                        this.$_close();
+                    }
+                }
+            },
+            immediate: true,
+        },
+
         'form.assessmentTypeId': {
             handler(newValue, oldValue) {
                 if (oldValue) {
@@ -115,16 +136,27 @@ export default {
     },
 
     methods: {
+        $_forceUpdateComponente() {
+            this.form.assessmentId = undefined;
+            this.componentKey = this.componentKey + 1;
+        },
+
         $_Object() {
             return {
                 assessmentTypeId: undefined,
                 assessmentId: undefined,
-                userIdList: undefined,
             };
         },
 
         $_open() {
             if (!this.$refs['popUp'].$_checkStatus()) {
+                this.$refs['popUp'].$_openModal();
+            }
+        },
+
+        $_close() {
+            if (this.$refs['popUp'].$_checkStatus()) {
+                this.form = this.$_Object();
                 this.$refs['popUp'].$_openModal();
             }
         },
@@ -136,15 +168,6 @@ export default {
         $_setAssessments() {
             this.fn();
         },
-
-        $_delete(index) {
-            this.entity.userList = this.entity?.userList.filter(
-                (x) => x.userId != index
-            );
-            this.key++;
-        },
-
-        $_sendToApi() {},
 
         $_openAssessment(value) {
             if (value.list && value.list.length > 0) {
@@ -168,9 +191,34 @@ export default {
             }
         },
 
-        $_forceUpdateComponente() {
-            this.form.assessmentId = undefined;
-            this.componentKey = this.componentKey + 1;
+        $_delete(index) {
+            this.entity.list = this.entity?.list.filter(
+                (x) => x.userId != index
+            );
+            this.key++;
+        },
+
+        $_setBodyRequest() {
+            return {
+                usuarioIdList:
+                    this.entity?.list && this.entity?.list.map((x) => x.userId),
+                pruebaId: this.form.assessmentId,
+                usuarioModificaId: this.user.userId,
+                organizacionId: this.entity?.companyId,
+            };
+        },
+
+        $_sendToApi() {
+            this.loading = true;
+            const request = this.$_setBodyRequest();
+            httpService
+                .post('usuarioPrueba/assign', request)
+                .then((response) => {
+                    if (response != undefined) {
+                        console.log(response);
+                    }
+                    this.loading = false;
+                });
         },
     },
 };
@@ -187,10 +235,15 @@ export default {
                 'CompanyDashboardViewComponent'
             "
         >
-            <div slot="Content">
+            <div slot="Content" v-if="entity">
                 <BaseSkeletonLoader v-if="loading" type="article, actions" />
 
-                <BaseForm :method="$_sendToApi" :cancel="$_open" v-else>
+                <BaseForm
+                    v-else
+                    :cancel="$_close"
+                    labelBtn="Asignar"
+                    :method="$_sendToApi"
+                >
                     <div slot="body">
                         <section
                             class="text-left BUO-Heading-Small mb-2"
@@ -218,12 +271,14 @@ export default {
                                     </v-col>
                                     <v-col cols="12">
                                         <BaseInputDataTable
+                                            v-if="entity"
                                             label="Assessment"
                                             :setting="assessmentSetting"
                                             :extraParams="extraParams"
                                             itemText="nombre"
                                             :readonly="!form.assessmentTypeId"
                                             v-model.number="form.assessmentId"
+                                            :validate="['requiered']"
                                             :key="componentKey"
                                         />
                                     </v-col>
@@ -300,8 +355,8 @@ export default {
                                         </section>
                                         <BaseSwitch
                                             :disabled="true"
+                                            :value="true"
                                             v-else
-                                            v-model="form.useAllEmployees"
                                             label="Asignar el assessment a todos sus
                                                 colaboradores."
                                         />

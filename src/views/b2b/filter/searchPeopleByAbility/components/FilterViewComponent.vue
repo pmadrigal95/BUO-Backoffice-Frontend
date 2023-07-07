@@ -14,6 +14,8 @@ import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
+import { baseAssessmentHelper } from '@/views/user/user/components/baseAssessmentHelper';
+
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
@@ -22,6 +24,9 @@ const BaseCustomsButtonsGrid = () =>
 
 const RadarViewComponent = () =>
     import('@/views/b2b/filter/common/graph/RadarViewComponent');
+
+const AssessmentViewComponent = () =>
+    import('@/views/user/user/components/AssessmentViewComponent');
 
 const ScaleHelperViewComponent = () =>
     import('@/views/b2b/filter/common/display/ScaleHelperViewComponent');
@@ -40,11 +45,13 @@ export default {
         BaseServerDataTable,
         BaseCustomsButtonsGrid,
         RadarViewComponent,
+        AssessmentViewComponent,
         ScaleHelperViewComponent,
     },
 
     data() {
         return {
+            assessment: {},
             usuarioIdList: undefined,
             componentKey: 0,
         };
@@ -52,6 +59,8 @@ export default {
 
     computed: {
         ...mapGetters('theme', ['app']),
+
+        ...mapGetters('authentication', ['user']),
 
         setting() {
             return baseFilterSettingsHelper.$_setDinamycTalentSetting({
@@ -129,6 +138,18 @@ export default {
                     break;
             }
         },
+
+        $_setAssessmentByType(type) {
+            this.assessment = {};
+            this.assessment = baseAssessmentHelper.$_setAssessmentByType({
+                type,
+                key: 'usuarioId',
+                userName: 'nombreEmpleado',
+                getRow: this.$_GetRow,
+                UserCompanyId: this.user.companyId,
+                filterCompanyId: this.entity.organizacionId,
+            });
+        },
     },
 };
 </script>
@@ -154,19 +175,27 @@ export default {
             :fnDoubleClick="$_viewProfile"
         >
             <div slot="btns">
-                <BaseCustomsButtonsGrid
-                    label="Ver Perfil"
-                    :fnMethod="$_viewProfile"
-                    icon="mdi-account-search"
-                    :color="app ? 'blueProgress600' : 'blue800'"
-                />
+                <v-row class="pl-3 pt-3">
+                    <BaseCustomsButtonsGrid
+                        label="Ver Perfil"
+                        :fnMethod="$_viewProfile"
+                        icon="mdi-account-search"
+                        :color="app ? 'blueProgress600' : 'blue900'"
+                    />
 
-                <BaseCustomsButtonsGrid
-                    label="Comparar PDA"
-                    :outlined="false"
-                    :fnMethod="$_userDetails"
-                    icon="mdi-account-group-outline"
-                />
+                    <AssessmentViewComponent
+                        :entity="assessment"
+                        :organizacionId="entity.organizacionId"
+                        :fn="$_setAssessmentByType"
+                    />
+
+                    <BaseCustomsButtonsGrid
+                        label="Comparar PDA"
+                        :outlined="false"
+                        :fnMethod="$_userDetails"
+                        icon="mdi-account-group-outline"
+                    />
+                </v-row>
             </div>
         </BaseServerDataTable>
 

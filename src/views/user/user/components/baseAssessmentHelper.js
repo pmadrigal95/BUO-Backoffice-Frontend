@@ -20,15 +20,26 @@ const validateSameCompany = (userList) => {
     return array.length === 0;
 };
 
-const setEntity = (userList) => {
+const setEntity = ({
+    userList,
+    key = 'id',
+    userName = 'nombreCompleto',
+    UserCompanyId,
+    filterCompanyId,
+}) => {
     if (validateSameCompany(userList)) {
         return {
             isMultiple: false,
-            companyId: userList[0].organizacionId,
+            companyId: userList[0].organizacionId
+                ? userList[0].organizacionId
+                : baseFilterSettingsHelper.$_getCompanyId({
+                      userCompanyId: UserCompanyId,
+                      companyId: filterCompanyId,
+                  }),
             list: userList.map((element) => {
                 return {
-                    userId: element.id,
-                    name: element.nombreCompleto,
+                    userId: element[key],
+                    name: element[userName],
                     companyId: element.organizacionId,
                 };
             }),
@@ -38,7 +49,13 @@ const setEntity = (userList) => {
     }
 };
 
-const setAssessment = ({ getRow }) => {
+const setAssessment = ({
+    getRow,
+    key,
+    userName,
+    UserCompanyId,
+    filterCompanyId,
+}) => {
     const userList = getRow();
 
     switch (true) {
@@ -50,7 +67,13 @@ const setAssessment = ({ getRow }) => {
             break;
 
         case userList.length > 0:
-            return setEntity(userList);
+            return setEntity({
+                userList,
+                key,
+                userName,
+                UserCompanyId,
+                filterCompanyId,
+            });
     }
 };
 
@@ -70,9 +93,22 @@ const setAssessments = ({ UserCompanyId, filterCompanyId }) => {
 };
 
 export const baseAssessmentHelper = {
-    $_setAssessmentByType({ type, getRow, UserCompanyId, filterCompanyId }) {
+    $_setAssessmentByType({
+        type,
+        key,
+        userName,
+        getRow,
+        UserCompanyId,
+        filterCompanyId,
+    }) {
         return type
-            ? setAssessment({ getRow })
+            ? setAssessment({
+                  getRow,
+                  key,
+                  userName,
+                  UserCompanyId,
+                  filterCompanyId,
+              })
             : setAssessments({ UserCompanyId, filterCompanyId });
     },
 };
