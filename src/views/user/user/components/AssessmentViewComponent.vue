@@ -102,7 +102,6 @@ export default {
                     this.$_reviewStatus(newValue);
                 }
             },
-            immediate: true,
             deep: true,
         },
 
@@ -150,6 +149,7 @@ export default {
 
         $_open() {
             if (!this.$refs['popUp'].$_checkStatus()) {
+                this.form = this.$_Object();
                 this.$refs['popUp'].$_openModal();
             }
         },
@@ -210,12 +210,11 @@ export default {
 
         $_sendToApi() {
             this.loading = true;
-            const request = this.$_setBodyRequest();
             httpService
-                .post('usuarioPrueba/assign', request)
+                .post('usuarioPrueba/assign', this.$_setBodyRequest())
                 .then((response) => {
                     if (response != undefined) {
-                        console.log(response);
+                        this.$_close();
                     }
                     this.loading = false;
                 });
@@ -353,13 +352,57 @@ export default {
                                                 </v-chip-group>
                                             </div>
                                         </section>
-                                        <BaseSwitch
-                                            :disabled="true"
-                                            :value="true"
-                                            v-else
-                                            label="Asignar el assessment a todos sus
-                                                colaboradores."
-                                        />
+                                        <section class="text-left" v-else>
+                                            <v-list-item
+                                                Two-line
+                                                class="buo-headerAbility-position"
+                                            >
+                                                <v-list-item-avatar size="45">
+                                                    <v-icon
+                                                        color="primary"
+                                                        size="45"
+                                                        >mdi-alert-circle-outline</v-icon
+                                                    >
+                                                </v-list-item-avatar>
+                                                <v-list-item-content
+                                                    class="ms-n2"
+                                                >
+                                                    <v-list-item-title
+                                                        ><span
+                                                            class="BUO-Paragraph-Medium-SemiBold buo-white-space"
+                                                            :class="[
+                                                                app
+                                                                    ? 'white--text'
+                                                                    : 'grey700--text',
+                                                            ]"
+                                                        >
+                                                            Asignación masiva de
+                                                            assessment</span
+                                                        >
+                                                    </v-list-item-title>
+                                                    <v-list-item-subtitle
+                                                        style="
+                                                            white-space: normal !important;
+                                                        "
+                                                    >
+                                                        <section
+                                                            class="BUO-Label-XSmall buo-word-break"
+                                                            :class="[
+                                                                app
+                                                                    ? 'blueProgress600--text'
+                                                                    : 'grey600--text',
+                                                            ]"
+                                                        >
+                                                            El assessment
+                                                            selecionado se
+                                                            asignará a todos los
+                                                            colaboradores de la
+                                                            empresa.
+                                                        </section>
+                                                    </v-list-item-subtitle>
+                                                </v-list-item-content>
+                                            </v-list-item>
+                                        </section>
                                     </v-col>
                                 </v-row>
                             </v-card-text>
