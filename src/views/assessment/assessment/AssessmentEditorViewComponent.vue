@@ -53,21 +53,6 @@ export default {
         },
     },
 
-    /* watch: {
-        /**
-         * Actualizar calendarios
-         
-        'entity.organizacionId': {
-            handler(newValue, oldValue) {
-                if (oldValue) {
-                    this.entity.padreId = undefined;
-                }
-            },
-            immediate: true,
-        },
-    },
-    */
-
     created() {
         /**
          * Determinar si Es nuevo / editor
@@ -95,7 +80,7 @@ export default {
          */
         $_Object() {
             return {
-                id: undefined,
+                id: 0,
                 nombre: undefined,
                 descripcion: undefined,
                 tipoPruebaId: undefined,
