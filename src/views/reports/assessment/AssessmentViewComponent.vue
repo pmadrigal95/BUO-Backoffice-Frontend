@@ -8,60 +8,66 @@
 
 import { mapGetters } from 'vuex';
 
-// import httpService from '@/services/axios/httpService';
-
-// import baseSecurityHelper from '@/helpers/baseSecurityHelper';
-
-import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
-
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
-const BaseServerDataTable = () =>
-    import('@/components/core/grids/BaseServerDataTable');
+const ScaleHelperViewComponent = () =>
+    import('@/views/b2b/filter/common/display/ScaleHelperViewComponent');
+
+const DisplayViewComponent = () =>
+    import('@/views/reports/assessment/components/DisplayViewComponent');
 
 export default {
     name: 'AssessmentViewComponent',
 
     components: {
         BaseCardViewComponent,
-        BaseServerDataTable,
+        DisplayViewComponent,
+        ScaleHelperViewComponent,
+    },
+
+    data() {
+        return {
+            entity: this.$_Object(),
+        };
     },
 
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
-        // write() {
-        //     const result = baseSecurityHelper.$_ReadPermission(
-        //         'DepartmentViewComponent',
-        //         baseSecurityHelper.$_write
-        //     );
-        //     return result;
-        // },
+        ...mapGetters('theme', ['app']),
+    },
 
-        extraParams() {
-            return baseFilterSettingsHelper.$_setExtraParams({
-                companyId: this.user.companyId,
-            });
-        },
-
-        setting() {
-            return baseFilterSettingsHelper.$_setUserAssessmentSetting({
-                companyId: this.user.companyId,
-            });
+    methods: {
+        /**
+         * Entity Object
+         */
+        $_Object() {
+            return {};
         },
     },
 };
 </script>
 
 <template>
-    <BaseCardViewComponent title="Control de assessments">
+    <BaseCardViewComponent
+        title="Supervisa con precisión, lidera con éxito"
+        subtitle="Tu centro de control de assessments para un equipo de alto rendimiento."
+    >
         <div slot="card-text">
-            <BaseServerDataTable
-                ref="Filter"
-                :setting="setting"
-                :extraParams="extraParams"
-            />
+            <span>Filtros Avanzados</span>
+
+            <v-card flat class="rounded-t-xl">
+                <v-card-text>
+                    <v-row justify="end" class="pa-3">
+                        <span>Aca va el boton</span>
+                    </v-row>
+                    <ScaleHelperViewComponent />
+                    <section class="pt-3">
+                        <DisplayViewComponent :entity="entity" />
+                    </section>
+                </v-card-text>
+            </v-card>
         </div>
     </BaseCardViewComponent>
 </template>

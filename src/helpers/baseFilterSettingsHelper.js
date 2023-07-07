@@ -776,7 +776,6 @@ const assessmentSetting = ({
     companyId,
     assessmentTypeId,
     singleSelect,
-    isFilter,
 }) => {
     return {
         endpoint: assessmentTypeId
@@ -799,7 +798,7 @@ const assessmentSetting = ({
                 text: 'Tipo',
                 align: 'start',
                 value: 'nombreTipoPrueba',
-                show: isFilter ? false : true,
+                show: true,
             },
             {
                 text: 'Assessment',
@@ -891,8 +890,22 @@ const userAssessmentSetting = ({
                 show: true,
             },
             {
-                text: 'Resultado',
+                text: 'Asignado',
                 align: 'center',
+                type: 'bool',
+                value: 'asignado',
+                show: true,
+            },
+            {
+                text: 'Completado',
+                align: 'center',
+                type: 'bool',
+                value: 'completado',
+                show: true,
+            },
+            {
+                text: 'Resultado',
+                type: 'color',
                 value: 'resultado',
                 show: true,
             },
