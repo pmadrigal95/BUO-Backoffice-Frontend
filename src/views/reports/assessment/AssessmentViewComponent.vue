@@ -11,6 +11,12 @@ import { mapGetters } from 'vuex';
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
+const BaseCustomsButtonsGrid = () =>
+    import('@/components/core/grids/BaseCustomsButtonsGrid');
+
+const BaseAdvancedFilter = () =>
+    import('@/components/backoffice/filter/BaseAdvancedFilter');
+
 const ScaleHelperViewComponent = () =>
     import('@/views/b2b/filter/common/display/ScaleHelperViewComponent');
 
@@ -21,7 +27,9 @@ export default {
     name: 'AssessmentViewComponent',
 
     components: {
+        BaseAdvancedFilter,
         BaseCardViewComponent,
+        BaseCustomsButtonsGrid,
         DisplayViewComponent,
         ScaleHelperViewComponent,
     },
@@ -29,6 +37,7 @@ export default {
     data() {
         return {
             entity: this.$_Object(),
+            show: true,
         };
     },
 
@@ -43,7 +52,14 @@ export default {
          * Entity Object
          */
         $_Object() {
-            return {};
+            return {
+                organizacionId: undefined,
+                departamentoId: undefined,
+            };
+        },
+
+        $_showAdvFilter() {
+            this.show = !this.show;
         },
     },
 };
@@ -55,19 +71,26 @@ export default {
         subtitle="Tu centro de control de assessments para un equipo de alto rendimiento."
     >
         <div slot="card-text">
-            <span>Filtros Avanzados</span>
-
-            <v-card flat class="rounded-t-xl">
-                <v-card-text>
-                    <v-row justify="end" class="pa-3">
-                        <span>Aca va el boton</span>
-                    </v-row>
-                    <ScaleHelperViewComponent />
-                    <section class="pt-3">
-                        <DisplayViewComponent :entity="entity" />
-                    </section>
-                </v-card-text>
-            </v-card>
+            <BaseAdvancedFilter :show="show" v-model="entity">
+                <div slot="body">
+                    <v-card flat class="rounded-t-xl">
+                        <v-card-text>
+                            <v-row justify="end" class="pa-3">
+                                <BaseCustomsButtonsGrid
+                                    label="Filtro Avanzado"
+                                    :fnMethod="$_showAdvFilter"
+                                    :outlined="!show"
+                                    icon="mdi-filter-cog-outline"
+                                />
+                            </v-row>
+                            <ScaleHelperViewComponent />
+                            <section class="pt-3">
+                                <DisplayViewComponent :entity="entity" />
+                            </section>
+                        </v-card-text>
+                    </v-card>
+                </div>
+            </BaseAdvancedFilter>
         </div>
     </BaseCardViewComponent>
 </template>

@@ -945,7 +945,7 @@ export default {
                 case x === 0:
                     return 'secondary50';
                 default:
-                    return 'secondary40';
+                    return 'transparent';
             }
         },
 

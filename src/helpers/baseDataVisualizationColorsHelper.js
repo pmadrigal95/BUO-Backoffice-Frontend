@@ -12,6 +12,7 @@ const colorArray = [
         secondary60: '#81CDDD',
         secondary50: '#B3E1EA',
         secondary40: '#CDEBF1',
+        transparent: 'transparent',
     },
     {
         main: '#23706C',
@@ -20,6 +21,7 @@ const colorArray = [
         secondary60: '#91B8B6',
         secondary50: '#BDD4D3',
         secondary40: '#D3E2E2',
+        transparent: 'transparent',
     },
     {
         main: '#74A267',
@@ -28,6 +30,7 @@ const colorArray = [
         secondary60: '#BAD0B3',
         secondary50: '#D5E3D1',
         secondary40: '#E3ECE1',
+        transparent: 'transparent',
     },
     {
         main: '#B1B562',
@@ -36,6 +39,7 @@ const colorArray = [
         secondary60: '#D8DAB1',
         secondary50: '#E8E9D0',
         secondary40: '#EFF0E0',
+        transparent: 'transparent',
     },
     {
         main: '#AB6B4C',
@@ -44,6 +48,7 @@ const colorArray = [
         secondary60: '#D5B5A5',
         secondary50: '#E6D3C9',
         secondary40: '#EEE1DB',
+        transparent: 'transparent',
     },
     {
         main: '#7E3F5A',
@@ -52,6 +57,7 @@ const colorArray = [
         secondary60: '#BF9FAD',
         secondary50: '#D8C5CE',
         secondary40: '#E5D9DE',
+        transparent: 'transparent',
     },
 ];
 
