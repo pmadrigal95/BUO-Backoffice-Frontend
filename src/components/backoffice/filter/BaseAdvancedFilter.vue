@@ -41,7 +41,7 @@ export default {
 
         isIndicator: {
             type: Boolean,
-            default: true,
+            default: false,
         },
 
         isUser: {
@@ -56,7 +56,7 @@ export default {
 
         isAssessmentType: {
             type: Boolean,
-            default: false,
+            default: true,
         },
 
         /**
@@ -76,9 +76,9 @@ export default {
     data() {
         return {
             temp: this.$_Object(),
-            test: undefined,
             componentKey: 0,
             filterKey: 0,
+            companyKey: 0,
         };
     },
 
@@ -106,6 +106,21 @@ export default {
             });
         },
 
+        /**
+         * Configuracion BaseServerDataTable
+         */
+        userSetting() {
+            return baseFilterSettingsHelper.$_setUserSetting({
+                companyId: this.user.companyId,
+                departmentId: this.temp.departamentoId,
+                isFilter: true,
+                singleSelect: false,
+            });
+        },
+
+        /**
+         * Configuracion BaseServerDataTable
+         */
         abilitySetting() {
             return baseFilterSettingsHelper.$_setAbilitySetting({
                 companyId: this.user.companyId,
@@ -121,31 +136,25 @@ export default {
     },
 
     watch: {
-        // 'temp.organizacionId': {
-        //     handler(newValue, oldValue) {
-        //         console.log(newValue, oldValue);
-        //         if (oldValue) {
-        //             if (this.isDepartment) {
-        //                 this.temp.departamentoId = undefined;
-        //             }
-
-        //             if (this.isIndicator) {
-        //                 this.temp.cualificacionId = undefined;
-        //             }
-
-        //             this.filterKey++;
-        //         }
-        //     },
-        //     immediate: true,
-        // },
-
-        test: {
+        'temp.organizacionId': {
             handler(newValue, oldValue) {
-                console.log(newValue);
-                console.log(oldValue);
+                if (oldValue != newValue) {
+                    this.$_cleanFilter();
+                }
             },
-            // immediate: true,
-            deep: true,
+            immediate: true,
+        },
+
+        /**
+         * Actualizar
+         */
+        'temp.departamentoId': {
+            handler(newValue, oldValue) {
+                if (oldValue != newValue) {
+                    this.$_cleanFilter(false);
+                }
+            },
+            immediate: true,
         },
     },
 
@@ -156,12 +165,15 @@ export default {
         $_Object() {
             return {
                 organizacionId: undefined,
-                companyName: undefined,
+                departamentoId: undefined,
+                usuarioId: undefined,
+                cualificacionId: undefined,
+                categoriaId: undefined,
+                tipoPruebaId: undefined,
             };
         },
 
         $_setCompanyDefault() {
-            this.temp = {};
             this.temp.organizacionId = this.user.companyId;
             this.temp.companyName = this.user.companyName;
         },
@@ -177,13 +189,25 @@ export default {
         },
 
         $_setParams() {
-            console.log('object');
+            console.log(this.temp);
         },
 
         $_clean() {
+            this.$_cleanFilter();
             this.$_reviewCompanyId();
+            this.companyKey++;
+            this.componentKey++;
+        },
+
+        $_cleanFilter(clearDepartment = true) {
+            this.temp.departamentoId = clearDepartment
+                ? undefined
+                : this.temp.departamentoId;
+            this.temp.usuarioId = undefined;
+            this.temp.cualificacionId = undefined;
+            this.temp.categoriaId = undefined;
+            this.temp.tipoPruebaId = undefined;
             this.filterKey++;
-            console.log(this.temp);
         },
     },
 };
@@ -198,7 +222,7 @@ export default {
                     labelBtn="Buscar"
                     :method="$_setParams"
                 >
-                    <div slot="body" :key="filterKey">
+                    <div slot="body">
                         <v-col cols="12">
                             <p
                                 v-if="title"
@@ -213,8 +237,9 @@ export default {
                                 label="Empresa"
                                 :setting="companySetting"
                                 :editText="temp.companyName"
-                                v-model="test"
+                                v-model.number="temp.organizacionId"
                                 :validate="['requiered']"
+                                :key="companyKey"
                             />
                         </v-col>
 
@@ -226,6 +251,30 @@ export default {
                                 itemText="nombre"
                                 itemChildren="subDepartamentos"
                                 :endpoint="`departamento/findAllTree/${temp.organizacionId}`"
+                            />
+                        </v-col>
+
+                        <v-col cols="12" v-if="isUser">
+                            <BaseInputDataTable
+                                label="Colaboradores"
+                                :setting="userSetting"
+                                :extraParams="extraParams"
+                                itemText="nombreCompleto"
+                                :readonly="!temp.organizacionId"
+                                :editText="temp.nombre"
+                                v-model="temp.usuarioId"
+                                :key="filterKey"
+                            />
+                        </v-col>
+
+                        <v-col cols="12" v-if="isIndicatorCategory">
+                            <BaseInputTreeview
+                                label="Categoría"
+                                v-model.number="temp.categoriaId"
+                                :readonly="!temp.organizacionId"
+                                itemText="nombre"
+                                itemChildren="subCategorias"
+                                :endpoint="`categoria/findAllTree/${temp.organizacionId}`"
                             />
                         </v-col>
 
@@ -241,6 +290,17 @@ export default {
                                 :editText="temp.definicion"
                                 v-model="temp.cualificacionId"
                                 :validate="['requiered']"
+                            />
+                        </v-col>
+
+                        <v-col cols="12">
+                            <BaseInputTreeview
+                                label="Tipo de assessment"
+                                v-model.number="temp.tipoPruebaId"
+                                :readonly="!temp.organizacionId"
+                                itemText="nombre"
+                                itemChildren="subTipos"
+                                :endpoint="`tipoPrueba/findAllTree/${temp.organizacionId}`"
                             />
                         </v-col>
                     </div>

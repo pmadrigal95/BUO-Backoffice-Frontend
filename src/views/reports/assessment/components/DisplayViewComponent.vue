@@ -9,6 +9,9 @@
 const FilterViewComponent = () =>
     import('@/views/reports/assessment/components/FilterViewComponent');
 
+const ReportViewComponent = () =>
+    import('@/views/reports/assessment/components/ReportViewComponent');
+
 export default {
     name: 'DisplayViewComponent',
 
@@ -21,6 +24,11 @@ export default {
 
     components: {
         FilterViewComponent,
+        ReportViewComponent,
+    },
+
+    created() {
+        this.entity.step = 1;
     },
 
     // data() {
@@ -50,7 +58,7 @@ export default {
         </v-window-item>
 
         <v-window-item :value="1">
-            <span>Hola</span>
+            <ReportViewComponent />
         </v-window-item>
     </v-window>
 </template>
