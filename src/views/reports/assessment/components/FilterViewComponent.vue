@@ -23,6 +23,13 @@ const BaseCustomsButtonsGrid = () =>
 export default {
     name: 'AssessmentViewComponent',
 
+    props: {
+        entity: {
+            type: Object,
+            requiered: true,
+        },
+    },
+
     components: {
         BaseServerDataTable,
         BaseCustomsButtonsGrid,
@@ -43,13 +50,15 @@ export default {
 
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
-                companyId: this.user.companyId,
+                companyId: this.entity.companyId,
             });
         },
 
         setting() {
             return baseFilterSettingsHelper.$_setUserAssessmentSetting({
                 companyId: this.user.companyId,
+                departmentId: this.entity.departmentId,
+                singleSelect: false,
             });
         },
     },

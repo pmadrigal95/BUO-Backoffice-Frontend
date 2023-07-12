@@ -36,7 +36,7 @@ export default {
 
     data() {
         return {
-            entity: this.$_Object(),
+            entity: {},
             show: true,
         };
     },
@@ -48,16 +48,6 @@ export default {
     },
 
     methods: {
-        /**
-         * Entity Object
-         */
-        $_Object() {
-            return {
-                organizacionId: undefined,
-                departamentoId: undefined,
-            };
-        },
-
         $_showAdvFilter() {
             this.show = !this.show;
         },
@@ -71,7 +61,14 @@ export default {
         subtitle="Tu centro de control de assessments para un equipo de alto rendimiento."
     >
         <div slot="card-text">
-            <BaseAdvancedFilter :show="show" v-model="entity">
+            <BaseAdvancedFilter
+                :show="show"
+                isDepartment
+                v-model="entity"
+                :title="`Seleccione ${
+                    user.companyId === buoId ? 'la empresa' : 'el departamento'
+                }`"
+            >
                 <div slot="body">
                     <v-card flat class="rounded-t-xl">
                         <v-card-text>

@@ -54,7 +54,7 @@ export default {
 <template>
     <v-window v-model="entity.step" touchless>
         <v-window-item :value="0">
-            <FilterViewComponent />
+            <FilterViewComponent :entity="entity" />
         </v-window-item>
 
         <v-window-item :value="1">
