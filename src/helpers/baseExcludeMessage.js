@@ -10,6 +10,7 @@ const exclusionList = [
     'analytics',
     'menuUsuario',
     'pda/getTestList',
+    'pruebaResultado',
     '/user/authenticate',
     'createShareableLink',
     'misc/validateCaptcha',
