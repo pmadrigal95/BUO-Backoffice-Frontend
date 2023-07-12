@@ -88,7 +88,7 @@ export default {
             light
             :elevation="hover ? 8 : 3"
             :class="{ 'on-hover': hover }"
-            class="mx-2 rounded-lg"
+            class="mx-2 mb-3 rounded-lg"
             max-height="100%"
             max-width="100%"
             @click="$_sendToApi"

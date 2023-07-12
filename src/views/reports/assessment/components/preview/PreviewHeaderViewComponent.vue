@@ -61,15 +61,12 @@ export default {
             <v-progress-circular
                 size="60"
                 width="4"
-                :value="50"
+                :value="Math.round(entity.preview.resultadoPorcentaje * 100)"
                 rotate="90"
                 :color="$_setChartColor(entity.preview.resultadoPorcentaje)"
                 ><span
                     class="BUO-Label-XSmall"
                     :class="[app ? 'white--text' : 'grey700--text']"
-                    :value="
-                        Math.round(entity.preview.resultadoPorcentaje * 100)
-                    "
                     >{{
                         Math.round(entity.preview.resultadoPorcentaje * 100)
                     }}%</span
