@@ -26,28 +26,6 @@ export default {
         FilterViewComponent,
         ReportViewComponent,
     },
-
-    created() {
-        this.entity.step = 1;
-    },
-
-    // data() {
-    //     return {
-    //         key: 0,
-    //     };
-    // },
-
-    // watch: {
-    //     /**
-    //      * Actualizar
-    //      */
-    //     'entity.step': {
-    //         handler() {
-    //             this.key++;
-    //         },
-    //         immediate: true,
-    //     },
-    // },
 };
 </script>
 
@@ -58,7 +36,7 @@ export default {
         </v-window-item>
 
         <v-window-item :value="1">
-            <ReportViewComponent />
+            <ReportViewComponent :entity="entity" />
         </v-window-item>
     </v-window>
 </template>

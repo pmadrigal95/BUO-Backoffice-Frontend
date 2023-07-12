@@ -906,7 +906,7 @@ const userAssessmentSetting = ({
             {
                 text: 'Resultado',
                 type: 'color',
-                value: 'resultado',
+                value: 'resultadoPorcentaje',
                 show: true,
             },
             {
