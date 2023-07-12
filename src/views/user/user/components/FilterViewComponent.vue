@@ -10,13 +10,11 @@ import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
-import baseLocalHelper from '@/helpers/baseLocalHelper';
-
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
-import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
-
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
+import { baseAssessmentHelper } from '@/views/user/user/components/baseAssessmentHelper';
 
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
@@ -144,33 +142,6 @@ export default {
             });
         },
 
-        $_validateSameCompany(row) {
-            const array = row.filter(
-                (element) => element.organizacionId != row[0].organizacionId
-            );
-
-            return array.length === 0;
-        },
-
-        $_setEntity(row) {
-            if (this.$_validateSameCompany(row)) {
-                this.entity.isMultiple = false;
-                this.entity.companyId = row[0].organizacionId;
-                this.entity.userList = row.map((element) => {
-                    return {
-                        userId: element.id,
-                        name: element.nombreCompleto,
-                        companyId: element.organizacionId,
-                    };
-                });
-            } else {
-                baseNotificationsHelper.Message(
-                    true,
-                    baseLocalHelper.$_MsgErrorAction
-                );
-            }
-        },
-
         /**
          * Get a registry
          */
@@ -178,47 +149,14 @@ export default {
             return this.$refs.UserFilter.$data.selected;
         },
 
-        $_setAssessment() {
-            const row = this.$_GetRow();
-
-            switch (true) {
-                case row.length == 0:
-                    baseNotificationsHelper.Message(
-                        true,
-                        baseLocalHelper.$_MsgRowNotSelected
-                    );
-                    break;
-
-                case row.length > 0:
-                    this.$_setEntity(row);
-                    break;
-            }
-        },
-
-        $_setAssessments() {
-            if (this.user.companyId === this.buoId && !this.organizacionId) {
-                baseNotificationsHelper.Message(
-                    true,
-                    baseLocalHelper.$_MsgErrorAction
-                );
-                return;
-            }
-
-            this.entity.isMultiple = true;
-            this.entity.companyId = baseFilterSettingsHelper.$_getCompanyId({
-                userCompanyId: this.user.companyId,
-                companyId: this.organizacionId,
-            });
-        },
-
         $_setAssessmentByType(type) {
             this.entity = {};
-
-            if (type) {
-                this.$_setAssessment();
-            } else {
-                this.$_setAssessments();
-            }
+            this.entity = baseAssessmentHelper.$_setAssessmentByType({
+                type,
+                getRow: this.$_GetRow,
+                UserCompanyId: this.user.companyId,
+                filterCompanyId: this.organizacionId,
+            });
         },
     },
 };

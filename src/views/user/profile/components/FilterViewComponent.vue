@@ -14,6 +14,8 @@ import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
+import { baseAssessmentHelper } from '@/views/user/user/components/baseAssessmentHelper';
+
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
@@ -22,6 +24,9 @@ const BaseCustomsButtonsGrid = () =>
 
 const RadarViewComponent = () =>
     import('@/views/b2b/filter/common/graph/RadarViewComponent');
+
+const AssessmentViewComponent = () =>
+    import('@/views/user/user/components/AssessmentViewComponent');
 
 export default {
     name: 'ProfileFilterViewComponent',
@@ -37,10 +42,12 @@ export default {
         RadarViewComponent,
         BaseServerDataTable,
         BaseCustomsButtonsGrid,
+        AssessmentViewComponent,
     },
 
     data() {
         return {
+            assessment: {},
             usuarioIdList: undefined,
             componentKey: 0,
         };
@@ -126,6 +133,16 @@ export default {
                     break;
             }
         },
+
+        $_setAssessmentByType(type) {
+            this.assessment = {};
+            this.assessment = baseAssessmentHelper.$_setAssessmentByType({
+                type,
+                getRow: this.$_GetRow,
+                UserCompanyId: this.user.companyId,
+                filterCompanyId: this.entity.organizacionId,
+            });
+        },
     },
 };
 </script>
@@ -139,19 +156,27 @@ export default {
             :fnDoubleClick="$_viewProfile"
         >
             <div slot="btns">
-                <BaseCustomsButtonsGrid
-                    label="Ver Perfil"
-                    :fnMethod="$_viewProfile"
-                    icon="mdi-chevron-right"
-                    :color="app ? 'blueProgress600' : 'blue800'"
-                />
+                <v-row class="pl-3 pt-3">
+                    <BaseCustomsButtonsGrid
+                        label="Ver Perfil"
+                        :fnMethod="$_viewProfile"
+                        icon="mdi-chevron-right"
+                        :color="app ? 'blueProgress600' : 'blue900'"
+                    />
 
-                <BaseCustomsButtonsGrid
-                    label="Comparar PDA"
-                    :outlined="false"
-                    :fnMethod="$_userDetails"
-                    icon="mdi-account-group-outline"
-                />
+                    <AssessmentViewComponent
+                        :entity="assessment"
+                        :organizacionId="entity.organizacionId"
+                        :fn="$_setAssessmentByType"
+                    />
+
+                    <BaseCustomsButtonsGrid
+                        label="Comparar PDA"
+                        :outlined="false"
+                        :fnMethod="$_userDetails"
+                        icon="mdi-account-group-outline"
+                    />
+                </v-row>
             </div>
         </BaseServerDataTable>
 

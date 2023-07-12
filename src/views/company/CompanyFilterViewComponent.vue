@@ -115,7 +115,6 @@ export default {
          * Pantalla Editor
          */
         $_companyDashboard() {
-            console.log(this.$_GetRow());
             if (this.$_GetRow().length > 0) {
                 this.$router.push({
                     name: 'CompanyDashboardViewComponent',

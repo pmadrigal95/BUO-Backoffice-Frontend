@@ -8,6 +8,13 @@
 
 import { mapGetters } from 'vuex';
 
+import httpService from '@/services/axios/httpService';
+
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
+const BaseInputDataTable = () =>
+    import('@/components/core/forms/BaseInputDataTable');
+
 const BaseInputTreeview = () =>
     import('@/components/core/treeview/BaseInputTreeview');
 
@@ -30,12 +37,13 @@ export default {
         },
     },
 
-    components: { BaseInputTreeview },
+    components: { BaseInputDataTable, BaseInputTreeview },
 
     data() {
         return {
             key: 0,
             loading: false,
+            componentKey: 0,
             form: this.$_Object(),
         };
     },
@@ -61,6 +69,27 @@ export default {
                 },
             ];
         },
+
+        /**
+         * Extra Params
+         */
+        extraParams() {
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity?.companyId,
+            });
+        },
+
+        /**
+         * Configuracion BaseServerDataTable
+         */
+        assessmentSetting() {
+            return baseFilterSettingsHelper.$_setAssessmentSetting({
+                companyId: this.user.companyId,
+                assessmentTypeId: this.form.assessmentTypeId,
+                isFilter: true,
+                singleSelect: true,
+            });
+        },
     },
 
     watch: {
@@ -69,26 +98,65 @@ export default {
          */
         entity: {
             handler(newValue, oldValue) {
-                if (newValue && newValue.companyId) {
+                if (newValue && newValue.companyId && newValue != oldValue) {
                     this.$_reviewStatus(newValue);
                 }
+            },
+            deep: true,
+        },
 
-                console.log(oldValue);
+        'entity.list': {
+            handler(newValue, oldValue) {
+                if (
+                    newValue &&
+                    newValue.length == 0 &&
+                    oldValue &&
+                    oldValue.length > 0
+                ) {
+                    if (
+                        this.user.companyId === this.buoId &&
+                        !this.organizacionId
+                    ) {
+                        this.$_close();
+                    }
+                }
             },
             immediate: true,
-            deep: true,
+        },
+
+        'form.assessmentTypeId': {
+            handler(newValue, oldValue) {
+                if (oldValue) {
+                    this.$_forceUpdateComponente();
+                }
+            },
+            immediate: true,
         },
     },
 
     methods: {
+        $_forceUpdateComponente() {
+            this.form.assessmentId = undefined;
+            this.componentKey = this.componentKey + 1;
+        },
+
         $_Object() {
             return {
-                type: undefined,
+                assessmentTypeId: undefined,
+                assessmentId: undefined,
             };
         },
 
         $_open() {
             if (!this.$refs['popUp'].$_checkStatus()) {
+                this.form = this.$_Object();
+                this.$refs['popUp'].$_openModal();
+            }
+        },
+
+        $_close() {
+            if (this.$refs['popUp'].$_checkStatus()) {
+                this.form = this.$_Object();
                 this.$refs['popUp'].$_openModal();
             }
         },
@@ -101,17 +169,8 @@ export default {
             this.fn();
         },
 
-        $_delete(index) {
-            this.entity.userList = this.entity?.userList.filter(
-                (x) => x.userId != index
-            );
-            this.key++;
-        },
-
-        $_sendToApi() {},
-
         $_openAssessment(value) {
-            if (value.userList && value.userList.length > 0) {
+            if (value.list && value.list.length > 0) {
                 this.$_open();
             }
         },
@@ -131,6 +190,35 @@ export default {
                 this.$_openAssessment(value);
             }
         },
+
+        $_delete(index) {
+            this.entity.list = this.entity?.list.filter(
+                (x) => x.userId != index
+            );
+            this.key++;
+        },
+
+        $_setBodyRequest() {
+            return {
+                usuarioIdList:
+                    this.entity?.list && this.entity?.list.map((x) => x.userId),
+                pruebaId: this.form.assessmentId,
+                usuarioModificaId: this.user.userId,
+                organizacionId: this.entity?.companyId,
+            };
+        },
+
+        $_sendToApi() {
+            this.loading = true;
+            httpService
+                .post('usuarioPrueba/assign', this.$_setBodyRequest())
+                .then((response) => {
+                    if (response != undefined) {
+                        this.$_close();
+                    }
+                    this.loading = false;
+                });
+        },
     },
 };
 </script>
@@ -146,10 +234,15 @@ export default {
                 'CompanyDashboardViewComponent'
             "
         >
-            <div slot="Content">
+            <div slot="Content" v-if="entity">
                 <BaseSkeletonLoader v-if="loading" type="article, actions" />
 
-                <BaseForm :method="$_sendToApi" :cancel="$_open" v-else>
+                <BaseForm
+                    v-else
+                    :cancel="$_close"
+                    labelBtn="Asignar"
+                    :method="$_sendToApi"
+                >
                     <div slot="body">
                         <section
                             class="text-left BUO-Heading-Small mb-2"
@@ -166,11 +259,26 @@ export default {
                                         <BaseInputTreeview
                                             v-if="entity && entity.companyId"
                                             label="Tipo de assessment"
-                                            v-model.number="form.type"
+                                            v-model.number="
+                                                form.assessmentTypeId
+                                            "
                                             itemText="nombre"
-                                            itemChildren="subCategorias"
+                                            itemChildren="subTipos"
                                             :endpoint="`tipoPrueba/findAllTree/${entity.companyId}`"
                                             :validate="['requiered']"
+                                        />
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <BaseInputDataTable
+                                            v-if="entity"
+                                            label="Assessment"
+                                            :setting="assessmentSetting"
+                                            :extraParams="extraParams"
+                                            itemText="nombre"
+                                            :readonly="!form.assessmentTypeId"
+                                            v-model.number="form.assessmentId"
+                                            :validate="['requiered']"
+                                            :key="componentKey"
                                         />
                                     </v-col>
                                 </v-row>
@@ -190,8 +298,8 @@ export default {
                                     <v-col cols="12">
                                         <section
                                             v-if="
-                                                entity.userList &&
-                                                entity?.userList.length > 0
+                                                entity.list &&
+                                                entity?.list.length > 0
                                             "
                                             :key="key"
                                         >
@@ -210,7 +318,7 @@ export default {
                                                     <div
                                                         v-for="(
                                                             item, i
-                                                        ) in entity.userList"
+                                                        ) in entity.list"
                                                         :key="i"
                                                     >
                                                         <v-chip
@@ -244,13 +352,57 @@ export default {
                                                 </v-chip-group>
                                             </div>
                                         </section>
-                                        <BaseSwitch
-                                            :disabled="true"
-                                            v-else
-                                            v-model="form.useAllEmployees"
-                                            label="Asignar el assessment a todos sus
-                                                colaboradores."
-                                        />
+                                        <section class="text-left" v-else>
+                                            <v-list-item
+                                                Two-line
+                                                class="buo-headerAbility-position"
+                                            >
+                                                <v-list-item-avatar size="45">
+                                                    <v-icon
+                                                        color="primary"
+                                                        size="45"
+                                                        >mdi-alert-circle-outline</v-icon
+                                                    >
+                                                </v-list-item-avatar>
+                                                <v-list-item-content
+                                                    class="ms-n2"
+                                                >
+                                                    <v-list-item-title
+                                                        ><span
+                                                            class="BUO-Paragraph-Medium-SemiBold buo-white-space"
+                                                            :class="[
+                                                                app
+                                                                    ? 'white--text'
+                                                                    : 'grey700--text',
+                                                            ]"
+                                                        >
+                                                            Asignación masiva de
+                                                            assessment</span
+                                                        >
+                                                    </v-list-item-title>
+                                                    <v-list-item-subtitle
+                                                        style="
+                                                            white-space: normal !important;
+                                                        "
+                                                    >
+                                                        <section
+                                                            class="BUO-Label-XSmall buo-word-break"
+                                                            :class="[
+                                                                app
+                                                                    ? 'blueProgress600--text'
+                                                                    : 'grey600--text',
+                                                            ]"
+                                                        >
+                                                            El assessment
+                                                            selecionado se
+                                                            asignará a todos los
+                                                            colaboradores de la
+                                                            empresa.
+                                                        </section>
+                                                    </v-list-item-subtitle>
+                                                </v-list-item-content>
+                                            </v-list-item>
+                                        </section>
                                     </v-col>
                                 </v-row>
                             </v-card-text>

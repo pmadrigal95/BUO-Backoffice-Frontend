@@ -171,7 +171,7 @@ export default {
     },
 
     $_redirect(url) {
-        console.log(window.location.origin + '/' + url);
+        // console.log(window.location.origin + '/' + url);
         window.location.replace(window.location.origin + '/' + url);
     },
 
