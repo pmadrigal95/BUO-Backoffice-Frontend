@@ -11,6 +11,16 @@ const routes = [
             module: 'CategoryViewComponent',
         },
     },
+
+    {
+        path: '/Assessments/Type/Editor/:Id?',
+        name: 'AssessmentTypeEditorViewComponent',
+        component:
+            'assessment/assessmentType/AssessmentTypeEditorViewComponent',
+        meta: {
+            module: 'CategoryViewComponent',
+        },
+    },
 ];
 
 export default routes;

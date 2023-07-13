@@ -1,8 +1,8 @@
 <script>
 /**
- * Descripción: Pantalla Filtro Tipo de Assessments
+ * Descripción: Pantalla Filtro Assessments
  *
- * @displayName AssessmentTypeFilterViewComponent
+ * @displayName AssessmentFilterViewComponent
  *
  */
 
@@ -21,7 +21,7 @@ const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
 export default {
-    name: 'AssessmentTypeFilterViewComponent',
+    name: 'AssessmentFilterViewComponent',
 
     components: {
         BaseCardViewComponent,
@@ -48,7 +48,7 @@ export default {
         },
 
         setting() {
-            return baseFilterSettingsHelper.$_setAssessmentTypeSetting({
+            return baseFilterSettingsHelper.$_setAssessmentSetting({
                 companyId: this.user.companyId,
             });
         },
@@ -69,10 +69,7 @@ export default {
          */
         $_fnDelete(row) {
             httpService
-                .post(
-                    '/tipoPrueba/deactivate',
-                    this.$_createBodyRequestDelete(row)
-                )
+                .post('/prueba/deactivate', this.$_createBodyRequestDelete(row))
                 .then((response) => {
                     if (response != undefined) {
                         this.$refs.Filter.$_ParamsToAPI();
@@ -84,7 +81,7 @@ export default {
          */
         $_Editor(params) {
             this.$router.push({
-                name: 'AssessmentTypeEditorViewComponent',
+                name: 'AssessmentEditorViewComponent',
                 params: params && { Id: params.selected[this.setting.key] },
             });
         },
@@ -93,7 +90,7 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="Tipos de assessments">
+    <BaseCardViewComponent title="Assessments">
         <div slot="card-text">
             <BaseServerDataTable
                 ref="Filter"
