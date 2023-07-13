@@ -80,13 +80,15 @@ export default {
          */
         $_Object() {
             return {
-                id: 0,
+                id: undefined,
                 nombre: undefined,
                 descripcion: undefined,
                 tipoPruebaId: undefined,
+                nombreTipoPrueba: undefined,
                 enlace: undefined,
                 estadoId: 2,
                 organizacionId: undefined,
+                nombreOrganizacion: undefined,
                 usuarioModificaId: undefined,
             };
         },
@@ -165,6 +167,7 @@ export default {
                                 :setting="companySetting"
                                 :editText="entity.nombreOrganizacion"
                                 v-model.number="entity.organizacionId"
+                                :validate="['requiered']"
                             />
                         </v-col>
                         <v-col cols="12">
@@ -181,6 +184,7 @@ export default {
                                 v-model.number="entity.tipoPruebaId"
                                 itemText="nombre"
                                 itemChildren="subCategorias"
+                                :editText="entity.nombreTipoPrueba"
                                 :endpoint="`tipoPrueba/findAllTreeForm/${entity.organizacionId}`"
                                 :validate="['requiered']"
                             />
@@ -189,7 +193,7 @@ export default {
                             <BaseInput
                                 label="Enlace"
                                 v-model.number="entity.enlace"
-                                :validate="['optionalText']"
+                                :validate="['text']"
                             />
                         </v-col>
                         <v-col cols="12">
@@ -199,13 +203,6 @@ export default {
                                 :validate="['optionalText']"
                                 :max="200"
                                 counter="200"
-                            />
-                        </v-col>
-                        <v-col cols="12" v-if="user.companyId === buoId">
-                            <BaseSwitch
-                                :disabled="user.companyId != buoId"
-                                label="Interna"
-                                v-model="entity.esInterna"
                             />
                         </v-col>
                         <v-col cols="12">

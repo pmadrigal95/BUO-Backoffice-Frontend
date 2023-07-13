@@ -94,13 +94,15 @@ export default {
          */
         $_Object() {
             return {
-                id: 0,
+                id: undefined,
                 padreId: undefined,
+                nombrePadre: undefined,
                 nombre: undefined,
                 descripcion: undefined,
                 esInterna: undefined,
                 estadoId: 2,
                 organizacionId: undefined,
+                nombreOrganizacion: undefined,
                 usuarioModificaId: undefined,
             };
         },
@@ -196,7 +198,7 @@ export default {
                                 :editText="entity.nombrePadre"
                                 :readonly="!entity.organizacionId"
                                 itemText="nombre"
-                                itemChildren="subCategorias"
+                                itemChildren="subTipos"
                                 :endpoint="`tipoPrueba/findAllTreeForm/${entity.organizacionId}`"
                             />
                         </v-col>
