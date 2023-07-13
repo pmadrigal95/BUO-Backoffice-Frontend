@@ -14,18 +14,33 @@ import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
+const BaseServerDataTable = () =>
+    import('@/components/core/grids/BaseServerDataTable');
+
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
-const BaseServerDataTable = () =>
-    import('@/components/core/grids/BaseServerDataTable');
+const BaseCustomsButtonsGrid = () =>
+    import('@/components/core/grids/BaseCustomsButtonsGrid');
+
+const BaseAdvancedFilter = () =>
+    import('@/components/backoffice/filter/BaseAdvancedFilter');
 
 export default {
     name: 'AssessmentFilterViewComponent',
 
     components: {
-        BaseCardViewComponent,
+        BaseAdvancedFilter,
         BaseServerDataTable,
+        BaseCardViewComponent,
+        BaseCustomsButtonsGrid,
+    },
+
+    data() {
+        return {
+            entity: this.$_Object(),
+            show: true,
+        };
     },
 
     computed: {
@@ -40,21 +55,30 @@ export default {
         },
 
         extraParams() {
-            return this.user.companyId != this.buoId
-                ? baseFilterSettingsHelper.$_setExtraParams({
-                      companyId: this.user.companyId,
-                  })
-                : undefined;
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity.companyId,
+            });
         },
 
         setting() {
             return baseFilterSettingsHelper.$_setAssessmentSetting({
                 companyId: this.user.companyId,
+                assessmentTypeId: this.entity.assessmentTypeId,
             });
         },
     },
 
     methods: {
+        /**
+         * Entity Object
+         */
+        $_Object() {
+            return {
+                companyId: undefined,
+                assessmentTypeId: undefined,
+            };
+        },
+
         /**
          * Body Request
          */
@@ -64,6 +88,7 @@ export default {
                 id: row[0].id,
             };
         },
+
         /**
          * Delete Function
          */
@@ -76,6 +101,7 @@ export default {
                     }
                 });
         },
+
         /**
          * Pantalla Editor
          */
@@ -85,6 +111,10 @@ export default {
                 params: params && { Id: params.selected[this.setting.key] },
             });
         },
+
+        $_showAdvFilter() {
+            this.show = !this.show;
+        },
     },
 };
 </script>
@@ -92,14 +122,37 @@ export default {
 <template>
     <BaseCardViewComponent title="Assessments">
         <div slot="card-text">
-            <BaseServerDataTable
-                ref="Filter"
-                :setting="setting"
-                :extraParams="extraParams"
-                :fnNew="write ? $_Editor : undefined"
-                :fnEdit="write ? $_Editor : undefined"
-                :fnDelete="write ? $_fnDelete : undefined"
-            />
+            <BaseAdvancedFilter
+                :show="show"
+                v-model="entity"
+                isAssessmentType
+                :requiredCompany="false"
+                :title="`Seleccione ${
+                    user.companyId === buoId
+                        ? 'la empresa'
+                        : 'el tipo de assessment'
+                }`"
+            >
+                <div slot="body">
+                    <BaseServerDataTable
+                        ref="Filter"
+                        :setting="setting"
+                        :extraParams="extraParams"
+                        :fnNew="write ? $_Editor : undefined"
+                        :fnEdit="write ? $_Editor : undefined"
+                        :fnDelete="write ? $_fnDelete : undefined"
+                    >
+                        <div slot="btns">
+                            <BaseCustomsButtonsGrid
+                                label="Filtro Avanzado"
+                                :fnMethod="$_showAdvFilter"
+                                :outlined="!show"
+                                icon="mdi-filter-cog-outline"
+                            />
+                        </div>
+                    </BaseServerDataTable>
+                </div>
+            </BaseAdvancedFilter>
         </div>
     </BaseCardViewComponent>
 </template>

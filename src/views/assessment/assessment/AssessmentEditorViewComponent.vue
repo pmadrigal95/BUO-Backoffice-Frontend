@@ -183,7 +183,7 @@ export default {
                                 label="Tipo de assessment"
                                 v-model.number="entity.tipoPruebaId"
                                 itemText="nombre"
-                                itemChildren="subCategorias"
+                                itemChildren="subTipos"
                                 :editText="entity.nombreTipoPrueba"
                                 :endpoint="`tipoPrueba/findAllTreeForm/${entity.organizacionId}`"
                                 :validate="['requiered']"

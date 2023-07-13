@@ -179,6 +179,9 @@ export default {
         },
 
         $_reviewCompanyId() {
+            this.temp.companyId = undefined;
+            this.temp.companyName = undefined;
+
             if (this.requiredCompany) {
                 this.$_setCompanyDefault();
             }
@@ -322,7 +325,7 @@ export default {
                                     :readonly="!temp.companyId"
                                     itemText="nombre"
                                     itemChildren="subTipos"
-                                    :endpoint="`tipoPrueba/findAllTree/${temp.companyId}`"
+                                    :endpoint="`tipoPrueba/findAllTreeForm/${temp.companyId}`"
                                 />
                             </v-col>
                         </v-row>
