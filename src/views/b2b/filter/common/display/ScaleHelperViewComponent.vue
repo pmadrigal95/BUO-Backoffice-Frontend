@@ -13,41 +13,89 @@ import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationCo
 export default {
     name: 'ScaleHelperViewComponent',
 
+    props: {
+        type: {
+            type: String,
+            default: 'talent',
+        },
+    },
+
     computed: {
         ...mapGetters('theme', ['app']),
 
         scale() {
             const palette =
                 baseDataVisualizationColorsHelper.$_getColorByName('darkGreen');
-            return [
-                {
-                    color: palette['secondary50'],
-                    name: 'Sin Experiencia',
-                    description: '0 micro indicadores completados.',
-                },
-                {
-                    color: palette['secondary60'],
-                    name: 'Aprendiz',
+            return {
+                talent: {
+                    title: 'Escala de Dominio',
                     description:
-                        'menos del 50% de micro indicadores completados.',
+                        'Cada indicador en Buo está compuesto por micro indicadores que permiten medir el nivel de dominio de la persona.',
+                    scale: 'La Escala de Dominio está definida de la siguiente manera:',
+                    list: [
+                        {
+                            color: palette['secondary50'],
+                            name: 'Sin Experiencia',
+                            description: '0 micro indicadores completados.',
+                        },
+                        {
+                            color: palette['secondary60'],
+                            name: 'Aprendiz',
+                            description:
+                                'menos del 50% de micro indicadores completados.',
+                        },
+                        {
+                            color: palette['secondary70'],
+                            name: 'Intermedio',
+                            description:
+                                '50% de micro indicadores completados.',
+                        },
+                        {
+                            color: palette['secondary80'],
+                            name: 'Avanzado',
+                            description:
+                                'más del 50% de micro indicadores completados.',
+                        },
+                        {
+                            color: palette['main'],
+                            name: 'Master',
+                            description:
+                                '100% de micro indicadores completados.',
+                        },
+                    ],
                 },
-                {
-                    color: palette['secondary70'],
-                    name: 'Intermedio',
-                    description: '50% de micro indicadores completados.',
+                assessment: {
+                    title: 'Assessments',
+                    // description: '',
+                    scale: 'La Escala de resultados está definida de la siguiente manera:',
+                    list: [
+                        {
+                            color: palette['secondary50'],
+                            name: 'Principiante',
+                            description:
+                                'el colaborador está al inicio de su trayecto y comprende los conceptos básicos de la habilidad.',
+                        },
+                        {
+                            color: palette['secondary70'],
+                            name: 'Básico',
+                            description:
+                                'el colaborador ha adquirido algunas destrezas en esta habilidad y ha tenido algunas experiencias exitosas utilizándola.',
+                        },
+                        {
+                            color: palette['secondary80'],
+                            name: 'Intermedio',
+                            description:
+                                'el colaborador ha demostrado una sólida comprensión y aplicación de las técnicas necesarias en esta habilidad.',
+                        },
+                        {
+                            color: palette['main'],
+                            name: 'Avanzado',
+                            description:
+                                'el colaborador se destaca como un profesional altamente capacitado en esta habilidad.',
+                        },
+                    ],
                 },
-                {
-                    color: palette['secondary80'],
-                    name: 'Avanzado',
-                    description:
-                        'más del 50% de micro indicadores completados.',
-                },
-                {
-                    color: palette['main'],
-                    name: 'Master',
-                    description: '100% de micro indicadores completados.',
-                },
-            ];
+            };
         },
     },
 
@@ -70,21 +118,20 @@ export default {
         >
             <div slot="Content">
                 <v-card flat>
-                    <v-card-title>Escala de Dominio</v-card-title>
+                    <v-card-title v-if="scale[type].title">{{
+                        scale[type].title
+                    }}</v-card-title>
                     <v-card-text :class="[app ? 'white--text' : 'black--text']">
-                        <div class="pb-4">
-                            Cada indicador en Buo está compuesto por micro
-                            indicadores que permiten medir el nivel de dominio
-                            de la persona.
+                        <div class="pb-4" v-if="scale[type].description">
+                            {{ scale[type].description }}
                         </div>
 
-                        <div class="pb-1">
-                            La Escala de Dominio está definida de la siguiente
-                            manera:
+                        <div class="pb-1" v-if="scale[type].scale">
+                            {{ scale[type].scale }}
                         </div>
 
                         <div
-                            v-for="(item, i) in scale"
+                            v-for="(item, i) in scale[type].list"
                             :key="i"
                             class="px-2 pb-1 pt-1"
                         >
@@ -120,7 +167,7 @@ export default {
             </div>
         </BasePopUp>
         <v-row justify="center" align="center" class="py-3">
-            <div v-for="(item, i) in scale" :key="i" class="px-1">
+            <div v-for="(item, i) in scale[type].list" :key="i" class="px-1">
                 <v-icon :color="item.color" class="pb-1 pr-1" small
                     >mdi-circle</v-icon
                 >

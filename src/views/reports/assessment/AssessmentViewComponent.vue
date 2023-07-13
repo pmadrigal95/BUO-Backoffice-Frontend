@@ -80,7 +80,7 @@ export default {
                                     icon="mdi-filter-cog-outline"
                                 />
                             </v-row>
-                            <ScaleHelperViewComponent />
+                            <ScaleHelperViewComponent type="assessment" />
                             <section class="pt-3">
                                 <DisplayViewComponent :entity="entity" />
                             </section>
