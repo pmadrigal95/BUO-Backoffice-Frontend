@@ -60,9 +60,9 @@ export default {
 
         extraParams() {
             return (
-                this.entity.organizacionId &&
+                this.entity.companyId &&
                 baseFilterSettingsHelper.$_setExtraParams({
-                    companyId: this.entity.organizacionId,
+                    companyId: this.entity.companyId,
                 })
             );
         },
@@ -72,8 +72,8 @@ export default {
          */
         setting() {
             return baseFilterSettingsHelper.$_setUserSetting({
-                companyId: this.entity.organizacionId,
-                departmentId: this.entity.departamentoId,
+                companyId: this.entity.companyId,
+                departmentId: this.entity.departmentId,
                 singleSelect: false,
             });
         },
@@ -211,7 +211,7 @@ export default {
                 type,
                 getRow: this.$_GetRow,
                 UserCompanyId: this.user.companyId,
-                filterCompanyId: this.entity.organizacionId,
+                filterCompanyId: this.entity.companyId,
             });
         },
     },

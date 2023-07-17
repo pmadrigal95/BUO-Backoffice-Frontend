@@ -57,7 +57,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <div v-if="entity.step == 3">
         <v-layout justify-space-between>
             <StepViewComponent
                 icon="mdi-numeric-4-circle"

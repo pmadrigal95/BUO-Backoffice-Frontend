@@ -30,29 +30,11 @@ export default {
         AbilityFilterViewComponent,
         ConfirmationViewComponent,
     },
-
-    data() {
-        return {
-            key: 0,
-        };
-    },
-
-    watch: {
-        /**
-         * Actualizar
-         */
-        'entity.step': {
-            handler() {
-                this.key++;
-            },
-            immediate: true,
-        },
-    },
 };
 </script>
 
 <template>
-    <v-window v-model="entity.step" touchless>
+    <v-window v-model="entity.step" touchless v-if="entity.companyId">
         <v-window-item :value="0">
             <UserFilterViewComponent :entity="entity" />
         </v-window-item>
@@ -68,7 +50,6 @@ export default {
         <v-window-item :value="3">
             <ConfirmationViewComponent
                 :entity="entity"
-                :key="key"
                 v-if="this.entity.selected"
             />
         </v-window-item>
