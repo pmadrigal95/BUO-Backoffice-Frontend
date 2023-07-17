@@ -41,9 +41,8 @@ export default {
 
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
-                companyId: this.entity.organizacionId,
-                userId:
-                    this.entity.usuarioId && this.entity.usuarioId.join('|'),
+                companyId: this.entity.companyId,
+                userId: this.entity.userId && this.entity.userId.join('|'),
             });
         },
 
@@ -75,8 +74,8 @@ export default {
             httpService
                 .post(
                     `ability/cards/${
-                        this.entity.departamentoId
-                            ? this.entity.departamentoId
+                        this.entity.departmentId
+                            ? this.entity.departmentId
                             : '0'
                     }`,
                     { extraParams: this.extraParams }

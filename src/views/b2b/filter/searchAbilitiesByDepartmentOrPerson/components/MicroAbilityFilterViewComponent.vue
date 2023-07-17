@@ -57,16 +57,15 @@ export default {
 
         setting() {
             return baseFilterSettingsHelper.$_setDinamycMicroAbilitySetting({
-                departmentId: this.entity.departamentoId,
+                departmentId: this.entity.departmentId,
                 singleSelect: false,
             });
         },
 
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
-                companyId: this.entity.organizacionId,
-                userId:
-                    this.entity.usuarioId && this.entity.usuarioId.join('|'),
+                companyId: this.entity.companyId,
+                userId: this.entity.userId && this.entity.userId.join('|'),
                 qualificationId: this.entity.cualificacionId,
             });
         },
