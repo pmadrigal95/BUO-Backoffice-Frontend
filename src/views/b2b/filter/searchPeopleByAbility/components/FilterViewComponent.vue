@@ -71,10 +71,10 @@ export default {
 
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
-                companyId: this.entity.organizacionId,
+                companyId: this.entity.companyId,
                 qualificationId:
-                    this.entity.cualificacionId &&
-                    this.entity.cualificacionId.join('|'),
+                    this.entity.indicatorId &&
+                    this.entity.indicatorId.join('|'),
             });
         },
     },
@@ -155,7 +155,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <div v-if="entity.indicatorId && entity.companyId">
         <v-row justify="start" class="pl-3">
             <v-col cols="12" md="8">
                 <section

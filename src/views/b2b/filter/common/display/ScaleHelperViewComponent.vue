@@ -73,25 +73,25 @@ export default {
                             color: palette['secondary50'],
                             name: 'Principiante',
                             description:
-                                'el colaborador está al inicio de su trayecto y comprende los conceptos básicos de la habilidad.',
+                                'el colaborador está al inicio de su trayecto y comprende los conceptos básicos del indicador.',
                         },
                         {
                             color: palette['secondary70'],
                             name: 'Básico',
                             description:
-                                'el colaborador ha adquirido algunas destrezas en esta habilidad y ha tenido algunas experiencias exitosas utilizándola.',
+                                'el colaborador ha adquirido algunas destrezas en el indicador y ha tenido algunas experiencias exitosas utilizándola.',
                         },
                         {
                             color: palette['secondary80'],
                             name: 'Intermedio',
                             description:
-                                'el colaborador ha demostrado una sólida comprensión y aplicación de las técnicas necesarias en esta habilidad.',
+                                'el colaborador ha demostrado una sólida comprensión y aplicación de las técnicas necesarias en el indicador.',
                         },
                         {
                             color: palette['main'],
                             name: 'Avanzado',
                             description:
-                                'el colaborador se destaca como un profesional altamente capacitado en esta habilidad.',
+                                'el colaborador se destaca como un profesional altamente capacitado en el indicador.',
                         },
                     ],
                 },
