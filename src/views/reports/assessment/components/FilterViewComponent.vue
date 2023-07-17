@@ -20,14 +20,19 @@ import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
+import { baseAssessmentHelper } from '@/views/user/user/components/baseAssessmentHelper';
+
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
+const AssessmentViewComponent = () =>
+    import('@/views/user/user/components/AssessmentViewComponent');
+
 export default {
-    name: 'AssessmentViewComponent',
+    name: 'FilterViewComponent',
 
     props: {
         entity: {
@@ -39,11 +44,13 @@ export default {
     components: {
         BaseServerDataTable,
         BaseCustomsButtonsGrid,
+        AssessmentViewComponent,
     },
 
     data() {
         return {
             loading: [{ value: false }, { value: false }],
+            assessment: {},
         };
     },
 
@@ -184,6 +191,18 @@ export default {
                     break;
             }
         },
+
+        $_setAssessmentByType(type) {
+            this.assessment = {};
+            this.assessment = baseAssessmentHelper.$_setAssessmentByType({
+                type,
+                key: 'usuarioId',
+                userName: 'nombreUsuario',
+                getRow: this.$_GetRow,
+                UserCompanyId: this.user.companyId,
+                filterCompanyId: this.entity.companyId,
+            });
+        },
     },
 };
 </script>
@@ -196,28 +215,36 @@ export default {
         :fnDoubleClick="$_validatePreview"
     >
         <div slot="btns">
-            <BaseCustomsButtonsGrid
-                label="Ver Reporte"
-                :fnMethod="$_validatePreview"
-                icon="mdi-chevron-right"
-                :color="app ? 'blueProgress600' : 'blue900'"
-            />
+            <v-row class="pl-3 pt-3">
+                <AssessmentViewComponent
+                    :entity="assessment"
+                    :organizacionId="entity.companyId"
+                    :fn="$_setAssessmentByType"
+                />
 
-            <BaseCustomsButtonsGrid
-                label="Descargar"
-                :fnMethod="$_validateDownload"
-                icon="mdi-download"
-                :loading="loading[0].value"
-                :color="app ? 'blueProgress600' : 'blue900'"
-            />
+                <BaseCustomsButtonsGrid
+                    label="Ver Reporte"
+                    :fnMethod="$_validatePreview"
+                    icon="mdi-chevron-right"
+                    :color="app ? 'blueProgress600' : 'blue900'"
+                />
 
-            <BaseCustomsButtonsGrid
-                label="Descargar todo"
-                :outlined="false"
-                :fnMethod="$_downloadAll"
-                :loading="loading[1].value"
-                icon="mdi-download-multiple"
-            />
+                <BaseCustomsButtonsGrid
+                    label="Descargar"
+                    :fnMethod="$_validateDownload"
+                    icon="mdi-download"
+                    :loading="loading[0].value"
+                    :color="app ? 'blueProgress600' : 'blue900'"
+                />
+
+                <BaseCustomsButtonsGrid
+                    label="Descargar todo"
+                    :outlined="false"
+                    :fnMethod="$_downloadAll"
+                    :loading="loading[1].value"
+                    icon="mdi-download-multiple"
+                />
+            </v-row>
         </div>
     </BaseServerDataTable>
 </template>
