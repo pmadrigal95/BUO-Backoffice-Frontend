@@ -60,7 +60,7 @@ export default {
 
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
-                companyId: this.entity.organizacionId,
+                companyId: this.entity.companyId,
             });
         },
 
@@ -70,7 +70,7 @@ export default {
         setting() {
             return baseFilterSettingsHelper.$_setUserSetting({
                 companyId: this.user.companyId,
-                departmentId: this.entity.departamentoId,
+                departmentId: this.entity.departmentId,
                 singleSelect: false,
             });
         },
@@ -140,7 +140,7 @@ export default {
                 type,
                 getRow: this.$_GetRow,
                 UserCompanyId: this.user.companyId,
-                filterCompanyId: this.entity.organizacionId,
+                filterCompanyId: this.entity.companyId,
             });
         },
     },
