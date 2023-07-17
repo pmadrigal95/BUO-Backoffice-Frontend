@@ -64,6 +64,8 @@ export default {
             <BaseAdvancedFilter
                 :show="show"
                 isDepartment
+                isAssessmentType
+                isAssessment
                 v-model="entity"
                 :title="`Seleccione ${
                     user.companyId === buoId ? 'la empresa' : 'el departamento'

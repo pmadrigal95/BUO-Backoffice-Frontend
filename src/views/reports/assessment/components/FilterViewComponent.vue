@@ -67,6 +67,10 @@ export default {
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
                 companyId: this.entity.companyId,
+                assessmentTypeId: this.entity.assessmentId
+                    ? undefined
+                    : this.entity.assessmentTypeId,
+                assessmentId: this.entity.assessmentId,
             });
         },
 

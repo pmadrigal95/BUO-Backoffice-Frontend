@@ -59,6 +59,11 @@ export default {
             default: false,
         },
 
+        isAssessment: {
+            type: Boolean,
+            default: false,
+        },
+
         /**
          * V-model
          */
@@ -79,6 +84,7 @@ export default {
             componentKey: 0,
             filterKey: 0,
             companyKey: 0,
+            assessmentKey: 0,
         };
     },
 
@@ -129,6 +135,19 @@ export default {
                 singleSelect: false,
             });
         },
+
+        /**
+         * Configuracion BaseServerDataTable
+         */
+        assessmentSetting() {
+            return baseFilterSettingsHelper.$_setAssessmentSetting({
+                apiEndpoint: 'findByDeepWithDefault',
+                companyId: this.user.companyId,
+                assessmentTypeId: this.temp.assessmentTypeId,
+                isFilter: true,
+                singleSelect: true,
+            });
+        },
     },
 
     created() {
@@ -156,6 +175,19 @@ export default {
             },
             immediate: true,
         },
+
+        /**
+         * Actualizar
+         */
+        'temp.assessmentTypeId': {
+            handler(newValue, oldValue) {
+                if (oldValue != newValue) {
+                    this.temp.assessmentId = undefined;
+                    this.assessmentKey++;
+                }
+            },
+            immediate: true,
+        },
     },
 
     methods: {
@@ -170,6 +202,7 @@ export default {
                 indicatorId: undefined,
                 categoryId: undefined,
                 assessmentTypeId: undefined,
+                assessmentId: undefined,
             };
         },
 
@@ -214,6 +247,10 @@ export default {
                 this.value.assessmentTypeId = this.temp.assessmentTypeId;
             }
 
+            if (this.isAssessment) {
+                this.value.assessmentId = this.temp.assessmentId;
+            }
+
             this.componentKey++;
         },
 
@@ -232,6 +269,7 @@ export default {
             this.temp.indicatorId = undefined;
             this.temp.categoryId = undefined;
             this.temp.assessmentTypeId = undefined;
+            this.temp.assessmentId = undefined;
             this.filterKey++;
         },
     },
@@ -326,6 +364,18 @@ export default {
                                     itemText="nombre"
                                     itemChildren="subTipos"
                                     :endpoint="`tipoPrueba/findAllTreeForm/${temp.companyId}`"
+                                />
+                            </v-col>
+
+                            <v-col cols="12" v-if="isAssessment">
+                                <BaseInputDataTable
+                                    label="Assessment"
+                                    :setting="assessmentSetting"
+                                    :extraParams="extraParams"
+                                    itemText="nombre"
+                                    :readonly="!temp.assessmentTypeId"
+                                    v-model.number="temp.assessmentId"
+                                    :key="assessmentKey"
                                 />
                             </v-col>
                         </v-row>
