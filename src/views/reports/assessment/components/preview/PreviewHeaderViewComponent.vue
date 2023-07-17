@@ -80,13 +80,13 @@ export default {
                 {{ entity.preview.nombreUsuario }}
             </v-list-item-title>
             <v-list-item-subtitle
-                class="BUO-Label-XSmall"
+                class="BUO-Label-Small-SemiBold"
                 :class="[app ? 'blueProgress600--text' : 'grey600--text']"
             >
                 {{ entity.preview.nombreTipoPrueba }}
             </v-list-item-subtitle>
             <v-list-item-subtitle
-                class="BUO-Label-XSmall"
+                class="BUO-Label-Small-SemiBold"
                 :class="[app ? 'blueProgress600--text' : 'grey600--text']"
             >
                 {{ entity.preview.nombrePrueba }}
