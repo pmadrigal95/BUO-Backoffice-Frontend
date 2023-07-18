@@ -43,7 +43,7 @@ export default {
             required: true,
         },
 
-        organizacionId: {
+        companyId: {
             type: Number,
             required: true,
         },
@@ -84,8 +84,9 @@ export default {
 
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
-                companyId: this.organizacionId,
+                companyId: this.companyId,
                 statusId: this.statusCode,
+                userKey: 'userId',
                 userId:
                     this.user.companyId != this.buoId && this.user.userId
                         ? this.user.userId
@@ -216,7 +217,7 @@ export default {
                 userName: 'nombreEmpleado',
                 getRow: this.$_GetRow,
                 UserCompanyId: this.user.companyId,
-                filterCompanyId: this.organizacionId,
+                filterCompanyId: this.companyId,
             });
         },
     },
@@ -275,7 +276,7 @@ export default {
                 <v-row class="pl-3 pt-3">
                     <AssessmentViewComponent
                         :entity="assessment"
-                        :organizacionId="organizacionId"
+                        :organizacionId="companyId"
                         :fn="$_setAssessmentByType"
                     />
 

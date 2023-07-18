@@ -30,6 +30,7 @@ const getCompanyId = ({ userCompanyId, companyId, filterCompanyId }) => {
 const extraParams = ({
     companyId,
     userId,
+    userKey = 'usuarioId',
     qualificationId,
     statusId,
     assessmentTypeId,
@@ -44,13 +45,6 @@ const extraParams = ({
         });
     }
 
-    if (userId) {
-        array.push({
-            name: 'usuarioId',
-            value: userId,
-        });
-    }
-
     if (qualificationId) {
         array.push({
             name: 'cualificacionId',
@@ -62,6 +56,13 @@ const extraParams = ({
         array.push({
             name: 'estadoId',
             value: statusId,
+        });
+    }
+
+    if (userId) {
+        array.push({
+            name: userKey,
+            value: userId,
         });
     }
 
@@ -1057,6 +1058,7 @@ export const baseFilterSettingsHelper = {
     $_setExtraParams({
         companyId,
         userId,
+        userKey,
         qualificationId,
         statusId,
         assessmentTypeId,
@@ -1065,6 +1067,7 @@ export const baseFilterSettingsHelper = {
         return extraParams({
             companyId,
             userId,
+            userKey,
             qualificationId,
             statusId,
             assessmentTypeId,
