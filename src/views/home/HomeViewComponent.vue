@@ -51,6 +51,8 @@ export default {
                         'CategoryViewComponent',
                         'AbilityViewComponent',
                         'MicroAbilityViewComponent',
+                        'AssessmentTypeViewComponent',
+                        'AssessmentViewComponent',
                         'PromotionalCodesViewComponent',
                     ],
                 },

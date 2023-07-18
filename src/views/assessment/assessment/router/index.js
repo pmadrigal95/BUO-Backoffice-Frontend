@@ -7,7 +7,7 @@ const routes = [
         name: 'AssessmentFilterViewComponent',
         component: 'assessment/assessment/AssessmentFilterViewComponent',
         meta: {
-            module: 'CategoryViewComponent',
+            module: 'AssessmentViewComponent',
         },
     },
 
@@ -16,7 +16,7 @@ const routes = [
         name: 'AssessmentEditorViewComponent',
         component: 'assessment/assessment/AssessmentEditorViewComponent',
         meta: {
-            module: 'CategoryViewComponent',
+            module: 'AssessmentViewComponent',
         },
     },
 ];

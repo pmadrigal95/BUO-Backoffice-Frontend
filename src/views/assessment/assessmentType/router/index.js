@@ -8,7 +8,7 @@ const routes = [
         component:
             'assessment/assessmentType/AssessmentTypeFilterViewComponent',
         meta: {
-            module: 'CategoryViewComponent',
+            module: 'AssessmentTypeViewComponent',
         },
     },
 
@@ -18,7 +18,7 @@ const routes = [
         component:
             'assessment/assessmentType/AssessmentTypeEditorViewComponent',
         meta: {
-            module: 'CategoryViewComponent',
+            module: 'AssessmentTypeViewComponent',
         },
     },
 ];
