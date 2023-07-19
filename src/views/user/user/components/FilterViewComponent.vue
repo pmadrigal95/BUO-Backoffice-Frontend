@@ -77,6 +77,14 @@ export default {
             );
             return result;
         },
+
+        assessmentPermission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'AssessmentControlViewComponent',
+                baseSecurityHelper.$_assessment
+            );
+            return result;
+        },
     },
 
     methods: {
@@ -182,6 +190,7 @@ export default {
                 />
 
                 <AssessmentViewComponent
+                    v-if="assessmentPermission"
                     :entity="entity"
                     :organizacionId="organizacionId"
                     :fn="$_setAssessmentByType"

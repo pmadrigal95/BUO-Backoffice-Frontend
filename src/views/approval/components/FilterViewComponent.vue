@@ -102,6 +102,14 @@ export default {
             return result;
         },
 
+        assessmentPermission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'AssessmentControlViewComponent',
+                baseSecurityHelper.$_assessment
+            );
+            return result;
+        },
+
         showBottonApprove() {
             return this.statusCode ===
                 baseConfigHelper.$_statusCode.certifying ||
@@ -275,6 +283,7 @@ export default {
             <div slot="btns">
                 <v-row class="pl-3 pt-3">
                     <AssessmentViewComponent
+                        v-if="assessmentPermission"
                         :entity="assessment"
                         :organizacionId="companyId"
                         :fn="$_setAssessmentByType"

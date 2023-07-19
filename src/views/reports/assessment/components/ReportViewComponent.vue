@@ -12,7 +12,7 @@ import baseFnFile from '@/helpers/baseFnFile';
 
 import httpService from '@/services/axios/httpService';
 
-// import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
@@ -53,6 +53,14 @@ export default {
 
         errorMsg() {
             return 'Solo se podra generar el reporte de aquellos colaboradores que hayan completado el assessment asignado.';
+        },
+
+        permission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'AssessmentControlViewComponent',
+                baseSecurityHelper.$_download
+            );
+            return result;
         },
     },
 
@@ -110,6 +118,7 @@ export default {
                 >
 
                 <v-btn
+                    v-if="permission"
                     @click="$_sendToApi"
                     :color="app ? 'blueProgress600' : 'blue800'"
                     class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"

@@ -10,6 +10,8 @@ import { mapGetters } from 'vuex';
 
 import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
@@ -73,6 +75,14 @@ export default {
                 departmentId: this.entity.departmentId,
                 singleSelect: false,
             });
+        },
+
+        assessmentPermission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'AssessmentControlViewComponent',
+                baseSecurityHelper.$_assessment
+            );
+            return result;
         },
     },
 
@@ -165,6 +175,7 @@ export default {
                     />
 
                     <AssessmentViewComponent
+                        v-if="assessmentPermission"
                         :entity="assessment"
                         :organizacionId="entity.companyId"
                         :fn="$_setAssessmentByType"
