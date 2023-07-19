@@ -361,6 +361,7 @@ export default {
                                     "
                                     :editText="temp.definicion"
                                     v-model="temp.indicatorId"
+                                    :key="filterKey"
                                     :validate="['requiered']"
                                 />
                             </v-col>
