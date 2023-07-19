@@ -43,6 +43,13 @@ export default {
                     ],
                 },
                 {
+                    name: 'BUO Assessments',
+                    list: [
+                        'BUOPDAReportViewComponent',
+                        'AssessmentControlViewComponent',
+                    ],
+                },
+                {
                     name: 'Administración',
                     list: [
                         'CompanyViewComponent',
@@ -63,6 +70,10 @@ export default {
             let result = [
                 {
                     name: 'People Analytics',
+                    list: [],
+                },
+                {
+                    name: 'BUO Assessments',
                     list: [],
                 },
                 {
