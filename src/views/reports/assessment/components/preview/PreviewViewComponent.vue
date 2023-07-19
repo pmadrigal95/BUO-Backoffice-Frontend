@@ -10,6 +10,8 @@ import baseFnFile from '@/helpers/baseFnFile';
 
 import httpService from '@/services/axios/httpService';
 
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 export default {
@@ -33,6 +35,14 @@ export default {
         errorMsg() {
             return 'Solo se podra generar el reporte de aquellos colaboradores que hayan completado el assessment asignado.';
         },
+
+        permission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'AssessmentControlViewComponent',
+                baseSecurityHelper.$_download
+            );
+            return result;
+        },
     },
 
     created() {
@@ -49,33 +59,35 @@ export default {
 
     methods: {
         $_sendToApi() {
-            if (!this.entity.preview) {
-                baseNotificationsHelper.Message(true, this.errorMsg);
-                return;
-            }
+            if (this.permission) {
+                if (!this.entity.preview) {
+                    baseNotificationsHelper.Message(true, this.errorMsg);
+                    return;
+                }
 
-            this.loading = true;
-            httpService
-                .post('pruebaResultado/pdf', {
-                    organizacionId: this.entity.companyId,
-                    idList: [this.entity.preview.id],
-                })
-                .then((response) => {
-                    if (response != undefined) {
-                        response.data == '' &&
-                            baseNotificationsHelper.Message(
-                                true,
-                                this.errorMsg
+                this.loading = true;
+                httpService
+                    .post('pruebaResultado/pdf', {
+                        organizacionId: this.entity.companyId,
+                        idList: [this.entity.preview.id],
+                    })
+                    .then((response) => {
+                        if (response != undefined) {
+                            response.data == '' &&
+                                baseNotificationsHelper.Message(
+                                    true,
+                                    this.errorMsg
+                                );
+
+                            baseFnFile.$_dowloadFile(
+                                response.data.fileEncoded,
+                                response.data.fileName,
+                                baseFnFile.$_extensionsName.zip
                             );
-
-                        baseFnFile.$_dowloadFile(
-                            response.data.fileEncoded,
-                            response.data.fileName,
-                            baseFnFile.$_extensionsName.zip
-                        );
-                    }
-                    this.loading = false;
-                });
+                        }
+                        this.loading = false;
+                    });
+            }
         },
     },
 };

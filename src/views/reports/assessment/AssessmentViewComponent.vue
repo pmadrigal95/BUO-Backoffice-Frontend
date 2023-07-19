@@ -36,7 +36,7 @@ export default {
 
     data() {
         return {
-            entity: {},
+            entity: this.$_Object(),
             show: true,
         };
     },
@@ -50,6 +50,19 @@ export default {
     methods: {
         $_showAdvFilter() {
             this.show = !this.show;
+        },
+
+        /**
+         * Entity Object
+         */
+        $_Object() {
+            return {
+                companyId: undefined,
+                departmentId: undefined,
+                assessmentTypeId: undefined,
+                assessmentId: undefined,
+                step: 0,
+            };
         },
     },
 };
@@ -66,6 +79,7 @@ export default {
                 isDepartment
                 isAssessmentType
                 isAssessment
+                requiredResetStep
                 v-model="entity"
                 :title="`Seleccione ${
                     user.companyId === buoId ? 'la empresa' : 'el departamento'

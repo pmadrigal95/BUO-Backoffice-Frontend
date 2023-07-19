@@ -14,7 +14,7 @@ import httpService from '@/services/axios/httpService';
 
 import baseLocalHelper from '@/helpers/baseLocalHelper';
 
-// import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
@@ -63,14 +63,6 @@ export default {
             return 'Solo se podra generar el reporte de aquellos colaboradores que hayan completado el assessment asignado.';
         },
 
-        // write() {
-        //     const result = baseSecurityHelper.$_ReadPermission(
-        //         'DepartmentViewComponent',
-        //         baseSecurityHelper.$_write
-        //     );
-        //     return result;
-        // },
-
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
                 companyId: this.entity.companyId,
@@ -87,6 +79,14 @@ export default {
                 departmentId: this.entity.departmentId,
                 singleSelect: false,
             });
+        },
+
+        permission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'AssessmentControlViewComponent',
+                [baseSecurityHelper.$_download, baseSecurityHelper.$_assessment]
+            );
+            return result;
         },
     },
 
@@ -217,6 +217,7 @@ export default {
         <div slot="btns">
             <v-row class="pl-3 pt-3">
                 <AssessmentViewComponent
+                    v-if="permission.Assessment"
                     :entity="assessment"
                     :organizacionId="entity.companyId"
                     :fn="$_setAssessmentByType"
@@ -230,6 +231,7 @@ export default {
                 />
 
                 <BaseCustomsButtonsGrid
+                    v-if="permission.Download"
                     label="Descargar"
                     :fnMethod="$_validateDownload"
                     icon="mdi-download"
@@ -238,6 +240,7 @@ export default {
                 />
 
                 <BaseCustomsButtonsGrid
+                    v-if="permission.Download"
                     label="Descargar todo"
                     :outlined="false"
                     :fnMethod="$_downloadAll"
