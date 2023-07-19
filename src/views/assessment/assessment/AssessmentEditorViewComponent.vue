@@ -186,6 +186,7 @@ export default {
                                 itemChildren="subTipos"
                                 :editText="entity.nombreTipoPrueba"
                                 :endpoint="`tipoPrueba/findAllTreeForm/${entity.organizacionId}`"
+                                :readonly="!entity.organizacionId"
                                 :validate="['requiered']"
                             />
                         </v-col>
