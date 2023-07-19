@@ -221,7 +221,6 @@ export default {
                 <div slot="body">
                     <BaseServerDataTable
                         ref="UserFilter"
-                        :key="componentGrid"
                         :setting="setting"
                         :extraParams="extraParams"
                         :fnDoubleClick="$_userDetails"
