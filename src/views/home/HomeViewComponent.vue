@@ -25,6 +25,12 @@ export default {
         BaseCardMenuViewComponent,
     },
 
+    data() {
+        return {
+            panel: [0, 1, 2],
+        };
+    },
+
     computed: {
         ...mapGetters('security', ['permissionList', 'loadingSecurity']),
 
@@ -157,14 +163,11 @@ export default {
                     :class="[app ? 'white--text' : 'black--text']"
                     >¿Qué quieres hacer hoy?</v-card-subtitle
                 >
-                <div v-if="$vuetify.breakpoint.mdAndUp">
-                    <div v-for="(menu, i) in menuList" :key="i">
-                        <v-card
-                            flat
-                            color="transparent"
-                            v-if="menu.list.length > 0"
-                        >
-                            <v-card-title
+                <v-expansion-panels multiple flat v-model="panel">
+                    <v-expansion-panel v-for="(menu, i) in menuList" :key="i">
+                        <v-expansion-panel-header
+                            :color="app ? 'background' : 'clouds'"
+                            ><section
                                 class="BUO-Heading-Small"
                                 :class="[
                                     app
@@ -173,99 +176,32 @@ export default {
                                 ]"
                             >
                                 {{ menu.name }}
-                            </v-card-title>
-
-                            <v-card-text>
-                                <div
-                                    v-for="(array, i) in $_chuckSize(menu.list)"
-                                    :key="i"
-                                    class="pb-4"
-                                >
-                                    <v-layout justify-start>
-                                        <div
-                                            v-for="(item, i) in array"
-                                            :key="i"
-                                        >
-                                            <BaseCardMenuViewComponent
-                                                :icon="item.icono"
-                                                :to="item.rutaURL"
-                                                :subtitle="item.nombreUI"
-                                                :positionSubtitle="
-                                                    componentProps.positionSubtitle
-                                                "
-                                                :fontTypeSubtitle="
-                                                    componentProps.fontTypeSubtitle
-                                                "
-                                                :min-width="
-                                                    componentProps.width
-                                                "
-                                                :max-width="
-                                                    componentProps.width
-                                                "
-                                                :min-height="
-                                                    componentProps.heigh
-                                                "
-                                                :centerBotton="
-                                                    componentProps.centerBotton
-                                                "
-                                                :centerIcon="
-                                                    componentProps.centerIcon
-                                                "
-                                                :large="componentProps.large"
-                                                :btnRequired="item?.btnRequired"
-                                                :description="item.descripcion"
-                                                :positionDescription="
-                                                    componentProps.positionDescription
-                                                "
-                                                :fontTypeDescription="
-                                                    componentProps.fontTypeDescription
-                                                "
-                                            />
-                                        </div>
-                                    </v-layout>
-                                </div>
-                            </v-card-text>
-                        </v-card>
-                    </div>
-                </div>
-                <div v-else-if="$vuetify.breakpoint.mobile">
-                    <div v-for="(menu, i) in menuList" :key="i">
-                        <v-card
-                            flat
-                            color="transparent"
-                            v-if="menu.list.length > 0"
+                            </section></v-expansion-panel-header
                         >
-                            <v-card-title
-                                class="BUO-Heading-Small"
-                                :class="[
-                                    app
-                                        ? 'blueProgress600--text'
-                                        : 'blue900--text',
-                                ]"
+                        <v-expansion-panel-content
+                            :color="app ? 'background' : 'clouds'"
+                            v-if="$vuetify.breakpoint.mdAndUp"
+                        >
+                            <section
+                                v-for="(array, i) in $_chuckSize(menu.list)"
+                                :key="i"
+                                class="pb-4"
                             >
-                                {{ menu.name }}
-                            </v-card-title>
-
-                            <v-card-text>
-                                <v-row dense>
-                                    <v-col
-                                        cols="12"
-                                        v-for="(item, i) in menu.list"
-                                        :key="i"
-                                    >
+                                <v-layout justify-start>
+                                    <div v-for="(item, i) in array" :key="i">
                                         <BaseCardMenuViewComponent
                                             :icon="item.icono"
                                             :to="item.rutaURL"
                                             :subtitle="item.nombreUI"
-                                            min-width="100%"
-                                            :max-width="componentProps.width"
-                                            :min-height="componentProps.heigh"
                                             :positionSubtitle="
                                                 componentProps.positionSubtitle
                                             "
                                             :fontTypeSubtitle="
                                                 componentProps.fontTypeSubtitle
                                             "
+                                            :min-width="componentProps.width"
+                                            :max-width="componentProps.width"
+                                            :min-height="componentProps.heigh"
                                             :centerBotton="
                                                 componentProps.centerBotton
                                             "
@@ -282,12 +218,52 @@ export default {
                                                 componentProps.fontTypeDescription
                                             "
                                         />
-                                    </v-col>
-                                </v-row>
-                            </v-card-text>
-                        </v-card>
-                    </div>
-                </div>
+                                    </div>
+                                </v-layout>
+                            </section>
+                        </v-expansion-panel-content>
+                        <v-expansion-panel-content
+                            :color="app ? 'background' : 'clouds'"
+                            v-else
+                        >
+                            <v-row dense>
+                                <v-col
+                                    cols="12"
+                                    v-for="(item, i) in menu.list"
+                                    :key="i"
+                                >
+                                    <BaseCardMenuViewComponent
+                                        :icon="item.icono"
+                                        :to="item.rutaURL"
+                                        :subtitle="item.nombreUI"
+                                        min-width="100%"
+                                        :max-width="componentProps.width"
+                                        :min-height="componentProps.heigh"
+                                        :positionSubtitle="
+                                            componentProps.positionSubtitle
+                                        "
+                                        :fontTypeSubtitle="
+                                            componentProps.fontTypeSubtitle
+                                        "
+                                        :centerBotton="
+                                            componentProps.centerBotton
+                                        "
+                                        :centerIcon="componentProps.centerIcon"
+                                        :large="componentProps.large"
+                                        :btnRequired="item?.btnRequired"
+                                        :description="item.descripcion"
+                                        :positionDescription="
+                                            componentProps.positionDescription
+                                        "
+                                        :fontTypeDescription="
+                                            componentProps.fontTypeDescription
+                                        "
+                                    />
+                                </v-col>
+                            </v-row>
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
             </v-card>
         </div>
     </BaseCardViewComponent>
