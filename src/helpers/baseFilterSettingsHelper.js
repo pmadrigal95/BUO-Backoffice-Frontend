@@ -27,20 +27,21 @@ const getCompanyId = ({ userCompanyId, companyId, filterCompanyId }) => {
 /**
  * Configuracion extraParams
  */
-const extraParams = ({ companyId, userId, qualificationId, statusId }) => {
+const extraParams = ({
+    companyId,
+    userId,
+    userKey = 'usuarioId',
+    qualificationId,
+    statusId,
+    assessmentTypeId,
+    assessmentId,
+}) => {
     let array = [];
 
     if (companyId) {
         array.push({
             name: 'organizacionId',
             value: companyId,
-        });
-    }
-
-    if (userId) {
-        array.push({
-            name: 'usuarioId',
-            value: userId,
         });
     }
 
@@ -55,6 +56,27 @@ const extraParams = ({ companyId, userId, qualificationId, statusId }) => {
         array.push({
             name: 'estadoId',
             value: statusId,
+        });
+    }
+
+    if (userId) {
+        array.push({
+            name: userKey,
+            value: userId,
+        });
+    }
+
+    if (assessmentTypeId) {
+        array.push({
+            name: 'tipoPruebaId',
+            value: assessmentTypeId,
+        });
+    }
+
+    if (assessmentId) {
+        array.push({
+            name: 'pruebaId',
+            value: assessmentId,
         });
     }
 
@@ -772,6 +794,7 @@ const assessmentTypeSetting = ({ key, companyId, singleSelect, isFilter }) => {
  * Configuracion BaseServerDataTable
  */
 const assessmentSetting = ({
+    apiEndpoint = 'findByDeep',
     key,
     companyId,
     assessmentTypeId,
@@ -779,7 +802,7 @@ const assessmentSetting = ({
 }) => {
     return {
         endpoint: assessmentTypeId
-            ? `prueba/findByDeep/${assessmentTypeId}`
+            ? `prueba/${apiEndpoint}/${assessmentTypeId}`
             : 'prueba/findBy',
         columns: [
             {
@@ -795,12 +818,6 @@ const assessmentSetting = ({
                 show: false,
             },
             {
-                text: 'Tipo',
-                align: 'start',
-                value: 'nombreTipoPrueba',
-                show: true,
-            },
-            {
                 text: 'Assessment',
                 align: 'start',
                 value: 'nombre',
@@ -811,6 +828,12 @@ const assessmentSetting = ({
                 align: 'start',
                 value: 'descripcion',
                 show: false,
+            },
+            {
+                text: 'Tipo',
+                align: 'start',
+                value: 'nombreTipoPrueba',
+                show: true,
             },
             {
                 text: 'Enlace',
@@ -866,6 +889,18 @@ const userAssessmentSetting = ({
                 show: departmentId != undefined,
             },
             {
+                text: 'Assessment',
+                align: 'start',
+                value: 'nombrePrueba',
+                show: true,
+            },
+            {
+                text: 'Tipo',
+                align: 'start',
+                value: 'nombreTipoPrueba',
+                show: true,
+            },
+            {
                 text: 'Nombre',
                 align: 'start',
                 value: 'nombreUsuario',
@@ -876,18 +911,6 @@ const userAssessmentSetting = ({
                 align: 'start',
                 value: 'correo',
                 show: isFilter ? true : false,
-            },
-            {
-                text: 'Tipo',
-                align: 'start',
-                value: 'nombreTipoPrueba',
-                show: true,
-            },
-            {
-                text: 'Assessment',
-                align: 'start',
-                value: 'nombrePrueba',
-                show: true,
             },
             {
                 text: 'Asignado',
@@ -1032,8 +1055,24 @@ export const baseFilterSettingsHelper = {
     /**
      * Configuracion extraParams
      */
-    $_setExtraParams({ companyId, userId, qualificationId, statusId }) {
-        return extraParams({ companyId, userId, qualificationId, statusId });
+    $_setExtraParams({
+        companyId,
+        userId,
+        userKey,
+        qualificationId,
+        statusId,
+        assessmentTypeId,
+        assessmentId,
+    }) {
+        return extraParams({
+            companyId,
+            userId,
+            userKey,
+            qualificationId,
+            statusId,
+            assessmentTypeId,
+            assessmentId,
+        });
     },
 
     /**
@@ -1142,6 +1181,7 @@ export const baseFilterSettingsHelper = {
      * Configuracion BaseServerDataTable
      */
     $_setAssessmentSetting({
+        apiEndpoint,
         key,
         companyId,
         assessmentTypeId,
@@ -1149,6 +1189,7 @@ export const baseFilterSettingsHelper = {
         isFilter,
     }) {
         return assessmentSetting({
+            apiEndpoint,
             key,
             companyId,
             assessmentTypeId,

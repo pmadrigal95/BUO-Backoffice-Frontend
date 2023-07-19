@@ -26,22 +26,18 @@ const BaseCardViewComponent = () =>
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
-const BaseInputDataTable = () =>
-    import('@/components/core/forms/BaseInputDataTable');
-
-const BaseInputTreeview = () =>
-    import('@/components/core/treeview/BaseInputTreeview');
-
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
+
+const BaseAdvancedFilter = () =>
+    import('@/components/backoffice/filter/BaseAdvancedFilter');
 
 export default {
     name: 'BUOPDAReportViewComponent',
 
     components: {
+        BaseAdvancedFilter,
         BaseServerDataTable,
-        BaseInputTreeview,
-        BaseInputDataTable,
         BaseCardViewComponent,
         BaseCustomsButtonsGrid,
     },
@@ -49,8 +45,6 @@ export default {
     data() {
         return {
             entity: this.$_Object(),
-            componentKey: 0,
-            componentGrid: 0,
             show: true,
             loading: [{ value: false }, { value: false }],
         };
@@ -63,21 +57,11 @@ export default {
 
         extraParams() {
             return (
-                this.entity.organizacionId &&
+                this.entity.companyId &&
                 baseFilterSettingsHelper.$_setExtraParams({
-                    companyId: this.entity.organizacionId,
+                    companyId: this.entity.companyId,
                 })
             );
-        },
-
-        /**
-         * Configuracion BaseInputDataTable
-         */
-        companySetting() {
-            return baseFilterSettingsHelper.$_setCompanySetting({
-                isFilter: true,
-                singleSelect: true,
-            });
         },
 
         /**
@@ -85,8 +69,8 @@ export default {
          */
         setting() {
             return baseFilterSettingsHelper.$_setUserSetting({
-                companyId: this.entity.organizacionId,
-                departmentId: this.entity.departamentoId,
+                companyId: this.entity.companyId,
+                departmentId: this.entity.departmentId,
                 singleSelect: false,
             });
         },
@@ -100,32 +84,14 @@ export default {
         },
     },
 
-    created() {
-        this.entity.organizacionId = this.user.companyId;
-    },
-
-    watch: {
-        /**
-         * Actualizar calendarios
-         */
-        'entity.organizacionId': {
-            handler(newValue, oldValue) {
-                if (oldValue) {
-                    this.entity.departamentoId = undefined;
-                }
-            },
-            immediate: true,
-        },
-    },
-
     methods: {
         /**
          * Entity Object
          */
         $_Object() {
             return {
-                organizacionId: undefined,
-                departamentoId: undefined,
+                companyId: undefined,
+                departmentId: undefined,
             };
         },
 
@@ -183,7 +149,7 @@ export default {
             if (data != undefined && data.length > 0) {
                 this.$_sendToApi(
                     {
-                        organizacionId: this.entity.organizacionId,
+                        organizacionId: this.entity.companyId,
                         empleados: data,
                     },
                     0
@@ -201,20 +167,11 @@ export default {
          * download Zip File
          */
         $_downloadAll() {
-            this.$_sendToApi({ organizacionId: this.entity.organizacionId }, 1);
+            this.$_sendToApi({ organizacionId: this.entity.companyId }, 1);
         },
 
         $_setParams() {
             this.$refs.UserFilter.$_ParamsToAPI();
-            this.componentGrid++;
-        },
-
-        $_clean() {
-            this.entity.organizacionId = this.user.companyId;
-            this.entity.companyName = this.user.companyName;
-            this.entity.departamentoId = null;
-            this.componentKey++;
-            this.$_setParams();
         },
 
         $_userDetails(params) {
@@ -252,12 +209,6 @@ export default {
 
         $_showAdvFilter() {
             this.show = !this.show;
-
-            if (this.show) {
-                if (this.user.companyId != this.buoId) {
-                    this.entity.organizacionId = this.user.companyId;
-                }
-            }
         },
     },
 };
@@ -265,113 +216,51 @@ export default {
 
 <template>
     <BaseCardViewComponent title="Generador de Reporte Buo-PDA">
-        <div slot="card-text" v-show="show">
-            <v-row dense>
-                <v-col cols="12" md="6">
-                    <BaseForm
-                        :block="$vuetify.breakpoint.mobile"
-                        labelBtn="Buscar"
-                        :method="$_setParams"
-                    >
-                        <div slot="body">
-                            <v-row dense>
-                                <v-col cols="12">
-                                    <p
-                                        class="BUO-Paragraph-Large-SemiBold"
-                                        :class="[
-                                            app
-                                                ? 'white--text'
-                                                : 'grey700--text',
-                                        ]"
-                                    >
-                                        Seleccione la
-                                        {{
-                                            user.companyId === buoId
-                                                ? 'empresa'
-                                                : 'departamento'
-                                        }}
-                                    </p>
-                                    <BaseInputDataTable
-                                        v-if="user.companyId === buoId"
-                                        :key="componentKey"
-                                        label="Empresa"
-                                        :setting="companySetting"
-                                        :editText="entity.companyName"
-                                        v-model="entity.organizacionId"
-                                        :validate="['requiered']"
-                                    />
-                                </v-col>
-                                <v-col cols="12">
-                                    <BaseInputTreeview
-                                        label="Área / Departamento"
-                                        v-model.number="entity.departamentoId"
-                                        :readonly="!entity.organizacionId"
-                                        itemText="nombre"
-                                        itemChildren="subDepartamentos"
-                                        :endpoint="`departamento/findAllTree/${entity.organizacionId}`"
-                                    />
-                                </v-col>
-                            </v-row>
-                        </div>
-                        <div slot="Beforebtns">
-                            <v-btn
-                                class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                                elevation="0"
-                                large
-                                outlined
-                                @click="$_clean"
-                                :block="$vuetify.breakpoint.mobile"
-                                :color="app ? 'blueProgress600' : 'blue800'"
-                            >
-                                Limpiar
-                            </v-btn>
-                        </div>
-                    </BaseForm>
-                </v-col>
-            </v-row>
-        </div>
         <div slot="body">
-            <BaseServerDataTable
-                ref="UserFilter"
-                :key="componentGrid"
-                :setting="setting"
-                :extraParams="extraParams"
-                :fnDoubleClick="$_userDetails"
-            >
-                <div slot="btns">
-                    <BaseCustomsButtonsGrid
-                        label="Ver Reporte"
-                        :fnMethod="$_userDetails"
-                        icon="mdi-chevron-right"
-                        :color="app ? 'blueProgress600' : 'blue800'"
-                    />
+            <BaseAdvancedFilter :show="show" v-model="entity" isDepartment>
+                <div slot="body">
+                    <BaseServerDataTable
+                        ref="UserFilter"
+                        :setting="setting"
+                        :extraParams="extraParams"
+                        :fnDoubleClick="$_userDetails"
+                    >
+                        <div slot="btns">
+                            <BaseCustomsButtonsGrid
+                                label="Ver Reporte"
+                                :fnMethod="$_userDetails"
+                                icon="mdi-chevron-right"
+                                :color="app ? 'blueProgress600' : 'blue800'"
+                            />
 
-                    <BaseCustomsButtonsGrid
-                        v-if="permission"
-                        label="Descargar"
-                        :fnMethod="$_downloadMultipleFiles"
-                        icon="mdi-download"
-                        :loading="loading[0].value"
-                        :color="app ? 'blueProgress600' : 'blue800'"
-                    />
+                            <BaseCustomsButtonsGrid
+                                v-if="permission"
+                                label="Descargar"
+                                :fnMethod="$_downloadMultipleFiles"
+                                icon="mdi-download"
+                                :loading="loading[0].value"
+                                :color="app ? 'blueProgress600' : 'blue800'"
+                            />
 
-                    <BaseCustomsButtonsGrid
-                        v-if="permission"
-                        label="Descargar todo"
-                        :outlined="false"
-                        :fnMethod="$_downloadAll"
-                        icon="mdi-download-multiple"
-                        :loading="loading[1].value"
-                    />
+                            <BaseCustomsButtonsGrid
+                                v-if="permission"
+                                label="Descargar todo"
+                                :outlined="false"
+                                :fnMethod="$_downloadAll"
+                                icon="mdi-download-multiple"
+                                :loading="loading[1].value"
+                            />
 
-                    <BaseCustomsButtonsGrid
-                        label="Filtro Avanzado"
-                        :fnMethod="$_showAdvFilter"
-                        :outlined="!show"
-                        icon="mdi-filter-cog-outline"
-                    />
+                            <BaseCustomsButtonsGrid
+                                label="Filtro Avanzado"
+                                :fnMethod="$_showAdvFilter"
+                                :outlined="!show"
+                                icon="mdi-filter-cog-outline"
+                            />
+                        </div>
+                    </BaseServerDataTable>
                 </div>
-            </BaseServerDataTable>
+            </BaseAdvancedFilter>
         </div>
     </BaseCardViewComponent>
 </template>

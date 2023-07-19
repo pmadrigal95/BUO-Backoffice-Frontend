@@ -39,7 +39,7 @@ export default {
 </script>
 
 <template>
-    <div v-if="entity && entity.userId">
+    <div v-if="entity.step === 1">
         <v-layout justify-start class="my-4 pl-6">
             <v-btn
                 :color="app ? 'blueProgress600' : 'blue800'"

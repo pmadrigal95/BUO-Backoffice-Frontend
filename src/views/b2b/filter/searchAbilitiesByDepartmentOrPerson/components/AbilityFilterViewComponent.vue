@@ -44,15 +44,14 @@ export default {
 
         setting() {
             return baseFilterSettingsHelper.$_setDinamycAbilitySetting({
-                departmentId: this.entity.departamentoId,
+                departmentId: this.entity.departmentId,
             });
         },
 
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
-                companyId: this.entity.organizacionId,
-                userId:
-                    this.entity.usuarioId && this.entity.usuarioId.join('|'),
+                companyId: this.entity.companyId,
+                userId: this.entity.userId && this.entity.userId.join('|'),
             });
         },
     },

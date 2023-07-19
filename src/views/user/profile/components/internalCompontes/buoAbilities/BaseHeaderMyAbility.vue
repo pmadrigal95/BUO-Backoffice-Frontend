@@ -149,7 +149,12 @@ export default {
                 </v-list-item-content>
             </v-list-item>
         </v-layout>
-        <v-card flat color="transparent" style="right: -8px !important">
+        <v-card
+            flat
+            color="transparent"
+            style="right: -8px !important"
+            v-if="ability.listaOrganizacionVerificacion"
+        >
             <span
                 class="BUO-Label-XSmall"
                 :class="[app ? 'blueProgress600--text' : 'grey600--text']"

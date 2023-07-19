@@ -26,24 +26,6 @@ export default {
         FilterViewComponent,
         ProfileViewComponent,
     },
-
-    data() {
-        return {
-            key: 0,
-        };
-    },
-
-    watch: {
-        /**
-         * Actualizar
-         */
-        'entity.step': {
-            handler() {
-                this.key++;
-            },
-            immediate: true,
-        },
-    },
 };
 </script>
 
@@ -54,7 +36,7 @@ export default {
         </v-window-item>
 
         <v-window-item :value="1">
-            <ProfileViewComponent :entity="entity" :key="key" />
+            <ProfileViewComponent :entity="entity" />
         </v-window-item>
     </v-window>
 </template>

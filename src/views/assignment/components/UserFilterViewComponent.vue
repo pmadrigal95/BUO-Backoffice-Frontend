@@ -16,6 +16,8 @@ import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
+import { baseAssessmentHelper } from '@/views/user/user/components/baseAssessmentHelper';
+
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
@@ -24,6 +26,9 @@ const StepViewComponent = () =>
 
 const NewAbilityViewComponent = () =>
     import('@/views/assignment/components/NewAbilityViewComponent');
+
+const AssessmentViewComponent = () =>
+    import('@/views/user/user/components/AssessmentViewComponent');
 
 export default {
     name: 'FilterViewComponent',
@@ -35,10 +40,17 @@ export default {
         },
     },
 
+    data() {
+        return {
+            assessment: {},
+        };
+    },
+
     components: {
         BaseServerDataTable,
         StepViewComponent,
         NewAbilityViewComponent,
+        AssessmentViewComponent,
     },
 
     computed: {
@@ -48,9 +60,9 @@ export default {
 
         extraParams() {
             return (
-                this.entity.organizacionId &&
+                this.entity.companyId &&
                 baseFilterSettingsHelper.$_setExtraParams({
-                    companyId: this.entity.organizacionId,
+                    companyId: this.entity.companyId,
                 })
             );
         },
@@ -60,8 +72,8 @@ export default {
          */
         setting() {
             return baseFilterSettingsHelper.$_setUserSetting({
-                companyId: this.entity.organizacionId,
-                departmentId: this.entity.departamentoId,
+                companyId: this.entity.companyId,
+                departmentId: this.entity.departmentId,
                 singleSelect: false,
             });
         },
@@ -192,6 +204,16 @@ export default {
             delete this.entity.selected.abilityList;
             this.entity.step = 1;
         },
+
+        $_setAssessmentByType(type) {
+            this.assessment = {};
+            this.assessment = baseAssessmentHelper.$_setAssessmentByType({
+                type,
+                getRow: this.$_GetRow,
+                UserCompanyId: this.user.companyId,
+                filterCompanyId: this.entity.companyId,
+            });
+        },
     },
 };
 </script>
@@ -219,7 +241,14 @@ export default {
             labelBtn="Continuar"
         >
             <div slot="btns">
-                <v-layout v-if="$vuetify.breakpoint.mdAndUp">
+                <v-row class="pl-3 pt-3" v-if="entity.companyId">
+                    <AssessmentViewComponent
+                        :entity="assessment"
+                        :organizacionId="entity.companyId"
+                        :fn="$_setAssessmentByType"
+                        v-if="entity.step === 0"
+                    />
+
                     <NewAbilityViewComponent
                         :entity="entity"
                         :fn="$_newAbility"
@@ -248,30 +277,7 @@ export default {
                     >
                         <v-icon dark> mdi-chevron-right </v-icon>
                     </v-btn>
-                </v-layout>
-
-                <section v-else>
-                    <NewAbilityViewComponent
-                        :entity="entity"
-                        :fn="$_newAbility"
-                        v-if="abilityPermission && entity.step === 0"
-                    />
-
-                    <v-btn fab x-small elevation="0" disabled>
-                        <v-icon dark> mdi-chevron-left </v-icon>
-                    </v-btn>
-
-                    <v-btn
-                        fab
-                        x-small
-                        color="primary"
-                        @click="$_setList"
-                        elevation="0"
-                        class="mx-1"
-                    >
-                        <v-icon dark> mdi-chevron-right </v-icon>
-                    </v-btn>
-                </section>
+                </v-row>
             </div>
         </BaseServerDataTable>
     </section>

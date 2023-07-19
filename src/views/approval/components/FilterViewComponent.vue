@@ -20,11 +20,16 @@ import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
+import { baseAssessmentHelper } from '@/views/user/user/components/baseAssessmentHelper';
+
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
+
+const AssessmentViewComponent = () =>
+    import('@/views/user/user/components/AssessmentViewComponent');
 
 export default {
     name: 'FilterViewComponent',
@@ -38,7 +43,7 @@ export default {
             required: true,
         },
 
-        organizacionId: {
+        companyId: {
             type: Number,
             required: true,
         },
@@ -52,10 +57,12 @@ export default {
     components: {
         BaseServerDataTable,
         BaseCustomsButtonsGrid,
+        AssessmentViewComponent,
     },
 
     data() {
         return {
+            assessment: {},
             loading: false,
             comment: undefined,
             newStatusCode: undefined,
@@ -77,8 +84,9 @@ export default {
 
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
-                companyId: this.organizacionId,
+                companyId: this.companyId,
                 statusId: this.statusCode,
+                userKey: 'userId',
                 userId:
                     this.user.companyId != this.buoId && this.user.userId
                         ? this.user.userId
@@ -200,6 +208,18 @@ export default {
                     }
                 });
         },
+
+        $_setAssessmentByType(type) {
+            this.assessment = {};
+            this.assessment = baseAssessmentHelper.$_setAssessmentByType({
+                type,
+                key: 'usuarioId',
+                userName: 'nombreEmpleado',
+                getRow: this.$_GetRow,
+                UserCompanyId: this.user.companyId,
+                filterCompanyId: this.companyId,
+            });
+        },
     },
 };
 </script>
@@ -253,21 +273,29 @@ export default {
             :extraParams="extraParams"
         >
             <div slot="btns">
-                <BaseCustomsButtonsGrid
-                    v-if="permission && showBottonApprove"
-                    label="Aprobar"
-                    :fnMethod="$_approveAbility"
-                    icon="mdi-thumb-up-outline"
-                    color="greenB900"
-                />
+                <v-row class="pl-3 pt-3">
+                    <AssessmentViewComponent
+                        :entity="assessment"
+                        :organizacionId="companyId"
+                        :fn="$_setAssessmentByType"
+                    />
 
-                <BaseCustomsButtonsGrid
-                    v-if="permission && showBottonDecline"
-                    label="Rechazar"
-                    :fnMethod="$_rejectedAbility"
-                    icon="mdi-thumb-down-outline"
-                    color="redError900"
-                />
+                    <BaseCustomsButtonsGrid
+                        v-if="permission && showBottonApprove"
+                        label="Aprobar"
+                        :fnMethod="$_approveAbility"
+                        icon="mdi-thumb-up-outline"
+                        color="greenB900"
+                    />
+
+                    <BaseCustomsButtonsGrid
+                        v-if="permission && showBottonDecline"
+                        label="Rechazar"
+                        :fnMethod="$_rejectedAbility"
+                        icon="mdi-thumb-down-outline"
+                        color="redError900"
+                    />
+                </v-row>
             </div>
         </BaseServerDataTable>
     </div>

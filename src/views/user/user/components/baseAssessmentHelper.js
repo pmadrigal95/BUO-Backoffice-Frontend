@@ -28,6 +28,14 @@ const setEntity = ({
     filterCompanyId,
 }) => {
     if (validateSameCompany(userList)) {
+        const temp = userList.map((element) => {
+            return {
+                userId: element[key],
+                name: element[userName],
+                companyId: element.organizacionId,
+            };
+        });
+
         return {
             isMultiple: false,
             companyId: userList[0].organizacionId
@@ -36,12 +44,8 @@ const setEntity = ({
                       userCompanyId: UserCompanyId,
                       companyId: filterCompanyId,
                   }),
-            list: userList.map((element) => {
-                return {
-                    userId: element[key],
-                    name: element[userName],
-                    companyId: element.organizacionId,
-                };
+            list: temp.filter((obj, index) => {
+                return index === temp.findIndex((o) => obj.userId === o.userId);
             }),
         };
     } else {

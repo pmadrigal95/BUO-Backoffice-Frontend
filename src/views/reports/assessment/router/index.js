@@ -7,7 +7,7 @@ const routes = [
         name: 'AssessmentViewComponent',
         component: 'reports/assessment/AssessmentViewComponent',
         meta: {
-            module: 'BUOPDAReportViewComponent',
+            module: 'AssessmentControlViewComponent',
         },
     },
 ];

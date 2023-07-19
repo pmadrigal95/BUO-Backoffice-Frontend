@@ -64,17 +64,17 @@ export default {
 
         setting() {
             return baseFilterSettingsHelper.$_setDinamycTalentSetting({
-                departmentId: this.entity.departamentoId,
+                departmentId: this.entity.departmentId,
                 singleSelect: false,
             });
         },
 
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
-                companyId: this.entity.organizacionId,
+                companyId: this.entity.companyId,
                 qualificationId:
-                    this.entity.cualificacionId &&
-                    this.entity.cualificacionId.join('|'),
+                    this.entity.indicatorId &&
+                    this.entity.indicatorId.join('|'),
             });
         },
     },
@@ -126,6 +126,7 @@ export default {
                     break;
 
                 case 1:
+                    this.usuarioIdList = undefined;
                     this.entity.userId = row[0].usuarioId;
                     this.entity.step = 1;
                     break;
@@ -147,7 +148,7 @@ export default {
                 userName: 'nombreEmpleado',
                 getRow: this.$_GetRow,
                 UserCompanyId: this.user.companyId,
-                filterCompanyId: this.entity.organizacionId,
+                filterCompanyId: this.entity.companyId,
             });
         },
     },
@@ -155,7 +156,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <div v-if="entity.indicatorId && entity.companyId">
         <v-row justify="start" class="pl-3">
             <v-col cols="12" md="8">
                 <section
@@ -185,7 +186,7 @@ export default {
 
                     <AssessmentViewComponent
                         :entity="assessment"
-                        :organizacionId="entity.organizacionId"
+                        :organizacionId="entity.companyId"
                         :fn="$_setAssessmentByType"
                     />
 

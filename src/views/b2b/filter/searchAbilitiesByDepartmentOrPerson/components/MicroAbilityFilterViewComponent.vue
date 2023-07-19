@@ -57,16 +57,15 @@ export default {
 
         setting() {
             return baseFilterSettingsHelper.$_setDinamycMicroAbilitySetting({
-                departmentId: this.entity.departamentoId,
+                departmentId: this.entity.departmentId,
                 singleSelect: false,
             });
         },
 
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
-                companyId: this.entity.organizacionId,
-                userId:
-                    this.entity.usuarioId && this.entity.usuarioId.join('|'),
+                companyId: this.entity.companyId,
+                userId: this.entity.userId && this.entity.userId.join('|'),
                 qualificationId: this.entity.cualificacionId,
             });
         },
@@ -81,6 +80,7 @@ export default {
         },
 
         $_goBack() {
+            this.usuarioIdList = undefined;
             delete this.entity.cualificacionId;
             delete this.entity.definicionCualificacion;
             this.entity.step = 0;
@@ -117,11 +117,7 @@ export default {
 </script>
 
 <template>
-    <div
-        v-if="
-            entity && entity.cualificacionId && entity.definicionCualificacion
-        "
-    >
+    <section v-if="entity.step == 1">
         <v-row justify="start" class="pl-3" dense>
             <v-col cols="12" md="8">
                 <section
@@ -169,5 +165,5 @@ export default {
             :usuarioIdList="usuarioIdList"
             v-if="usuarioIdList && usuarioIdList.length > 0"
         />
-    </div>
+    </section>
 </template>

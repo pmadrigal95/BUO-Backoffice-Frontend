@@ -64,17 +64,17 @@ export default {
 
         extraParams() {
             return (
-                this.entity.organizacionId &&
+                this.entity.companyId &&
                 baseFilterSettingsHelper.$_setExtraParams({
-                    companyId: this.entity.organizacionId,
+                    companyId: this.entity.companyId,
                 })
             );
         },
 
         userSetting() {
             return baseFilterSettingsHelper.$_setUserSetting({
-                companyId: this.entity.organizacionId,
-                departmentId: this.entity.departamentoId,
+                companyId: this.entity.companyId,
+                departmentId: this.entity.departmentId,
                 singleSelect: false,
             });
         },
@@ -130,7 +130,7 @@ export default {
 
         $_requestObject() {
             return {
-                organizacionId: this.entity.organizacionId,
+                organizacionId: this.entity.companyId,
                 userIds: this.form.userIds,
                 ability: {
                     definicion: this.form.ability.definicion,
@@ -244,7 +244,7 @@ export default {
 </script>
 
 <template>
-    <section v-if="entity.organizacionId">
+    <section v-if="entity.companyId">
         <BasePopUp
             ref="popUp"
             :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '600'"
@@ -287,15 +287,13 @@ export default {
                                                 v-model.number="
                                                     form.ability.categoriaId
                                                 "
-                                                :readonly="
-                                                    !entity.organizacionId
-                                                "
+                                                :readonly="!entity.companyId"
                                                 :editText="
                                                     form.ability.nombreCategoria
                                                 "
                                                 itemText="nombre"
                                                 itemChildren="subCategorias"
-                                                :endpoint="`categoria/findAllTree/${entity.organizacionId}`"
+                                                :endpoint="`categoria/findAllTree/${entity.companyId}`"
                                                 :validate="['requiered']"
                                             />
                                         </v-col>
