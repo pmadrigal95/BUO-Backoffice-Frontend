@@ -80,6 +80,7 @@ export default {
         },
 
         $_goBack() {
+            this.usuarioIdList = undefined;
             delete this.entity.cualificacionId;
             delete this.entity.definicionCualificacion;
             this.entity.step = 0;
@@ -116,11 +117,7 @@ export default {
 </script>
 
 <template>
-    <div
-        v-if="
-            entity && entity.cualificacionId && entity.definicionCualificacion
-        "
-    >
+    <section v-if="entity.step == 1">
         <v-row justify="start" class="pl-3" dense>
             <v-col cols="12" md="8">
                 <section
@@ -168,5 +165,5 @@ export default {
             :usuarioIdList="usuarioIdList"
             v-if="usuarioIdList && usuarioIdList.length > 0"
         />
-    </div>
+    </section>
 </template>

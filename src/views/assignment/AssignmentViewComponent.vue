@@ -102,11 +102,15 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="Asignaciones">
+    <BaseCardViewComponent
+        title="Empodera el crecimiento de tu equipo"
+        subtitle="Asignación de indicadores para alcanzar el éxito."
+    >
         <div slot="card-text">
             <BaseAdvancedFilter
                 :show="show"
                 isDepartment
+                requiredResetStep
                 v-model="entity"
                 :requiredCompany="false"
             >

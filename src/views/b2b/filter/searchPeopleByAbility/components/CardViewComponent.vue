@@ -85,8 +85,8 @@ export default {
             httpService
                 .post(
                     `talent/cards/${
-                        this.entity.departamentoId
-                            ? this.entity.departamentoId
+                        this.entity.departmentId
+                            ? this.entity.departmentId
                             : '0'
                     }`,
                     { extraParams: this.extraParams }

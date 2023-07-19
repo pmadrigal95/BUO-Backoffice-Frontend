@@ -65,6 +65,7 @@ export default {
                 companyId: undefined,
                 departmentId: undefined,
                 userId: undefined,
+                step: 0,
             };
         },
 
@@ -94,6 +95,7 @@ export default {
                 :show="show"
                 isDepartment
                 isUser
+                requiredResetStep
                 v-model="entity"
                 :requiredCompany="false"
             >

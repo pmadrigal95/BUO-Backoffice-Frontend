@@ -91,6 +91,7 @@ export default {
 <template>
     <BaseCardViewComponent
         title="Administración de las solicitudes y aprobaciones"
+        subtitle="Controla con facilidad, impulsa el talento"
     >
         <div slot="body">
             <BaseAdvancedFilter :show="show" v-model="entity">

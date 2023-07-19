@@ -39,11 +39,17 @@ export default {
                     max-width="100%"
                     contain
                 />
-                <v-avatar tile color="blue900" v-else v-bind="attrs" v-on="on">
+                <v-avatar
+                    tile
+                    color="blue900"
+                    v-else-if="object.text"
+                    v-bind="attrs"
+                    v-on="on"
+                >
                     <span class="white--text">{{ object.text.charAt(0) }}</span>
                 </v-avatar>
             </template>
-            <span>{{ object.text }}</span>
+            <span v-if="object.text">{{ object.text }}</span>
         </v-tooltip>
         <v-menu top :close-on-content-click="false">
             <template v-slot:activator="{ on, attrs }">

@@ -64,6 +64,11 @@ export default {
             default: false,
         },
 
+        requiredResetStep: {
+            type: Boolean,
+            default: false,
+        },
+
         /**
          * V-model
          */
@@ -249,6 +254,10 @@ export default {
 
             if (this.isAssessment) {
                 this.value.assessmentId = this.temp.assessmentId;
+            }
+
+            if (this.requiredResetStep) {
+                this.value.step = 0;
             }
 
             this.componentKey++;

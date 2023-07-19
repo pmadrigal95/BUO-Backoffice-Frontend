@@ -37,7 +37,7 @@ export default {
             >
                 <div slot="list">
                     <v-list-item v-for="item in avatars" :key="item.id">
-                        <v-list-item-avatar size="30">
+                        <v-list-item-avatar size="30" v-if="item.src">
                             <v-img
                                 max-height="100%"
                                 max-width="100%"
@@ -46,13 +46,17 @@ export default {
                                 alt=""
                                 v-if="item.src != null"
                             />
-                            <v-avatar tile color="blue900" v-else>
+                            <v-avatar
+                                tile
+                                color="blue900"
+                                v-else-if="item.text"
+                            >
                                 <span class="white--text text-h5">{{
                                     item.text.charAt(0)
                                 }}</span>
                             </v-avatar>
                         </v-list-item-avatar>
-                        <v-list-item-content class="ms-n3">
+                        <v-list-item-content class="ms-n3" v-if="item.text">
                             <v-list-item-title
                                 :class="[
                                     $vuetify.breakpoint.smAndDown

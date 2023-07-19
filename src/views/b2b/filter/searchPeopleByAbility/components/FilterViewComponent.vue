@@ -64,7 +64,7 @@ export default {
 
         setting() {
             return baseFilterSettingsHelper.$_setDinamycTalentSetting({
-                departmentId: this.entity.departamentoId,
+                departmentId: this.entity.departmentId,
                 singleSelect: false,
             });
         },
@@ -126,6 +126,7 @@ export default {
                     break;
 
                 case 1:
+                    this.usuarioIdList = undefined;
                     this.entity.userId = row[0].usuarioId;
                     this.entity.step = 1;
                     break;
@@ -147,7 +148,7 @@ export default {
                 userName: 'nombreEmpleado',
                 getRow: this.$_GetRow,
                 UserCompanyId: this.user.companyId,
-                filterCompanyId: this.entity.organizacionId,
+                filterCompanyId: this.entity.companyId,
             });
         },
     },
@@ -185,7 +186,7 @@ export default {
 
                     <AssessmentViewComponent
                         :entity="assessment"
-                        :organizacionId="entity.organizacionId"
+                        :organizacionId="entity.companyId"
                         :fn="$_setAssessmentByType"
                     />
 

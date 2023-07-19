@@ -241,10 +241,10 @@ export default {
             labelBtn="Continuar"
         >
             <div slot="btns">
-                <v-row class="pl-3 pt-3">
+                <v-row class="pl-3 pt-3" v-if="entity.companyId">
                     <AssessmentViewComponent
                         :entity="assessment"
-                        :organizacionId="entity.organizacionId"
+                        :organizacionId="entity.companyId"
                         :fn="$_setAssessmentByType"
                         v-if="entity.step === 0"
                     />

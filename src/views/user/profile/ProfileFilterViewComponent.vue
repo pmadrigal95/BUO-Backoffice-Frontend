@@ -38,6 +38,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('authentication', ['user', 'buoId']),
+
         ...mapGetters('theme', ['app']),
     },
 
@@ -49,6 +51,7 @@ export default {
             return {
                 companyId: undefined,
                 departmentId: undefined,
+                step: 0,
             };
         },
 
@@ -70,6 +73,10 @@ export default {
                 isDepartment
                 v-model="entity"
                 :requiredCompany="false"
+                requiredResetStep
+                :title="`Seleccione ${
+                    user.companyId === buoId ? 'la empresa' : 'el departamento'
+                }`"
             >
                 <div slot="body">
                     <v-card flat class="rounded-t-xl">

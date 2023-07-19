@@ -268,6 +268,7 @@ export default {
                                     :class="[
                                         app ? 'white--text' : 'grey700--text',
                                     ]"
+                                    v-if="item.competenciaId"
                                     ><v-layout
                                         justify-space-between
                                         align-center

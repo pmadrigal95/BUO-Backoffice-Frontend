@@ -141,7 +141,7 @@ export default {
 
         $_requestObject() {
             const result = {
-                organizacionId: this.entity.organizacionId,
+                organizacionId: this.entity.companyId,
                 userIds: this.form.userIds,
                 tutorIds: this.form.tutorIds,
                 abilities: this.form.ability,

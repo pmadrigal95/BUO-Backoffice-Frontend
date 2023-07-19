@@ -166,7 +166,7 @@ export default {
 
                     <AssessmentViewComponent
                         :entity="assessment"
-                        :organizacionId="entity.organizacionId"
+                        :organizacionId="entity.companyId"
                         :fn="$_setAssessmentByType"
                     />
 

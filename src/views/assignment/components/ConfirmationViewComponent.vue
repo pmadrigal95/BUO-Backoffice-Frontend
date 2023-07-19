@@ -57,7 +57,7 @@ export default {
 </script>
 
 <template>
-    <div v-if="entity.step == 3">
+    <section v-if="entity.step == 3">
         <v-layout justify-space-between>
             <StepViewComponent
                 icon="mdi-numeric-4-circle"
@@ -144,5 +144,5 @@ export default {
         </v-expansion-panels>
         <v-divider class="my-3"></v-divider>
         <StatusViewComponent :entity="entity" />
-    </div>
+    </section>
 </template>
