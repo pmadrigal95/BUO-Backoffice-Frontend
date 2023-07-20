@@ -245,7 +245,7 @@ export default {
             :setting="setting"
             :extraParams="extraParams"
             :fnDoubleClick="$_setList"
-            :footerMethod="$_setList"
+            :footerMethod="entity.step === 0 ? $_setList : undefined"
             labelBtn="Continuar"
         >
             <div slot="btns">

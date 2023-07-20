@@ -72,9 +72,8 @@ export default {
         },
 
         $_goBack() {
-            delete this.entity.selected.abilityIdList;
-            delete this.entity.selected.abilityList;
-            this.entity.step = 1;
+            delete this.entity.selected.tutorList;
+            this.entity.step = 2;
         },
 
         $_setUserIdList() {
