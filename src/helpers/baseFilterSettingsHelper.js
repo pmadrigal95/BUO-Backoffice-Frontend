@@ -928,8 +928,14 @@ const userAssessmentSetting = ({
             },
             {
                 text: 'Resultado',
+                type: 'number',
+                value: 'resultado',
+                show: true,
+            },
+            {
+                text: 'Nivel',
                 type: 'color',
-                value: 'resultadoPorcentaje',
+                value: 'nivel',
                 show: true,
             },
             {
