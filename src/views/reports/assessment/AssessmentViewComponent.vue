@@ -80,6 +80,7 @@ export default {
                 isAssessmentType
                 isAssessment
                 requiredResetStep
+                assessmentTypeEndpoint="findAllTree"
                 v-model="entity"
                 :title="`Seleccione ${
                     user.companyId === buoId ? 'la empresa' : 'el departamento'

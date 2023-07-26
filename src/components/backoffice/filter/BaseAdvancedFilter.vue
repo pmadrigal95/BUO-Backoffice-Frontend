@@ -59,6 +59,11 @@ export default {
             default: false,
         },
 
+        assessmentTypeEndpoint: {
+            type: String,
+            default: 'findAllTreeForm',
+        },
+
         isAssessment: {
             type: Boolean,
             default: false,
@@ -373,7 +378,7 @@ export default {
                                     :readonly="!temp.companyId"
                                     itemText="nombre"
                                     itemChildren="subTipos"
-                                    :endpoint="`tipoPrueba/findAllTreeForm/${temp.companyId}`"
+                                    :endpoint="`tipoPrueba/${assessmentTypeEndpoint}/${temp.companyId}`"
                                 />
                             </v-col>
 
