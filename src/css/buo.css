@@ -17,7 +17,6 @@ html {
     overflow-y: auto !important;
 }
 
-
 /*
 * Background Color App
 */
@@ -259,7 +258,8 @@ html {
 * Fix Vuetify UI panel componente
 */
 .buo-expansion-panel-header {
-    padding: 0 !important; width: 99% !important;
+    padding: 0 !important;
+    width: 99% !important;
 }
 
 /*
@@ -274,7 +274,18 @@ html {
     background: white !important;
 }
 
+/*
+* buo footer 
+**/
 
+.buo-footer {
+    position: sticky !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 2 !important;
+    position: -webkit-sticky !important;
+}
 
 /*
 * Custom Vuetify Components
@@ -282,7 +293,6 @@ html {
 
 /*Event for active*/
 .v-tab--active {
-    /* background: #ffffff; */
     border: 2px solid #003f5e;
 }
 
@@ -294,7 +304,7 @@ html {
 * Progress Bar Request API
 */
 #nprogress .bar {
-    background: #174B89 !important;
+    background: #174b89 !important;
 }
 
 /*
@@ -314,7 +324,7 @@ html {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #EEEEEE;
+    background: #eeeeee;
 }
 
 /* Handle on hover */

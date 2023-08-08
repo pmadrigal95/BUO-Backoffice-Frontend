@@ -5,17 +5,19 @@
  * @displayName BaseReCaptchaForm
  */
 
-import baseLocalHelper from '@/helpers/baseLocalHelper';
+import { mapGetters } from 'vuex';
 
-import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
-
-import httpService from '@/services/axios/httpService';
-
-import googleRecaptcha from '@/services/socialMedia/google-recaptcha';
+import { v4 as uuidv4 } from 'uuid';
 
 import VueRecaptcha from 'vue-recaptcha';
 
-import { v4 as uuidv4 } from 'uuid';
+import httpService from '@/services/axios/httpService';
+
+import baseLocalHelper from '@/helpers/baseLocalHelper';
+
+import googleRecaptcha from '@/services/socialMedia/google-recaptcha';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 export default {
     name: 'BaseReCaptchaForm',
@@ -139,6 +141,8 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         sitekey() {
             return googleRecaptcha.$_RecaptchaId;
         },
@@ -232,7 +236,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <section>
         <v-form
             :ref="refForm"
             v-model="valid"
@@ -264,11 +268,67 @@ export default {
             <slot name="containerBody"></slot>
         </v-form>
 
-        <!-- @slot Agregar Contenido después del form -->
-        <slot name="afterForm"></slot>
-        <v-layout align-center justify-end v-if="block && sitekey">
-            <v-card-text
-                ><!-- @slot Agregar botones después del Btn principal -->
+        <section class="buo-footer pt-1" :class="[app ? '#1e1e1e' : 'white']">
+            <!-- @slot Agregar Contenido después del form -->
+            <slot name="afterForm"></slot>
+            <v-layout align-center justify-end v-if="block && sitekey">
+                <v-card-text
+                    ><!-- @slot Agregar botones después del Btn principal -->
+                    <slot name="Beforebtns"></slot>
+
+                    <vue-recaptcha
+                        ref="invisibleRecaptcha"
+                        @verify="onVerify"
+                        @expired="onExpired"
+                        size="invisible"
+                        :sitekey="sitekey"
+                    >
+                    </vue-recaptcha>
+                    <v-btn
+                        class="no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                        elevation="0"
+                        :color="color"
+                        dark
+                        :large="isLarge"
+                        :small="isSmall"
+                        block
+                        depressed
+                        @click="onSubmit"
+                    >
+                        <v-icon v-if="orientationicon === 'left'" left>{{
+                            icon
+                        }}</v-icon>
+                        {{ labelBtn }}
+                        <v-icon v-if="orientationicon === 'right'" right>{{
+                            icon
+                        }}</v-icon></v-btn
+                    >
+                    <v-btn
+                        class="mt-3 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                        color="primary"
+                        elevation="0"
+                        outlined
+                        :large="isLarge"
+                        :small="isSmall"
+                        block
+                        @click="$_Cancel"
+                        v-if="showCancel"
+                    >
+                        <v-icon v-if="orientationicon === 'left'" left
+                            >mdi-close-circle-outline</v-icon
+                        >
+                        {{ lblCancel }}
+                        <v-icon v-if="orientationicon === 'right'" right
+                            >mdi-close-circle-outline</v-icon
+                        >
+                    </v-btn>
+
+                    <!-- @slot Agregar botones después del Btn principal -->
+                    <slot name="btns"></slot
+                ></v-card-text>
+            </v-layout>
+            <v-layout align-end justify-end v-if="!block && sitekey">
+                <!-- @slot Agregar botones después del Btn principal -->
                 <slot name="Beforebtns"></slot>
 
                 <vue-recaptcha
@@ -280,12 +340,12 @@ export default {
                 >
                 </vue-recaptcha>
                 <v-btn
-                    class="no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    elevation="0"
                     :color="color"
                     dark
                     :large="isLarge"
                     :small="isSmall"
-                    block
                     depressed
                     @click="onSubmit"
                 >
@@ -295,15 +355,15 @@ export default {
                     {{ labelBtn }}
                     <v-icon v-if="orientationicon === 'right'" right>{{
                         icon
-                    }}</v-icon></v-btn
-                >
+                    }}</v-icon>
+                </v-btn>
+
                 <v-btn
-                    class="mt-3 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                    color="primary"
+                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    elevation="0"
                     outlined
                     :large="isLarge"
                     :small="isSmall"
-                    block
                     @click="$_Cancel"
                     v-if="showCancel"
                 >
@@ -317,58 +377,8 @@ export default {
                 </v-btn>
 
                 <!-- @slot Agregar botones después del Btn principal -->
-                <slot name="btns"></slot
-            ></v-card-text>
-        </v-layout>
-        <v-layout align-end justify-end v-if="!block && sitekey">
-            <!-- @slot Agregar botones después del Btn principal -->
-            <slot name="Beforebtns"></slot>
-
-            <vue-recaptcha
-                ref="invisibleRecaptcha"
-                @verify="onVerify"
-                @expired="onExpired"
-                size="invisible"
-                :sitekey="sitekey"
-            >
-            </vue-recaptcha>
-            <v-btn
-                class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                :color="color"
-                dark
-                :large="isLarge"
-                :small="isSmall"
-                depressed
-                @click="onSubmit"
-            >
-                <v-icon v-if="orientationicon === 'left'" left>{{
-                    icon
-                }}</v-icon>
-                {{ labelBtn }}
-                <v-icon v-if="orientationicon === 'right'" right>{{
-                    icon
-                }}</v-icon>
-            </v-btn>
-
-            <v-btn
-                class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                outlined
-                :large="isLarge"
-                :small="isSmall"
-                @click="$_Cancel"
-                v-if="showCancel"
-            >
-                <v-icon v-if="orientationicon === 'left'" left
-                    >mdi-close-circle-outline</v-icon
-                >
-                {{ lblCancel }}
-                <v-icon v-if="orientationicon === 'right'" right
-                    >mdi-close-circle-outline</v-icon
-                >
-            </v-btn>
-
-            <!-- @slot Agregar botones después del Btn principal -->
-            <slot name="Afterbtns"></slot>
-        </v-layout>
-    </div>
+                <slot name="Afterbtns"></slot>
+            </v-layout>
+        </section>
+    </section>
 </template>

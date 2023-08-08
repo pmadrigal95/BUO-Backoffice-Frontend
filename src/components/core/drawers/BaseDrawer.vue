@@ -25,47 +25,21 @@ export default {
         /**
          * Nombre de Usuario
          */
-        ...mapGetters('authentication', ['user']),
+        ...mapGetters('authentication', [
+            'user',
+            'userAvatar',
+            'usernameDisplay',
+        ]),
 
         ...mapGetters('navbar', ['status']),
 
         ...mapGetters('theme', ['app']),
+    },
 
-        usernameDisplay() {
-            const usernameSplit = this.user.name
-                ? this.user.name.split(' ')
-                : undefined;
-
-            let username;
-
-            if (usernameSplit && usernameSplit.length > 0) {
-                username =
-                    usernameSplit.length === 1
-                        ? usernameSplit[0]
-                        : `${usernameSplit[0]} ${usernameSplit[1].charAt(0)}.`;
-            }
-
-            return username;
-        },
-
-        initials() {
-            const usernameSplit = this.user.name
-                ? this.user.name.split(' ')
-                : undefined;
-
-            let username;
-
-            if (usernameSplit && usernameSplit.length > 0) {
-                username =
-                    usernameSplit.length === 1
-                        ? usernameSplit[0]
-                        : `${usernameSplit[0].charAt(
-                              0
-                          )}${usernameSplit[1].charAt(0)}`;
-            }
-
-            return username;
-        },
+    created() {
+        if (!this.userAvatar) {
+            this.get_user_avatar(this.user.userId);
+        }
     },
 
     watch: {
@@ -80,6 +54,8 @@ export default {
 
     methods: {
         ...mapActions('security', ['$_security_filter']),
+
+        ...mapActions('authentication', ['get_user_avatar']),
 
         filter() {
             const time = baseConfigHelper.$_DefaultTimer;
@@ -117,14 +93,34 @@ export default {
     >
         <v-list-item two-line class="px-2" v-if="user">
             <v-list-item-avatar>
-                <v-avatar :color="user.colorAvatar">
+                <BaseSkeletonLoader v-if="!userAvatar" type="avatar" />
+                <v-avatar :color="user.colorAvatar" v-else-if="userAvatar">
                     <span
                         class="white--text BUO-Paragraph-Medium-SemiBold"
-                        v-if="user.photoUrl == undefined"
-                        >{{ initials }}</span
+                        v-if="userAvatar.length == 2"
+                        >{{ userAvatar }}</span
                     >
 
-                    <img v-else :src="user.photoUrl" alt="photoUrl" />
+                    <v-img
+                        v-else
+                        contain
+                        :src="`data:image/jpeg;base64,${userAvatar}`"
+                        :lazy-src="`data:image/jpeg;base64,${userAvatar}`"
+                        alt="photoUrl"
+                    >
+                        <template v-slot:placeholder>
+                            <v-row
+                                class="fill-height ma-0"
+                                align="center"
+                                justify="center"
+                            >
+                                <v-progress-circular
+                                    indeterminate
+                                    color="grey lighten-5"
+                                ></v-progress-circular>
+                            </v-row>
+                        </template>
+                    </v-img>
                 </v-avatar>
             </v-list-item-avatar>
 
@@ -151,7 +147,7 @@ export default {
 
         <v-divider></v-divider>
 
-        <div class="inputSearch" v-if="!mini">
+        <section class="inputSearch" v-if="!mini">
             <BaseInput
                 @keyup="filter"
                 @click:clear="clean"
@@ -162,7 +158,7 @@ export default {
                 v-model="search"
                 prepend-inner-icon="mdi-magnify"
             />
-        </div>
+        </section>
 
         <!-- @slot Agregar Contenido -->
         <slot name="container"></slot>

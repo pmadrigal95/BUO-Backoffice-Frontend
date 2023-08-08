@@ -42,7 +42,7 @@ const $_setStateValue = (state, decoded, data) => {
         email: decoded?.sub,
         userId: decoded?.userId,
         name: decoded?.name,
-        photoUrl: undefined, //decoded?.photoUrl,
+        avatar: undefined, //decoded?.photoUrl,
         colorAvatar: baseDataVisualizationColorsHelper.$_randomColor().main,
         companyId: decoded?.companyId,
         companyName: decoded?.companyName,
@@ -50,6 +50,36 @@ const $_setStateValue = (state, decoded, data) => {
     };
 
     baseSecurityHelper.$_security($_redirect.bind(null, state.module));
+};
+
+const $_set_initials = (name) => {
+    const usernameSplit = name ? name.split(' ') : undefined;
+
+    let username;
+
+    if (usernameSplit && usernameSplit.length > 0) {
+        username =
+            usernameSplit.length === 1
+                ? usernameSplit[0]
+                : `${usernameSplit[0].charAt(0)}${usernameSplit[1].charAt(0)}`;
+    }
+
+    return username;
+};
+
+const $_set_usernameDisplay = (name) => {
+    const usernameSplit = name ? name.split(' ') : undefined;
+
+    let username;
+
+    if (usernameSplit && usernameSplit.length > 0) {
+        username =
+            usernameSplit.length === 1
+                ? usernameSplit[0]
+                : `${usernameSplit[0]} ${usernameSplit[1].charAt(0)}.`;
+    }
+
+    return username;
 };
 
 export const namespaced = true;
@@ -65,6 +95,10 @@ export const state = {
 export const getters = {
     user: (state) => state.user,
 
+    userAvatar: (state) => state.user.avatar,
+
+    usernameDisplay: (state) => $_set_usernameDisplay(state.user.name),
+
     buoId: () => 1,
 
     /**
@@ -77,6 +111,14 @@ export const mutations = {
     SET_USER_DATA(state, data) {
         let decoded = jwt_decode(data);
         $_setStateValue(state, decoded, data);
+    },
+
+    SET_USER_AVATAR(state, avatar) {
+        if (avatar) {
+            state.user.avatar = avatar;
+        } else {
+            state.user.avatar = $_set_initials(state.user.name);
+        }
     },
 
     LOGOUT(state, error) {
@@ -140,5 +182,15 @@ export const actions = {
 
     save_route({ commit }, to) {
         commit('CACHEROUTES', to);
+    },
+
+    get_user_avatar({ commit }, userId) {
+        httpService.get(`perfilUsuario/foto/${userId}`).then((response) => {
+            commit('SET_USER_AVATAR', response.data.fotoEncoded);
+        });
+    },
+
+    set_user_avatar({ commit }, value) {
+        commit('SET_USER_AVATAR', value);
     },
 };
