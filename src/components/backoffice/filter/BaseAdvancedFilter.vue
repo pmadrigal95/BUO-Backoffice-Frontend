@@ -298,6 +298,7 @@ export default {
                     :block="$vuetify.breakpoint.mobile"
                     labelBtn="Buscar"
                     :method="$_setParams"
+                    actionsColor="background"
                 >
                     <div slot="body">
                         <v-row dense justify="start">

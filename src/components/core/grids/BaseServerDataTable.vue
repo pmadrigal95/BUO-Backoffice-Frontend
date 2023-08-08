@@ -282,6 +282,11 @@ export default {
             showCancel: false,
 
             /**
+             * Mostrar btn cancelar del footer
+             */
+            showFooterBtn: false,
+
+            /**
              * Mostrar btn footer
              */
             showFooter: false,
@@ -428,12 +433,14 @@ export default {
          */
         if (this.$props.cancel != undefined) {
             this.showCancel = true;
+            this.showFooter = true;
         }
 
         /**
          * Valida si es necesario el botón de Footer
          */
         if (this.$props.footerMethod != undefined) {
+            this.showFooterBtn = true;
             this.showFooter = true;
         }
     },
@@ -1664,6 +1671,7 @@ export default {
                     dark
                     small
                     @click="$_SelectedFooter"
+                    v-if="showFooterBtn"
                     >{{ labelBtn }}</v-btn
                 >
 

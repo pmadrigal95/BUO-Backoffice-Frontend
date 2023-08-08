@@ -105,6 +105,11 @@ export default {
             type: Function,
             default: undefined,
         },
+
+        actionsColor: {
+            type: String,
+            default: 'white',
+        },
     },
 
     data() {
@@ -211,7 +216,10 @@ export default {
             <slot name="containerBody"></slot>
         </v-form>
 
-        <section class="buo-footer pt-1" :class="[app ? '#1e1e1e' : 'white']">
+        <section
+            class="buo-footer pt-1"
+            :class="[app ? '#1e1e1e' : actionsColor]"
+        >
             <slot name="afterForm"></slot>
             <v-layout align-center justify-end v-if="block">
                 <v-card-text

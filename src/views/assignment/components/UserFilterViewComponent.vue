@@ -247,6 +247,8 @@ export default {
             :fnDoubleClick="$_setList"
             :footerMethod="entity.step === 0 ? $_setList : undefined"
             labelBtn="Continuar"
+            cancellabelBtn="Regresar"
+            :cancel="entity.step !== 0 ? $_goBack : undefined"
         >
             <div slot="btns">
                 <v-row class="pl-3 pt-3" v-if="entity.companyId">
@@ -286,6 +288,18 @@ export default {
                         <v-icon dark> mdi-chevron-right </v-icon>
                     </v-btn>
                 </v-row>
+            </div>
+
+            <div slot="footerBtns" v-if="entity.step === 2">
+                <v-btn
+                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    elevation="0"
+                    color="primary"
+                    @click="$_setList"
+                    dark
+                    small
+                    >Continuar</v-btn
+                >
             </div>
         </BaseServerDataTable>
     </section>

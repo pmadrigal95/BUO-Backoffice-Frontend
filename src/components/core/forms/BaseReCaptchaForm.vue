@@ -123,6 +123,11 @@ export default {
             type: Function,
             default: undefined,
         },
+
+        actionsColor: {
+            type: String,
+            default: 'white',
+        },
     },
 
     components: {
@@ -268,7 +273,10 @@ export default {
             <slot name="containerBody"></slot>
         </v-form>
 
-        <section class="buo-footer pt-1" :class="[app ? '#1e1e1e' : 'white']">
+        <section
+            class="buo-footer pt-1"
+            :class="[app ? '#1e1e1e' : actionsColor]"
+        >
             <!-- @slot Agregar Contenido después del form -->
             <slot name="afterForm"></slot>
             <v-layout align-center justify-end v-if="block && sitekey">

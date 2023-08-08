@@ -99,7 +99,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <section>
         <v-layout justify-start>
             <StepViewComponent
                 icon="mdi-numeric-2-circle"
@@ -144,5 +144,5 @@ export default {
                 </v-btn>
             </div>
         </BaseServerDataTable>
-    </div>
+    </section>
 </template>
