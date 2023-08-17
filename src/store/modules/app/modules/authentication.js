@@ -60,7 +60,7 @@ const $_set_initials = (name) => {
     if (usernameSplit && usernameSplit.length > 0) {
         username =
             usernameSplit.length === 1
-                ? usernameSplit[0]
+                ? usernameSplit[0].charAt(0)
                 : `${usernameSplit[0].charAt(0)}${usernameSplit[1].charAt(0)}`;
     }
 
