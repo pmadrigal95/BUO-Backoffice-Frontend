@@ -97,7 +97,7 @@ export default {
                 <v-avatar :color="user.colorAvatar" v-else-if="userAvatar">
                     <span
                         class="white--text BUO-Paragraph-Medium-SemiBold"
-                        v-if="userAvatar.length == 2"
+                        v-if="userAvatar.length <= 2"
                         >{{ userAvatar }}</span
                     >
 
