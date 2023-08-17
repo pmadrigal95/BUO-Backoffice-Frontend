@@ -445,6 +445,7 @@ export default {
     >
         <template v-slot:activator="{ on, attrs }">
             <BaseInput
+                @input="$_updateValue"
                 :value="value"
                 :label="label"
                 :append-icon="appendIcon"
