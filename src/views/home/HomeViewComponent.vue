@@ -109,11 +109,11 @@ export default {
                 positionSubtitle: 'align-center',
                 positionDescription: 'text-center',
                 fontTypeSubtitle: this.app
-                    ? 'BUO-Paragraph-Small-SemiBold white--text'
-                    : 'BUO-Paragraph-Small-SemiBold black--text',
+                    ? 'BUO-Paragraph-Medium-SemiBold white--text'
+                    : 'BUO-Paragraph-Medium-SemiBold black--text',
                 fontTypeDescription: this.app
-                    ? 'BUO-Paragraph-Small-SemiBold blueProgress600--text'
-                    : 'BUO-Paragraph-Small-SemiBold black--text',
+                    ? 'BUO-Paragraph-Small blueProgress600--text'
+                    : 'BUO-Paragraph-Small grey600--text',
                 width: '320',
                 heigh: '200',
                 centerBotton: true,
