@@ -105,7 +105,7 @@ export default {
         amigable: '#C9F31A',
         amable: '#96E57B',
         audaz: '#F56C60',
-        cautivadora: '#EFEA51', //'#FFFA55',
+        cautivadora: '#FFC300', //'#FFFA55',
         colaboradora: '#68CB57',
         concreta: '#59A4CF',
         convincente: '#FE9889',
