@@ -5,6 +5,7 @@
  * @displayName FilterViewComponent
  *
  */
+import { mapGetters } from 'vuex';
 
 const StepViewComponent = () =>
     import('@/views/user/bulkLoad/components/StepViewComponent');
@@ -47,6 +48,10 @@ export default {
         };
     },
 
+    computed: {
+        ...mapGetters('theme', ['app']),
+    },
+
     methods: {
         $_goBack() {
             delete this.entity.selected.tutorList;
@@ -63,7 +68,9 @@ export default {
                 icon="mdi-numeric-4-circle"
                 description="Seleccionar Micro-Indicadores"
                 iconColor="greenC900"
-                font="BUO-Paragraph-Medium"
+                :titleStyle="`BUO-Paragraph-Large-SemiBold ${
+                    app ? 'white--text' : 'grey700--text'
+                }`"
             />
             <div>
                 <v-btn

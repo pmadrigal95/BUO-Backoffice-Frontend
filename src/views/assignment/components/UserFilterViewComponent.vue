@@ -232,10 +232,12 @@ export default {
             <StepViewComponent
                 :icon="`mdi-numeric-${entity.step === 0 ? '1' : '3'}-circle`"
                 :description="`Seleccionar ${
-                    entity.step === 0 ? 'colaboradores' : 'Supervisores'
+                    entity.step === 0 ? 'colaboradores' : 'Evaluadores'
                 }`"
                 iconColor="greenC900"
-                font="BUO-Paragraph-Medium"
+                :titleStyle="`BUO-Paragraph-Large-SemiBold ${
+                    app ? 'white--text' : 'grey700--text'
+                }`"
             />
         </v-layout>
 

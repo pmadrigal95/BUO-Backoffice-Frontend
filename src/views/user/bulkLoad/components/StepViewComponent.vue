@@ -28,13 +28,18 @@ export default {
             type: String,
             default: undefined,
         },
+
+        titleStyle: {
+            type: String,
+            default: undefined,
+        },
     },
 };
 </script>
 
 <template>
     <div>
-        <p :class="font">
+        <p :class="font ? font : titleStyle">
             <v-icon class="pb-1" :color="iconColor">{{ icon }}</v-icon>
             {{ description }}
         </p>
