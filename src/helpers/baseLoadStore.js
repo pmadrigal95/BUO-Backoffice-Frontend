@@ -27,8 +27,10 @@ function returnObject(key, value, type) {
     }
 }
 
-function buildStore(key, method, type, defaultValue) {
-    const value = sessionStorage.getItem(key);
+function buildStore(key, method, type, defaultValue, isLocalStorage = false) {
+    const value = isLocalStorage
+        ? localStorage.getItem(key)
+        : sessionStorage.getItem(key);
 
     value != null && value != undefined
         ? store.commit(method, returnObject(key, value, type), {
@@ -48,6 +50,14 @@ function createStoreDefault() {
         'String'
     );
     buildStore(baseConfigHelper.$_app, 'theme/CHANGEMODE', 'Boolean', false);
+
+    buildStore(
+        baseConfigHelper.$_filter,
+        'filters/GET_FILTERS',
+        'String',
+        undefined,
+        true
+    );
 }
 
 export default {

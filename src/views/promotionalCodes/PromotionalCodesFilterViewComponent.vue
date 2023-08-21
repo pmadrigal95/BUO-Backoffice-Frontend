@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -31,11 +31,17 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user']),
 
+        ...mapGetters('filters', ['filtersBypageView']),
+
+        pageView() {
+            return 'PromotionalCodesFilterViewComponent';
+        },
+
         /**
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return baseFilterSettingsHelper.$_setPromotionalCodeSetting({});
+            return this.filtersBypageView(this.pageView);
         },
 
         write() {
@@ -47,7 +53,26 @@ export default {
         },
     },
 
+    created() {
+        this.$_setFilter();
+    },
+
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            pageView
+                ? pageView
+                : this.$_set_filter({
+                      [this.pageView]:
+                          baseFilterSettingsHelper.$_setPromotionalCodeSetting(
+                              {}
+                          ),
+                  });
+        },
+
         /**
          * Body Request
          */
@@ -70,7 +95,7 @@ export default {
                 )
                 .then((response) => {
                     if (response != undefined) {
-                        this.$refs.PromotionalCodeFilter.$_ParamsToAPI();
+                        this.$refs[this.pageView].$_ParamsToAPI();
                     }
                 });
         },
@@ -92,12 +117,14 @@ export default {
     <BaseCardViewComponent title="Códigos Promocionales">
         <div slot="card-text">
             <BaseServerDataTable
-                ref="PromotionalCodeFilter"
+                v-if="setting"
+                :ref="pageView"
                 :setting="setting"
                 :fnNew="write ? $_promotionalCodesEditor : undefined"
                 :fnEdit="write ? $_promotionalCodesEditor : undefined"
                 :fnDelete="write ? $_fnDeletePromotionalCode : undefined"
             />
+            <BaseSkeletonLoader v-else type="table" />
         </div>
     </BaseCardViewComponent>
 </template>
