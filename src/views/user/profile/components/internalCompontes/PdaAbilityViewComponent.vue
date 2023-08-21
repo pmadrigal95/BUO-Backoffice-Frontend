@@ -149,7 +149,7 @@ export default {
             </v-col>
             <v-col cols="12" md="4" class="d-flex justify-end">
                 <BaseCustomsButtonsGrid
-                    label="Compartir PDA"
+                    label="Ver PDA"
                     :fnMethod="$_fnSendReportPDA"
                     icon="mdi-share-variant-outline"
                     v-if="permission"
