@@ -63,14 +63,14 @@ export default {
         $_setFilter() {
             const pageView = this.filtersBypageView(this.pageView);
 
-            pageView
-                ? pageView
-                : this.$_set_filter({
-                      [this.pageView]:
-                          baseFilterSettingsHelper.$_setPromotionalCodeSetting(
-                              {}
-                          ),
-                  });
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]:
+                        baseFilterSettingsHelper.$_setPromotionalCodeSetting(
+                            {}
+                        ),
+                });
+            }
         },
 
         /**
@@ -119,6 +119,7 @@ export default {
             <BaseServerDataTable
                 v-if="setting"
                 :ref="pageView"
+                :pageView="pageView"
                 :setting="setting"
                 :fnNew="write ? $_promotionalCodesEditor : undefined"
                 :fnEdit="write ? $_promotionalCodesEditor : undefined"
