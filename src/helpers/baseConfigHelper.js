@@ -80,4 +80,6 @@ export default {
     $_security: 1,
 
     $_filter: 'filtersBackOffice',
+
+    $_advfilter: 'advfiltersBackOffice',
 };

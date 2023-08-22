@@ -62,6 +62,11 @@ export default {
             default: undefined,
         },
 
+        ispageView: {
+            type: Boolean,
+            default: true,
+        },
+
         /**
          * Función Nuevo
          * Default undefined
@@ -463,16 +468,20 @@ export default {
     },
 
     methods: {
-        ...mapActions('filters', ['$_set_filter']),
+        ...mapActions('filters', ['$_set_filter', '$_set_advfilter']),
 
         $_setCacheConfig() {
             if (this.pageView) {
-                this.$_set_filter({
+                const value = {
                     [this.pageView]: baseArrayHelper.SetObject(
                         {},
                         this.setting
                     ),
-                });
+                };
+
+                this.ispageView
+                    ? this.$_set_filter(value)
+                    : this.$_set_advfilter(value);
             }
         },
 

@@ -58,6 +58,14 @@ function createStoreDefault() {
         undefined,
         true
     );
+
+    buildStore(
+        baseConfigHelper.$_advfilter,
+        'filters/GET_ADVFILTERS',
+        'String',
+        undefined,
+        true
+    );
 }
 
 export default {

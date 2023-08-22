@@ -31,10 +31,10 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user']),
 
-        ...mapGetters('filters', ['filtersBypageView']),
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
 
         pageView() {
-            return 'PromotionalCodesFilterViewComponent';
+            return this.pageViewById('PromotionalCodesFilterViewComponent');
         },
 
         /**
@@ -53,7 +53,7 @@ export default {
         },
     },
 
-    created() {
+    mounted() {
         this.$_setFilter();
     },
 
