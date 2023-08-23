@@ -34,7 +34,7 @@ export default {
         ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
 
         pageView() {
-            return this.pageViewById('PromotionalCodesFilterViewComponent');
+            return this.pageViewById('PromotionalCodesFilter');
         },
 
         /**
@@ -53,7 +53,7 @@ export default {
         },
     },
 
-    mounted() {
+    created() {
         this.$_setFilter();
     },
 

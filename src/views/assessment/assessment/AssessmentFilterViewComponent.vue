@@ -49,7 +49,7 @@ export default {
         ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
 
         pageView() {
-            return this.pageViewById('AssessmentFilterViewComponent');
+            return this.pageViewById('AssessmentFilter');
         },
 
         write() {
@@ -71,7 +71,7 @@ export default {
         },
     },
 
-    mounted() {
+    created() {
         this.$_setFilter();
     },
 
@@ -120,7 +120,7 @@ export default {
                 .post('/prueba/deactivate', this.$_createBodyRequestDelete(row))
                 .then((response) => {
                     if (response != undefined) {
-                        this.$refs.Filter.$_ParamsToAPI();
+                        this.$refs[this.pageView].$_ParamsToAPI();
                     }
                 });
         },
@@ -158,7 +158,8 @@ export default {
             >
                 <div slot="body">
                     <BaseServerDataTable
-                        ref="Filter"
+                        :ref="pageView"
+                        :pageView="pageView"
                         :setting="setting"
                         :extraParams="extraParams"
                         :fnNew="write ? $_Editor : undefined"
