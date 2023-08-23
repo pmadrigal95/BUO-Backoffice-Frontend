@@ -158,6 +158,7 @@ export default {
             >
                 <div slot="body">
                     <BaseServerDataTable
+                        v-if="setting"
                         :ref="pageView"
                         :pageView="pageView"
                         :setting="setting"
@@ -175,6 +176,7 @@ export default {
                             />
                         </div>
                     </BaseServerDataTable>
+                    <BaseSkeletonLoader v-else type="table" />
                 </div>
             </BaseAdvancedFilter>
         </div>

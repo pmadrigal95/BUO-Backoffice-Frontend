@@ -10,9 +10,15 @@ import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 const $_pageView = () => {
     return {
-        PromotionalCodesFilter: 'PromotionalCodesFilterViewComponent',
+        UserFilter: 'UserFilterViewComponent',
+        CompanyFilter: 'CompanyFilterViewComponent',
+        AbilityFilter: 'AbilityFilterViewComponent',
+        CategoryFilter: 'CategoryFilterViewComponent',
         AssessmentFilter: 'AssessmentFilterViewComponent',
+        DepartmentFilter: 'DepartmentFilterViewComponent',
+        MicroAbilityFilter: 'MicroAbilityFilterViewComponent',
         AssessmentTypeFilter: 'AssessmentTypeFilterViewComponent',
+        PromotionalCodesFilter: 'PromotionalCodesFilterViewComponent',
     };
 };
 

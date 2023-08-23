@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -33,6 +33,12 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user']),
 
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('DepartmentFilter');
+        },
+
         write() {
             const result = baseSecurityHelper.$_ReadPermission(
                 'DepartmentViewComponent',
@@ -51,13 +57,30 @@ export default {
         },
 
         setting() {
-            return baseFilterSettingsHelper.$_setDepartmentSetting({
-                companyId: this.user.companyId,
-            });
+            return this.filtersBypageView(this.pageView);
         },
     },
 
+    created() {
+        this.$_setFilter();
+    },
+
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]:
+                        baseFilterSettingsHelper.$_setDepartmentSetting({
+                            companyId: this.user.companyId,
+                        }),
+                });
+            }
+        },
+
         /**
          * Body Request
          */
@@ -79,7 +102,7 @@ export default {
                 )
                 .then((response) => {
                     if (response != undefined) {
-                        this.$refs.departmentFilter.$_ParamsToAPI();
+                        this.$refs[this.pageView].$_ParamsToAPI();
                     }
                 });
         },
@@ -112,11 +135,14 @@ export default {
 
 <template>
     <BaseServerDataTable
-        ref="departmentFilter"
+        v-if="setting"
+        :ref="pageView"
+        :pageView="pageView"
         :setting="setting"
         :extraParams="extraParams"
         :fnNew="write ? $_Editor : undefined"
         :fnEdit="write ? $_Editor : undefined"
         :fnDelete="write ? $_fnDelete : undefined"
     />
+    <BaseSkeletonLoader v-else type="table" />
 </template>

@@ -119,6 +119,7 @@ export default {
     <BaseCardViewComponent title="Tipos de assessments">
         <div slot="card-text">
             <BaseServerDataTable
+                v-if="setting"
                 :ref="pageView"
                 :pageView="pageView"
                 :setting="setting"
@@ -127,6 +128,7 @@ export default {
                 :fnEdit="write ? $_Editor : undefined"
                 :fnDelete="write ? $_fnDelete : undefined"
             />
+            <BaseSkeletonLoader v-else type="table" />
         </div>
     </BaseCardViewComponent>
 </template>

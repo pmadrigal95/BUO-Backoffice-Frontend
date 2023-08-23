@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -51,6 +51,12 @@ export default {
 
         ...mapGetters('theme', ['app']),
 
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('UserFilter');
+        },
+
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
                 companyId: baseFilterSettingsHelper.$_getCompanyId({
@@ -64,10 +70,7 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return baseFilterSettingsHelper.$_setUserSetting({
-                companyId: this.user.companyId,
-                singleSelect: false,
-            });
+            return this.filtersBypageView(this.pageView);
         },
 
         permission() {
@@ -87,7 +90,26 @@ export default {
         },
     },
 
+    created() {
+        this.$_setFilter();
+    },
+
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]: baseFilterSettingsHelper.$_setUserSetting({
+                        companyId: this.user.companyId,
+                        singleSelect: false,
+                    }),
+                });
+            }
+        },
+
         /**
          * Body Request
          */
@@ -111,7 +133,7 @@ export default {
                     )
                     .then((response) => {
                         if (response != undefined) {
-                            this.$refs.UserFilter.$_ParamsToAPI();
+                            this.$refs[this.pageView].$_ParamsToAPI();
                         }
                     });
             });
@@ -154,7 +176,7 @@ export default {
          * Get a registry
          */
         $_GetRow() {
-            return this.$refs.UserFilter.$data.selected;
+            return this.$refs[this.pageView].$data.selected;
         },
 
         $_setAssessmentByType(type) {
@@ -172,7 +194,9 @@ export default {
 
 <template>
     <BaseServerDataTable
-        ref="UserFilter"
+        v-if="setting"
+        :ref="pageView"
+        :pageView="pageView"
         :setting="setting"
         :extraParams="extraParams"
         :fnNew="permission?.Write ? $_userEditor : undefined"
@@ -198,4 +222,5 @@ export default {
             </v-row>
         </div>
     </BaseServerDataTable>
+    <BaseSkeletonLoader v-else type="table" />
 </template>
