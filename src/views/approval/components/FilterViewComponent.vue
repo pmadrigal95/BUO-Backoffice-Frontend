@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -72,14 +72,17 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('Approval');
+        },
+
         /**
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return baseFilterSettingsHelper.$_setApprovalSetting({
-                companyId: this.user.companyId,
-                singleSelect: false,
-            });
+            return this.filtersBypageView(this.pageView);
         },
 
         extraParams() {
@@ -129,7 +132,27 @@ export default {
         },
     },
 
+    created() {
+        this.$_setFilter();
+    },
+
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]:
+                        baseFilterSettingsHelper.$_setApprovalSetting({
+                            companyId: this.user.companyId,
+                            singleSelect: false,
+                        }),
+                });
+            }
+        },
+
         /**
          * Open a modal
          */
@@ -150,7 +173,7 @@ export default {
          * Get a registry
          */
         $_GetRow() {
-            return this.$refs.CertificationFilter.$data.selected;
+            return this.$refs[this.pageView].$data.selected;
         },
 
         /**
@@ -233,7 +256,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <section>
         <BasePopUp
             ref="popUp"
             :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '600'"
@@ -276,7 +299,9 @@ export default {
             </div>
         </BasePopUp>
         <BaseServerDataTable
-            ref="CertificationFilter"
+            v-if="setting"
+            :ref="pageView"
+            :pageView="pageView"
             :setting="setting"
             :extraParams="extraParams"
         >
@@ -307,5 +332,6 @@ export default {
                 </v-row>
             </div>
         </BaseServerDataTable>
-    </div>
+        <BaseSkeletonLoader v-else type="table" />
+    </section>
 </template>

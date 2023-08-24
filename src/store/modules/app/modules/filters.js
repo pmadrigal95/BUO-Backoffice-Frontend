@@ -10,9 +10,13 @@ import baseConfigHelper from '@/helpers/baseConfigHelper';
 
 const $_pageView = () => {
     return {
+        Approval: 'ApprovalViewComponent',
+        Assessment: 'AssessmentViewComponent',
         UserFilter: 'UserFilterViewComponent',
+        BUOPDAReport: 'BUOPDAReportViewComponent',
         CompanyFilter: 'CompanyFilterViewComponent',
         AbilityFilter: 'AbilityFilterViewComponent',
+        ProfileFilter: 'ProfileFilterViewComponent',
         CategoryFilter: 'CategoryFilterViewComponent',
         AssessmentFilter: 'AssessmentFilterViewComponent',
         DepartmentFilter: 'DepartmentFilterViewComponent',
