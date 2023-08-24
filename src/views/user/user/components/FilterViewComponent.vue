@@ -10,7 +10,11 @@ import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
+import baseLocalHelper from '@/helpers/baseLocalHelper';
+
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
@@ -43,6 +47,9 @@ export default {
     data() {
         return {
             entity: {},
+            loading: false,
+            key: 0,
+            activationUserList: undefined,
         };
     },
 
@@ -166,6 +173,43 @@ export default {
                 filterCompanyId: this.organizacionId,
             });
         },
+
+        $_updateGrid() {
+            this.key++;
+        },
+
+        $_getResendActivationUserList() {
+            const row = this.$_GetRow();
+
+            switch (true) {
+                case row.length == 0:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
+                    break;
+                case row.length > 0: {
+                    this.activationUserList = row.map((element) => element.id);
+
+                    this.$_resendActivacionEmail();
+                    break;
+                }
+            }
+        },
+
+        $_resendActivacionEmail() {
+            this.loading = true;
+            httpService
+                .post(`user/resendActivationEmail`, {
+                    usuarioIds: this.activationUserList,
+                })
+                .then((response) => {
+                    this.loading = false;
+                    if (response != undefined) {
+                        this.$_updateGrid();
+                    }
+                });
+        },
     },
 };
 </script>
@@ -178,6 +222,7 @@ export default {
         :fnNew="permission?.Write ? $_userEditor : undefined"
         :fnEdit="permission?.Write ? $_userEditor : undefined"
         :fnDelete="permission?.Write ? $_fnDesactiveUser : undefined"
+        :key="key"
     >
         <div slot="btns">
             <v-row class="pl-3 pt-3">
@@ -186,6 +231,14 @@ export default {
                     label="Carga Masiva"
                     :fnMethod="$_fnLoad"
                     icon="mdi-table-arrow-up"
+                    :color="app ? 'blueProgress600' : 'blue900'"
+                />
+
+                <BaseCustomsButtonsGrid
+                    v-if="permission?.Write"
+                    label="Reactivación"
+                    :fnMethod="$_getResendActivationUserList"
+                    icon="mdi-email-arrow-right-outline"
                     :color="app ? 'blueProgress600' : 'blue900'"
                 />
 
