@@ -197,7 +197,6 @@ export default {
                                     icon="mdi-numeric-1-circle"
                                     description="Selecciona la empresa."
                                     iconColor="greenC900"
-                                    font="BUO-Paragraph-Medium"
                                     :validate="['requiered']"
                                 ></StepViewComponent>
                             </v-col>

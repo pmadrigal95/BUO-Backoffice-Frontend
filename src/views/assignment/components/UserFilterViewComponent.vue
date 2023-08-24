@@ -235,7 +235,7 @@ export default {
                     entity.step === 0 ? 'colaboradores' : 'Evaluadores'
                 }`"
                 iconColor="greenC900"
-                :titleStyle="`BUO-Paragraph-Large-SemiBold ${
+                :font="`BUO-Paragraph-Large-SemiBold ${
                     app ? 'white--text' : 'grey700--text'
                 }`"
             />

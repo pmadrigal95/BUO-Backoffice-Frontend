@@ -26,22 +26,15 @@ export default {
 
         font: {
             type: String,
-            default: undefined,
-        },
-
-        titleStyle: {
-            type: String,
-            default: undefined,
+            default: 'BUO-Paragraph-Medium',
         },
     },
 };
 </script>
 
 <template>
-    <div>
-        <p :class="font ? font : titleStyle">
-            <v-icon class="pb-1" :color="iconColor">{{ icon }}</v-icon>
-            {{ description }}
-        </p>
-    </div>
+    <p :class="font">
+        <v-icon class="pb-1" :color="iconColor">{{ icon }}</v-icon>
+        {{ description }}
+    </p>
 </template>

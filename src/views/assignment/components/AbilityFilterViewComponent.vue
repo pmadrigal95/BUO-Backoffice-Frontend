@@ -107,7 +107,7 @@ export default {
                 icon="mdi-numeric-2-circle"
                 description="Seleccionar Indicadores"
                 iconColor="greenC900"
-                :titleStyle="`BUO-Paragraph-Large-SemiBold ${
+                :font="`BUO-Paragraph-Large-SemiBold ${
                     app ? 'white--text' : 'grey700--text'
                 }`"
             />
