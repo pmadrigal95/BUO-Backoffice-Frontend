@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -46,6 +46,12 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('AssessmentFilter');
+        },
+
         write() {
             const result = baseSecurityHelper.$_ReadPermission(
                 'AssessmentViewComponent',
@@ -61,14 +67,31 @@ export default {
         },
 
         setting() {
-            return baseFilterSettingsHelper.$_setAssessmentSetting({
-                companyId: this.user.companyId,
-                assessmentTypeId: this.entity.assessmentTypeId,
-            });
+            return this.filtersBypageView(this.pageView);
         },
     },
 
+    created() {
+        this.$_setFilter();
+    },
+
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]:
+                        baseFilterSettingsHelper.$_setAssessmentSetting({
+                            companyId: this.user.companyId,
+                            assessmentTypeId: this.entity.assessmentTypeId,
+                        }),
+                });
+            }
+        },
+
         /**
          * Entity Object
          */
@@ -97,7 +120,7 @@ export default {
                 .post('/prueba/deactivate', this.$_createBodyRequestDelete(row))
                 .then((response) => {
                     if (response != undefined) {
-                        this.$refs.Filter.$_ParamsToAPI();
+                        this.$refs[this.pageView].$_ParamsToAPI();
                     }
                 });
         },
@@ -135,7 +158,9 @@ export default {
             >
                 <div slot="body">
                     <BaseServerDataTable
-                        ref="Filter"
+                        v-if="setting"
+                        :ref="pageView"
+                        :pageView="pageView"
                         :setting="setting"
                         :extraParams="extraParams"
                         :fnNew="write ? $_Editor : undefined"
@@ -151,6 +176,7 @@ export default {
                             />
                         </div>
                     </BaseServerDataTable>
+                    <BaseSkeletonLoader v-else type="table" />
                 </div>
             </BaseAdvancedFilter>
         </div>

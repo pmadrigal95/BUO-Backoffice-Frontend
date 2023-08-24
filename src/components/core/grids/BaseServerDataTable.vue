@@ -8,7 +8,7 @@
  * @displayName BaseServerDataTable
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -51,6 +51,20 @@ export default {
         setting: {
             type: Object,
             required: true,
+        },
+
+        /**
+         * Identificador unico para
+         * almacenar config en cache
+         */
+        pageView: {
+            type: String,
+            default: undefined,
+        },
+
+        ispageView: {
+            type: Boolean,
+            default: true,
         },
 
         /**
@@ -405,6 +419,7 @@ export default {
         objectFilter: {
             handler(val) {
                 this.$_initialize(val);
+                this.$_setCacheConfig();
             },
             deep: true,
         },
@@ -453,6 +468,23 @@ export default {
     },
 
     methods: {
+        ...mapActions('filters', ['$_set_filter', '$_set_advfilter']),
+
+        $_setCacheConfig() {
+            if (this.pageView) {
+                const value = {
+                    [this.pageView]: baseArrayHelper.SetObject(
+                        {},
+                        this.setting
+                    ),
+                };
+
+                this.ispageView
+                    ? this.$_set_filter(value)
+                    : this.$_set_advfilter(value);
+            }
+        },
+
         /**
          *
          */
