@@ -47,9 +47,7 @@ export default {
     data() {
         return {
             entity: {},
-            loading: false,
             key: 0,
-            activationUserList: undefined,
         };
     },
 
@@ -211,22 +209,20 @@ export default {
                     );
                     break;
                 case row.length > 0: {
-                    this.activationUserList = row.map((element) => element.id);
+                    const activationUserList = row.map((element) => element.id);
 
-                    this.$_resendActivacionEmail();
+                    this.$_resendActivacionEmail(activationUserList);
                     break;
                 }
             }
         },
 
-        $_resendActivacionEmail() {
-            this.loading = true;
+        $_resendActivacionEmail(activationUserList) {
             httpService
                 .post(`user/resendActivationEmail`, {
-                    usuarioIds: this.activationUserList,
+                    usuarioIds: activationUserList,
                 })
                 .then((response) => {
-                    this.loading = false;
                     if (response != undefined) {
                         this.$_updateGrid();
                     }
