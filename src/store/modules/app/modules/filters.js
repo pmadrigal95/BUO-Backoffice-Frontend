@@ -27,7 +27,12 @@ const $_pageView = () => {
 };
 
 const $_dialogView = () => {
-    return {};
+    return {
+        userDialog: 'userSetting',
+        abilityDialog: 'abilitySetting',
+        companyDialog: 'companySetting',
+        assessmentDialog: 'assessmentSetting',
+    };
 };
 
 export const namespaced = true;

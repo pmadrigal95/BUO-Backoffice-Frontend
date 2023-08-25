@@ -115,6 +115,20 @@ export default {
             type: Boolean,
             default: false,
         },
+
+        /**
+         * Identificador unico para
+         * almacenar config en cache
+         */
+        pageView: {
+            type: String,
+            default: undefined,
+        },
+
+        ispageView: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     components: {
@@ -415,7 +429,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <section>
         <BasePopUp
             :ref="refpopUp"
             :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '65%'"
@@ -434,6 +448,8 @@ export default {
 
                 <!-- @BaseServerDataTable -->
                 <BaseServerDataTable
+                    :pageView="pageView"
+                    :ispageView="ispageView"
                     :setting="setting"
                     :dense="dense"
                     :rowsPerPage="rowsPerPage"
@@ -499,5 +515,5 @@ export default {
                 </v-chip>
             </template>
         </v-combobox>
-    </div>
+    </section>
 </template>
