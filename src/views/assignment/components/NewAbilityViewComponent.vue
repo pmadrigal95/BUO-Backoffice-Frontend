@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -62,6 +62,14 @@ export default {
 
         ...mapGetters('authentication', ['user']),
 
+        ...mapGetters('authentication', ['user', 'buoId']),
+
+        ...mapGetters('filters', ['advfiltersBypageView', 'dialogViewById']),
+
+        userDialogView() {
+            return this.dialogViewById('userDialog');
+        },
+
         extraParams() {
             return (
                 this.entity.companyId &&
@@ -71,12 +79,11 @@ export default {
             );
         },
 
+        /**
+         * Configuracion BaseServerDataTable
+         */
         userSetting() {
-            return baseFilterSettingsHelper.$_setUserSetting({
-                companyId: this.entity.companyId,
-                departmentId: this.entity.departmentId,
-                singleSelect: false,
-            });
+            return this.advfiltersBypageView(this.userDialogView);
         },
 
         statusList() {
@@ -101,7 +108,29 @@ export default {
         },
     },
 
+    created() {
+        this.$_setUserFilter();
+    },
+
     methods: {
+        ...mapActions('filters', ['$_set_advfilter']),
+
+        $_setUserFilter() {
+            const dialogView = this.advfiltersBypageView(this.userDialogView);
+
+            if (!dialogView) {
+                this.$_set_advfilter({
+                    [this.userDialogView]:
+                        baseFilterSettingsHelper.$_setUserSetting({
+                            companyId: this.user.companyId,
+                            departmentId: this.entity.departmentId,
+                            isFilter: true,
+                            singleSelect: false,
+                        }),
+                });
+            }
+        },
+
         $_Object() {
             return {
                 comment: undefined,
@@ -388,7 +417,9 @@ export default {
                                         </v-col>
                                         <v-col cols="12" v-if="needTutor">
                                             <BaseInputDataTable
+                                                v-if="userSetting"
                                                 label="Supervisor(es)"
+                                                :pageView="userDialogView"
                                                 :extraParams="extraParams"
                                                 :readonly="!extraParams"
                                                 itemText="nombreCompleto"

@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import baseFnFile from '@/helpers/baseFnFile';
 
@@ -48,6 +48,12 @@ export default {
 
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
+
+        ...mapGetters('filters', ['advfiltersBypageView', 'dialogViewById']),
+
+        companyDialogView() {
+            return this.dialogViewById('companyDialog');
+        },
 
         /**
          * Configuracion BaseInputDataTable

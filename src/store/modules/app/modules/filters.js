@@ -32,6 +32,7 @@ const $_dialogView = () => {
         abilityDialog: 'abilitySetting',
         companyDialog: 'companySetting',
         assessmentDialog: 'assessmentSetting',
+        simpleAbilityDialog: 'simpleAbilitySetting',
     };
 };
 
