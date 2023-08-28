@@ -155,7 +155,7 @@ export default {
          * Configuracion BaseServerDataTable
          */
         assessmentSetting() {
-            return this.advfiltersBypageView(this.abilityDialogView);
+            return this.advfiltersBypageView(this.assessmentDialogView);
         },
     },
 

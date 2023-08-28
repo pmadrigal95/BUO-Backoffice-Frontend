@@ -6,13 +6,15 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
+
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
@@ -45,168 +47,18 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('filters', ['advfiltersBypageView', 'dialogViewById']),
+
+        companyDialogView() {
+            return this.dialogViewById('companyDialog');
+        },
+
         /**
          * Configuracion BaseInputDataTable
 
          */
         settingOrganization() {
-            return {
-                endpoint: 'organizacion/findBy',
-                columns: [
-                    {
-                        text: 'Nombre',
-                        align: 'start',
-                        value: 'nombre',
-                        show: true,
-                    },
-                    {
-                        text: 'Nombre Contacto',
-                        align: 'start',
-                        value: 'nombreContacto',
-                        show: true,
-                    },
-                    {
-                        text: 'Correo Contacto',
-                        align: 'start',
-                        value: 'correoContacto',
-                        show: true,
-                    },
-                    {
-                        text: 'Token Colaborador',
-                        align: 'start',
-                        value: 'tokenUsuario',
-                        show: false,
-                    },
-                    {
-                        text: 'Colaboradores',
-                        align: 'end',
-                        value: 'totalUsuarios',
-                        show: false,
-                    },
-                    {
-                        text: 'Wallets Activas',
-                        align: 'end',
-                        value: 'walletsActivas',
-                        show: false,
-                    },
-                    {
-                        text: 'Certifica Inmediato',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'certificaInmediato',
-                        show: false,
-                    },
-                    {
-                        text: 'Mostrar Puestos Genéricos',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'mostrarPuestosGenericos',
-                        show: false,
-                    },
-                    {
-                        text: 'Demo',
-                        type: 'bool',
-                        align: 'center',
-                        value: 'esClienteDemo',
-                        show: true,
-                    },
-                    {
-                        text: 'Estado',
-                        type: 'chip',
-                        align: 'center',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Industria',
-                        align: 'start',
-                        value: 'nombreIndustria',
-                        show: false,
-                    },
-                    {
-                        text: 'País',
-                        align: 'start',
-                        value: 'nombrePais',
-                        show: false,
-                    },
-                    {
-                        text: 'Ciudad',
-                        align: 'start',
-                        value: 'ciudad',
-                        show: false,
-                    },
-                    {
-                        text: 'Descripción',
-                        align: 'start',
-                        value: 'descripcion',
-                        show: false,
-                    },
-                ],
-                key: 'id',
-            };
-        },
-
-        settingDepartment() {
-            return {
-                endpoint: 'departamento/findBy',
-                columns: [
-                    {
-                        text: 'Nombre',
-                        align: 'start',
-                        value: 'nombre',
-                        show: true,
-                    },
-                    {
-                        text: 'Departamento Padre',
-                        align: 'start',
-                        value: 'nombrePadre',
-                        show: true,
-                    },
-                    {
-                        text: 'Empresa',
-                        align: 'start',
-                        value: 'nombreOrganizacion',
-                        show: true,
-                    },
-                    {
-                        text: 'Administrador',
-                        align: 'start',
-                        value: 'nombreUsuarioAdmin',
-                        show: false,
-                    },
-                    {
-                        text: 'Correo Administrador',
-                        align: 'start',
-                        value: 'correoUsuarioAdmin',
-                        show: false,
-                    },
-                    {
-                        text: 'Teléfono Administrador',
-                        align: 'start',
-                        value: 'telefonoUsuarioAdmin',
-                        show: false,
-                    },
-                    {
-                        text: 'Colaboradores',
-                        align: 'end',
-                        value: 'cantidadColaboradores',
-                        show: false,
-                    },
-                    {
-                        text: 'Estado',
-                        align: 'center',
-                        value: 'nombreEstado',
-                        show: true,
-                    },
-                    {
-                        text: 'Creado por',
-                        align: 'start',
-                        value: 'nombreUsuarioModifica',
-                        show: false,
-                    },
-                ],
-                key: 'id',
-            };
+            return this.advfiltersBypageView(this.companyDialogView);
         },
     },
 
@@ -217,6 +69,8 @@ export default {
         this.$_getObject();
 
         this.$_reviewQueryParams();
+
+        this.$_setCompanyFilter();
 
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
@@ -243,6 +97,24 @@ export default {
     },
 
     methods: {
+        ...mapActions('filters', ['$_set_advfilter']),
+
+        $_setCompanyFilter() {
+            const dialogView = this.advfiltersBypageView(
+                this.companyDialogView
+            );
+
+            if (!dialogView) {
+                this.$_set_advfilter({
+                    [this.companyDialogView]:
+                        baseFilterSettingsHelper.$_setCompanySetting({
+                            isFilter: true,
+                            singleSelect: true,
+                        }),
+                });
+            }
+        },
+
         $_Object() {
             return {
                 id: 0,
@@ -436,10 +308,12 @@ export default {
                         <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseInputDataTable
                                 v-if="
-                                    !$router.currentRoute.query.organizacionId
+                                    !$router.currentRoute.query
+                                        .organizacionId && settingOrganization
                                 "
                                 label="Empresa"
                                 :setting="settingOrganization"
+                                :pageView="companyDialogView"
                                 :editText="entity.nombreOrganizacion"
                                 v-model.number="entity.organizacionId"
                             />
