@@ -60,6 +60,14 @@ export default {
         settingOrganization() {
             return this.advfiltersBypageView(this.companyDialogView);
         },
+
+        userTypeList() {
+            return [
+                { name: 'Normal', id: 0 },
+                { name: 'Super administrador', id: 1 },
+                { name: 'Administrador de empresa', id: 2 },
+            ];
+        },
     },
 
     created() {
@@ -134,6 +142,7 @@ export default {
                 nombreDepartamento: undefined,
                 departamentoId: undefined,
                 estadoId: 2,
+                tipoUsuarioId: 0,
                 usuarioModificaId: undefined,
             };
         },
@@ -328,6 +337,15 @@ export default {
                                 itemText="nombre"
                                 itemChildren="subDepartamentos"
                                 :endpoint="`departamento/findAllTree/${entity.organizacionId}`"
+                            />
+                        </v-col>
+
+                        <v-col cols="12" v-if="user.companyId === buoId">
+                            <BaseRadioGroup
+                                label="Tipo de usuario"
+                                v-model="entity.tipoUsuarioId"
+                                :endpoint="userTypeList"
+                                :validate="['requiered']"
                             />
                         </v-col>
 
