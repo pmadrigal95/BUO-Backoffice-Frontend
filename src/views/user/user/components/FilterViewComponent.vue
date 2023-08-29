@@ -23,11 +23,17 @@ import { baseAssessmentHelper } from '@/views/user/user/components/baseAssessmen
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
-const BaseCustomsButtonsGrid = () =>
-    import('@/components/core/grids/BaseCustomsButtonsGrid');
+/*const BaseCustomsButtonsGrid = () =>
+    import('@/components/core/grids/BaseCustomsButtonsGrid');*/
 
-const AssessmentViewComponent = () =>
-    import('@/views/user/user/components/AssessmentViewComponent');
+/*const AssessmentViewComponent = () =>
+    import('@/views/user/user/components/AssessmentViewComponent');*/
+
+const UserPasswordViewComponent = () =>
+    import('@/views/user/user/components/password/UserPasswordViewComponent');
+
+const MenuViewComponent = () =>
+    import('@/views/user/user/components/menu/MenuViewComponent');
 
 export default {
     name: 'FilterViewComponent',
@@ -40,8 +46,10 @@ export default {
 
     components: {
         BaseServerDataTable,
-        BaseCustomsButtonsGrid,
-        AssessmentViewComponent,
+        //BaseCustomsButtonsGrid,
+        //AssessmentViewComponent,
+        MenuViewComponent,
+        UserPasswordViewComponent,
     },
 
     data() {
@@ -93,6 +101,56 @@ export default {
             );
             return result;
         },
+
+        actions() {
+            return [
+                {
+                    id: 1,
+                    icon: 'table-arrow-up',
+                    title: 'Carga Masiva',
+                    fn: this.$_fnLoad,
+                    permission: this.permission?.Upload,
+                },
+                {
+                    id: 2,
+                    icon: 'email-arrow-right-outline',
+                    title: 'Reenviar Activación',
+                    fn: this.$_getResendActivationUserList,
+                    subActions: null,
+                    permission: this.permission?.Write,
+                },
+                {
+                    id: 3,
+                    icon: 'account-lock-open-outline',
+                    title: 'Cambiar Contraseña',
+                    fn: this.$_openModalChangePassword,
+                    subActions: null,
+                    permission: this.permission?.Write,
+                },
+                {
+                    id: 4,
+                    icon: 'chevron-down',
+                    title: 'Assessments',
+                    permission: this.assessmentPermission,
+                    subActions: [
+                        {
+                            id: 5,
+                            icon: 'pencil-box-outline',
+                            title: 'Asignar',
+                            fn: this.$_setAssessmentByType,
+                            permission: this.assessmentPermission,
+                        },
+                        {
+                            id: 6,
+                            icon: 'pencil-box-multiple-outline',
+                            title: 'Asignación Masiva',
+                            fn: this.$_setAssessmentByType,
+                            permission: this.assessmentPermission,
+                        },
+                    ],
+                },
+            ];
+        },
     },
 
     created() {
@@ -118,10 +176,10 @@ export default {
         /**
          * Body Request
          */
-        $_createBodyRequestDelete(id) {
+        $_createBodyRequestDelete(rows) {
             const request = {
                 userId: this.user.userId,
-                id: id,
+                ids: rows.map((element) => element.id),
             };
             return request;
         },
@@ -130,18 +188,16 @@ export default {
          * Desactive Function
          */
         $_fnDesactiveUser(row) {
-            row.forEach((element) => {
-                httpService
-                    .post(
-                        'user/deactivate',
-                        this.$_createBodyRequestDelete(element.id)
-                    )
-                    .then((response) => {
-                        if (response != undefined) {
-                            this.$refs[this.pageView].$_ParamsToAPI();
-                        }
-                    });
-            });
+            httpService
+                .post(
+                    'user/deactivateMassive',
+                    this.$_createBodyRequestDelete(row)
+                )
+                .then((response) => {
+                    if (response != undefined) {
+                        this.$refs[this.pageView].$_ParamsToAPI();
+                    }
+                });
         },
 
         $_setQuery() {
@@ -194,11 +250,7 @@ export default {
             });
         },
 
-        $_updateGrid() {
-            this.key++;
-        },
-
-        $_getResendActivationUserList() {
+        $_isRowSelected(callback, group = true) {
             const row = this.$_GetRow();
 
             switch (true) {
@@ -208,25 +260,43 @@ export default {
                         baseLocalHelper.$_MsgRowNotSelected
                     );
                     break;
+                case row.length > 1 && !group:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotMultiSelected
+                    );
+                    break;
                 case row.length > 0: {
-                    const activationUserList = row.map((element) => element.id);
-
-                    this.$_resendActivacionEmail(activationUserList);
+                    callback(row);
                     break;
                 }
             }
         },
 
-        $_resendActivacionEmail(activationUserList) {
+        $_getResendActivationUserList() {
+            this.$_isRowSelected(this.$_fnResendActivacionEmail);
+        },
+
+        $_fnResendActivacionEmail(row) {
+            const object = row.map((element) => element.id);
+
             httpService
                 .post(`user/resendActivationEmail`, {
-                    usuarioIds: activationUserList,
+                    usuarioIds: object,
                 })
                 .then((response) => {
                     if (response != undefined) {
-                        this.$_updateGrid();
+                        this.$refs[this.pageView].$_ParamsToAPI();
                     }
                 });
+        },
+
+        $_openModalChangePassword() {
+            this.$_isRowSelected(this.$_open, false);
+        },
+
+        $_open() {
+            this.$refs['popUp'].$_open();
         },
     },
 };
@@ -246,28 +316,16 @@ export default {
     >
         <div slot="btns">
             <v-row class="pl-3 pt-3">
-                <BaseCustomsButtonsGrid
-                    v-if="permission?.Upload"
-                    label="Carga Masiva"
-                    :fnMethod="$_fnLoad"
-                    icon="mdi-table-arrow-up"
-                    :color="app ? 'blueProgress600' : 'blue900'"
-                />
-
-                <BaseCustomsButtonsGrid
-                    v-if="permission?.Write"
-                    label="Reactivación"
-                    :fnMethod="$_getResendActivationUserList"
-                    icon="mdi-email-arrow-right-outline"
-                    :color="app ? 'blueProgress600' : 'blue900'"
-                />
-
-                <AssessmentViewComponent
+                <!-- <AssessmentViewComponent
                     v-if="assessmentPermission"
                     :entity="entity"
                     :organizacionId="organizacionId"
                     :fn="$_setAssessmentByType"
                 />
+                -->
+
+                <MenuViewComponent :actions="actions" />
+                <UserPasswordViewComponent ref="popUp" />
             </v-row>
         </div>
     </BaseServerDataTable>

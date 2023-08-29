@@ -18,6 +18,11 @@ export default {
         value: {
             type: [String, Number],
         },
+
+        title: {
+            type: String,
+            default: 'Contraseña',
+        },
     },
 
     data() {
@@ -70,7 +75,7 @@ export default {
                     <div v-bind="attrs" v-on="on">
                         <BaseInput
                             :type="showPassword ? 'text' : 'password'"
-                            label="Contraseña"
+                            :label="title"
                             :append-icon="
                                 showPassword ? 'mdi-eye' : 'mdi-eye-off'
                             "
@@ -95,7 +100,7 @@ export default {
         <v-col cols="12">
             <BaseInput
                 :type="showPassword ? 'text' : 'password'"
-                label="Verificar Contraseña"
+                :label="`Verificar ${title.toLowerCase()}`"
                 v-model.trim="confirmPwd"
                 :validate="[rules.required, passwordMatch]"
             />

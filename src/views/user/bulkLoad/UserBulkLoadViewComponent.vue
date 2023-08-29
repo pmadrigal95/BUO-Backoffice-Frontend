@@ -266,7 +266,13 @@ export default {
 
                             <v-col cols="12" class="mb-4">
                                 <StepViewComponent
-                                    icon="mdi-numeric-3-circle"
+                                    :icon="`mdi-numeric-${
+                                        user.companyId != buoId ||
+                                        $router.currentRoute.query
+                                            .organizacionId
+                                            ? '2'
+                                            : '3'
+                                    }-circle`"
                                     description="Edita el mismo archivo con los datos de tus colaboradores, siguiendo el formato del archivo sin alterarlo."
                                     iconColor="greenC900"
                                     font="BUO-Paragraph-Medium"
@@ -275,7 +281,13 @@ export default {
 
                             <v-col cols="12">
                                 <StepViewComponent
-                                    icon="mdi-numeric-4-circle"
+                                    :icon="`mdi-numeric-${
+                                        user.companyId != buoId ||
+                                        $router.currentRoute.query
+                                            .organizacionId
+                                            ? '3'
+                                            : '4'
+                                    }-circle`"
                                     description="Sube el archivo editado."
                                     iconColor="greenC900"
                                     font="BUO-Paragraph-Medium"
