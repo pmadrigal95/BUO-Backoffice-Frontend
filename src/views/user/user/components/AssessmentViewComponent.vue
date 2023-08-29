@@ -153,7 +153,7 @@ export default {
                         baseFilterSettingsHelper.$_setAssessmentSetting({
                             apiEndpoint: 'findByDeepWithDefault',
                             companyId: this.user.companyId,
-                            assessmentTypeId: this.temp.assessmentTypeId,
+                            assessmentTypeId: this.form.assessmentTypeId,
                             isFilter: true,
                             singleSelect: true,
                         }),

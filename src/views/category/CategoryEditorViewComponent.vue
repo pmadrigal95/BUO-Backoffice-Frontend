@@ -2,7 +2,7 @@
 /**
  * Descripción: Pantalla Editor Categorias
  *
- * @displayName DepartmentEditorViewComponent
+ * @displayName CategoryEditorViewComponent
  *
  */
 
