@@ -118,7 +118,7 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="Categorias">
+    <BaseCardViewComponent title="Categorías">
         <div slot="card-text">
             <BaseServerDataTable
                 v-if="setting"
