@@ -128,7 +128,7 @@ export default {
          * Get a registry
          */
         $_GetRow() {
-            return this.$refs.filter.$data.selected;
+            return this.$refs[this.pageView].$data.selected;
         },
 
         $_setUserList(array) {

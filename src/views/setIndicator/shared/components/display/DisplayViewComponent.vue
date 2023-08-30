@@ -11,6 +11,11 @@ const UserFilterViewComponent = () =>
         '@/views/setIndicator/shared/components/user/UserFilterViewComponent'
     );
 
+const IndicatorFilterViewComponent = () =>
+    import(
+        '@/views/setIndicator/shared/components/indicator/IndicatorFilterViewComponent'
+    );
+
 export default {
     name: 'DisplayViewComponent',
 
@@ -28,6 +33,7 @@ export default {
 
     components: {
         UserFilterViewComponent,
+        IndicatorFilterViewComponent,
     },
 };
 </script>
@@ -42,7 +48,10 @@ export default {
         </v-window-item>
 
         <v-window-item :value="1">
-            <span>1</span>
+            <IndicatorFilterViewComponent
+                :entity="entity"
+                :requiredTutors="requiredTutors"
+            />
         </v-window-item>
 
         <v-window-item :value="2">
