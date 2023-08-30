@@ -6,6 +6,11 @@
  *
  */
 
+const UserFilterViewComponent = () =>
+    import(
+        '@/views/setIndicator/shared/components/user/UserFilterViewComponent'
+    );
+
 export default {
     name: 'DisplayViewComponent',
 
@@ -20,13 +25,20 @@ export default {
             default: false,
         },
     },
+
+    components: {
+        UserFilterViewComponent,
+    },
 };
 </script>
 
 <template>
     <v-window v-model="entity.step" touchless v-if="entity.companyId">
         <v-window-item :value="0">
-            <span>0</span>
+            <UserFilterViewComponent
+                :entity="entity"
+                :requiredTutors="requiredTutors"
+            />
         </v-window-item>
 
         <v-window-item :value="1">

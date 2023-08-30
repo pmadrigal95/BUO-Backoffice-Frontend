@@ -148,7 +148,6 @@ export default {
                             v-if="!entity.companyId"
                             msg="Por favor seleccione una empresa"
                         />
-                        <span v-else>necesita tutor: {{ requiredTutors }}</span>
                         <DisplayViewComponent
                             :entity="entity"
                             :requiredTutors="requiredTutors"

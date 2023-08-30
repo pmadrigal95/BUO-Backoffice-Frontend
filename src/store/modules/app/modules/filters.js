@@ -21,8 +21,10 @@ const $_pageView = () => {
         AssessmentFilter: 'AssessmentFilterViewComponent',
         DepartmentFilter: 'DepartmentFilterViewComponent',
         MicroAbilityFilter: 'MicroAbilityFilterViewComponent',
+        setIndicadorFilter: 'SetIndicadorFilterViewComponent',
         AssessmentTypeFilter: 'AssessmentTypeFilterViewComponent',
         PromotionalCodesFilter: 'PromotionalCodesFilterViewComponent',
+        setIndicadorUserFilter: 'SetIndicadorUserFilterViewComponent',
     };
 };
 

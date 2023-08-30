@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import baseLocalHelper from '@/helpers/baseLocalHelper';
 
@@ -24,11 +24,13 @@ const BaseServerDataTable = () =>
 const StepViewComponent = () =>
     import('@/views/user/bulkLoad/components/StepViewComponent');
 
-const NewAbilityViewComponent = () =>
-    import('@/views/assignment/components/NewAbilityViewComponent');
-
 const AssessmentViewComponent = () =>
     import('@/views/user/user/components/AssessmentViewComponent');
+
+const CreateAndSetIndicatorViewComponent = () =>
+    import(
+        '@/views/setIndicator/shared/components/actions/CreateAndSetIndicatorViewComponent'
+    );
 
 export default {
     name: 'FilterViewComponent',
@@ -37,6 +39,11 @@ export default {
         entity: {
             type: Object,
             requiered: true,
+        },
+
+        requiredTutors: {
+            type: Boolean,
+            default: false,
         },
     },
 
@@ -49,14 +56,20 @@ export default {
     components: {
         BaseServerDataTable,
         StepViewComponent,
-        NewAbilityViewComponent,
         AssessmentViewComponent,
+        CreateAndSetIndicatorViewComponent,
     },
 
     computed: {
         ...mapGetters('theme', ['app']),
 
         ...mapGetters('authentication', ['user', 'buoId']),
+
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('setIndicadorUserFilter');
+        },
 
         extraParams() {
             return (
@@ -71,11 +84,7 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return baseFilterSettingsHelper.$_setUserSetting({
-                companyId: this.entity.companyId,
-                departmentId: this.entity.departmentId,
-                singleSelect: false,
-            });
+            return this.filtersBypageView(this.pageView);
         },
 
         abilityPermission() {
@@ -94,7 +103,27 @@ export default {
         },
     },
 
+    created() {
+        this.$_setFilter();
+    },
+
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]: baseFilterSettingsHelper.$_setUserSetting({
+                        companyId: this.entity.companyId,
+                        departmentId: this.entity.departmentId,
+                        singleSelect: false,
+                    }),
+                });
+            }
+        },
+
         /**
          * Get a registry
          */
@@ -191,9 +220,9 @@ export default {
     <section>
         <v-layout justify-start>
             <StepViewComponent
-                :icon="`mdi-numeric-${entity.step === 0 ? '1' : '3'}-circle`"
-                :description="`Seleccionar ${
-                    entity.step === 0 ? 'colaboradores' : 'Evaluadores'
+                icon="mdi-numeric-1-circle"
+                :description="`Seleccionar colaboradores ${
+                    requiredTutors ? 'a evaluar' : ''
                 }`"
                 iconColor="greenC900"
                 :font="`BUO-Paragraph-Large-SemiBold ${
@@ -203,15 +232,14 @@ export default {
         </v-layout>
 
         <BaseServerDataTable
-            v-if="entity"
-            ref="filter"
+            v-if="entity && setting"
+            :ref="pageView"
+            :pageView="pageView"
             :setting="setting"
             :extraParams="extraParams"
             :fnDoubleClick="$_setList"
-            :footerMethod="entity.step === 0 ? $_setList : undefined"
+            :footerMethod="$_setList"
             labelBtn="Continuar"
-            cancellabelBtn="Regresar"
-            :cancel="entity.step !== 0 ? $_goBack : undefined"
         >
             <div slot="btns">
                 <v-row class="pl-3 pt-3" v-if="entity.companyId">
@@ -219,13 +247,14 @@ export default {
                         :entity="assessment"
                         :organizacionId="entity.companyId"
                         :fn="$_setAssessmentByType"
-                        v-if="entity.step === 0 && assessmentPermission"
+                        v-if="assessmentPermission"
                     />
 
-                    <NewAbilityViewComponent
+                    <CreateAndSetIndicatorViewComponent
                         :entity="entity"
+                        :requiredTutors="requiredTutors"
                         :fn="$_newAbility"
-                        v-if="abilityPermission && entity.step === 0"
+                        v-if="abilityPermission"
                     />
 
                     <v-btn
@@ -234,8 +263,7 @@ export default {
                         elevation="0"
                         class="mx-1"
                         color="primary"
-                        @click="$_goBack"
-                        :disabled="entity.step === 0"
+                        disabled
                     >
                         <v-icon dark> mdi-chevron-left </v-icon>
                     </v-btn>
