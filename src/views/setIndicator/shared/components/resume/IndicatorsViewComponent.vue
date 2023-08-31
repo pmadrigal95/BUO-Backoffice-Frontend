@@ -10,6 +10,11 @@ import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
+const DeleteItemViewComponent = () =>
+    import(
+        '@/views/setIndicator/shared/components/resume/shared/DeleteItemViewComponent'
+    );
+
 export default {
     name: 'IndicatorsViewComponent',
 
@@ -23,6 +28,10 @@ export default {
             type: Object,
             requiered: true,
         },
+    },
+
+    components: {
+        DeleteItemViewComponent,
     },
 
     data() {
@@ -83,12 +92,27 @@ export default {
 
             return result;
         },
+
+        $_delete(index) {
+            this.$refs.popUpDelete.$_open(index);
+        },
+
+        $_updateList(index) {
+            this.entity.selected.abilityList =
+                this.entity.selected.abilityList.filter((x) => x.id != index);
+            this.key++;
+        },
     },
 };
 </script>
 
 <template>
     <section>
+        <DeleteItemViewComponent
+            ref="popUpDelete"
+            :callback="$_updateList"
+            label="Indicador"
+        />
         <BaseSkeletonLoader v-if="loading" type="list-item" />
         <v-card
             flat
@@ -136,7 +160,7 @@ export default {
                             <v-list-item-action>
                                 <v-btn
                                     icon
-                                    @click="$_delete(item.id)"
+                                    @click.native.stop="$_delete(item.id)"
                                     class="pb-1"
                                 >
                                     <v-icon color="grey500"
@@ -218,6 +242,22 @@ export default {
                     </v-expansion-panel-content>
                 </v-expansion-panel>
             </v-expansion-panels>
+
+            <v-alert
+                v-else
+                border="left"
+                colored-border
+                color="primary"
+                elevation="0"
+                class="ml-2"
+            >
+                <span
+                    class="BUO-Paragraph-Small"
+                    :class="[app ? 'white--text' : 'grey600--text']"
+                    >Agregar indicadores es fácil y solo llevará unos
+                    minutos.</span
+                >
+            </v-alert>
         </v-card>
     </section>
 </template>
