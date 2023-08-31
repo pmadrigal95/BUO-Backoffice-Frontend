@@ -17,7 +17,9 @@ const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
 const HelperViewComponent = () =>
-    import('@/views/assignment/components/HelperViewComponent');
+    import(
+        '@/views/setIndicator/shared/components/display/HelperViewComponent'
+    );
 
 const BaseAdvancedFilter = () =>
     import('@/components/backoffice/filter/BaseAdvancedFilter');

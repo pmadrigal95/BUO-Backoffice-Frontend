@@ -16,6 +16,14 @@ const IndicatorFilterViewComponent = () =>
         '@/views/setIndicator/shared/components/indicator/IndicatorFilterViewComponent'
     );
 
+const SupervisorFilterViewComponent = () =>
+    import(
+        '@/views/setIndicator/shared/components/user/SupervisorFilterViewComponent'
+    );
+
+const ResumeViewComponent = () =>
+    import('@/views/setIndicator/shared/components/resume/ResumeViewComponent');
+
 export default {
     name: 'DisplayViewComponent',
 
@@ -34,6 +42,8 @@ export default {
     components: {
         UserFilterViewComponent,
         IndicatorFilterViewComponent,
+        SupervisorFilterViewComponent,
+        ResumeViewComponent,
     },
 };
 </script>
@@ -54,12 +64,15 @@ export default {
             />
         </v-window-item>
 
-        <v-window-item :value="2">
-            <span>2</span>
+        <v-window-item :value="2" v-if="requiredTutors">
+            <SupervisorFilterViewComponent :entity="entity" />
         </v-window-item>
 
         <v-window-item :value="3">
-            <span>3</span>
+            <ResumeViewComponent
+                :entity="entity"
+                :requiredTutors="requiredTutors"
+            />
         </v-window-item>
     </v-window>
 </template>

@@ -1,8 +1,8 @@
 <script>
 /**
- * Descripción: Pantalla FilterViewComponent
+ * Descripción: Pantalla UserFilterViewComponent
  *
- * @displayName FilterViewComponent
+ * @displayName UserFilterViewComponent
  *
  */
 
@@ -33,7 +33,7 @@ const CreateAndSetIndicatorViewComponent = () =>
     );
 
 export default {
-    name: 'FilterViewComponent',
+    name: 'UserFilterViewComponent',
 
     props: {
         entity: {
