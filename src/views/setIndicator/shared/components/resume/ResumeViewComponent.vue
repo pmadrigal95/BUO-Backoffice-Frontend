@@ -10,6 +10,22 @@ import { mapGetters } from 'vuex';
 const StepViewComponent = () =>
     import('@/views/user/bulkLoad/components/StepViewComponent');
 
+const UsersViewComponent = () =>
+    import('@/views/setIndicator/shared/components/resume/UsersViewComponent');
+
+const SupervisorsViewComponent = () =>
+    import(
+        '@/views/setIndicator/shared/components/resume/SupervisorsViewComponent'
+    );
+
+const IndicatorsViewComponent = () =>
+    import(
+        '@/views/setIndicator/shared/components/resume/IndicatorsViewComponent'
+    );
+
+// const FormViewComponent = () =>
+//     import('@/views/setIndicator/shared/components/resume/FormViewComponent');
+
 export default {
     name: 'ConfirmationViewComponent',
 
@@ -27,11 +43,16 @@ export default {
 
     components: {
         StepViewComponent,
+        UsersViewComponent,
+        SupervisorsViewComponent,
+        IndicatorsViewComponent,
+        // FormViewComponent,
     },
 
     data() {
         return {
             panel: [1],
+            key: 0,
         };
     },
 
@@ -48,6 +69,16 @@ export default {
 
             delete this.entity.selected.tutorList;
             this.entity.step = this.requiredTutors ? 2 : 1;
+        },
+
+        tutorCallback(array) {
+            this.entity.selected.tutorList = [...array];
+            this.key++;
+        },
+
+        userCallback(array) {
+            this.entity.selected.userList = [...array];
+            this.key++;
         },
     },
 };
@@ -83,7 +114,7 @@ export default {
                 </v-btn>
             </section>
         </v-layout>
-        <v-expansion-panels multiple flat v-model="panel">
+        <v-expansion-panels multiple flat v-model="panel" :key="key">
             <v-expansion-panel v-if="entity.selected.userList">
                 <v-expansion-panel-header
                     ><section
@@ -97,24 +128,11 @@ export default {
                     </section></v-expansion-panel-header
                 >
                 <v-expansion-panel-content>
-                    <span>Hola</span>
-                </v-expansion-panel-content>
-            </v-expansion-panel>
-
-            <v-expansion-panel v-if="entity.selected.abilityIdList">
-                <v-expansion-panel-header
-                    ><section
-                        :class="[
-                            $vuetify.breakpoint.smAndDown
-                                ? 'BUO-Paragraph-Large'
-                                : 'BUO-Heading-Small',
-                        ]"
-                    >
-                        Indicadores
-                    </section></v-expansion-panel-header
-                >
-                <v-expansion-panel-content>
-                    <span>Hola</span>
+                    <UsersViewComponent
+                        :entity="entity"
+                        :list="entity?.selected?.userList"
+                        :callback="userCallback"
+                    />
                 </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -136,11 +154,31 @@ export default {
                     </section></v-expansion-panel-header
                 >
                 <v-expansion-panel-content>
-                    <span>Hola</span>
+                    <SupervisorsViewComponent
+                        :list="entity?.selected?.tutorList"
+                        :callback="tutorCallback"
+                    />
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+
+            <v-expansion-panel v-if="entity.selected.abilityIdList">
+                <v-expansion-panel-header
+                    ><section
+                        :class="[
+                            $vuetify.breakpoint.smAndDown
+                                ? 'BUO-Paragraph-Large'
+                                : 'BUO-Heading-Small',
+                        ]"
+                    >
+                        Indicadores
+                    </section></v-expansion-panel-header
+                >
+                <v-expansion-panel-content>
+                    <IndicatorsViewComponent />
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
         <v-divider class="my-3"></v-divider>
-        <span>Hola</span>
+        <!-- <FormViewComponent /> -->
     </section>
 </template>
