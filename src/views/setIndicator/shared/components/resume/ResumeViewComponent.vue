@@ -1,8 +1,8 @@
 <script>
 /**
- * Descripción: Pantalla Busqueda de talento
+ * Descripción: Pantalla ResumeViewComponent
  *
- * @displayName FilterViewComponent
+ * @displayName ResumeViewComponent
  *
  */
 import { mapGetters } from 'vuex';
@@ -27,7 +27,7 @@ const IndicatorsViewComponent = () =>
 //     import('@/views/setIndicator/shared/components/resume/FormViewComponent');
 
 export default {
-    name: 'ConfirmationViewComponent',
+    name: 'ResumeViewComponent',
 
     props: {
         entity: {
@@ -51,7 +51,6 @@ export default {
 
     data() {
         return {
-            panel: [1],
             key: 0,
         };
     },
@@ -114,7 +113,7 @@ export default {
                 </v-btn>
             </section>
         </v-layout>
-        <v-expansion-panels multiple flat v-model="panel" :key="key">
+        <v-expansion-panels multiple flat :key="key">
             <v-expansion-panel v-if="entity.selected.userList">
                 <v-expansion-panel-header
                     ><section
@@ -160,8 +159,13 @@ export default {
                     />
                 </v-expansion-panel-content>
             </v-expansion-panel>
-
-            <v-expansion-panel v-if="entity.selected.abilityIdList">
+        </v-expansion-panels>
+        <v-expansion-panels
+            :value="0"
+            flat
+            v-if="entity.selected.abilityIdList"
+        >
+            <v-expansion-panel>
                 <v-expansion-panel-header
                     ><section
                         :class="[
@@ -174,7 +178,10 @@ export default {
                     </section></v-expansion-panel-header
                 >
                 <v-expansion-panel-content>
-                    <IndicatorsViewComponent />
+                    <IndicatorsViewComponent
+                        :abilityIdList="entity.selected.abilityIdList"
+                        :entity="entity"
+                    />
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
