@@ -181,6 +181,15 @@ export default {
             type: Function,
             default: undefined,
         },
+
+        /**
+         * Función Menú Actiones
+         * Default undefined
+         */
+        fnActions: {
+            type: Array,
+            default: undefined,
+        },
     },
 
     data() {
@@ -1283,6 +1292,7 @@ export default {
                         :fnDelete="
                             fnDelete != undefined ? $_DeleteModal : undefined
                         "
+                        :fnActions="fnActions"
                         :rowCount="selected.length"
                     >
                         <!-- @slot Use este slot para agregar botones -->

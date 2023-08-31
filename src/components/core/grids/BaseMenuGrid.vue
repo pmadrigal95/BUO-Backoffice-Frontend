@@ -1,28 +1,33 @@
 <script>
 /**
- * Descripción: Pantalla Menú de acciones
+ * Descripción: Componente para crear un menú de acciones
  *
- * @displayName MenuViewComponent
+ * @displayName BaseMenuGrid
  *
  */
 
 import { mapGetters } from 'vuex';
 
-const MenuItemsViewComponent = () =>
-    import('@/views/user/user/components/menu//MenuItemsViewComponent');
+const BaseMenuItemsRecursive = () =>
+    import('@/components/core/grids/BaseMenuItemsRecursive');
 
 export default {
-    name: 'MenuViewComponent',
+    name: 'BaseMenuGrid',
 
     props: {
         actions: {
             type: Array,
             require: true,
         },
+
+        title: {
+            type: String,
+            default: 'Acciones',
+        },
     },
 
     components: {
-        MenuItemsViewComponent,
+        BaseMenuItemsRecursive,
     },
 
     computed: {
@@ -33,7 +38,7 @@ export default {
 
 <template>
     <section>
-        <v-menu offset-y transition="scale-transition"  :close-on-click="false">
+        <v-menu :close-on-content-click="false" open-on-hover bottom offset-y>
             <template v-slot:activator="{ on, attrs }">
                 <v-btn
                     :color="app ? 'blueProgress600' : 'blue900'"
@@ -44,7 +49,7 @@ export default {
                     v-bind="attrs"
                     v-on="on"
                 >
-                    Otras acciones
+                    {{ title }}
                     <v-icon right>mdi-chevron-down</v-icon>
                 </v-btn>
             </template>
@@ -52,9 +57,7 @@ export default {
                 class="mt-1 rounded-lg"
                 :class="[app ? 'background' : 'white']"
             >
-                <v-list>
-                    <MenuItemsViewComponent :actions="actions" />
-                </v-list>
+                <BaseMenuItemsRecursive :actions="actions" />
             </section>
         </v-menu>
     </section>

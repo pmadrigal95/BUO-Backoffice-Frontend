@@ -23,17 +23,11 @@ import { baseAssessmentHelper } from '@/views/user/user/components/baseAssessmen
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
-/*const BaseCustomsButtonsGrid = () =>
-    import('@/components/core/grids/BaseCustomsButtonsGrid');*/
-
-/*const AssessmentViewComponent = () =>
-    import('@/views/user/user/components/AssessmentViewComponent');*/
+const AssessmentViewComponent = () =>
+    import('@/views/user/user/components/AssessmentViewComponent');
 
 const UserPasswordViewComponent = () =>
     import('@/views/user/user/components/password/UserPasswordViewComponent');
-
-const MenuViewComponent = () =>
-    import('@/views/user/user/components/menu/MenuViewComponent');
 
 export default {
     name: 'FilterViewComponent',
@@ -46,9 +40,7 @@ export default {
 
     components: {
         BaseServerDataTable,
-        //BaseCustomsButtonsGrid,
-        //AssessmentViewComponent,
-        MenuViewComponent,
+        AssessmentViewComponent,
         UserPasswordViewComponent,
     },
 
@@ -109,45 +101,21 @@ export default {
                     icon: 'table-arrow-up',
                     title: 'Carga Masiva',
                     fn: this.$_fnLoad,
-                    permission: this.permission?.Upload,
+                    show: this.permission?.Upload,
                 },
                 {
                     id: 2,
                     icon: 'email-arrow-right-outline',
                     title: 'Reenviar Activación',
-                    fn: this.$_getResendActivationUserList,
-                    subActions: null,
-                    permission: this.permission?.Write,
+                    fn: this.$_fnResendActivation,
+                    show: this.permission?.Write,
                 },
                 {
                     id: 3,
                     icon: 'account-lock-open-outline',
                     title: 'Cambiar Contraseña',
-                    fn: this.$_openModalChangePassword,
-                    subActions: null,
-                    permission: this.permission?.Write,
-                },
-                {
-                    id: 4,
-                    icon: 'chevron-down',
-                    title: 'Assessments',
-                    permission: this.assessmentPermission,
-                    subActions: [
-                        {
-                            id: 5,
-                            icon: 'pencil-box-outline',
-                            title: 'Asignar',
-                            fn: this.$_setAssessmentByType,
-                            permission: this.assessmentPermission,
-                        },
-                        {
-                            id: 6,
-                            icon: 'pencil-box-multiple-outline',
-                            title: 'Asignación Masiva',
-                            fn: this.$_setAssessmentByType,
-                            permission: this.assessmentPermission,
-                        },
-                    ],
+                    fn: this.$_openModalChangePwd,
+                    show: this.permission?.Write,
                 },
             ];
         },
@@ -250,7 +218,7 @@ export default {
             });
         },
 
-        $_isRowSelected(callback, group = true) {
+        $_validateRow({ callback, isMultiSelect }) {
             const row = this.$_GetRow();
 
             switch (true) {
@@ -260,24 +228,29 @@ export default {
                         baseLocalHelper.$_MsgRowNotSelected
                     );
                     break;
-                case row.length > 1 && !group:
-                    baseNotificationsHelper.Message(
-                        true,
-                        baseLocalHelper.$_MsgRowNotMultiSelected
-                    );
-                    break;
                 case row.length > 0: {
+                    if (row.length > 1 && !isMultiSelect) {
+                        return baseNotificationsHelper.Message(
+                            true,
+                            baseLocalHelper.$_MsgRowNotMultiSelected
+                        );
+                    }
+
                     callback(row);
+
                     break;
                 }
             }
         },
 
-        $_getResendActivationUserList() {
-            this.$_isRowSelected(this.$_fnResendActivacionEmail);
+        $_fnResendActivation() {
+            this.$_validateRow({
+                callback: this.$_sentToResentActivation,
+                isMultiSelect: true,
+            });
         },
 
-        $_fnResendActivacionEmail(row) {
+        $_sentToResentActivation(row) {
             const object = row.map((element) => element.id);
 
             httpService
@@ -291,11 +264,31 @@ export default {
                 });
         },
 
-        $_openModalChangePassword() {
-            this.$_isRowSelected(this.$_open, false);
+        $_setEntityForChangePwd() {
+            const row = this.$_GetRow();
+
+            this.entity = {};
+
+            this.entity = Object.assign(
+                {},
+                ...row.map((element) => ({
+                    userId: element.id,
+                    name: element.nombreCompleto,
+                    deparment: element.nombreDepartamento,
+                    organization: element.nombreOrganizacion,
+                }))
+            );
         },
 
-        $_open() {
+        $_openModalChangePwd() {
+            this.$_setEntityForChangePwd();
+            this.$_validateRow({
+                callback: this.$_openModal,
+                isMultiSelect: false,
+            });
+        },
+
+        $_openModal() {
             this.$refs['popUp'].$_open();
         },
     },
@@ -312,20 +305,19 @@ export default {
         :fnNew="permission?.Write ? $_userEditor : undefined"
         :fnEdit="permission?.Write ? $_userEditor : undefined"
         :fnDelete="permission?.Write ? $_fnDesactiveUser : undefined"
+        :fnActions="actions"
         :key="key"
     >
         <div slot="btns">
             <v-row class="pl-3 pt-3">
-                <!-- <AssessmentViewComponent
+                <AssessmentViewComponent
                     v-if="assessmentPermission"
                     :entity="entity"
                     :organizacionId="organizacionId"
                     :fn="$_setAssessmentByType"
                 />
-                -->
 
-                <MenuViewComponent :actions="actions" />
-                <UserPasswordViewComponent ref="popUp" />
+                <UserPasswordViewComponent ref="popUp" :entity="entity" />
             </v-row>
         </div>
     </BaseServerDataTable>

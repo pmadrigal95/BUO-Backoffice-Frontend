@@ -9,6 +9,8 @@ import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
+import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
+
 const BasePasswordInput = () =>
     import('@/components/core/forms/BasePasswordInput');
 
@@ -16,8 +18,8 @@ export default {
     name: 'UserPasswordViewComponent',
 
     props: {
-        callback: {
-            type: Function,
+        entity: {
+            type: Object,
             requiered: true,
         },
     },
@@ -27,27 +29,40 @@ export default {
     data() {
         return {
             loading: false,
-            entity: this.$_Object(),
+            pwd: undefined,
         };
     },
 
     computed: {
-        ...mapGetters('authentication', ['user', 'buoId']),
-
         ...mapGetters('theme', ['app']),
     },
 
     methods: {
-        $_Object() {
-            return {
-                newPassword: undefined,
-            };
+        initials(name) {
+            const usernameSplit = name ? name.split(' ') : undefined;
+
+            let username;
+
+            if (usernameSplit && usernameSplit.length > 0) {
+                username =
+                    usernameSplit.length === 1
+                        ? usernameSplit[0]
+                        : `${usernameSplit[0].charAt(
+                              0
+                          )}${usernameSplit[1].charAt(0)}`;
+            }
+
+            return username;
+        },
+
+        color() {
+            return baseDataVisualizationColorsHelper.$_randomColor().main;
         },
 
         $_setRequest() {
             return {
-                ...this.entity,
-                usuarioId: this.user.userId,
+                newPassword: this.pwd,
+                usuarioId: this.entity.userId,
             };
         },
 
@@ -55,7 +70,7 @@ export default {
             this.loading = true;
 
             httpService
-                .post('user/changePassword', this.$_setRequest())
+                .post('user/changePasswordAdmin', this.$_setRequest())
                 .then((response) => {
                     this.loading = false;
                     if (response != undefined) {
@@ -65,8 +80,7 @@ export default {
         },
 
         $_cancel() {
-            this.entity = this.$_Object();
-            this.callback();
+            this.$_open();
         },
 
         $_open() {
@@ -90,19 +104,86 @@ export default {
                 :block="$vuetify.breakpoint.mobile"
             >
                 <div slot="body">
-                    <section
-                        class="text-left BUO-Heading-Small mb-4"
-                        :class="[
-                            app ? 'blueProgress600--text' : 'blue900--text',
-                        ]"
-                    >
-                        Resetear contraseña
+                    <section>
+                        <section
+                            class="text-left BUO-Heading-Small"
+                            :class="[
+                                app ? 'blueProgress600--text' : 'blue900--text',
+                            ]"
+                        >
+                            Detalles del colaborador
+                        </section>
+                        <v-card flat class="rounded-lg mb-5">
+                            <v-card-text class="text-left">
+                                <v-list two-line>
+                                    <v-list-item>
+                                        <v-list-item-avatar
+                                            :color="color()"
+                                            size="60"
+                                        >
+                                            <span
+                                                class="white--text BUO-Paragraph-Medium-SemiBold"
+                                                >{{
+                                                    initials(entity.name)
+                                                }}</span
+                                            >
+                                        </v-list-item-avatar>
+
+                                        <v-list-item-content>
+                                            <v-list-item-title
+                                                class="BUO-Paragraph-Medium-SemiBold"
+                                                >{{
+                                                    entity.name
+                                                }}</v-list-item-title
+                                            >
+
+                                            <v-list-item-subtitle
+                                                class="BUO-Label-Small"
+                                                v-if="entity.organization"
+                                                ><span class="grey700--text"
+                                                    >Organización:</span
+                                                >
+                                                {{
+                                                    entity.organization
+                                                }}</v-list-item-subtitle
+                                            >
+
+                                            <v-list-item-subtitle
+                                                class="BUO-Label-Small"
+                                                v-if="entity.deparment"
+                                                ><span class="grey700--text"
+                                                    >Departamento:</span
+                                                >
+                                                {{
+                                                    entity.deparment
+                                                }}</v-list-item-subtitle
+                                            >
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                </v-list>
+                            </v-card-text>
+                        </v-card>
                     </section>
 
-                    <BasePasswordInput
-                        v-model.trim="entity.newPassword"
-                        title="Nueva contraseña"
-                    />
+                    <section>
+                        <section
+                            class="text-left BUO-Heading-Small mb-4"
+                            :class="[
+                                app ? 'blueProgress600--text' : 'blue900--text',
+                            ]"
+                        >
+                            Cambio de contraseña
+                        </section>
+
+                        <v-card outlined flat class="rounded-lg mb-10">
+                            <v-card-text class="text-left">
+                                <BasePasswordInput
+                                    v-model.trim="pwd"
+                                    title="Nueva contraseña"
+                                />
+                            </v-card-text>
+                        </v-card>
+                    </section>
                 </div>
             </BaseForm>
         </div>

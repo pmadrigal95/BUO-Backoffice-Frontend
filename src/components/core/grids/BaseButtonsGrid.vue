@@ -9,6 +9,8 @@ import baseLocalHelper from '@/helpers/baseLocalHelper';
 
 import { mapState } from 'vuex';
 
+const BaseMenuGrid = () => import('@/components/core/grids/BaseMenuGrid');
+
 export default {
     name: 'BaseButtonsGrid',
 
@@ -68,6 +70,15 @@ export default {
         },
 
         /**
+         * Función Menú Actiones
+         * Default undefined
+         */
+        fnActions: {
+            type: Array,
+            default: undefined,
+        },
+
+        /**
          * Cantidad de Filas seleccionadas
          * Default undefined
          */
@@ -75,6 +86,10 @@ export default {
             type: Number,
             default: undefined,
         },
+    },
+
+    components: {
+        BaseMenuGrid,
     },
 
     data() {
@@ -128,6 +143,10 @@ export default {
             : this.items.push(false);
 
         this.fnDelete != undefined
+            ? this.items.push(true)
+            : this.items.push(false);
+
+        this.fnActions != undefined
             ? this.items.push(true)
             : this.items.push(false);
     },
@@ -247,6 +266,12 @@ export default {
                 </v-btn>
                 <!-- @slot Use este slot para agregar más botones -->
                 <slot name="btns"></slot>
+
+                <BaseMenuGrid
+                    :actions="fnActions"
+                    class="ml-3"
+                    v-if="items[6]"
+                />
             </section>
         </v-layout>
     </v-row>

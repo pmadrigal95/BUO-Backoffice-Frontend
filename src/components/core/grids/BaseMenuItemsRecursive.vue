@@ -1,15 +1,15 @@
 <script>
 /**
- * Descripción: Pantalla Menú de acciones
+ * Descripción: Componente recursivo que crea las acciones del menú
  *
- * @displayName MenuViewComponent
+ * @displayName BaseMenuItemsRecursive
  *
  */
 
 import { mapGetters } from 'vuex';
 
 export default {
-    name: 'MenuItemsViewComponent',
+    name: 'BaseMenuItemsRecursive',
 
     props: {
         actions: {
@@ -25,15 +25,10 @@ export default {
 </script>
 
 <template>
-    <section>
+    <v-list dense>
         <section v-for="action in actions" :key="action.id">
             <v-list-group
-                v-if="
-                    action &&
-                    action.subActions &&
-                    action.subActions.length 
-                   
-                "
+                v-if="action && action.subActions && action.subActions.length"
                 no-action
             >
                 <v-list-item-content slot="activator">
@@ -46,12 +41,12 @@ export default {
                     >
                 </v-list-item-content>
                 <v-divider class="mx-4"></v-divider>
-                <MenuItemsViewComponent :actions="action.subActions" />
+                <BaseMenuItemsRecursive :actions="action.subActions" />
             </v-list-group>
             <v-list-item
                 @click="action.fn"
                 style="cursor: pointer"
-                v-else-if="action.permission"
+                v-else-if="action.show"
             >
                 <v-list-item-action>
                     <v-icon :color="app ? 'blueProgress600' : 'blue900'">{{
@@ -67,5 +62,5 @@ export default {
                 </v-list-item-content>
             </v-list-item>
         </section>
-    </section>
+    </v-list>
 </template>

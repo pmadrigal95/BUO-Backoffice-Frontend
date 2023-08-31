@@ -435,12 +435,17 @@ export default {
                 <section v-for="action in actions" :key="action.id">
                     <v-list-item @click="action.fn" style="cursor: pointer">
                         <v-list-item-action>
-                            <v-icon>{{ `mdi-${action.icon}` }}</v-icon>
+                            <v-icon
+                                :color="app ? 'blueProgress600' : 'blue900'"
+                                >{{ `mdi-${action.icon}` }}</v-icon
+                            >
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title>{{
-                                action.value
-                            }}</v-list-item-title>
+                            <v-list-item-title
+                                class="BUO-Paragraph-Small"
+                                :class="app ? 'white--text' : 'grey700--text'"
+                                >{{ action.value }}</v-list-item-title
+                            >
                         </v-list-item-content>
                     </v-list-item>
                 </section>
