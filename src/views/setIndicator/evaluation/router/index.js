@@ -8,7 +8,7 @@ const routes = [
         name: 'EvaluationViewComponent',
         component: 'setIndicator/evaluation/EvaluationViewComponent',
         meta: {
-            module: 'AssignmentViewComponent',
+            module: 'EvaluationViewComponent',
         },
     },
 ];
