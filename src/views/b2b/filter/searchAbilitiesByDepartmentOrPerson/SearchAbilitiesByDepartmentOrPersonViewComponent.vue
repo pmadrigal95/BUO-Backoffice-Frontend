@@ -64,6 +64,7 @@ export default {
             return {
                 companyId: undefined,
                 departmentId: undefined,
+                cualificacionId: undefined,
                 userId: undefined,
                 step: 0,
             };

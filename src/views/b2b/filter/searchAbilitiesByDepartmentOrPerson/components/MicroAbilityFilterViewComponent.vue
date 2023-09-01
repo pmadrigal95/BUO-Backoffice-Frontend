@@ -81,7 +81,7 @@ export default {
 
         $_goBack() {
             this.usuarioIdList = undefined;
-            delete this.entity.cualificacionId;
+            this.entity.cualificacionId = undefined;
             delete this.entity.definicionCualificacion;
             this.entity.step = 0;
         },
