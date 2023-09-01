@@ -24,8 +24,7 @@ import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
 
-const BaseButtonsGrid = () =>
-    import('@/components/core/grids/BaseButtonsGrid.vue');
+const BaseButtonsGrid = () => import('@/components/core/grids/BaseButtonsGrid');
 
 export default {
     name: 'BaseServerDataTable',
@@ -178,6 +177,15 @@ export default {
          * NO usar en conjunto
          */
         fnDoubleClick: {
+            type: Function,
+            default: undefined,
+        },
+
+        /**
+         * Función Reset Config cache
+         * Default undefined
+         */
+        fnResetConfig: {
             type: Function,
             default: undefined,
         },
@@ -468,7 +476,12 @@ export default {
     },
 
     methods: {
-        ...mapActions('filters', ['$_set_filter', '$_set_advfilter']),
+        ...mapActions('filters', [
+            '$_set_filter',
+            '$_set_advfilter',
+            '$_clean_filter',
+            '$_clean_advfilter',
+        ]),
 
         $_setCacheConfig() {
             if (this.pageView) {
@@ -998,6 +1011,16 @@ export default {
                 ? `${type}: ${palette[degradedColor]}`
                 : `${palette[degradedColor]}`;
         },
+
+        $_resetColumnConfig() {
+            if (this.pageView) {
+                this.ispageView
+                    ? this.$_clean_filter(this.pageView)
+                    : this.$_clean_advfilter(this.pageView);
+            }
+
+            this.fnResetConfig();
+        },
     },
 };
 </script>
@@ -1030,6 +1053,25 @@ export default {
                                     />
                                 </v-col>
                             </v-row>
+                            <v-layout
+                                justify-end
+                                align-center
+                                v-if="fnResetConfig"
+                            >
+                                <v-btn
+                                    color="primary"
+                                    text
+                                    elevation="0"
+                                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                                    small
+                                    @click="$_resetColumnConfig"
+                                >
+                                    Reiniciar
+                                    <v-icon right
+                                        >mdi-cog-refresh-outline</v-icon
+                                    >
+                                </v-btn>
+                            </v-layout>
                         </v-container>
 
                         <!-- @Componente:  BaseForm-->
