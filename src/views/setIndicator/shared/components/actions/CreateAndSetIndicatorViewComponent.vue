@@ -182,6 +182,7 @@ export default {
                     this.loading = false;
                     if (response != undefined) {
                         if (this.$refs['popUp'].$_checkStatus()) {
+                            this.entity.componentKey++;
                             this.$_open();
                         }
                     }

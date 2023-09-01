@@ -23,8 +23,8 @@ const IndicatorsViewComponent = () =>
         '@/views/setIndicator/shared/components/resume/IndicatorsViewComponent'
     );
 
-// const FormViewComponent = () =>
-//     import('@/views/setIndicator/shared/components/resume/FormViewComponent');
+const FormViewComponent = () =>
+    import('@/views/setIndicator/shared/components/resume/FormViewComponent');
 
 export default {
     name: 'ResumeViewComponent',
@@ -46,7 +46,7 @@ export default {
         UsersViewComponent,
         SupervisorsViewComponent,
         IndicatorsViewComponent,
-        // FormViewComponent,
+        FormViewComponent,
     },
 
     data() {
@@ -120,10 +120,10 @@ export default {
                         :class="[
                             $vuetify.breakpoint.smAndDown
                                 ? 'BUO-Paragraph-Large'
-                                : 'BUO-Heading-Small',
+                                : 'BUO-Heading-XSmall',
                         ]"
                     >
-                        Colaboradores
+                        <span>Colaboradores</span>
                     </section></v-expansion-panel-header
                 >
                 <v-expansion-panel-content>
@@ -146,10 +146,10 @@ export default {
                         :class="[
                             $vuetify.breakpoint.smAndDown
                                 ? 'BUO-Paragraph-Large'
-                                : 'BUO-Heading-Small',
+                                : 'BUO-Heading-XSmall',
                         ]"
                     >
-                        Supervisores
+                        <span>Supervisores</span>
                     </section></v-expansion-panel-header
                 >
                 <v-expansion-panel-content>
@@ -166,17 +166,17 @@ export default {
             v-if="entity.selected.abilityIdList"
         >
             <v-expansion-panel>
-                <v-expansion-panel-header
-                    ><section
+                <v-expansion-panel-header>
+                    <section
                         :class="[
                             $vuetify.breakpoint.smAndDown
                                 ? 'BUO-Paragraph-Large'
-                                : 'BUO-Heading-Small',
+                                : 'BUO-Heading-XSmall',
                         ]"
                     >
-                        Indicadores
-                    </section></v-expansion-panel-header
-                >
+                        <span>Indicadores</span>
+                    </section>
+                </v-expansion-panel-header>
                 <v-expansion-panel-content>
                     <IndicatorsViewComponent
                         :abilityIdList="entity.selected.abilityIdList"
@@ -186,6 +186,6 @@ export default {
             </v-expansion-panel>
         </v-expansion-panels>
         <v-divider class="my-3"></v-divider>
-        <!-- <FormViewComponent /> -->
+        <FormViewComponent :entity="entity" :requiredTutors="requiredTutors" />
     </section>
 </template>

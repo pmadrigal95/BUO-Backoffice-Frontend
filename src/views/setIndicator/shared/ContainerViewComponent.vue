@@ -80,6 +80,7 @@ export default {
                 companyId: undefined,
                 departmentId: undefined,
                 step: 0,
+                componentKey: 0,
             };
         },
 

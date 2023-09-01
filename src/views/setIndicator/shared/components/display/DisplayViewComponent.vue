@@ -49,7 +49,12 @@ export default {
 </script>
 
 <template>
-    <v-window v-model="entity.step" touchless v-if="entity.companyId">
+    <v-window
+        v-model="entity.step"
+        touchless
+        v-if="entity.companyId"
+        :key="entity.componentKey"
+    >
         <v-window-item :value="0">
             <UserFilterViewComponent
                 :entity="entity"
