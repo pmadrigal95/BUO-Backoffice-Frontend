@@ -260,6 +260,7 @@ export default {
             :method="$_sendToApi"
             :cancel="$_goBack"
             lblCancel="Regresar"
+            labelBtn="Enviar"
             v-else
         >
             <div slot="body">
