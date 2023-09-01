@@ -38,6 +38,8 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('theme', ['app']),
+
         /**
          * Configuracion BaseServerDataTable
          */
@@ -105,7 +107,9 @@ export default {
                 icon="mdi-numeric-2-circle"
                 description="Seleccionar Indicadores"
                 iconColor="greenC900"
-                font="BUO-Paragraph-Medium"
+                :font="`BUO-Paragraph-Large-SemiBold ${
+                    app ? 'white--text' : 'grey700--text'
+                }`"
             />
         </v-layout>
 

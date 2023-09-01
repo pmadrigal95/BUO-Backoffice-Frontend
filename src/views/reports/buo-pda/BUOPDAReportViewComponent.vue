@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import baseFnFile from '@/helpers/baseFnFile';
 
@@ -55,6 +55,12 @@ export default {
 
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('BUOPDAReport');
+        },
+
         extraParams() {
             return (
                 this.entity.companyId &&
@@ -68,11 +74,7 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return baseFilterSettingsHelper.$_setUserSetting({
-                companyId: this.entity.companyId,
-                departmentId: this.entity.departmentId,
-                singleSelect: false,
-            });
+            return this.filtersBypageView(this.pageView);
         },
 
         permission() {
@@ -84,7 +86,27 @@ export default {
         },
     },
 
+    created() {
+        this.$_setFilter();
+    },
+
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]: baseFilterSettingsHelper.$_setUserSetting({
+                        companyId: this.entity.companyId,
+                        departmentId: this.entity.departmentId,
+                        singleSelect: false,
+                    }),
+                });
+            }
+        },
+
         /**
          * Entity Object
          */
@@ -220,7 +242,9 @@ export default {
             <BaseAdvancedFilter :show="show" v-model="entity" isDepartment>
                 <div slot="body">
                     <BaseServerDataTable
-                        ref="UserFilter"
+                        v-if="setting"
+                        :ref="pageView"
+                        :pageView="pageView"
                         :setting="setting"
                         :extraParams="extraParams"
                         :fnDoubleClick="$_userDetails"
@@ -259,6 +283,7 @@ export default {
                             />
                         </div>
                     </BaseServerDataTable>
+                    <BaseSkeletonLoader v-else type="table" />
                 </div>
             </BaseAdvancedFilter>
         </div>

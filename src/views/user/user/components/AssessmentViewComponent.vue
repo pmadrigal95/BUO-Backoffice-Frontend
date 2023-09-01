@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -53,6 +53,12 @@ export default {
 
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('filters', ['advfiltersBypageView', 'dialogViewById']),
+
+        assessmentDialogView() {
+            return this.dialogViewById('assessmentDialog');
+        },
+
         actions() {
             return [
                 {
@@ -83,14 +89,12 @@ export default {
          * Configuracion BaseServerDataTable
          */
         assessmentSetting() {
-            return baseFilterSettingsHelper.$_setAssessmentSetting({
-                apiEndpoint: 'findByDeepWithDefault',
-                companyId: this.user.companyId,
-                assessmentTypeId: this.form.assessmentTypeId,
-                isFilter: true,
-                singleSelect: true,
-            });
+            return this.advfiltersBypageView(this.assessmentDialogView);
         },
+    },
+
+    created() {
+        this.$_setAssessmentFilter();
     },
 
     watch: {
@@ -136,6 +140,27 @@ export default {
     },
 
     methods: {
+        ...mapActions('filters', ['$_set_advfilter']),
+
+        $_setAssessmentFilter() {
+            const dialogView = this.advfiltersBypageView(
+                this.assessmentDialogView
+            );
+
+            if (!dialogView) {
+                this.$_set_advfilter({
+                    [this.assessmentDialogView]:
+                        baseFilterSettingsHelper.$_setAssessmentSetting({
+                            apiEndpoint: 'findByDeepWithDefault',
+                            companyId: this.user.companyId,
+                            assessmentTypeId: this.form.assessmentTypeId,
+                            isFilter: true,
+                            singleSelect: true,
+                        }),
+                });
+            }
+        },
+
         $_forceUpdateComponente() {
             this.form.assessmentId = undefined;
             this.componentKey = this.componentKey + 1;
@@ -271,8 +296,9 @@ export default {
                                     </v-col>
                                     <v-col cols="12">
                                         <BaseInputDataTable
-                                            v-if="entity"
+                                            v-if="entity && assessmentSetting"
                                             label="Assessment"
+                                            :pageView="assessmentDialogView"
                                             :setting="assessmentSetting"
                                             :extraParams="extraParams"
                                             itemText="nombre"

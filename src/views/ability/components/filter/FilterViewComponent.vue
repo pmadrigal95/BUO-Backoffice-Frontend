@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -49,7 +49,11 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
-        ...mapGetters('theme', ['app']),
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('AbilityFilter');
+        },
 
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
@@ -65,10 +69,7 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return baseFilterSettingsHelper.$_setAbilitySetting({
-                companyId: this.user.companyId,
-                categoryId: this.entity.categoryId,
-            });
+            return this.filtersBypageView(this.pageView);
         },
 
         write() {
@@ -80,7 +81,27 @@ export default {
         },
     },
 
+    created() {
+        this.$_setFilter();
+    },
+
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]:
+                        baseFilterSettingsHelper.$_setAbilitySetting({
+                            companyId: this.user.companyId,
+                            categoryId: this.entity.categoryId,
+                        }),
+                });
+            }
+        },
+
         /**
          * Entity Object
          */
@@ -142,7 +163,7 @@ export default {
         },
 
         $_setParams() {
-            this.$refs.abilityFilter.$_ParamsToAPI();
+            this.$refs[this.pageView].$_ParamsToAPI();
         },
 
         $_showAdvFilter() {
@@ -163,8 +184,9 @@ export default {
             <section class="pt-6">
                 <BaseSkeletonLoader v-if="!user && !buoId" type="list-item" />
                 <BaseServerDataTable
-                    v-else
-                    ref="abilityFilter"
+                    v-else-if="setting"
+                    :ref="pageView"
+                    :pageView="pageView"
                     :setting="setting"
                     :extraParams="extraParams"
                     :fnNew="write ? $_editor : undefined"

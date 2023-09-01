@@ -6,11 +6,15 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
+import baseLocalHelper from '@/helpers/baseLocalHelper';
+
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
@@ -43,6 +47,9 @@ export default {
     data() {
         return {
             entity: {},
+            loading: false,
+            key: 0,
+            activationUserList: undefined,
         };
     },
 
@@ -50,6 +57,12 @@ export default {
         ...mapGetters('authentication', ['user', 'buoId']),
 
         ...mapGetters('theme', ['app']),
+
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('UserFilter');
+        },
 
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
@@ -64,10 +77,7 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return baseFilterSettingsHelper.$_setUserSetting({
-                companyId: this.user.companyId,
-                singleSelect: false,
-            });
+            return this.filtersBypageView(this.pageView);
         },
 
         permission() {
@@ -87,7 +97,26 @@ export default {
         },
     },
 
+    created() {
+        this.$_setFilter();
+    },
+
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]: baseFilterSettingsHelper.$_setUserSetting({
+                        companyId: this.user.companyId,
+                        singleSelect: false,
+                    }),
+                });
+            }
+        },
+
         /**
          * Body Request
          */
@@ -111,7 +140,7 @@ export default {
                     )
                     .then((response) => {
                         if (response != undefined) {
-                            this.$refs.UserFilter.$_ParamsToAPI();
+                            this.$refs[this.pageView].$_ParamsToAPI();
                         }
                     });
             });
@@ -154,7 +183,7 @@ export default {
          * Get a registry
          */
         $_GetRow() {
-            return this.$refs.UserFilter.$data.selected;
+            return this.$refs[this.pageView].$data.selected;
         },
 
         $_setAssessmentByType(type) {
@@ -166,18 +195,58 @@ export default {
                 filterCompanyId: this.organizacionId,
             });
         },
+
+        $_updateGrid() {
+            this.key++;
+        },
+
+        $_getResendActivationUserList() {
+            const row = this.$_GetRow();
+
+            switch (true) {
+                case row.length == 0:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
+                    break;
+                case row.length > 0: {
+                    this.activationUserList = row.map((element) => element.id);
+
+                    this.$_resendActivacionEmail();
+                    break;
+                }
+            }
+        },
+
+        $_resendActivacionEmail() {
+            this.loading = true;
+            httpService
+                .post(`user/resendActivationEmail`, {
+                    usuarioIds: this.activationUserList,
+                })
+                .then((response) => {
+                    this.loading = false;
+                    if (response != undefined) {
+                        this.$_updateGrid();
+                    }
+                });
+        },
     },
 };
 </script>
 
 <template>
     <BaseServerDataTable
-        ref="UserFilter"
+        v-if="setting"
+        :ref="pageView"
+        :pageView="pageView"
         :setting="setting"
         :extraParams="extraParams"
         :fnNew="permission?.Write ? $_userEditor : undefined"
         :fnEdit="permission?.Write ? $_userEditor : undefined"
         :fnDelete="permission?.Write ? $_fnDesactiveUser : undefined"
+        :key="key"
     >
         <div slot="btns">
             <v-row class="pl-3 pt-3">
@@ -186,6 +255,14 @@ export default {
                     label="Carga Masiva"
                     :fnMethod="$_fnLoad"
                     icon="mdi-table-arrow-up"
+                    :color="app ? 'blueProgress600' : 'blue900'"
+                />
+
+                <BaseCustomsButtonsGrid
+                    v-if="permission?.Write"
+                    label="Reactivación"
+                    :fnMethod="$_getResendActivationUserList"
+                    icon="mdi-email-arrow-right-outline"
                     :color="app ? 'blueProgress600' : 'blue900'"
                 />
 
@@ -198,4 +275,5 @@ export default {
             </v-row>
         </div>
     </BaseServerDataTable>
+    <BaseSkeletonLoader v-else type="table" />
 </template>

@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -43,6 +43,16 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('filters', ['advfiltersBypageView', 'dialogViewById']),
+
+        companyDialogView() {
+            return this.dialogViewById('companyDialog');
+        },
+
+        userDialogView() {
+            return this.dialogViewById('userDialog');
+        },
+
         /**
          * Extra Params
          */
@@ -56,21 +66,14 @@ export default {
          * Configuracion BaseInputDataTable
          */
         companySetting() {
-            return baseFilterSettingsHelper.$_setCompanySetting({
-                isFilter: true,
-                singleSelect: true,
-            });
+            return this.advfiltersBypageView(this.companyDialogView);
         },
 
         /**
          * Configuracion BaseServerDataTable
          */
         userSetting() {
-            return baseFilterSettingsHelper.$_setUserSetting({
-                companyId: this.user.companyId,
-                isFilter: true,
-                singleSelect: false,
-            });
+            return this.advfiltersBypageView(this.userDialogView);
         },
     },
 
@@ -81,6 +84,8 @@ export default {
         this.$_getObject();
 
         this.$_reviewQueryParams();
+
+        this.$_setFilter();
 
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
@@ -107,6 +112,44 @@ export default {
     },
 
     methods: {
+        ...mapActions('filters', ['$_set_advfilter']),
+
+        $_setCompanyFilter() {
+            const dialogView = this.advfiltersBypageView(
+                this.companyDialogView
+            );
+
+            if (!dialogView) {
+                this.$_set_advfilter({
+                    [this.companyDialogView]:
+                        baseFilterSettingsHelper.$_setCompanySetting({
+                            isFilter: true,
+                            singleSelect: true,
+                        }),
+                });
+            }
+        },
+
+        $_setUserFilter() {
+            const dialogView = this.advfiltersBypageView(this.userDialogView);
+
+            if (!dialogView) {
+                this.$_set_advfilter({
+                    [this.userDialogView]:
+                        baseFilterSettingsHelper.$_setUserSetting({
+                            companyId: this.user.companyId,
+                            isFilter: true,
+                            singleSelect: false,
+                        }),
+                });
+            }
+        },
+
+        $_setFilter() {
+            this.$_setCompanyFilter();
+            this.$_setUserFilter();
+        },
+
         /**
          * Force Update Component
          */
@@ -225,8 +268,10 @@ export default {
                         <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseInputDataTable
                                 v-if="
-                                    !$router.currentRoute.query.organizacionId
+                                    !$router.currentRoute.query
+                                        .organizacionId && companySetting
                                 "
+                                :pageView="companyDialogView"
                                 label="Empresa"
                                 :setting="companySetting"
                                 :editText="entity.nombreOrganizacion"
@@ -262,6 +307,8 @@ export default {
                         <v-col cols="12">
                             <BaseInputDataTable
                                 label="Administrador"
+                                v-if="userSetting"
+                                :pageView="userDialogView"
                                 :setting="userSetting"
                                 :extraParams="extraParams"
                                 itemText="nombreCompleto"

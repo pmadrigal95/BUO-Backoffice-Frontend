@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -39,6 +39,16 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('filters', ['advfiltersBypageView', 'dialogViewById']),
+
+        companyDialogView() {
+            return this.dialogViewById('companyDialog');
+        },
+
+        abilityDialogView() {
+            return this.dialogViewById('simpleAbilityDialog');
+        },
+
         /**
          * Extra Params
          */
@@ -52,21 +62,14 @@ export default {
          * Configuracion BaseInputDataTable
          */
         companySetting() {
-            return baseFilterSettingsHelper.$_setCompanySetting({
-                isFilter: true,
-                singleSelect: true,
-            });
+            return this.advfiltersBypageView(this.companyDialogView);
         },
 
         /**
          * Configuracion BaseServerDataTable
          */
         abilitySetting() {
-            return baseFilterSettingsHelper.$_setAbilitySetting({
-                companyId: this.user.companyId,
-                isFilter: true,
-                singleSelect: true,
-            });
+            return this.advfiltersBypageView(this.abilityDialogView);
         },
     },
 
@@ -97,6 +100,8 @@ export default {
         this.$_setValues();
 
         this.$_reviewQueryParams();
+
+        this.$_setFilter();
     },
 
     destroyed() {
@@ -105,6 +110,46 @@ export default {
     },
 
     methods: {
+        ...mapActions('filters', ['$_set_advfilter']),
+
+        $_setCompanyFilter() {
+            const dialogView = this.advfiltersBypageView(
+                this.companyDialogView
+            );
+
+            if (!dialogView) {
+                this.$_set_advfilter({
+                    [this.companyDialogView]:
+                        baseFilterSettingsHelper.$_setCompanySetting({
+                            isFilter: true,
+                            singleSelect: true,
+                        }),
+                });
+            }
+        },
+
+        $_setAbilityFilter() {
+            const dialogView = this.advfiltersBypageView(
+                this.abilityDialogView
+            );
+
+            if (!dialogView) {
+                this.$_set_advfilter({
+                    [this.abilityDialogView]:
+                        baseFilterSettingsHelper.$_setAbilitySetting({
+                            companyId: this.user.companyId,
+                            isFilter: true,
+                            singleSelect: true,
+                        }),
+                });
+            }
+        },
+
+        $_setFilter() {
+            this.$_setCompanyFilter();
+            this.$_setAbilityFilter();
+        },
+
         /**
          * Force Update Component
          */
@@ -146,13 +191,13 @@ export default {
         },
 
         $_reviewCompany() {
-            let result,
-                data = this.$router.currentRoute.params.Id;
+            let result;
+            const data = this.$router.currentRoute.params.Id;
             if (data) {
-                result = this.entity.organizacionId;
-            } else {
-                if (this.user.companyId != this.buoId)
-                    result = this.user.companyId;
+                // result = this.entity.organizacionId;
+                result = data;
+            } else if (this.user.companyId != this.buoId) {
+                result = this.user.companyId;
             }
 
             return result;
@@ -236,27 +281,31 @@ export default {
                         <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseInputDataTable
                                 label="Empresa"
+                                :pageView="companyDialogView"
                                 :setting="companySetting"
                                 :editText="entity.nombreOrganizacion"
                                 v-model.number="entity.organizacionId"
                                 :validate="['requiered']"
                                 v-if="
-                                    !$router.currentRoute.query.organizacionId
+                                    !$router.currentRoute.query
+                                        .organizacionId && companySetting
                                 "
                             />
                         </v-col>
                         <v-col cols="12">
                             <BaseInputDataTable
                                 label="Indicador"
+                                :pageView="abilityDialogView"
                                 :extraParams="extraParams"
-                                :readonly="extraParams == undefined"
+                                :readonly="!entity.organizacionId"
                                 :setting="abilitySetting"
                                 :editText="entity.definicionCualificacion"
                                 v-model.number="entity.cualificacionId"
                                 :validate="['requiered']"
                                 :key="componentKey"
                                 v-if="
-                                    !$router.currentRoute.query.cualificacionId
+                                    !$router.currentRoute.query
+                                        .cualificacionId && abilitySetting
                                 "
                             />
                         </v-col>

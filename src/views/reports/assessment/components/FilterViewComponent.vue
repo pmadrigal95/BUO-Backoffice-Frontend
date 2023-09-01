@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import baseFnFile from '@/helpers/baseFnFile';
 
@@ -59,6 +59,12 @@ export default {
 
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('Assessment');
+        },
+
         errorMsg() {
             return 'Solo se podra generar el reporte de aquellos colaboradores que hayan completado el assessment asignado.';
         },
@@ -74,11 +80,7 @@ export default {
         },
 
         setting() {
-            return baseFilterSettingsHelper.$_setUserAssessmentSetting({
-                companyId: this.user.companyId,
-                departmentId: this.entity.departmentId,
-                singleSelect: false,
-            });
+            return this.filtersBypageView(this.pageView);
         },
 
         permission() {
@@ -90,12 +92,33 @@ export default {
         },
     },
 
+    created() {
+        this.$_setFilter();
+    },
+
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]:
+                        baseFilterSettingsHelper.$_setUserAssessmentSetting({
+                            companyId: this.user.companyId,
+                            departmentId: this.entity.departmentId,
+                            singleSelect: false,
+                        }),
+                });
+            }
+        },
+
         /**
          * Get a registry
          */
         $_GetRow() {
-            return this.$refs.Filter.$data.selected;
+            return this.$refs[this.pageView].$data.selected;
         },
 
         $_sendToApi(number, request) {
@@ -209,7 +232,9 @@ export default {
 
 <template>
     <BaseServerDataTable
-        ref="Filter"
+        v-if="setting"
+        :ref="pageView"
+        :pageView="pageView"
         :setting="setting"
         :extraParams="extraParams"
         :fnDoubleClick="$_validatePreview"
@@ -250,4 +275,5 @@ export default {
             </v-row>
         </div>
     </BaseServerDataTable>
+    <BaseSkeletonLoader v-else type="table" />
 </template>
