@@ -38,12 +38,18 @@ export default {
 
 <template>
     <section>
-        <v-menu :close-on-content-click="false" open-on-hover bottom offset-y>
+        <v-menu
+            :close-on-content-click="false"
+            :open-on-hover="!$vuetify.breakpoint.mobile"
+            bottom
+            offset-y
+        >
             <template v-slot:activator="{ on, attrs }">
                 <v-btn
                     :color="app ? 'blueProgress600' : 'blue900'"
                     elevation="0"
                     class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    :class="{ 'mt-4': $vuetify.breakpoint.mobile }"
                     outlined
                     small
                     v-bind="attrs"
