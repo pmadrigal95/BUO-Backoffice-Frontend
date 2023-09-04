@@ -276,6 +276,7 @@ export default {
                                 :setting="companySetting"
                                 :editText="entity.nombreOrganizacion"
                                 v-model.number="entity.organizacionId"
+                                :fnResetConfig="$_setCompanyFilter"
                             />
                         </v-col>
                         <v-col cols="12">
@@ -316,6 +317,7 @@ export default {
                                 :editText="entity.usuarioAdminNames"
                                 v-model="entity.usuarioAdminIds"
                                 :key="componentKey"
+                                :fnResetConfig="$_setUserFilter"
                             />
                         </v-col>
                         <v-col cols="12">

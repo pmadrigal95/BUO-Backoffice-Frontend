@@ -429,6 +429,7 @@ export default {
                                                 :setting="userSetting"
                                                 v-model="form.tutors"
                                                 :validate="['requiered']"
+                                                :fnResetConfig="$_setUserFilter"
                                             />
                                         </v-col>
                                         <v-col cols="12">

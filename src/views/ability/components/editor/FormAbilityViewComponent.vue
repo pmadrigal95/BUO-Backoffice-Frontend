@@ -131,6 +131,7 @@ export default {
                 :editText="entity.nombreOrganizacion"
                 v-model.number="entity.organizacionId"
                 :validate="['requiered']"
+                :fnResetConfig="$_setCompanyFilter"
             />
         </v-col>
         <v-col cols="12">
