@@ -40,7 +40,7 @@ export default {
     <section>
         <v-menu
             :close-on-content-click="false"
-            :open-on-hover="!$vuetify.breakpoint.mobile"
+            :open-on-hover="$vuetify.breakpoint.mdAndUp"
             bottom
             offset-y
         >
