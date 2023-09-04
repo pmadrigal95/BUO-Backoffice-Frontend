@@ -116,7 +116,7 @@ export default {
                     title: 'Cambiar Contraseña',
                     fn: this.$_openModalChangePwd,
                     show: this.permission?.Write,
-                }
+                },
             ];
         },
     },
@@ -250,16 +250,20 @@ export default {
             });
         },
 
+        $_refreshGrid() {
+            this.$refs[this.pageView].$_ParamsToAPI();
+            this.$refs[this.pageView].selected = [];
+        },
+
         $_sentToResentActivation(row) {
             const object = row.map((element) => element.id);
-
             httpService
                 .post(`user/resendActivationEmail`, {
                     usuarioIds: object,
                 })
                 .then((response) => {
                     if (response != undefined) {
-                        this.$refs[this.pageView].$_ParamsToAPI();
+                        this.$_refreshGrid();
                     }
                 });
         },
