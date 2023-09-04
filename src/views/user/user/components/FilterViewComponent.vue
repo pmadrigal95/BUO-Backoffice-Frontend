@@ -116,7 +116,7 @@ export default {
                     title: 'Cambiar Contraseña',
                     fn: this.$_openModalChangePwd,
                     show: this.permission?.Write,
-                },
+                }
             ];
         },
     },

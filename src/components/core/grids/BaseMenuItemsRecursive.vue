@@ -31,7 +31,12 @@ export default {
                 v-if="action && action.subActions && action.subActions.length"
                 no-action
             >
-                <v-list-item-content slot="activator">
+                <template slot="activator">
+                    <v-list-item-icon>
+                        <v-icon :color="app ? 'blueProgress600' : 'blue900'">{{
+                            `mdi-${action.icon}`
+                        }}</v-icon>
+                    </v-list-item-icon>
                     <v-list-item-title
                         ><span
                             class="BUO-Paragraph-Small-SemiBold"
@@ -39,7 +44,7 @@ export default {
                             >{{ action.title }}</span
                         ></v-list-item-title
                     >
-                </v-list-item-content>
+                </template>
                 <v-divider class="mx-4"></v-divider>
                 <BaseMenuItemsRecursive :actions="action.subActions" />
             </v-list-group>
