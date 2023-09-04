@@ -52,6 +52,7 @@ export default {
             assessment: {},
             usuarioIdList: undefined,
             componentKey: 0,
+            key: 0,
         };
     },
 
@@ -106,6 +107,7 @@ export default {
                         singleSelect: false,
                     }),
                 });
+                this.key++;
             }
         },
 
@@ -182,12 +184,14 @@ export default {
 <template>
     <section>
         <BaseServerDataTable
+            :key="key"
             v-if="setting"
             :ref="pageView"
             :pageView="pageView"
             :setting="setting"
             :extraParams="extraParams"
             :fnDoubleClick="$_viewProfile"
+            :fnResetConfig="$_setFilter"
         >
             <div slot="btns">
                 <v-row class="pl-3 pt-3">

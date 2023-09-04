@@ -49,6 +49,7 @@ export default {
 
     data() {
         return {
+            key: 0,
             assessment: {},
         };
     },
@@ -121,6 +122,7 @@ export default {
                         singleSelect: false,
                     }),
                 });
+                this.key++;
             }
         },
 
@@ -232,6 +234,7 @@ export default {
         </v-layout>
 
         <BaseServerDataTable
+            :key="key"
             v-if="entity && setting"
             :ref="pageView"
             :pageView="pageView"
@@ -240,6 +243,7 @@ export default {
             :fnDoubleClick="$_setList"
             :footerMethod="$_setList"
             labelBtn="Continuar"
+            :fnResetConfig="$_setFilter"
         >
             <div slot="btns">
                 <v-row class="pl-3 pt-3" v-if="entity.companyId">

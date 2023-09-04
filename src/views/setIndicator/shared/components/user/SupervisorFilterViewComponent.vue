@@ -33,6 +33,12 @@ export default {
         StepViewComponent,
     },
 
+    data() {
+        return {
+            key: 0,
+        };
+    },
+
     computed: {
         ...mapGetters('theme', ['app']),
 
@@ -79,6 +85,7 @@ export default {
                         singleSelect: false,
                     }),
                 });
+                this.key++;
             }
         },
 
@@ -156,6 +163,7 @@ export default {
         </v-layout>
 
         <BaseServerDataTable
+            :key="key"
             v-if="entity && setting"
             :ref="pageView"
             :pageView="pageView"
@@ -164,6 +172,7 @@ export default {
             :fnDoubleClick="$_setList"
             cancellabelBtn="Regresar"
             :cancel="$_goBack"
+            :fnResetConfig="$_setFilter"
         >
             <div slot="btns">
                 <v-row class="pl-3 pt-3" v-if="entity.companyId">

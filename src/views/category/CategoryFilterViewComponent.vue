@@ -28,6 +28,12 @@ export default {
         BaseServerDataTable,
     },
 
+    data() {
+        return {
+            key: 0,
+        };
+    },
+
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
@@ -75,6 +81,8 @@ export default {
                             companyId: this.user.companyId,
                         }),
                 });
+
+                this.key++;
             }
         },
 
@@ -121,11 +129,13 @@ export default {
     <BaseCardViewComponent title="Categorías">
         <div slot="card-text">
             <BaseServerDataTable
+                :key="key"
                 v-if="setting"
                 :ref="pageView"
                 :pageView="pageView"
                 :setting="setting"
                 :extraParams="extraParams"
+                :fnResetConfig="$_setFilter"
                 :fnNew="write ? $_Editor : undefined"
                 :fnEdit="write ? $_Editor : undefined"
                 :fnDelete="write ? $_fnDelete : undefined"

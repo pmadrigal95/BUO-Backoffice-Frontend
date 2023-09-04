@@ -62,6 +62,7 @@ export default {
 
     data() {
         return {
+            key: 0,
             assessment: {},
             loading: false,
             comment: undefined,
@@ -150,6 +151,7 @@ export default {
                             singleSelect: false,
                         }),
                 });
+                this.key++;
             }
         },
 
@@ -299,11 +301,13 @@ export default {
             </div>
         </BasePopUp>
         <BaseServerDataTable
+            :key="key"
             v-if="setting"
             :ref="pageView"
             :pageView="pageView"
             :setting="setting"
             :extraParams="extraParams"
+            :fnResetConfig="$_setFilter"
         >
             <div slot="btns">
                 <v-row class="pl-3 pt-3">

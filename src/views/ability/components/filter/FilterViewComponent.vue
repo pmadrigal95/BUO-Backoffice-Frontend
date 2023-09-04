@@ -43,6 +43,7 @@ export default {
             entity: this.$_Object(),
             filterCompanyKey: 0,
             show: true,
+            key: 0,
         };
     },
 
@@ -99,6 +100,7 @@ export default {
                             categoryId: this.entity.categoryId,
                         }),
                 });
+                this.key++;
             }
         },
 
@@ -184,11 +186,13 @@ export default {
             <section class="pt-6">
                 <BaseSkeletonLoader v-if="!user && !buoId" type="list-item" />
                 <BaseServerDataTable
+                    :key="key"
                     v-else-if="setting"
                     :ref="pageView"
                     :pageView="pageView"
                     :setting="setting"
                     :extraParams="extraParams"
+                    :fnResetConfig="$_setFilter"
                     :fnNew="write ? $_editor : undefined"
                     :fnEdit="write ? $_editor : undefined"
                     :fnDelete="write ? $_delete : undefined"
