@@ -397,6 +397,7 @@ export default {
                                     v-model.number="temp.companyId"
                                     :validate="['requiered']"
                                     :key="companyKey"
+                                    :fnResetConfig="$_setCompanyFilter"
                                 />
                             </v-col>
 
@@ -423,6 +424,7 @@ export default {
                                     :editText="temp.nombre"
                                     v-model="temp.userId"
                                     :key="filterKey"
+                                    :fnResetConfig="$_setUserFilter"
                                 />
                             </v-col>
 
@@ -452,6 +454,7 @@ export default {
                                     v-model="temp.indicatorId"
                                     :key="filterKey"
                                     :validate="['requiered']"
+                                    :fnResetConfig="$_setAbilityFilter"
                                 />
                             </v-col>
 
@@ -477,6 +480,7 @@ export default {
                                     :readonly="!temp.assessmentTypeId"
                                     v-model.number="temp.assessmentId"
                                     :key="assessmentKey"
+                                    :fnResetConfig="$_setAssessmentFilter"
                                 />
                             </v-col>
                         </v-row>

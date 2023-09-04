@@ -51,6 +51,7 @@ export default {
         return {
             loading: [{ value: false }, { value: false }],
             assessment: {},
+            key: 0,
         };
     },
 
@@ -111,6 +112,7 @@ export default {
                             singleSelect: false,
                         }),
                 });
+                this.key++;
             }
         },
 
@@ -232,11 +234,13 @@ export default {
 
 <template>
     <BaseServerDataTable
+        :key="key"
         v-if="setting"
         :ref="pageView"
         :pageView="pageView"
         :setting="setting"
         :extraParams="extraParams"
+        :fnResetConfig="$_setFilter"
         :fnDoubleClick="$_validatePreview"
     >
         <div slot="btns">

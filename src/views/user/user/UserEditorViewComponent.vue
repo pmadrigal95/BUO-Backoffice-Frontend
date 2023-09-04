@@ -325,6 +325,7 @@ export default {
                                 :pageView="companyDialogView"
                                 :editText="entity.nombreOrganizacion"
                                 v-model.number="entity.organizacionId"
+                                :fnResetConfig="$_setCompanyFilter"
                             />
                         </v-col>
 

@@ -21,8 +21,10 @@ const $_pageView = () => {
         AssessmentFilter: 'AssessmentFilterViewComponent',
         DepartmentFilter: 'DepartmentFilterViewComponent',
         MicroAbilityFilter: 'MicroAbilityFilterViewComponent',
+        setIndicadorFilter: 'SetIndicadorFilterViewComponent',
         AssessmentTypeFilter: 'AssessmentTypeFilterViewComponent',
         PromotionalCodesFilter: 'PromotionalCodesFilterViewComponent',
+        setIndicadorUserFilter: 'SetIndicadorUserFilterViewComponent',
     };
 };
 
@@ -101,6 +103,30 @@ export const mutations = {
             ).toString()
         );
     },
+
+    CLEAN_FILTERS(state, pageView) {
+        delete state.filters[pageView];
+
+        localStorage.setItem(
+            baseConfigHelper.$_filter,
+            AES.encrypt(
+                JSON.stringify(state.filters),
+                baseConfigHelper.$_encryptKey
+            ).toString()
+        );
+    },
+
+    CLEAN_ADVFILTERS(state, pageView) {
+        delete state.advfilters[pageView];
+
+        localStorage.setItem(
+            baseConfigHelper.$_advfilter,
+            AES.encrypt(
+                JSON.stringify(state.advfilters),
+                baseConfigHelper.$_encryptKey
+            ).toString()
+        );
+    },
 };
 
 export const actions = {
@@ -110,5 +136,13 @@ export const actions = {
 
     $_set_advfilter({ commit }, data) {
         commit('SET_ADVFILTERS', data);
+    },
+
+    $_clean_filter({ commit }, pageView) {
+        commit('CLEAN_FILTERS', pageView);
+    },
+
+    $_clean_advfilter({ commit }, pageView) {
+        commit('CLEAN_ADVFILTERS', pageView);
     },
 };

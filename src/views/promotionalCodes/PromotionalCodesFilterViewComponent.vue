@@ -28,6 +28,12 @@ export default {
         BaseServerDataTable,
     },
 
+    data() {
+        return {
+            key: 0,
+        };
+    },
+
     computed: {
         ...mapGetters('authentication', ['user']),
 
@@ -70,6 +76,7 @@ export default {
                             {}
                         ),
                 });
+                this.key++;
             }
         },
 
@@ -117,9 +124,11 @@ export default {
     <BaseCardViewComponent title="Códigos Promocionales">
         <div slot="card-text">
             <BaseServerDataTable
+                :key="key"
                 v-if="setting"
                 :ref="pageView"
                 :pageView="pageView"
+                :fnResetConfig="$_setFilter"
                 :setting="setting"
                 :fnNew="write ? $_promotionalCodesEditor : undefined"
                 :fnEdit="write ? $_promotionalCodesEditor : undefined"

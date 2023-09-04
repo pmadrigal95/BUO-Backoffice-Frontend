@@ -306,6 +306,9 @@ export default {
                                             v-model.number="form.assessmentId"
                                             :validate="['requiered']"
                                             :key="componentKey"
+                                            :fnResetConfig="
+                                                $_setAssessmentFilter
+                                            "
                                         />
                                     </v-col>
                                 </v-row>

@@ -1,8 +1,8 @@
 <script>
 /**
- * Descripción: Pantalla Busqueda de talento
+ * Descripción: Pantalla CreateAndSetIndicatorViewComponent
  *
- * @displayName FilterViewComponent
+ * @displayName CreateAndSetIndicatorViewComponent
  *
  */
 
@@ -26,7 +26,7 @@ const BaseInputTreeview = () =>
     import('@/components/core/treeview/BaseInputTreeview');
 
 export default {
-    name: 'NewAbilityViewComponent',
+    name: 'CreateAndSetIndicatorViewComponent',
 
     props: {
         entity: {
@@ -37,6 +37,11 @@ export default {
         fn: {
             type: Function,
             requiered: true,
+        },
+
+        requiredTutors: {
+            type: Boolean,
+            default: false,
         },
     },
 
@@ -93,16 +98,8 @@ export default {
                     id: baseConfigHelper.$_statusCode.uncertified,
                 },
                 {
-                    name: 'Validando',
-                    id: baseConfigHelper.$_statusCode.certifying,
-                },
-                {
                     name: 'Validado',
                     id: baseConfigHelper.$_statusCode.certificate,
-                },
-                {
-                    name: 'Rechazado',
-                    id: baseConfigHelper.$_statusCode.rejected,
                 },
             ];
         },
@@ -134,7 +131,7 @@ export default {
         $_Object() {
             return {
                 comment: undefined,
-                statusID: undefined,
+                statusID: baseConfigHelper.$_statusCode.uncertified,
                 sendNotification: true,
                 useAllEmployees: true,
                 tutors: undefined,
@@ -185,6 +182,7 @@ export default {
                     this.loading = false;
                     if (response != undefined) {
                         if (this.$refs['popUp'].$_checkStatus()) {
+                            this.entity.componentKey++;
                             this.$_open();
                         }
                     }
@@ -285,7 +283,12 @@ export default {
                         v-if="loading"
                         type="article, actions"
                     />
-                    <BaseForm :method="$_sendToApi" :cancel="$_open" v-else>
+                    <BaseForm
+                        :method="$_sendToApi"
+                        :cancel="$_open"
+                        labelBtn="Enviar"
+                        v-else
+                    >
                         <div slot="body" :key="view">
                             <section
                                 class="text-left BUO-Heading-Small mb-2"
@@ -409,7 +412,7 @@ export default {
                                                 colaboradores."
                                             />
                                         </v-col>
-                                        <v-col cols="12">
+                                        <v-col cols="12" v-if="requiredTutors">
                                             <BaseSwitch
                                                 v-model="needTutor"
                                                 label="Delegar Supervisión."
@@ -426,6 +429,7 @@ export default {
                                                 :setting="userSetting"
                                                 v-model="form.tutors"
                                                 :validate="['requiered']"
+                                                :fnResetConfig="$_setUserFilter"
                                             />
                                         </v-col>
                                         <v-col cols="12">
@@ -470,7 +474,7 @@ export default {
                                                 >
                                             </v-tooltip>
                                         </v-col>
-                                        <v-col cols="12">
+                                        <v-col cols="12" v-if="!requiredTutors">
                                             <BaseRadioGroup
                                                 v-model="form.statusID"
                                                 :endpoint="statusList"

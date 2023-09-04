@@ -45,6 +45,7 @@ export default {
                         'SearchAbilitiesByDepartmentOrPersonViewComponent',
                         'ProfileViewComponent',
                         'AssignmentViewComponent',
+                        'EvaluationViewComponent',
                         'ApprovalViewComponent',
                     ],
                 },

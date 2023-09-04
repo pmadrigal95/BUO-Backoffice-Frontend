@@ -23,6 +23,11 @@ export default {
             type: Object,
             requiered: true,
         },
+
+        requiredTutors: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     components: {
@@ -47,16 +52,8 @@ export default {
                     id: baseConfigHelper.$_statusCode.uncertified,
                 },
                 {
-                    name: 'Validando',
-                    id: baseConfigHelper.$_statusCode.certifying,
-                },
-                {
                     name: 'Validado',
                     id: baseConfigHelper.$_statusCode.certificate,
-                },
-                {
-                    name: 'Rechazado',
-                    id: baseConfigHelper.$_statusCode.rejected,
                 },
             ];
         },
@@ -67,13 +64,18 @@ export default {
             return {
                 sendNotification: true,
                 comment: undefined,
-                statusID: undefined,
+                statusID: baseConfigHelper.$_statusCode.uncertified,
             };
         },
 
         $_goBack() {
+            if (!this.requiredTutors) {
+                delete this.entity.selected.abilityIdList;
+                delete this.entity.selected.abilityList;
+            }
+
             delete this.entity.selected.tutorList;
-            this.entity.step = 2;
+            this.entity.step = this.requiredTutors ? 2 : 1;
         },
 
         $_setUserIdList() {
@@ -165,7 +167,10 @@ export default {
                         if (this.$refs['popUp'].$_checkStatus()) {
                             this.$_open();
                         }
-                        location.reload();
+                        // location.reload();
+                        delete this.entity.selected;
+                        this.entity.componentKey++;
+                        this.entity.step = 0;
                     }
                 });
         },
@@ -255,6 +260,7 @@ export default {
             :method="$_sendToApi"
             :cancel="$_goBack"
             lblCancel="Regresar"
+            labelBtn="Enviar"
             v-else
         >
             <div slot="body">
@@ -289,7 +295,7 @@ export default {
                             >
                         </v-tooltip>
                     </v-col>
-                    <v-col cols="12">
+                    <v-col cols="12" v-if="!requiredTutors">
                         <BaseRadioGroup
                             v-model="form.statusID"
                             :endpoint="statusList"

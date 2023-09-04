@@ -234,6 +234,7 @@ export default {
                                     label="Buscar empresa"
                                     :setting="setting"
                                     v-model.number="organizacionId"
+                                    :fnResetConfig="$_setCompanyFilter"
                                 />
                             </v-col>
 

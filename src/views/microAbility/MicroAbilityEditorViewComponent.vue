@@ -290,6 +290,7 @@ export default {
                                     !$router.currentRoute.query
                                         .organizacionId && companySetting
                                 "
+                                :fnResetConfig="$_setCompanyFilter"
                             />
                         </v-col>
                         <v-col cols="12">
@@ -307,6 +308,7 @@ export default {
                                     !$router.currentRoute.query
                                         .cualificacionId && abilitySetting
                                 "
+                                :fnResetConfig="$_setAbilityFilter"
                             />
                         </v-col>
                         <v-col cols="12" v-if="user.companyId === buoId">

@@ -45,6 +45,7 @@ export default {
     data() {
         return {
             entity: this.$_Object(),
+            key: 0,
             show: true,
             loading: [{ value: false }, { value: false }],
         };
@@ -104,6 +105,7 @@ export default {
                         singleSelect: false,
                     }),
                 });
+                this.key++;
             }
         },
 
@@ -242,11 +244,13 @@ export default {
             <BaseAdvancedFilter :show="show" v-model="entity" isDepartment>
                 <div slot="body">
                     <BaseServerDataTable
+                        :key="key"
                         v-if="setting"
                         :ref="pageView"
                         :pageView="pageView"
                         :setting="setting"
                         :extraParams="extraParams"
+                        :fnResetConfig="$_setFilter"
                         :fnDoubleClick="$_userDetails"
                     >
                         <div slot="btns">
