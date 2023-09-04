@@ -1021,6 +1021,13 @@ export default {
 
             this.fnResetConfig();
         },
+
+        /**
+         * Clean Selected Rows
+         */
+        $_cleanSelectedRows() {
+            this.selected = [];
+        },
     },
 };
 </script>
