@@ -47,6 +47,7 @@ export default {
     data() {
         return {
             entity: {},
+            key: 0,
         };
     },
 
@@ -134,6 +135,7 @@ export default {
                         singleSelect: false,
                     }),
                 });
+                this.key++;
             }
         },
 
@@ -239,10 +241,6 @@ export default {
             }
         },
 
-        $_refreshGrid() {
-            this.$refs[this.pageView].selected = [];
-        },
-
         $_sentToResentActivation(row) {
             const object = row.map((element) => element.id);
             httpService
@@ -251,7 +249,7 @@ export default {
                 })
                 .then((response) => {
                     if (response != undefined) {
-                        this.$_refreshGrid();
+                        this.$refs[this.pageView].$_cleanSelectedRows();
                     }
                 });
         },
@@ -296,6 +294,7 @@ export default {
 
 <template>
     <BaseServerDataTable
+        :key="key"
         v-if="setting"
         :ref="pageView"
         :pageView="pageView"
@@ -305,6 +304,7 @@ export default {
         :fnEdit="permission?.Write ? $_userEditor : undefined"
         :fnDelete="permission?.Write ? $_fnDesactiveUser : undefined"
         :fnActions="actions"
+        :fnResetConfig="$_setFilter"
     >
         <div slot="btns">
             <v-row class="pl-3 pt-3">
