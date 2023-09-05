@@ -94,6 +94,9 @@ export default {
     <BasePopUp
         ref="popUp"
         :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '60%'"
+        :isDrawer="
+            this.$router.currentRoute.name !== 'CompanyDashboardViewComponent'
+        "
     >
         <div slot="Content">
             <BaseSkeletonLoader v-if="loading" type="article" />
