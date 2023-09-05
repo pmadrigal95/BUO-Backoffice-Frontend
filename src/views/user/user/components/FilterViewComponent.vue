@@ -18,13 +18,13 @@ import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
-import { baseAssessmentHelper } from '@/views/user/user/components/baseAssessmentHelper';
+import { baseAssessmentHelper } from '@/views/user/user/components/assessment/baseAssessmentHelper';
 
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
 const AssessmentViewComponent = () =>
-    import('@/views/user/user/components/AssessmentViewComponent');
+    import('@/views/user/user/components/assessment/AssessmentViewComponent');
 
 const UserPasswordViewComponent = () =>
     import('@/views/user/user/components/password/UserPasswordViewComponent');
@@ -47,7 +47,6 @@ export default {
     data() {
         return {
             entity: {},
-            key: 0,
         };
     },
 
@@ -97,21 +96,18 @@ export default {
         actions() {
             return [
                 {
-                    id: 1,
                     icon: 'table-arrow-up',
                     title: 'Carga Masiva',
                     fn: this.$_fnLoad,
                     show: this.permission?.Upload,
                 },
                 {
-                    id: 2,
                     icon: 'email-arrow-right-outline',
                     title: 'Reenviar Activación',
                     fn: this.$_fnResendActivation,
                     show: this.permission?.Write,
                 },
                 {
-                    id: 3,
                     icon: 'account-lock-open-outline',
                     title: 'Cambiar Contraseña',
                     fn: this.$_openModalChangePwd,
@@ -243,15 +239,7 @@ export default {
             }
         },
 
-        $_fnResendActivation() {
-            this.$_validateRow({
-                callback: this.$_sentToResentActivation,
-                isMultiSelect: true,
-            });
-        },
-
         $_refreshGrid() {
-            this.$refs[this.pageView].$_ParamsToAPI();
             this.$refs[this.pageView].selected = [];
         },
 
@@ -266,6 +254,13 @@ export default {
                         this.$_refreshGrid();
                     }
                 });
+        },
+
+        $_fnResendActivation() {
+            this.$_validateRow({
+                callback: this.$_sentToResentActivation,
+                isMultiSelect: true,
+            });
         },
 
         $_setEntityForChangePwd() {
@@ -284,16 +279,16 @@ export default {
             );
         },
 
+        $_openModal() {
+            this.$refs['popUp'].$_open();
+        },
+
         $_openModalChangePwd() {
             this.$_setEntityForChangePwd();
             this.$_validateRow({
                 callback: this.$_openModal,
                 isMultiSelect: false,
             });
-        },
-
-        $_openModal() {
-            this.$refs['popUp'].$_open();
         },
     },
 };
@@ -310,7 +305,6 @@ export default {
         :fnEdit="permission?.Write ? $_userEditor : undefined"
         :fnDelete="permission?.Write ? $_fnDesactiveUser : undefined"
         :fnActions="actions"
-        :key="key"
     >
         <div slot="btns">
             <v-row class="pl-3 pt-3">

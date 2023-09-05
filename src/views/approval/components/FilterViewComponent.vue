@@ -20,7 +20,7 @@ import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
-import { baseAssessmentHelper } from '@/views/user/user/components/baseAssessmentHelper';
+import { baseAssessmentHelper } from '@/views/user/user/components/assessment/baseAssessmentHelper';
 
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
@@ -29,7 +29,7 @@ const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
 const AssessmentViewComponent = () =>
-    import('@/views/user/user/components/AssessmentViewComponent');
+    import('@/views/user/user/components/assessment/AssessmentViewComponent');
 
 export default {
     name: 'FilterViewComponent',

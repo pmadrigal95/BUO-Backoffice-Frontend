@@ -26,16 +26,18 @@ export default {
 
 <template>
     <v-list dense>
-        <section v-for="action in actions" :key="action.id">
+        <section v-for="(action, index) in actions" :key="index">
             <v-list-group
-                v-if="action && action.subActions && action.subActions.length"
+                v-if="action && action.children && action.children.length"
                 no-action
             >
                 <template slot="activator">
                     <v-list-item-icon>
-                        <v-icon :color="app ? 'blueProgress600' : 'blue900'">{{
-                            `mdi-${action.icon}`
-                        }}</v-icon>
+                        <v-icon
+                            v-if="action.icon"
+                            :color="app ? 'blueProgress600' : 'blue900'"
+                            >{{ `mdi-${action.icon}` }}</v-icon
+                        >
                     </v-list-item-icon>
                     <v-list-item-title
                         ><span
@@ -46,7 +48,7 @@ export default {
                     >
                 </template>
                 <v-divider class="mx-4"></v-divider>
-                <BaseMenuItemsRecursive :actions="action.subActions" />
+                <BaseMenuItemsRecursive :actions="action.children" />
             </v-list-group>
             <v-list-item
                 @click="action.fn"
@@ -54,15 +56,17 @@ export default {
                 v-else-if="action.show"
             >
                 <v-list-item-action>
-                    <v-icon :color="app ? 'blueProgress600' : 'blue900'">{{
-                        `mdi-${action.icon}`
-                    }}</v-icon>
+                    <v-icon
+                        v-if="action.icon"
+                        :color="app ? 'blueProgress600' : 'blue900'"
+                        >{{ `mdi-${action.icon}` }}</v-icon
+                    >
                 </v-list-item-action>
                 <v-list-item-content>
                     <v-list-item-title
                         class="BUO-Paragraph-Small"
                         :class="app ? 'white--text' : 'grey700--text'"
-                        >{{ action.title }}</v-list-item-title
+                        >{{ action.title}}</v-list-item-title
                     >
                 </v-list-item-content>
             </v-list-item>
