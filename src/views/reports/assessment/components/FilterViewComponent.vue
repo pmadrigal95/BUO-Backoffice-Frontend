@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import baseFnFile from '@/helpers/baseFnFile';
 
@@ -51,6 +51,7 @@ export default {
         return {
             loading: [{ value: false }, { value: false }],
             assessment: {},
+            key: 0,
         };
     },
 
@@ -58,6 +59,12 @@ export default {
         ...mapGetters('theme', ['app']),
 
         ...mapGetters('authentication', ['user', 'buoId']),
+
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('Assessment');
+        },
 
         errorMsg() {
             return 'Solo se podra generar el reporte de aquellos colaboradores que hayan completado el assessment asignado.';
@@ -74,11 +81,7 @@ export default {
         },
 
         setting() {
-            return baseFilterSettingsHelper.$_setUserAssessmentSetting({
-                companyId: this.user.companyId,
-                departmentId: this.entity.departmentId,
-                singleSelect: false,
-            });
+            return this.filtersBypageView(this.pageView);
         },
 
         permission() {
@@ -90,12 +93,34 @@ export default {
         },
     },
 
+    created() {
+        this.$_setFilter();
+    },
+
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]:
+                        baseFilterSettingsHelper.$_setUserAssessmentSetting({
+                            companyId: this.user.companyId,
+                            departmentId: this.entity.departmentId,
+                            singleSelect: false,
+                        }),
+                });
+                this.key++;
+            }
+        },
+
         /**
          * Get a registry
          */
         $_GetRow() {
-            return this.$refs.Filter.$data.selected;
+            return this.$refs[this.pageView].$data.selected;
         },
 
         $_sendToApi(number, request) {
@@ -209,9 +234,13 @@ export default {
 
 <template>
     <BaseServerDataTable
-        ref="Filter"
+        :key="key"
+        v-if="setting"
+        :ref="pageView"
+        :pageView="pageView"
         :setting="setting"
         :extraParams="extraParams"
+        :fnResetConfig="$_setFilter"
         :fnDoubleClick="$_validatePreview"
     >
         <div slot="btns">
@@ -250,4 +279,5 @@ export default {
             </v-row>
         </div>
     </BaseServerDataTable>
+    <BaseSkeletonLoader v-else type="table" />
 </template>

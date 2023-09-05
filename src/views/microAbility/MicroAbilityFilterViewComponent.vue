@@ -38,6 +38,12 @@ export default {
         BaseServerDataTable,
     },
 
+    data() {
+        return {
+            key: 0,
+        };
+    },
+
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
@@ -90,6 +96,7 @@ export default {
                             companyId: this.user.companyId,
                         }),
                 });
+                this.key++;
             }
         },
 
@@ -156,6 +163,8 @@ export default {
         <div slot="card-text">
             <BaseSkeletonLoader v-if="!user && !buoId" type="list-item" />
             <BaseServerDataTable
+                :key="key"
+                :fnResetConfig="$_setFilter"
                 v-else-if="setting"
                 :ref="pageView"
                 :pageView="pageView"

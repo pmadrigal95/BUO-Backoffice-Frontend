@@ -40,6 +40,7 @@ export default {
         return {
             entity: this.$_Object(),
             show: true,
+            key: 0,
         };
     },
 
@@ -89,6 +90,7 @@ export default {
                             assessmentTypeId: this.entity.assessmentTypeId,
                         }),
                 });
+                this.key++;
             }
         },
 
@@ -159,10 +161,12 @@ export default {
                 <div slot="body">
                     <BaseServerDataTable
                         v-if="setting"
+                        :key="key"
                         :ref="pageView"
                         :pageView="pageView"
                         :setting="setting"
                         :extraParams="extraParams"
+                        :fnResetConfig="$_setFilter"
                         :fnNew="write ? $_Editor : undefined"
                         :fnEdit="write ? $_Editor : undefined"
                         :fnDelete="write ? $_fnDelete : undefined"

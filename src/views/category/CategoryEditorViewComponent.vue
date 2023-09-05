@@ -2,11 +2,11 @@
 /**
  * Descripción: Pantalla Editor Categorias
  *
- * @displayName DepartmentEditorViewComponent
+ * @displayName CategoryEditorViewComponent
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -42,14 +42,17 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('filters', ['advfiltersBypageView', 'dialogViewById']),
+
+        companyDialogView() {
+            return this.dialogViewById('companyDialog');
+        },
+
         /**
          * Configuracion BaseInputDataTable
          */
         companySetting() {
-            return baseFilterSettingsHelper.$_setCompanySetting({
-                isFilter: true,
-                singleSelect: true,
-            });
+            return this.advfiltersBypageView(this.companyDialogView);
         },
     },
 
@@ -78,6 +81,8 @@ export default {
                 ? undefined
                 : this.user.companyId;
 
+        this.$_setCompanyFilter();
+
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
             this.$vuetify.theme.themes.light.white;
@@ -89,6 +94,24 @@ export default {
     },
 
     methods: {
+        ...mapActions('filters', ['$_set_advfilter']),
+
+        $_setCompanyFilter() {
+            const dialogView = this.advfiltersBypageView(
+                this.companyDialogView
+            );
+
+            if (!dialogView) {
+                this.$_set_advfilter({
+                    [this.companyDialogView]:
+                        baseFilterSettingsHelper.$_setCompanySetting({
+                            isFilter: true,
+                            singleSelect: true,
+                        }),
+                });
+            }
+        },
+
         /**
          * Entity Object
          */
@@ -175,10 +198,13 @@ export default {
                     <v-row dense>
                         <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseInputDataTable
+                                v-if="companySetting"
                                 label="Empresa"
+                                :pageView="companyDialogView"
                                 :setting="companySetting"
                                 :editText="entity.nombreOrganizacion"
                                 v-model.number="entity.organizacionId"
+                                :fnResetConfig="$_setCompanyFilter"
                             />
                         </v-col>
                         <v-col cols="12">

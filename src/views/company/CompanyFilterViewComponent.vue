@@ -36,6 +36,12 @@ export default {
         BaseCustomsButtonsGrid,
     },
 
+    data() {
+        return {
+            key: 0,
+        };
+    },
+
     computed: {
         ...mapGetters('theme', ['app']),
 
@@ -85,6 +91,7 @@ export default {
                     [this.pageView]:
                         baseFilterSettingsHelper.$_setCompanySetting({}),
                 });
+                this.key++;
             }
         },
 
@@ -156,10 +163,12 @@ export default {
     <BaseCardViewComponent title="Empresas">
         <div slot="card-text">
             <BaseServerDataTable
+                :key="key"
                 v-if="setting"
                 :ref="pageView"
                 :pageView="pageView"
                 :setting="setting"
+                :fnResetConfig="$_setFilter"
                 :fnNew="write ? $_companyEditor : undefined"
                 :fnEdit="write ? $_companyEditor : undefined"
                 :fnDelete="write ? $_fnDesactiveCompany : undefined"

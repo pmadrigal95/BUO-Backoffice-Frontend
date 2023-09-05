@@ -1,12 +1,12 @@
 /**
- * CERTIFICATIONS ROUTES
+ * assignment ROUTES
  */
 
 const routes = [
     {
-        path: '/Assignment/Filter',
+        path: '/Assignment/Indicator',
         name: 'AssignmentViewComponent',
-        component: 'assignment/AssignmentViewComponent',
+        component: 'setIndicator/assignment/AssignmentViewComponent',
         meta: {
             module: 'AssignmentViewComponent',
         },

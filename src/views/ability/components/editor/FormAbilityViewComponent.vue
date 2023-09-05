@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
@@ -32,14 +32,17 @@ export default {
     },
 
     computed: {
+        ...mapGetters('filters', ['advfiltersBypageView', 'dialogViewById']),
+
+        companyDialogView() {
+            return this.dialogViewById('companyDialog');
+        },
+
         /**
          * Configuracion BaseInputDataTable
          */
         companySetting() {
-            return baseFilterSettingsHelper.$_setCompanySetting({
-                isFilter: true,
-                singleSelect: true,
-            });
+            return this.advfiltersBypageView(this.companyDialogView);
         },
 
         ...mapGetters('authentication', ['user', 'buoId']),
@@ -47,6 +50,7 @@ export default {
 
     mounted() {
         this.$_reviewQueryParams();
+        this.$_setCompanyFilter();
     },
 
     watch: {
@@ -64,6 +68,24 @@ export default {
     },
 
     methods: {
+        ...mapActions('filters', ['$_set_advfilter']),
+
+        $_setCompanyFilter() {
+            const dialogView = this.advfiltersBypageView(
+                this.companyDialogView
+            );
+
+            if (!dialogView) {
+                this.$_set_advfilter({
+                    [this.companyDialogView]:
+                        baseFilterSettingsHelper.$_setCompanySetting({
+                            isFilter: true,
+                            singleSelect: true,
+                        }),
+                });
+            }
+        },
+
         $_reviewQueryParams() {
             this.entity.usuarioModificaId = this.user.userId;
 
@@ -101,11 +123,15 @@ export default {
         <v-col cols="12" v-if="user.companyId === buoId">
             <BaseInputDataTable
                 label="Empresa"
-                v-if="!$router.currentRoute.query.organizacionId"
+                v-if="
+                    !$router.currentRoute.query.organizacionId && companySetting
+                "
                 :setting="companySetting"
+                :pageView="companyDialogView"
                 :editText="entity.nombreOrganizacion"
                 v-model.number="entity.organizacionId"
                 :validate="['requiered']"
+                :fnResetConfig="$_setCompanyFilter"
             />
         </v-col>
         <v-col cols="12">

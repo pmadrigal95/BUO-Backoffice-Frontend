@@ -5,7 +5,7 @@
  * @displayName BaseAdvancedFilter
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
@@ -103,6 +103,24 @@ export default {
 
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('filters', ['advfiltersBypageView', 'dialogViewById']),
+
+        companyDialogView() {
+            return this.dialogViewById('companyDialog');
+        },
+
+        userDialogView() {
+            return this.dialogViewById('userDialog');
+        },
+
+        abilityDialogView() {
+            return this.dialogViewById('abilityDialog');
+        },
+
+        assessmentDialogView() {
+            return this.dialogViewById('assessmentDialog');
+        },
+
         /**
          * Extra Params
          */
@@ -116,52 +134,34 @@ export default {
          * Configuracion BaseInputDataTable
          */
         companySetting() {
-            return baseFilterSettingsHelper.$_setCompanySetting({
-                isFilter: true,
-                singleSelect: true,
-            });
+            return this.advfiltersBypageView(this.companyDialogView);
         },
 
         /**
          * Configuracion BaseServerDataTable
          */
         userSetting() {
-            return baseFilterSettingsHelper.$_setUserSetting({
-                companyId: this.user.companyId,
-                departmentId: this.temp.departmentId,
-                isFilter: true,
-                singleSelect: false,
-            });
+            return this.advfiltersBypageView(this.userDialogView);
         },
 
         /**
          * Configuracion BaseServerDataTable
          */
         abilitySetting() {
-            return baseFilterSettingsHelper.$_setAbilitySetting({
-                companyId: this.user.companyId,
-                method: 'cualificacion/findByFilter',
-                isFilter: true,
-                singleSelect: false,
-            });
+            return this.advfiltersBypageView(this.abilityDialogView);
         },
 
         /**
          * Configuracion BaseServerDataTable
          */
         assessmentSetting() {
-            return baseFilterSettingsHelper.$_setAssessmentSetting({
-                apiEndpoint: 'findByDeepWithDefault',
-                companyId: this.user.companyId,
-                assessmentTypeId: this.temp.assessmentTypeId,
-                isFilter: true,
-                singleSelect: true,
-            });
+            return this.advfiltersBypageView(this.assessmentDialogView);
         },
     },
 
     created() {
         this.$_clean();
+        this.$_setFilter();
     },
 
     watch: {
@@ -201,6 +201,84 @@ export default {
     },
 
     methods: {
+        ...mapActions('filters', ['$_set_advfilter']),
+
+        $_setCompanyFilter() {
+            const dialogView = this.advfiltersBypageView(
+                this.companyDialogView
+            );
+
+            if (!dialogView) {
+                this.$_set_advfilter({
+                    [this.companyDialogView]:
+                        baseFilterSettingsHelper.$_setCompanySetting({
+                            isFilter: true,
+                            singleSelect: true,
+                        }),
+                });
+            }
+        },
+
+        $_setUserFilter() {
+            const dialogView = this.advfiltersBypageView(this.userDialogView);
+
+            if (!dialogView) {
+                this.$_set_advfilter({
+                    [this.userDialogView]:
+                        baseFilterSettingsHelper.$_setUserSetting({
+                            companyId: this.user.companyId,
+                            departmentId: this.temp.departmentId,
+                            isFilter: true,
+                            singleSelect: false,
+                        }),
+                });
+            }
+        },
+
+        $_setAbilityFilter() {
+            const dialogView = this.advfiltersBypageView(
+                this.abilityDialogView
+            );
+
+            if (!dialogView) {
+                this.$_set_advfilter({
+                    [this.abilityDialogView]:
+                        baseFilterSettingsHelper.$_setAbilitySetting({
+                            companyId: this.user.companyId,
+                            method: 'cualificacion/findByFilter',
+                            isFilter: true,
+                            singleSelect: false,
+                        }),
+                });
+            }
+        },
+
+        $_setAssessmentFilter() {
+            const dialogView = this.advfiltersBypageView(
+                this.assessmentDialogView
+            );
+
+            if (!dialogView) {
+                this.$_set_advfilter({
+                    [this.assessmentDialogView]:
+                        baseFilterSettingsHelper.$_setAssessmentSetting({
+                            apiEndpoint: 'findByDeepWithDefault',
+                            companyId: this.user.companyId,
+                            assessmentTypeId: this.temp.assessmentTypeId,
+                            isFilter: true,
+                            singleSelect: true,
+                        }),
+                });
+            }
+        },
+
+        $_setFilter() {
+            this.$_setCompanyFilter();
+            this.$_setUserFilter();
+            this.$_setAbilityFilter();
+            this.$_setAssessmentFilter();
+        },
+
         /**
          * Entity Object
          */
@@ -309,15 +387,17 @@ export default {
                             >
                                 {{ title }}
                             </p>
-                            <v-col cols="12">
+                            <v-col cols="12" v-if="companySetting">
                                 <BaseInputDataTable
                                     v-if="user.companyId === buoId"
+                                    :pageView="companyDialogView"
                                     label="Empresa"
                                     :setting="companySetting"
                                     :editText="temp.companyName"
                                     v-model.number="temp.companyId"
                                     :validate="['requiered']"
                                     :key="companyKey"
+                                    :fnResetConfig="$_setCompanyFilter"
                                 />
                             </v-col>
 
@@ -334,7 +414,9 @@ export default {
 
                             <v-col cols="12" v-if="isUser">
                                 <BaseInputDataTable
+                                    v-if="userSetting"
                                     label="Colaboradores"
+                                    :pageView="userDialogView"
                                     :setting="userSetting"
                                     :extraParams="extraParams"
                                     itemText="nombreCompleto"
@@ -342,6 +424,7 @@ export default {
                                     :editText="temp.nombre"
                                     v-model="temp.userId"
                                     :key="filterKey"
+                                    :fnResetConfig="$_setUserFilter"
                                 />
                             </v-col>
 
@@ -358,7 +441,9 @@ export default {
 
                             <v-col cols="12" v-if="isIndicator">
                                 <BaseInputDataTable
+                                    v-if="abilitySetting"
                                     label="¿Cuáles indicadores necesitas?"
+                                    :pageView="abilityDialogView"
                                     :setting="abilitySetting"
                                     :extraParams="extraParams"
                                     :readonly="
@@ -369,6 +454,7 @@ export default {
                                     v-model="temp.indicatorId"
                                     :key="filterKey"
                                     :validate="['requiered']"
+                                    :fnResetConfig="$_setAbilityFilter"
                                 />
                             </v-col>
 
@@ -386,12 +472,15 @@ export default {
                             <v-col cols="12" v-if="isAssessment">
                                 <BaseInputDataTable
                                     label="Assessment"
+                                    v-if="assessmentSetting"
+                                    :pageView="assessmentDialogView"
                                     :setting="assessmentSetting"
                                     :extraParams="extraParams"
                                     itemText="nombre"
                                     :readonly="!temp.assessmentTypeId"
                                     v-model.number="temp.assessmentId"
                                     :key="assessmentKey"
+                                    :fnResetConfig="$_setAssessmentFilter"
                                 />
                             </v-col>
                         </v-row>
