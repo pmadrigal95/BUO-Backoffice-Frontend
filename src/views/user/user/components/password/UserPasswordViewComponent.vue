@@ -22,6 +22,11 @@ export default {
             type: Object,
             requiered: true,
         },
+
+        callback: {
+            type: Function,
+            requiered: true,
+        },
     },
 
     components: { BasePasswordInput },
@@ -75,6 +80,7 @@ export default {
                     this.loading = false;
                     if (response != undefined) {
                         this.$_cancel();
+                        this.callback();
                     }
                 });
         },

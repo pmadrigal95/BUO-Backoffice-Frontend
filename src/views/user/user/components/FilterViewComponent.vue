@@ -241,6 +241,10 @@ export default {
             }
         },
 
+        $_cleanSelectedRows() {
+            this.$refs[this.pageView].$_cleanSelectedRows();
+        },
+
         $_sentToResentActivation(row) {
             const object = row.map((element) => element.id);
             httpService
@@ -249,7 +253,7 @@ export default {
                 })
                 .then((response) => {
                     if (response != undefined) {
-                        this.$refs[this.pageView].$_cleanSelectedRows();
+                        this.$_cleanSelectedRows();
                     }
                 });
         },
@@ -315,7 +319,11 @@ export default {
                     :fn="$_setAssessmentByType"
                 />
 
-                <UserPasswordViewComponent ref="popUp" :entity="entity" />
+                <UserPasswordViewComponent
+                    ref="popUp"
+                    :entity="entity"
+                    :callback="$_cleanSelectedRows"
+                />
             </v-row>
         </div>
     </BaseServerDataTable>
