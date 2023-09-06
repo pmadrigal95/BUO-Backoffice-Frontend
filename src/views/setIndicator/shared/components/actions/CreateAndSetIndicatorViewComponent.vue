@@ -421,7 +421,7 @@ export default {
                                         <v-col cols="12" v-if="needTutor">
                                             <BaseInputDataTable
                                                 v-if="userSetting"
-                                                label="Supervisor(es)"
+                                                label="Evaluador(es)"
                                                 :pageView="userDialogView"
                                                 :extraParams="extraParams"
                                                 :readonly="!extraParams"
