@@ -97,8 +97,6 @@ export default {
         this.$vuetify.theme.themes.light.background =
             this.$vuetify.theme.themes.light.white;
 
-        this.$_setValues();
-
         this.$_reviewQueryParams();
 
         this.$_setFilter();
@@ -168,6 +166,8 @@ export default {
             if (this.$router.currentRoute.query.organizacionId) {
                 this.entity.organizacionId =
                     this.$router.currentRoute.query.organizacionId;
+            } else if (this.user.companyId != this.buoId) {
+                this.entity.organizacionId = this.user.companyId;
             }
         },
 
@@ -184,23 +184,6 @@ export default {
                 usuarioModificaId: undefined,
                 estadoId: 2,
             };
-        },
-
-        $_setValues() {
-            this.entity.organizacionId = this.$_reviewCompany();
-        },
-
-        $_reviewCompany() {
-            let result;
-            const data = this.$router.currentRoute.params.Id;
-            if (data) {
-                // result = this.entity.organizacionId;
-                result = data;
-            } else if (this.user.companyId != this.buoId) {
-                result = this.user.companyId;
-            }
-
-            return result;
         },
 
         /**
