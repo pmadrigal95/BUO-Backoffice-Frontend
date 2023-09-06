@@ -16,10 +16,29 @@ export default {
             type: Array,
             require: true,
         },
+
+        /**
+         * V-model
+         */
+        value: {
+            type: Number,
+        },
     },
 
     computed: {
         ...mapGetters('theme', ['app']),
+    },
+
+    methods: {
+        $_updateValue(event) {
+            this.$emit('input', event);
+        },
+
+        $_fn(callback) {
+            callback();
+            const count = this.value + 1;
+            this.$_updateValue(count);
+        },
     },
 };
 </script>
@@ -51,7 +70,7 @@ export default {
                 <BaseMenuItemsRecursive :actions="action.children" />
             </v-list-group>
             <v-list-item
-                @click="action.fn"
+                @click="$_fn(action.fn)"
                 style="cursor: pointer"
                 v-else-if="action.show"
             >
@@ -66,7 +85,7 @@ export default {
                     <v-list-item-title
                         class="BUO-Paragraph-Small"
                         :class="app ? 'white--text' : 'grey700--text'"
-                        >{{ action.title}}</v-list-item-title
+                        >{{ action.title }}</v-list-item-title
                     >
                 </v-list-item-content>
             </v-list-item>

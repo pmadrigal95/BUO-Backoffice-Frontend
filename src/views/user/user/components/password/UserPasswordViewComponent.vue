@@ -134,14 +134,14 @@ export default {
 
                                         <v-list-item-content>
                                             <v-list-item-title
-                                                class="BUO-Paragraph-Medium-SemiBold"
+                                                class="BUO-Paragraph-Medium-SemiBold buo-white-space"
                                                 >{{
                                                     entity.name
                                                 }}</v-list-item-title
                                             >
 
                                             <v-list-item-subtitle
-                                                class="BUO-Label-Small"
+                                                class="BUO-Label-Small buo-white-space"
                                                 v-if="entity.organization"
                                                 ><span class="grey700--text"
                                                     >Organización:</span
@@ -152,7 +152,7 @@ export default {
                                             >
 
                                             <v-list-item-subtitle
-                                                class="BUO-Label-Small"
+                                                class="BUO-Label-Small buo-white-space"
                                                 v-if="entity.deparment"
                                                 ><span class="grey700--text"
                                                     >Departamento:</span

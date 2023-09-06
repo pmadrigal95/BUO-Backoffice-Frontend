@@ -30,6 +30,12 @@ export default {
         BaseMenuItemsRecursive,
     },
 
+    data() {
+        return {
+            key: 0,
+        };
+    },
+
     computed: {
         ...mapGetters('theme', ['app']),
     },
@@ -43,6 +49,7 @@ export default {
             :open-on-hover="$vuetify.breakpoint.mdAndUp"
             bottom
             offset-y
+            :key="key"
         >
             <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -63,7 +70,7 @@ export default {
                 class="mt-1 rounded-lg"
                 :class="[app ? 'background' : 'white']"
             >
-                <BaseMenuItemsRecursive :actions="actions" />
+                <BaseMenuItemsRecursive :actions="actions" v-model="key" />
             </section>
         </v-menu>
     </section>
