@@ -323,6 +323,7 @@ export default {
                     ref="popUp"
                     :entity="entity"
                     :callback="$_cleanSelectedRows"
+                    v-if="entity"
                 />
             </v-row>
         </div>
