@@ -31,14 +31,82 @@ export default {
                 datasets: [
                     {
                         backgroundColor: [
-                            '#41B883',
-                            '#E46651',
-                            '#00D8FF',
-                            '#DD1B16',
+                            '#c5fac0',
+                            '#fae1c0',
+                            '#c0cefa',
+                            '#fac0c0',
                         ],
                         data: [40, 20, 80, 10],
+                        borderColor: [
+                            '#41B800',
+                            '#E46600',
+                            '#00D8FE',
+                            '#DD1B00',
+                        ],
+                        borderAlign: 'inner',
+                        borderWidth: 2,
+                        hoverOffset: 10,
+                        borderJoinStyle: 'miter',
+                        hoverBackgroundColor: [
+                            '#98eee2',
+                            '#dffac0',
+                            '#fad4c0',
+                            '#c0faf8',
+                        ],
+                        hoverBorderColor: [
+                            '#98eee2',
+                            '#dffac0',
+                            '#fad4c0',
+                            '#c0faf8',
+                        ],
+                        hoverBorderJoinStyle: 'bevel',
+                        cutout: '80',
+                        rotation: 10,
+                        spacing: 10,
                     },
                 ],
+            };
+        },
+
+        chartOptions() {
+            return {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    fontFamily: 'Arial', // Cambia la fuente aquí
+                    title: {
+                        display: true,
+                        text: 'Demográfico Acumulado de Perfiles en un Área o toda la empresa',
+                        color: '#000000',
+                        font: {
+                            size: 18,
+                            family: "'Montserrat', 'sans-serif'",
+                            weight: '900',
+                            lineHeight: 1.3,
+                        },
+                    },
+                    legend: {
+                        display: true,
+                        position: 'right',
+                        align: 'center',
+                        labels: {
+                            padding: 20,
+                            left: 50,
+                            color: '#000000',
+                            font: {
+                                size: 12,
+                                family: "'Montserrat', 'sans-serif'",
+                                weight: '400',
+                                lineHeight: 1.3,
+                            },
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                        },
+                    },
+                    tooltip: {
+                      
+                    },
+                },
             };
         },
 
@@ -79,7 +147,10 @@ export default {
 <template>
     <BaseCardViewComponent title="Test" subtitle="Test">
         <div slot="card-text">
-            <BasePieChartImpl :chartData="chartData" />
+            <BasePieChartImpl
+                :chartData="chartData"
+                :chartOptions="chartOptions"
+            />
             <br />
             <BaseStackedBarImpl :chartData="chartData2" />
         </div>

@@ -17,19 +17,15 @@ export default {
             type: Object,
             required: true,
         },
+
+        chartOptions: {
+            type: Object,
+            default: () => {},
+        },
     },
 
     components: {
         BasePieChart,
-    },
-
-    computed: {
-        chartOptions() {
-            return {
-                responsive: true,
-                maintainAspectRatio: false,
-            };
-        },
     },
 };
 </script>
