@@ -15,10 +15,13 @@ const BasePieChartImpl = () =>
 const BaseStackedBarImpl = () =>
     import('@/components/backoffice/chart/BaseStackedBarImpl');
 
+const BaseHtml2Pdf = () => import('@/components/core/html/BaseHtml2Pdf');
+
 export default {
     name: 'BuoAssessmentsDemographicsViewComponent',
 
     components: {
+        BaseHtml2Pdf,
         BasePieChartImpl,
         BaseStackedBarImpl,
         BaseCardViewComponent,
@@ -145,14 +148,15 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="Test" subtitle="Test">
-        <div slot="card-text">
-            <BasePieChartImpl
-                :chartData="chartData"
-                :chartOptions="chartOptions"
-            />
-            <br />
-            <BaseStackedBarImpl :chartData="chartData2" />
-        </div>
-    </BaseCardViewComponent>
+    <BaseHtml2Pdf filename="test">
+        <section slot="Content">
+            <BaseCardViewComponent title="Test" subtitle="Test">
+                <div slot="card-text">
+                    <BasePieChartImpl :chartData="chartData" />
+                    <br />
+                    <BaseStackedBarImpl :chartData="chartData2" />
+                </div>
+            </BaseCardViewComponent>
+        </section>
+    </BaseHtml2Pdf>
 </template>
