@@ -152,6 +152,7 @@ export default {
                             msg="Por favor seleccione una empresa"
                         />
                         <DisplayViewComponent
+                            v-else
                             :entity="entity"
                             :requiredTutors="requiredTutors"
                         />

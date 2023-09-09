@@ -6,22 +6,20 @@
  *
  */
 
-const BaseCardViewComponent = () =>
-    import('@/components/core/cards/BaseCardViewComponent');
+const ContainerViewComponent = () =>
+    import(
+        '@/views/reports/demographics/pda/components/ContainerViewComponent'
+    );
 
 export default {
     name: 'BuoPdaDemographicsViewComponent',
 
     components: {
-        BaseCardViewComponent,
+        ContainerViewComponent,
     },
 };
 </script>
 
 <template>
-    <BaseCardViewComponent title="Test" subtitle="Test">
-        <div slot="card-text">
-            <span>Hola</span>
-        </div>
-    </BaseCardViewComponent>
+    <ContainerViewComponent />
 </template>
