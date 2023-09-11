@@ -43,12 +43,30 @@ export default {
                 datasets: [
                     {
                         backgroundColor: [
-                            '#41B883',
-                            '#E46651',
-                            '#00D8FF',
-                            '#DD1B16',
+                            '#c5fac0',
+                            '#fae1c0',
+                            '#c0cefa',
+                            '#fac0c0',
                         ],
-                        data: [40.5, 20, 80, 10],
+                        hoverBackgroundColor: [
+                            '#98eee2',
+                            '#dffac0',
+                            '#fad4c0',
+                            '#c0faf8',
+                        ],
+                        hoverBorderColor: [
+                            '#98eee2',
+                            '#dffac0',
+                            '#fad4c0',
+                            '#c0faf8',
+                        ],
+                        borderColor: [
+                            '#41B800',
+                            '#E46600',
+                            '#00D8FE',
+                            '#DD1B00',
+                        ],
+                        data: [40, 20, 80, 10],
                     },
                 ],
             };

@@ -17,10 +17,22 @@ export default {
             type: Object,
             required: true,
         },
+
+        dark: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     components: {
         BaseBarChart,
+    },
+
+    data() {
+        return {
+            darkTheme: '#000000',
+            lightTheme: '#fff',
+        };
     },
 
     computed: {
@@ -31,9 +43,47 @@ export default {
                 scales: {
                     x: {
                         stacked: true,
+                        ticks: {
+                            color: () =>
+                                this.dark ? this.lightTheme : this.darkTheme,
+                            font: {
+                                size: 12,
+                                family: "'Montserrat', 'sans-serif'",
+                                weight: '400',
+                            },
+                        },
                     },
                     y: {
                         stacked: true,
+                        ticks: {
+                            color: () =>
+                                this.dark ? this.lightTheme : this.darkTheme,
+                            font: {
+                                size: 12,
+                                family: "'Montserrat', 'sans-serif'",
+                                weight: '400',
+                            },
+                        },
+                    },
+                },
+                plugins: {
+                    borderWidth: 2,
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        align: 'center',
+                        labels: {
+                            padding: 20,
+                            color: () =>
+                                this.dark ? this.lightTheme : this.darkTheme,
+                            font: {
+                                size: 14,
+                                family: "'Montserrat', 'sans-serif'",
+                                weight: '400',
+                            },
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                        },
                     },
                 },
             };

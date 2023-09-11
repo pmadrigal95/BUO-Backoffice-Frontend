@@ -4,9 +4,6 @@
  *
  * @displayName BasePieChartImpl
  */
-
-// import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
-
 const BasePieChart = () => import('@/components/core/charts/BasePieChart');
 
 export default {
@@ -18,14 +15,55 @@ export default {
             required: true,
         },
 
-        chartOptions: {
-            type: Object,
-            default: () => {},
+        dark: {
+            type: Boolean,
+            default: false,
         },
+    },
+
+    data() {
+        return {
+            darkTheme: '#000000',
+            lightTheme: '#fff',
+        };
     },
 
     components: {
         BasePieChart,
+    },
+
+    computed: {
+        chartOptions() {
+            return {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '0',
+                spacing: 1,
+                borderAlign: 'inner',
+                borderWidth: 2,
+                hoverOffset: 10,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'right',
+                        align: 'center',
+                        padding: 40,
+                        labels: {
+                            padding: 20,
+                            color: () =>
+                                this.dark ? this.lightTheme : this.darkTheme,
+                            font: {
+                                size: 14,
+                                family: "'Montserrat', 'sans-serif'",
+                                weight: '400',
+                            },
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                        },
+                    },
+                },
+            };
+        },
     },
 };
 </script>
