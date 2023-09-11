@@ -5,6 +5,8 @@
  * @displayName RadarChartViewComponent
  */
 
+import { mapGetters } from 'vuex';
+
 const BaseRadarChartImpl = () =>
     import('@/components/backoffice/chart/BaseRadarChartImpl');
 
@@ -13,8 +15,13 @@ export default {
 
     props: {
         data: {
-            type: Object,
+            type: Array,
             required: true,
+        },
+
+        borderColor: {
+            type: String,
+            default: '#003F5E',
         },
     },
 
@@ -23,13 +30,23 @@ export default {
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         chartData() {
-            return this.data;
+            return {
+                labels: this.data.map((element) => element.ability),
+                datasets: [
+                    {
+                        borderColor: this.borderColor,
+                        data: this.data.map((element) => element.value),
+                    },
+                ],
+            };
         },
     },
 };
 </script>
 
 <template>
-    <BaseRadarChartImpl :chartData="chartData" />
+    <BaseRadarChartImpl :chartData="chartData" :dark="app" />
 </template>

@@ -6,8 +6,6 @@
  *
  */
 
-import { mapGetters } from 'vuex';
-
 const BaseCardViewComponent = () =>
     import(
         '@/views/reports/demographics/pda/components/shared/BaseCardViewComponent'
@@ -37,29 +35,6 @@ export default {
         BaseCardViewComponent,
         RadarChartViewComponent,
     },
-
-    computed: {
-        ...mapGetters('theme', ['app']),
-
-        chart() {
-            return {
-                labels: [
-                    'Eating',
-                    'Drinking',
-                    'Sleeping',
-                    'Designing',
-                    'Coding',
-                    'Cycling',
-                    'Running',
-                ],
-                datasets: [
-                    {
-                        data: [65, 59, 90, 81, 56, 55, 40],
-                    },
-                ],
-            };
-        },
-    },
 };
 </script>
 
@@ -72,7 +47,7 @@ export default {
     >
         <section slot="body">
             <BaseSkeletonLoader v-if="!data" type="card" />
-            <RadarChartViewComponent :data="chart" />
+            <RadarChartViewComponent :data="data" />
         </section>
     </BaseCardViewComponent>
 </template>
