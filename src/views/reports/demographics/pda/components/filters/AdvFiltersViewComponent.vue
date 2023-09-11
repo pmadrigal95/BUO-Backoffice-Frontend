@@ -9,9 +9,6 @@
 const BaseNotFoundContent = () =>
     import('@/components/core/cards/BaseNotFoundContent');
 
-const BaseCustomsButtonsGrid = () =>
-    import('@/components/core/grids/BaseCustomsButtonsGrid');
-
 const BaseAdvancedFilter = () =>
     import('@/components/backoffice/filter/BaseAdvancedFilter');
 
@@ -27,7 +24,6 @@ export default {
         BaseAdvancedFilter,
         BaseNotFoundContent,
         DisplayViewComponent,
-        BaseCustomsButtonsGrid,
     },
 
     data() {
@@ -45,11 +41,8 @@ export default {
             return {
                 companyId: undefined,
                 departmentId: undefined,
+                show: true,
             };
-        },
-
-        $_showAdvFilter() {
-            this.show = !this.show;
         },
     },
 };
@@ -57,31 +50,22 @@ export default {
 
 <template>
     <BaseAdvancedFilter
-        :show="show"
+        :show="entity.show"
         isDepartment
         v-model="entity"
         :requiredCompany="false"
     >
         <div slot="body">
-            <v-card flat class="rounded-t-xl">
+            <v-card v-if="!entity.companyId" flat class="rounded-t-xl">
                 <v-card-text>
-                    <v-row justify="end" class="pa-3">
-                        <BaseCustomsButtonsGrid
-                            label="Filtro Avanzado"
-                            :fnMethod="$_showAdvFilter"
-                            :outlined="!show"
-                            icon="mdi-filter-cog-outline"
-                        />
-                    </v-row>
                     <section class="pt-3">
                         <BaseNotFoundContent
-                            v-if="!entity.companyId"
                             msg="Por favor seleccione una empresa"
                         />
-                        <DisplayViewComponent :entity="entity" v-else />
                     </section>
                 </v-card-text>
             </v-card>
+            <DisplayViewComponent :entity="entity" v-else />
         </div>
     </BaseAdvancedFilter>
 </template>
