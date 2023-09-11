@@ -30,7 +30,7 @@ export default {
 </script>
 
 <template>
-    <v-card flat max-width="100%" max-height="100%">
+    <v-card flat width="100%" height="100%">
         <v-card-title
             v-if="title"
             class="buo-word-break BUO-Paragraph-Large-SemiBold"

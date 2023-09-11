@@ -65,6 +65,14 @@ export default {
             return this.entity.departmentId ? true : false;
         },
 
+        pie() {
+            return null;
+        },
+
+        bar() {
+            return null;
+        },
+
         radar() {
             return this.report.pdaAbilities;
         },
@@ -151,7 +159,7 @@ export default {
             </v-col>
 
             <v-col cols="12" md="6">
-                <ProfileAccumulatedViewComponent />
+                <ProfileAccumulatedViewComponent :data="pie" />
             </v-col>
 
             <v-col cols="12" md="6">
@@ -159,10 +167,10 @@ export default {
             </v-col>
 
             <v-col cols="12">
-                <ProfileDistributionViewComponent />
+                <ProfileDistributionViewComponent :data="bar" />
             </v-col>
 
-            <v-col cols="12" md="6">
+            <v-col cols="12">
                 <AxesBehaviorViewComponent :data="axes" />
             </v-col>
         </v-row>
