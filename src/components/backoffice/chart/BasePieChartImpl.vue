@@ -19,6 +19,16 @@ export default {
             type: Boolean,
             default: false,
         },
+
+        positionLegend: {
+            type: String,
+            default: 'bottom',
+        },
+
+        alignLegend: {
+            type: String,
+            default: 'center',
+        },
     },
 
     data() {
@@ -45,8 +55,8 @@ export default {
                 plugins: {
                     legend: {
                         display: true,
-                        position: 'right',
-                        align: 'center',
+                        position: this.positionLegend,
+                        align: this.alignLegend,
                         padding: 40,
                         labels: {
                             padding: 20,

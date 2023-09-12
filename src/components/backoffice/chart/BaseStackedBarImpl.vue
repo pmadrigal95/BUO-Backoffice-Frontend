@@ -22,6 +22,16 @@ export default {
             type: Boolean,
             default: false,
         },
+
+        positionLegend: {
+            type: String,
+            default: 'bottom',
+        },
+
+        alignLegend: {
+            type: String,
+            default: 'center',
+        },
     },
 
     components: {
@@ -95,8 +105,8 @@ export default {
                 plugins: {
                     legend: {
                         display: true,
-                        position: 'top',
-                        align: 'center',
+                        position: this.positionLegend,
+                        align: this.alignLegend,
                         labels: {
                             padding: 20,
                             color: () =>
