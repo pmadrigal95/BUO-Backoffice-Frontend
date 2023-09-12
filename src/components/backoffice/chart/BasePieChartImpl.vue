@@ -19,6 +19,16 @@ export default {
             type: Boolean,
             default: false,
         },
+
+        positionLegend: {
+            type: String,
+            default: 'bottom',
+        },
+
+        alignLegend: {
+            type: String,
+            default: 'center',
+        },
     },
 
     data() {
@@ -37,7 +47,7 @@ export default {
             return {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '0',
+                cutout: '70',
                 spacing: 1,
                 borderAlign: 'inner',
                 borderWidth: 2,
@@ -45,8 +55,8 @@ export default {
                 plugins: {
                     legend: {
                         display: true,
-                        position: 'right',
-                        align: 'center',
+                        position: this.positionLegend,
+                        align: this.alignLegend,
                         padding: 40,
                         labels: {
                             padding: 20,
@@ -55,7 +65,7 @@ export default {
                             font: {
                                 size: 14,
                                 family: "'Montserrat', 'sans-serif'",
-                                weight: '400',
+                                weight: '500',
                             },
                             usePointStyle: true,
                             pointStyle: 'circle',

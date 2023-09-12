@@ -8,7 +8,7 @@
 // import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
 
 const BaseBarChart = () => import('@/components/core/charts/BaseBarChart');
-
+export let delayed;
 export default {
     name: 'BaseStackedBarImpl',
 
@@ -21,6 +21,16 @@ export default {
         dark: {
             type: Boolean,
             default: false,
+        },
+
+        positionLegend: {
+            type: String,
+            default: 'bottom',
+        },
+
+        alignLegend: {
+            type: String,
+            default: 'center',
         },
     },
 
@@ -40,6 +50,32 @@ export default {
             return {
                 responsive: true,
                 maintainAspectRatio: false,
+                borderWidth: 2,
+                borderRadius: {
+                    topLeft: 3,
+                    topRight: 3,
+                    bottomLeft: 3,
+                    bottomRight: 3,
+                },
+                borderSkipped: false,
+                animation: {
+                    onComplete: () => {
+                        delayed = true;
+                    },
+                    delay: (context) => {
+                        let delay = 0;
+                        if (
+                            context.type === 'data' &&
+                            context.mode === 'default' &&
+                            !delayed
+                        ) {
+                            delay =
+                                context.dataIndex * 300 +
+                                context.datasetIndex * 100;
+                        }
+                        return delay;
+                    },
+                },
                 scales: {
                     x: {
                         stacked: true,
@@ -47,7 +83,7 @@ export default {
                             color: () =>
                                 this.dark ? this.lightTheme : this.darkTheme,
                             font: {
-                                size: 12,
+                                size: 14,
                                 family: "'Montserrat', 'sans-serif'",
                                 weight: '400',
                             },
@@ -59,7 +95,7 @@ export default {
                             color: () =>
                                 this.dark ? this.lightTheme : this.darkTheme,
                             font: {
-                                size: 12,
+                                size: 14,
                                 family: "'Montserrat', 'sans-serif'",
                                 weight: '400',
                             },
@@ -67,11 +103,10 @@ export default {
                     },
                 },
                 plugins: {
-                    borderWidth: 2,
                     legend: {
                         display: true,
-                        position: 'top',
-                        align: 'center',
+                        position: this.positionLegend,
+                        align: this.alignLegend,
                         labels: {
                             padding: 20,
                             color: () =>
@@ -79,7 +114,7 @@ export default {
                             font: {
                                 size: 14,
                                 family: "'Montserrat', 'sans-serif'",
-                                weight: '400',
+                                weight: '500',
                             },
                             usePointStyle: true,
                             pointStyle: 'circle',

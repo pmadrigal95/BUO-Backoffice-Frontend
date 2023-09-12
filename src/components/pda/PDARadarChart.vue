@@ -86,6 +86,8 @@ export default {
                                 size: this.$vuetify.breakpoint.smAndDown
                                     ? 10
                                     : 15,
+                                family: "'Montserrat', 'sans-serif'",
+                                weight: '500',
                             },
                         },
                     },
