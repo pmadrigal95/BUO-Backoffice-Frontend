@@ -52,6 +52,28 @@ export default {
                         return delay;
                     },
                 },
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: {
+                            font: {
+                                size: 12,
+                                family: "'Montserrat', 'sans-serif'",
+                                weight: '400',
+                            },
+                        },
+                    },
+                    y: {
+                        stacked: true,
+                        ticks: {
+                            font: {
+                                size: 12,
+                                family: "'Montserrat', 'sans-serif'",
+                                weight: '400',
+                            },
+                        },
+                    },
+                },
                 elements: {
                     point: {
                         radius: 0,
@@ -69,6 +91,15 @@ export default {
                     tooltip: {
                         callbacks: {
                             footer: this.$_chartFooter,
+                        },
+                    },
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 12,
+                                family: "'Montserrat', 'sans-serif'",
+                                weight: '500',
+                            },
                         },
                     },
                 },

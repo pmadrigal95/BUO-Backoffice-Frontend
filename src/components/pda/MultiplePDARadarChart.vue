@@ -60,6 +60,8 @@ export default {
                                 size: this.$vuetify.breakpoint.smAndDown
                                     ? 10
                                     : 15,
+                                family: "'Montserrat', 'sans-serif'",
+                                weight: '500',
                             },
                         },
                     },
@@ -75,6 +77,8 @@ export default {
                                 size: this.$vuetify.breakpoint.smAndDown
                                     ? 10
                                     : 12,
+                                family: "'Montserrat', 'sans-serif'",
+                                weight: '500',
                             },
                             usePointStyle: true,
                             pointStyle: 'circle',

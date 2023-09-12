@@ -37,7 +37,7 @@ export default {
             return {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '0',
+                cutout: '70',
                 spacing: 1,
                 borderAlign: 'inner',
                 borderWidth: 2,
@@ -55,7 +55,7 @@ export default {
                             font: {
                                 size: 14,
                                 family: "'Montserrat', 'sans-serif'",
-                                weight: '400',
+                                weight: '500',
                             },
                             usePointStyle: true,
                             pointStyle: 'circle',
