@@ -44,30 +44,30 @@ export default {
                 labels: this.data.labels,
                 datasets: [
                     {
-                        backgroundColor: [
+                        backgroundColor: this.data.colors.map((profile) =>
                             baseDataVisualizationColorsHelper.$_getColor({
-                                profile: 'amigable',
+                                profile: profile.toLowerCase(),
                                 type: 'backgroundColor',
-                            }),
-                        ],
-                        hoverBackgroundColor: [
+                            })
+                        ),
+                        hoverBackgroundColor: this.data.colors.map((profile) =>
                             baseDataVisualizationColorsHelper.$_getColor({
-                                profile: 'amigable',
+                                profile: profile.toLowerCase(),
                                 type: 'hoverBackgroundColor',
-                            }),
-                        ],
-                        hoverBorderColor: [
+                            })
+                        ),
+                        hoverBorderColor: this.data.colors.map((profile) =>
                             baseDataVisualizationColorsHelper.$_getColor({
-                                profile: 'amigable',
+                                profile: profile.toLowerCase(),
                                 type: 'hoverBorderColor',
-                            }),
-                        ],
-                        borderColor: [
+                            })
+                        ),
+                        borderColor: this.data.colors.map((profile) =>
                             baseDataVisualizationColorsHelper.$_getColor({
-                                profile: 'amigables',
+                                profile: profile.toLowerCase(),
                                 type: 'borderColor',
-                            }),
-                        ],
+                            })
+                        ),
                         data: this.data.data,
                     },
                 ],

@@ -66,7 +66,7 @@ export default {
         },
 
         profile() {
-            return this.report.selfName;
+            return this.report.selfNameUI;
         },
 
         pie() {
@@ -91,20 +91,32 @@ export default {
     },
 
     methods: {
+        $_setBody() {
+            return {
+                organizacionId: this.entity.companyId,
+                departamentoId: this.entity.departmentId,
+            };
+        },
+
         /**
          * Determinar Reporte
          */
         $_getObject() {
             //HttpServices a la vista para obtener Vista
             this.loading = true;
-            httpService.post('analytics/pda', this.entity).then((response) => {
-                this.loading = false;
-                if (response != undefined) {
-                    console.log(response.data);
-                    // Encontro la entidad
-                    this.report = BaseArrayHelper.SetObject({}, response.data);
-                }
-            });
+            httpService
+                .post('analytics/pda', this.$_setBody())
+                .then((response) => {
+                    this.loading = false;
+                    if (response != undefined) {
+                        console.log(response.data);
+                        // Encontro la entidad
+                        this.report = BaseArrayHelper.SetObject(
+                            {},
+                            response.data
+                        );
+                    }
+                });
         },
     },
 };
@@ -131,7 +143,10 @@ export default {
             </v-col>
 
             <v-col cols="12" md="12">
-                <IndicatorsViewComponent :data="radar" />
+                <IndicatorsViewComponent
+                    :data="radar"
+                    :color="report.selfName"
+                />
             </v-col>
 
             <v-col cols="12">

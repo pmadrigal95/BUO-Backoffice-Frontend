@@ -346,7 +346,6 @@ export default {
                                 label="Tipo de usuario"
                                 v-model="entity.tipoUsuarioId"
                                 :endpoint="userTypeList"
-                                :validate="['requiered']"
                             />
                         </v-col>
 

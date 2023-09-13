@@ -6,6 +6,8 @@
  *
  */
 
+import baseDataVisualizationColorsHelper from '@/views/reports/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
+
 const BaseCardViewComponent = () =>
     import(
         '@/views/reports/demographics/pda/components/shared/BaseCardViewComponent'
@@ -29,11 +31,25 @@ export default {
             type: Array,
             required: true,
         },
+
+        color: {
+            type: String,
+            requiered: true,
+        },
     },
 
     components: {
         BaseCardViewComponent,
         RadarChartViewComponent,
+    },
+
+    computed: {
+        borderColor() {
+            return baseDataVisualizationColorsHelper.$_getColor({
+                profile: this.color.toLowerCase(),
+                type: 'backgroundColor',
+            });
+        },
     },
 };
 </script>
@@ -47,7 +63,7 @@ export default {
     >
         <section slot="body">
             <BaseSkeletonLoader v-if="!data" type="card" />
-            <RadarChartViewComponent :data="data" />
+            <RadarChartViewComponent :data="data" :borderColor="borderColor" />
         </section>
     </BaseCardViewComponent>
 </template>
