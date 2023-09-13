@@ -53,9 +53,9 @@ export default {
                 responsive: true,
                 maintainAspectRatio: false,
                 cutout: '70',
-                spacing: 1,
+                spacing: 10,
                 borderAlign: 'inner',
-                borderWidth: 2,
+                borderWidth: 1,
                 hoverOffset: 10,
                 plugins: {
                     legend: {
