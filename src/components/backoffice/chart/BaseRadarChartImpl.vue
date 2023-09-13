@@ -48,7 +48,7 @@ export default {
                     r: {
                         grid: {
                             circular: true,
-                            lineWidth: 5,
+                            lineWidth: 6,
                             color: colorChart,
                         },
                         beginAtZero: true,

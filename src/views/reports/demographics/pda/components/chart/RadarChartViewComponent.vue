@@ -34,7 +34,11 @@ export default {
 
         chartData() {
             return {
-                labels: this.data.map((element) => element.ability),
+                labels: this.data.map((element) =>
+                    this.$vuetify.breakpoint.mobile
+                        ? element.abilityUI
+                        : element.ability
+                ),
                 datasets: [
                     {
                         borderColor: this.borderColor,
