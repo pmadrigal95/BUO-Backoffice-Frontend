@@ -6,8 +6,6 @@
  *
  */
 
-import baseDataVisualizationColorsHelper from '@/views/reports/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
-
 const BaseCardViewComponent = () =>
     import(
         '@/views/reports/demographics/pda/components/shared/BaseCardViewComponent'
@@ -37,43 +35,6 @@ export default {
         BaseCardViewComponent,
         PieChartViewComponent,
     },
-
-    computed: {
-        chartData() {
-            return {
-                labels: this.data.labels,
-                datasets: [
-                    {
-                        backgroundColor: this.data.colors.map((profile) =>
-                            baseDataVisualizationColorsHelper.$_getColor({
-                                profile: profile.toLowerCase(),
-                                type: 'backgroundColor',
-                            })
-                        ),
-                        hoverBackgroundColor: this.data.colors.map((profile) =>
-                            baseDataVisualizationColorsHelper.$_getColor({
-                                profile: profile.toLowerCase(),
-                                type: 'hoverBackgroundColor',
-                            })
-                        ),
-                        hoverBorderColor: this.data.colors.map((profile) =>
-                            baseDataVisualizationColorsHelper.$_getColor({
-                                profile: profile.toLowerCase(),
-                                type: 'hoverBorderColor',
-                            })
-                        ),
-                        borderColor: this.data.colors.map((profile) =>
-                            baseDataVisualizationColorsHelper.$_getColor({
-                                profile: profile.toLowerCase(),
-                                type: 'borderColor',
-                            })
-                        ),
-                        data: this.data.data,
-                    },
-                ],
-            };
-        },
-    },
 };
 </script>
 
@@ -86,7 +47,7 @@ export default {
     >
         <section slot="body">
             <BaseSkeletonLoader v-if="!data" type="card" />
-            <PieChartViewComponent :data="chartData" />
+            <PieChartViewComponent :data="data" />
         </section>
     </BaseCardViewComponent>
 </template>

@@ -7,6 +7,8 @@
 
 import { mapGetters } from 'vuex';
 
+import baseDataVisualizationColorsHelper from '@/views/reports/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
+
 const BasePieChartImpl = () =>
     import('@/components/backoffice/chart/BasePieChartImpl');
 
@@ -27,9 +29,39 @@ export default {
     computed: {
         ...mapGetters('theme', ['app']),
 
-        //TODO: Implementar logica
         chartData() {
-            return this.data;
+            return {
+                labels: this.data.labels,
+                datasets: [
+                    {
+                        backgroundColor: this.data.colors.map((profile) =>
+                            baseDataVisualizationColorsHelper.$_getColor({
+                                profile: profile.toLowerCase(),
+                                type: 'backgroundColor',
+                            })
+                        ),
+                        hoverBackgroundColor: this.data.colors.map((profile) =>
+                            baseDataVisualizationColorsHelper.$_getColor({
+                                profile: profile.toLowerCase(),
+                                type: 'hoverBackgroundColor',
+                            })
+                        ),
+                        hoverBorderColor: this.data.colors.map((profile) =>
+                            baseDataVisualizationColorsHelper.$_getColor({
+                                profile: profile.toLowerCase(),
+                                type: 'hoverBorderColor',
+                            })
+                        ),
+                        borderColor: this.data.colors.map((profile) =>
+                            baseDataVisualizationColorsHelper.$_getColor({
+                                profile: profile.toLowerCase(),
+                                type: 'borderColor',
+                            })
+                        ),
+                        data: this.data.data,
+                    },
+                ],
+            };
         },
 
         showLegend() {
