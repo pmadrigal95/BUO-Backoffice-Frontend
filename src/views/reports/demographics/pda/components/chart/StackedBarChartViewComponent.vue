@@ -31,6 +31,10 @@ export default {
         chartData() {
             return this.data;
         },
+
+        showLegend() {
+            return this.$vuetify.breakpoint.mobile ? false : true;
+        },
     },
 };
 </script>
@@ -39,6 +43,6 @@ export default {
     <BaseStackedBarImpl
         :chartData="chartData"
         :dark="app"
-        :showLegend="false"
+        :showLegend="showLegend"
     />
 </template>
