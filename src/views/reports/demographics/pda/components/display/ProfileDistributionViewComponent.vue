@@ -6,6 +6,8 @@
  *
  */
 
+import baseDataVisualizationColorsHelper from '@/views/reports/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
+
 const BaseCardViewComponent = () =>
     import(
         '@/views/reports/demographics/pda/components/shared/BaseCardViewComponent'
@@ -34,59 +36,39 @@ export default {
     computed: {
         chartData() {
             return {
-                labels: [
-                    'January',
-                    'February',
-                    'March',
-                    'April',
-                    'May',
-                    'June',
-                    'July',
-                    'August',
-                    'September',
-                    'October',
-                    'November',
-                    'December',
-                ],
-                datasets: [
-                    {
-                        label: 'Data One',
-                        backgroundColor: '#CED8F6',
-                        data: [80, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
-                        hoverBackgroundColor: '#81BEF7',
-                        hoverBorderColor: '#81BEF7',
-                        borderColor: '#CED8F6',
-                    },
-                    {
-                        label: 'Data Two',
-                        backgroundColor: '#F2E0F7',
-                        data: [20, 40, 60, 10, 80, 10, 5, 50, 10, 11, 40, 31],
-                        hoverBackgroundColor: '#F781F3',
-                        hoverBorderColor: '#F781F3',
-                        borderColor: '#F2E0F7',
-                    },
-                    {
-                        label: 'Data Three',
-                        backgroundColor: '#F6E3CE',
-                        data: [20, 40, 60, 10, 40, 10, 5, 50, 10, 11, 40, 31],
-                        hoverBackgroundColor: '#D7DF01',
-                        hoverBorderColor: '#D7DF01',
-                        borderColor: '#F6E3CE',
-                    },
-                    {
-                        label: 'Data Four',
-                        backgroundColor: '#F5F6CE',
-                        data: [20, 40, 60, 10, 20, 10, 5, 50, 60, 11, 40, 31],
-                        hoverBackgroundColor: '#3ADF00',
-                        hoverBorderColor: '#3ADF00',
-                        borderColor: '#F5F6CE',
-                    },
-                ],
+                labels: this.data.labels,
+                datasets: this.data.dataSet.map((item) => this.$_setItem(item)),
             };
         },
 
         showLegend() {
             return this.$vuetify.breakpoint.mobile ? true : false;
+        },
+    },
+
+    methods: {
+        $_setItem(item) {
+            return {
+                label: item.label,
+                data: item.data,
+                backgroundColor: baseDataVisualizationColorsHelper.$_getColor({
+                    profile: item.color.toLowerCase(),
+                    type: 'backgroundColor',
+                }),
+                hoverBackgroundColor:
+                    baseDataVisualizationColorsHelper.$_getColor({
+                        profile: item.color.toLowerCase(),
+                        type: 'hoverBackgroundColor',
+                    }),
+                hoverBorderColor: baseDataVisualizationColorsHelper.$_getColor({
+                    profile: item.color.toLowerCase(),
+                    type: 'hoverBorderColor',
+                }),
+                borderColor: baseDataVisualizationColorsHelper.$_getColor({
+                    profile: item.color.toLowerCase(),
+                    type: 'borderColor',
+                }),
+            };
         },
     },
 };

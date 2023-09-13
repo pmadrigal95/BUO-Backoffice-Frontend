@@ -74,7 +74,7 @@ export default {
         },
 
         bar() {
-            return {};
+            return this.report.stackDto;
         },
 
         radar() {

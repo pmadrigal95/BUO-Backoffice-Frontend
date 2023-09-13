@@ -75,7 +75,7 @@ export default {
                             usePointStyle: true,
                             pointStyle: 'circle',
                         },
-                    }
+                    },
                 },
             };
         },
