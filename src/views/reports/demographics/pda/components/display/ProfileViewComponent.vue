@@ -24,6 +24,11 @@ export default {
             Type: String,
             requiered: true,
         },
+
+        profileUrl: {
+            Type: String,
+            requiered: true,
+        },
     },
 
     components: {
@@ -56,23 +61,26 @@ export default {
             <section class="pt-3">
                 <v-layout justify-center>
                     <v-img
-                        v-if="profile"
+                        v-if="profileUrl"
                         contain
                         height="220"
                         width="151"
-                        :src="profile"
-                        :lazy-src="profile"
+                        :src="profileUrl"
+                        :lazy-src="profileUrl"
                         style="cursor: pointer"
                     />
                 </v-layout>
-                <v-card-subtitle class="buo-word-break text-center">
+                <v-card-subtitle
+                    class="buo-word-break text-center"
+                    v-if="profile"
+                >
                     <section
                         class="BUO-Heading-XSmall"
                         :class="[
                             app ? 'blueProgress600--text' : 'grey700--text',
                         ]"
                     >
-                        Pendiente
+                        {{ profile }}
                     </section>
                     <section
                         class="BUO-Paragraph-Small"

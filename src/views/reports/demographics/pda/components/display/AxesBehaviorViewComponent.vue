@@ -57,13 +57,10 @@ export default {
                             class="buo-word-break BUO-Paragraph-Small-SemiBold pb-5"
                             :class="[app ? 'white--text' : 'black--text']"
                         >
-                            {{ item.nombreUI }}
+                            {{ item.name }}
                         </v-card-title>
                         <v-card-text>
-                            <BasePdaSlider
-                                :value="item.valorEjeFormato"
-                                :color="item.nombre.toLowerCase()"
-                            />
+                            <BasePdaSlider :value="item.formattedValue" />
                             <section
                                 class="d-flex flex-no-wrap justify-space-between buo-word-break"
                             >
@@ -75,7 +72,7 @@ export default {
                                             : 'grey600--text',
                                     ]"
                                 >
-                                    {{ item.etiquetaIzquierda }}
+                                    {{ item.leftLabel }}
                                 </span>
                                 <span
                                     class="BUO-Label-Small"
@@ -85,7 +82,7 @@ export default {
                                             : 'grey600--text',
                                     ]"
                                 >
-                                    {{ item.etiquetaDerecha }}
+                                    {{ item.rightLabel }}
                                 </span>
                             </section>
                         </v-card-text>

@@ -65,12 +65,16 @@ export default {
             return this.entity.departmentId ? true : false;
         },
 
+        profile() {
+            return this.report.selfName;
+        },
+
         pie() {
-            return null;
+            return this.report.pieDto;
         },
 
         bar() {
-            return null;
+            return {};
         },
 
         radar() {
@@ -78,48 +82,7 @@ export default {
         },
 
         axes() {
-            return [
-                {
-                    id: 1,
-                    nombre: 'Riesgo',
-                    nombreUI: 'Eje de Riesgo',
-                    etiquetaIzquierda: 'Cauteloso',
-                    etiquetaDerecha: 'Arriesgado',
-                    valorEjeFormato: '27',
-                },
-                {
-                    id: 5,
-                    nombre: 'Extroversion',
-                    nombreUI: 'Eje de Extroversión',
-                    etiquetaIzquierda: 'Introvertido',
-                    etiquetaDerecha: 'Extrovertido',
-                    valorEjeFormato: '64',
-                },
-                {
-                    id: 7,
-                    nombre: 'Paciencia',
-                    nombreUI: 'Eje de Paciencia',
-                    etiquetaIzquierda: 'Inquieto/Impaciente',
-                    etiquetaDerecha: 'Calmo/Paciente',
-                    valorEjeFormato: '9',
-                },
-                {
-                    id: 12,
-                    nombre: 'Normas',
-                    nombreUI: 'Eje de Normas',
-                    etiquetaIzquierda: 'Independiente',
-                    etiquetaDerecha: 'Sujeto a normas',
-                    valorEjeFormato: '100',
-                },
-                {
-                    id: 13,
-                    nombre: 'Autocontrol',
-                    nombreUI: 'Eje de Autocontrol',
-                    etiquetaIzquierda: 'Emocional',
-                    etiquetaDerecha: 'Racional',
-                    valorEjeFormato: '0',
-                },
-            ];
+            return this.report.pdaAxes;
         },
     },
 
@@ -154,20 +117,21 @@ export default {
             <v-col cols="12">
                 <ProfileViewComponent
                     :entity="entity"
-                    :profile="report.imageUrl"
+                    :profile="profile"
+                    :profileUrl="report.imageUrl"
                 />
             </v-col>
 
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="12">
                 <ProfileAccumulatedViewComponent :data="pie" />
-            </v-col>
-
-            <v-col cols="12" md="6">
-                <IndicatorsViewComponent :data="radar" />
             </v-col>
 
             <v-col cols="12">
                 <ProfileDistributionViewComponent :data="bar" />
+            </v-col>
+
+            <v-col cols="12" md="12">
+                <IndicatorsViewComponent :data="radar" />
             </v-col>
 
             <v-col cols="12">
