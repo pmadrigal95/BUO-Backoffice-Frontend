@@ -36,5 +36,5 @@ export default {
 </script>
 
 <template>
-    <BasePieChartImpl :chartData="chartData" :dark="app" />
+    <BasePieChartImpl :chartData="chartData" :dark="app" :showLegend="false" />
 </template>

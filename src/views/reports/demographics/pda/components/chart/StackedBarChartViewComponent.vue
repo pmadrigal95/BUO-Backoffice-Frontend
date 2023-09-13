@@ -36,5 +36,9 @@ export default {
 </script>
 
 <template>
-    <BaseStackedBarImpl :chartData="chartData" :dark="app" />
+    <BaseStackedBarImpl
+        :chartData="chartData"
+        :dark="app"
+        :showLegend="false"
+    />
 </template>

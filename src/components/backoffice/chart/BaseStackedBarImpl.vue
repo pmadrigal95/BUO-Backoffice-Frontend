@@ -25,12 +25,17 @@ export default {
 
         positionLegend: {
             type: String,
-            default: 'bottom',
+            default: 'top',
         },
 
         alignLegend: {
             type: String,
             default: 'center',
+        },
+
+        showLegend: {
+            type: Boolean,
+            required: true,
         },
     },
 
@@ -52,10 +57,10 @@ export default {
                 maintainAspectRatio: false,
                 borderWidth: 2,
                 borderRadius: {
-                    topLeft: 3,
-                    topRight: 3,
-                    bottomLeft: 3,
-                    bottomRight: 3,
+                    topLeft: 1,
+                    topRight: 1,
+                    bottomLeft: 1,
+                    bottomRight: 1,
                 },
                 borderSkipped: false,
                 animation: {
@@ -104,7 +109,7 @@ export default {
                 },
                 plugins: {
                     legend: {
-                        display: true,
+                        display: this.showLegend,
                         position: this.positionLegend,
                         align: this.alignLegend,
                         labels: {

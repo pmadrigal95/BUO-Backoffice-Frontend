@@ -22,7 +22,7 @@ export default {
 
         positionLegend: {
             type: String,
-            default: 'bottom',
+            default: 'top',
         },
 
         alignLegend: {
