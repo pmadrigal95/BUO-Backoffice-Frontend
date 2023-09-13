@@ -57,10 +57,10 @@ export default {
                 maintainAspectRatio: false,
                 borderWidth: 2,
                 borderRadius: {
-                    topLeft: 2,
-                    topRight: 2,
-                    bottomLeft: 2,
-                    bottomRight: 2,
+                    topLeft: 1,
+                    topRight: 1,
+                    bottomLeft: 1,
+                    bottomRight: 1,
                 },
                 borderSkipped: false,
                 animation: {
