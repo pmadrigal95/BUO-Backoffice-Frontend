@@ -6,6 +6,8 @@
  *
  */
 
+import baseDataVisualizationColorsHelper from '@/views/reports/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
+
 const BaseCardViewComponent = () =>
     import(
         '@/views/reports/demographics/pda/components/shared/BaseCardViewComponent'
@@ -38,42 +40,37 @@ export default {
 
     computed: {
         chartData() {
-            // return {
-            //     labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
-            //     datasets: [
-            //         {
-            //             backgroundColor: [
-            //                 '#c5fac0',
-            //                 '#fae1c0',
-            //                 '#c0cefa',
-            //                 '#fac0c0',
-            //             ],
-            //             hoverBackgroundColor: [
-            //                 '#98eee2',
-            //                 '#dffac0',
-            //                 '#fad4c0',
-            //                 '#c0faf8',
-            //             ],
-            //             hoverBorderColor: [
-            //                 '#98eee2',
-            //                 '#dffac0',
-            //                 '#fad4c0',
-            //                 '#c0faf8',
-            //             ],
-            //             borderColor: [
-            //                 '#41B800',
-            //                 '#E46600',
-            //                 '#00D8FE',
-            //                 '#DD1B00',
-            //             ],
-            //             data: [40, 20, 80, 10],
-            //         },
-            //     ],
-            // };
-
             return {
                 labels: this.data.labels,
-                datasets: [{ data: this.data.data }],
+                datasets: [
+                    {
+                        backgroundColor: [
+                            baseDataVisualizationColorsHelper.$_getColor({
+                                profile: 'amigable',
+                                type: 'backgroundColor',
+                            }),
+                        ],
+                        hoverBackgroundColor: [
+                            baseDataVisualizationColorsHelper.$_getColor({
+                                profile: 'amigable',
+                                type: 'hoverBackgroundColor',
+                            }),
+                        ],
+                        hoverBorderColor: [
+                            baseDataVisualizationColorsHelper.$_getColor({
+                                profile: 'amigable',
+                                type: 'hoverBorderColor',
+                            }),
+                        ],
+                        borderColor: [
+                            baseDataVisualizationColorsHelper.$_getColor({
+                                profile: 'amigables',
+                                type: 'borderColor',
+                            }),
+                        ],
+                        data: this.data.data,
+                    },
+                ],
             };
         },
     },

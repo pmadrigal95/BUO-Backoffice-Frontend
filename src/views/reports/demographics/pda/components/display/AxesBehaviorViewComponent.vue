@@ -60,10 +60,7 @@ export default {
                             {{ item.name }}
                         </v-card-title>
                         <v-card-text>
-                            <BasePdaSlider
-                                :value="item.formattedValue"
-                                :color="item.nombre.toLowerCase()"
-                            />
+                            <BasePdaSlider :value="item.formattedValue" />
                             <section
                                 class="d-flex flex-no-wrap justify-space-between buo-word-break"
                             >
