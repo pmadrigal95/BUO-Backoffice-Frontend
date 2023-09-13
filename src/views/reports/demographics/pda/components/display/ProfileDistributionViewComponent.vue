@@ -80,7 +80,7 @@ export default {
         subtitle="Distribución de perfiles conductuales por área"
     >
         <section slot="body">
-            <!-- <BaseSkeletonLoader v-if="!data" type="card" /> -->
+            <BaseSkeletonLoader v-if="!data" type="card" />
             <StackedBarChartViewComponent
                 :data="chartData"
                 :showLegend="showLegend"

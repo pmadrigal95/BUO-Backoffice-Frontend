@@ -126,7 +126,7 @@ export default {
     <BaseSkeletonLoader v-if="loading" type="card" />
     <section v-else>
         <v-row dense>
-            <v-col cols="12">
+            <v-col cols="12" order-sm="1" order-md="1">
                 <ProfileViewComponent
                     :entity="entity"
                     :profile="profile"
@@ -134,22 +134,22 @@ export default {
                 />
             </v-col>
 
-            <v-col cols="12" md="12">
+            <v-col cols="12" md="6" order-sm="2" order-md="2">
                 <ProfileAccumulatedViewComponent :data="pie" />
             </v-col>
 
-            <v-col cols="12">
-                <ProfileDistributionViewComponent :data="bar" />
-            </v-col>
-
-            <v-col cols="12" md="12">
+            <v-col cols="12" md="6" order-sm="4" order-md="3">
                 <IndicatorsViewComponent
                     :data="radar"
                     :color="report.selfName"
                 />
             </v-col>
 
-            <v-col cols="12">
+            <v-col cols="12" order-sm="3" order-md="4">
+                <ProfileDistributionViewComponent :data="bar" />
+            </v-col>
+
+            <v-col cols="12" order-sm="5" order-md="5">
                 <AxesBehaviorViewComponent :data="axes" />
             </v-col>
         </v-row>

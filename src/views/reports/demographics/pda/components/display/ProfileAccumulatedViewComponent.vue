@@ -85,7 +85,7 @@ export default {
         }`"
     >
         <section slot="body">
-            <!-- <BaseSkeletonLoader v-if="!data" type="card" /> -->
+            <BaseSkeletonLoader v-if="!data" type="card" />
             <PieChartViewComponent :data="chartData" />
         </section>
     </BaseCardViewComponent>
