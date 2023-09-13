@@ -31,10 +31,18 @@ export default {
         chartData() {
             return this.data;
         },
+
+        showLegend() {
+            return this.$vuetify.breakpoint.mobile ? false : true;
+        },
     },
 };
 </script>
 
 <template>
-    <BasePieChartImpl :chartData="chartData" :dark="app" />
+    <BasePieChartImpl
+        :chartData="chartData"
+        :dark="app"
+        :showLegend="showLegend"
+    />
 </template>

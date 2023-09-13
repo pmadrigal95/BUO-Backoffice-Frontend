@@ -115,6 +115,10 @@ export default {
                 ],
             };
         },
+
+        showLegend() {
+            return this.$vuetify.breakpoint.mobile ? false : true;
+        },
     },
 };
 </script>
@@ -124,9 +128,15 @@ export default {
         <section slot="Content">
             <BaseCardViewComponent title="Test" subtitle="Test">
                 <div slot="card-text">
-                    <BasePieChartImpl :chartData="chartData" />
+                    <BasePieChartImpl
+                        :chartData="chartData"
+                        :showLegend="showLegend"
+                    />
                     <br />
-                    <BaseStackedBarImpl :chartData="chartData2" />
+                    <BaseStackedBarImpl
+                        :chartData="chartData2"
+                        :showLegend="showLegend"
+                    />
                 </div>
             </BaseCardViewComponent>
         </section>

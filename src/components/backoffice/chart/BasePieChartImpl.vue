@@ -22,12 +22,17 @@ export default {
 
         positionLegend: {
             type: String,
-            default: 'bottom',
+            default: 'top',
         },
 
         alignLegend: {
             type: String,
             default: 'center',
+        },
+
+        showLegend: {
+            type: Boolean,
+            required: true,
         },
     },
 
@@ -54,7 +59,7 @@ export default {
                 hoverOffset: 10,
                 plugins: {
                     legend: {
-                        display: true,
+                        display: this.showLegend,
                         position: this.positionLegend,
                         align: this.alignLegend,
                         padding: 40,
@@ -70,7 +75,7 @@ export default {
                             usePointStyle: true,
                             pointStyle: 'circle',
                         },
-                    },
+                    }
                 },
             };
         },

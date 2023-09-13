@@ -55,6 +55,7 @@ export default {
                         data: [80, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
                         hoverBackgroundColor: '#81BEF7',
                         hoverBorderColor: '#81BEF7',
+                        borderColor: '#CED8F6',
                     },
                     {
                         label: 'Data Two',
@@ -62,6 +63,7 @@ export default {
                         data: [20, 40, 60, 10, 80, 10, 5, 50, 10, 11, 40, 31],
                         hoverBackgroundColor: '#F781F3',
                         hoverBorderColor: '#F781F3',
+                        borderColor: '#F2E0F7',
                     },
                     {
                         label: 'Data Three',
@@ -69,6 +71,7 @@ export default {
                         data: [20, 40, 60, 10, 40, 10, 5, 50, 10, 11, 40, 31],
                         hoverBackgroundColor: '#D7DF01',
                         hoverBorderColor: '#D7DF01',
+                        borderColor: '#F6E3CE',
                     },
                     {
                         label: 'Data Four',
@@ -76,9 +79,14 @@ export default {
                         data: [20, 40, 60, 10, 20, 10, 5, 50, 60, 11, 40, 31],
                         hoverBackgroundColor: '#3ADF00',
                         hoverBorderColor: '#3ADF00',
+                        borderColor: '#F5F6CE',
                     },
                 ],
             };
+        },
+
+        showLegend() {
+            return this.$vuetify.breakpoint.mobile ? true : false;
         },
     },
 };
@@ -91,7 +99,10 @@ export default {
     >
         <section slot="body">
             <!-- <BaseSkeletonLoader v-if="!data" type="card" /> -->
-            <StackedBarChartViewComponent :data="chartData" />
+            <StackedBarChartViewComponent
+                :data="chartData"
+                :showLegend="showLegend"
+            />
         </section>
     </BaseCardViewComponent>
 </template>
