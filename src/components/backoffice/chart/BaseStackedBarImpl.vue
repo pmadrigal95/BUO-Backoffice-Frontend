@@ -5,10 +5,10 @@
  * @displayName BaseStackedBarImpl
  */
 
-// import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
+const darkTheme = '#282828';
+const lightTheme = '#fff';
 
 const BaseBarChart = () => import('@/components/core/charts/BaseBarChart');
-export let delayed;
 export default {
     name: 'BaseStackedBarImpl',
 
@@ -45,8 +45,7 @@ export default {
 
     data() {
         return {
-            darkTheme: '#000000',
-            lightTheme: '#fff',
+            delayed: undefined,
         };
     },
 
@@ -54,29 +53,29 @@ export default {
         chartOptions() {
             return {
                 responsive: true,
-                maintainAspectRatio: false,
+                maintainAspectRatio: this.$vuetify.breakpoint.mdAndUp,
                 borderWidth: 2,
                 borderRadius: {
-                    topLeft: 1,
-                    topRight: 1,
-                    bottomLeft: 1,
-                    bottomRight: 1,
+                    topLeft: 8,
+                    topRight: 8,
+                    bottomLeft: 8,
+                    bottomRight: 8,
                 },
                 borderSkipped: false,
                 animation: {
                     onComplete: () => {
-                        delayed = true;
+                        this.delayed = true;
                     },
                     delay: (context) => {
                         let delay = 0;
                         if (
                             context.type === 'data' &&
                             context.mode === 'default' &&
-                            !delayed
+                            !this.delayed
                         ) {
                             delay =
-                                context.dataIndex * 300 +
-                                context.datasetIndex * 100;
+                                context.dataIndex * 35 +
+                                context.datasetIndex * 12;
                         }
                         return delay;
                     },
@@ -85,8 +84,7 @@ export default {
                     x: {
                         stacked: true,
                         ticks: {
-                            color: () =>
-                                this.dark ? this.lightTheme : this.darkTheme,
+                            color: this.dark ? lightTheme : darkTheme,
                             font: {
                                 size: 14,
                                 family: "'Montserrat', 'sans-serif'",
@@ -97,8 +95,7 @@ export default {
                     y: {
                         stacked: true,
                         ticks: {
-                            color: () =>
-                                this.dark ? this.lightTheme : this.darkTheme,
+                            color: this.dark ? lightTheme : darkTheme,
                             font: {
                                 size: 14,
                                 family: "'Montserrat', 'sans-serif'",
@@ -114,8 +111,7 @@ export default {
                         align: this.alignLegend,
                         labels: {
                             padding: 20,
-                            color: () =>
-                                this.dark ? this.lightTheme : this.darkTheme,
+                            color: this.dark ? lightTheme : darkTheme,
                             font: {
                                 size: 14,
                                 family: "'Montserrat', 'sans-serif'",

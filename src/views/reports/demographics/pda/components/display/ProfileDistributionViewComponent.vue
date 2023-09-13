@@ -6,8 +6,6 @@
  *
  */
 
-import baseDataVisualizationColorsHelper from '@/views/reports/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
-
 const BaseCardViewComponent = () =>
     import(
         '@/views/reports/demographics/pda/components/shared/BaseCardViewComponent'
@@ -32,45 +30,6 @@ export default {
         BaseCardViewComponent,
         StackedBarChartViewComponent,
     },
-
-    computed: {
-        chartData() {
-            return {
-                labels: this.data.labels,
-                datasets: this.data.dataSet.map((item) => this.$_setItem(item)),
-            };
-        },
-
-        showLegend() {
-            return this.$vuetify.breakpoint.mobile ? true : false;
-        },
-    },
-
-    methods: {
-        $_setItem(item) {
-            return {
-                label: item.label,
-                data: item.data,
-                backgroundColor: baseDataVisualizationColorsHelper.$_getColor({
-                    profile: item.color.toLowerCase(),
-                    type: 'backgroundColor',
-                }),
-                hoverBackgroundColor:
-                    baseDataVisualizationColorsHelper.$_getColor({
-                        profile: item.color.toLowerCase(),
-                        type: 'hoverBackgroundColor',
-                    }),
-                hoverBorderColor: baseDataVisualizationColorsHelper.$_getColor({
-                    profile: item.color.toLowerCase(),
-                    type: 'hoverBorderColor',
-                }),
-                borderColor: baseDataVisualizationColorsHelper.$_getColor({
-                    profile: item.color.toLowerCase(),
-                    type: 'borderColor',
-                }),
-            };
-        },
-    },
 };
 </script>
 
@@ -81,10 +40,7 @@ export default {
     >
         <section slot="body">
             <BaseSkeletonLoader v-if="!data" type="card" />
-            <StackedBarChartViewComponent
-                :data="chartData"
-                :showLegend="showLegend"
-            />
+            <StackedBarChartViewComponent :data="data" />
         </section>
     </BaseCardViewComponent>
 </template>

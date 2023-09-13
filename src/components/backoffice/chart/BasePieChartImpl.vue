@@ -6,6 +6,9 @@
  */
 const BasePieChart = () => import('@/components/core/charts/BasePieChart');
 
+const darkTheme = '#282828';
+const lightTheme = '#fff';
+
 export default {
     name: 'BasePieChartImpl',
 
@@ -36,13 +39,6 @@ export default {
         },
     },
 
-    data() {
-        return {
-            darkTheme: '#000000',
-            lightTheme: '#fff',
-        };
-    },
-
     components: {
         BasePieChart,
     },
@@ -65,8 +61,7 @@ export default {
                         padding: 40,
                         labels: {
                             padding: 20,
-                            color: () =>
-                                this.dark ? this.lightTheme : this.darkTheme,
+                            color: this.dark ? lightTheme : darkTheme,
                             font: {
                                 size: 14,
                                 family: "'Montserrat', 'sans-serif'",

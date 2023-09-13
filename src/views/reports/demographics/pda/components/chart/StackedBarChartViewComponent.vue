@@ -7,6 +7,8 @@
 
 import { mapGetters } from 'vuex';
 
+import baseDataVisualizationColorsHelper from '@/views/reports/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
+
 const BaseStackedBarImpl = () =>
     import('@/components/backoffice/chart/BaseStackedBarImpl');
 
@@ -27,13 +29,37 @@ export default {
     computed: {
         ...mapGetters('theme', ['app']),
 
-        //TODO: Implementar logica
         chartData() {
-            return this.data;
+            return {
+                labels: this.data.labels,
+                datasets: this.data.dataSet.map((item) => this.$_setItem(item)),
+            };
         },
+    },
 
-        showLegend() {
-            return this.$vuetify.breakpoint.mobile ? false : true;
+    methods: {
+        $_setItem(item) {
+            return {
+                label: item.label,
+                data: item.data,
+                backgroundColor: baseDataVisualizationColorsHelper.$_getColor({
+                    profile: item.color.toLowerCase(),
+                    type: 'backgroundColor',
+                }),
+                hoverBackgroundColor:
+                    baseDataVisualizationColorsHelper.$_getColor({
+                        profile: item.color.toLowerCase(),
+                        type: 'hoverBackgroundColor',
+                    }),
+                hoverBorderColor: baseDataVisualizationColorsHelper.$_getColor({
+                    profile: item.color.toLowerCase(),
+                    type: 'hoverBorderColor',
+                }),
+                borderColor: baseDataVisualizationColorsHelper.$_getColor({
+                    profile: item.color.toLowerCase(),
+                    type: 'borderColor',
+                }),
+            };
         },
     },
 };
@@ -43,6 +69,6 @@ export default {
     <BaseStackedBarImpl
         :chartData="chartData"
         :dark="app"
-        :showLegend="showLegend"
+        :showLegend="!$vuetify.breakpoint.mobile"
     />
 </template>

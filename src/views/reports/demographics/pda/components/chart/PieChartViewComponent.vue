@@ -63,10 +63,6 @@ export default {
                 ],
             };
         },
-
-        showLegend() {
-            return this.$vuetify.breakpoint.mobile ? false : true;
-        },
     },
 };
 </script>
@@ -75,6 +71,6 @@ export default {
     <BasePieChartImpl
         :chartData="chartData"
         :dark="app"
-        :showLegend="showLegend"
+        :showLegend="!$vuetify.breakpoint.mobile"
     />
 </template>
