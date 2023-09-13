@@ -135,13 +135,17 @@ export default {
             </v-col>
 
             <v-col cols="12" md="6" order-sm="2" order-md="2">
-                <ProfileAccumulatedViewComponent :data="pie" />
+                <ProfileAccumulatedViewComponent
+                    :data="pie"
+                    :isDepartmentFilter="isDepartmentFilter"
+                />
             </v-col>
 
             <v-col cols="12" md="6" order-sm="4" order-md="3">
                 <IndicatorsViewComponent
                     :data="radar"
                     :color="report.selfName"
+                    :isDepartmentFilter="isDepartmentFilter"
                 />
             </v-col>
 
@@ -150,7 +154,10 @@ export default {
             </v-col>
 
             <v-col cols="12" order-sm="5" order-md="5">
-                <AxesBehaviorViewComponent :data="axes" />
+                <AxesBehaviorViewComponent
+                    :data="axes"
+                    :isDepartmentFilter="isDepartmentFilter"
+                />
             </v-col>
         </v-row>
     </section>

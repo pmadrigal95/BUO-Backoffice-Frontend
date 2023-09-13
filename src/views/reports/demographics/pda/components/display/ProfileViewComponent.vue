@@ -43,6 +43,8 @@ export default {
         $_showAdvFilter() {
             this.entity.show = !this.entity.show;
         },
+
+        $_sendToApi() {},
     },
 };
 </script>
@@ -51,6 +53,13 @@ export default {
     <v-card flat class="rounded-t-xl">
         <v-card-text>
             <v-row justify="end" class="pa-3">
+                <BaseCustomsButtonsGrid
+                    label="Descargar"
+                    :outlined="false"
+                    :fnMethod="$_sendToApi"
+                    icon="mdi-download-circle-outline"
+                />
+
                 <BaseCustomsButtonsGrid
                     label="Filtro Avanzado"
                     :fnMethod="$_showAdvFilter"
