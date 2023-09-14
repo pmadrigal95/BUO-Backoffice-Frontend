@@ -24,6 +24,8 @@ import assessmentRoutes from '@/views/assessment/router';
 
 import departmentRoutes from '@/views/department/router';
 
+import demographicsRoutes from '@/views/demographics/router';
+
 import microAbilityRoutes from '@/views/microAbility/router';
 
 import setIndicatorRoutes from '@/views/setIndicator/router';
@@ -48,6 +50,7 @@ const routes = [
             ...analyticsRoutes,
             ...assessmentRoutes,
             ...departmentRoutes,
+            ...demographicsRoutes,
             ...microAbilityRoutes,
             ...setIndicatorRoutes,
             ...promotionalCodesRoutes,

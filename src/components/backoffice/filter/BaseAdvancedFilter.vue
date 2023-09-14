@@ -193,6 +193,18 @@ export default {
             handler(newValue, oldValue) {
                 if (oldValue != newValue) {
                     this.temp.assessmentId = undefined;
+
+                    this.$_set_advfilter({
+                        [this.assessmentDialogView]:
+                            baseFilterSettingsHelper.$_setAssessmentSetting({
+                                apiEndpoint: 'findByDeepWithDefault',
+                                companyId: this.user.companyId,
+                                assessmentTypeId: this.temp.assessmentTypeId,
+                                isFilter: true,
+                                singleSelect: true,
+                            }),
+                    });
+
                     this.assessmentKey++;
                 }
             },

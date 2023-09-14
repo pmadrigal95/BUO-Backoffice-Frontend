@@ -7,13 +7,11 @@
  */
 
 const BaseCardViewComponent = () =>
-    import(
-        '@/views/reports/demographics/pda/components/shared/BaseCardViewComponent'
-    );
+    import('@/views/demographics/pda/components/shared/BaseCardViewComponent');
 
 const StackedBarChartViewComponent = () =>
     import(
-        '@/views/reports/demographics/pda/components/chart/StackedBarChartViewComponent'
+        '@/views/demographics/pda/components/chart/StackedBarChartViewComponent'
     );
 
 export default {
@@ -38,7 +36,7 @@ export default {
         title="Perfil Conductual"
         subtitle="Distribución de perfiles conductuales por área"
     >
-        <section slot="body">
+        <section slot="body" class="my-7">
             <BaseSkeletonLoader v-if="!data" type="card" />
             <StackedBarChartViewComponent :data="data" />
         </section>

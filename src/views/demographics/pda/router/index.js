@@ -6,7 +6,7 @@ const routes = [
     {
         path: '/Buo/Demographics/Pda',
         name: 'BuoPdaDemographicsViewComponent',
-        component: 'reports/demographics/pda/BuoPdaDemographicsViewComponent',
+        component: 'demographics/pda/BuoPdaDemographicsViewComponent',
         meta: {
             module: 'AssignmentViewComponent',
         },

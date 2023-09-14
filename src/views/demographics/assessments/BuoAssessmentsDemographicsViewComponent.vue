@@ -2,17 +2,17 @@
 /**
  * Descripción: Pantalla  demographics
  *
- * @displayName BuoPdaDemographicsViewComponent
+ * @displayName BuoAssessmentsDemographicsViewComponent
  *
  */
 
 const ContainerViewComponent = () =>
     import(
-        '@/views/reports/demographics/pda/components/ContainerViewComponent'
+        '@/views/demographics/assessments/components/ContainerViewComponent'
     );
 
 export default {
-    name: 'BuoPdaDemographicsViewComponent',
+    name: 'BuoAssessmentsDemographicsViewComponent',
 
     components: {
         ContainerViewComponent,

@@ -11,9 +11,7 @@ import { mapGetters } from 'vuex';
 const BasePdaSlider = () => import('@/components/pda/BasePdaSlider');
 
 const BaseCardViewComponent = () =>
-    import(
-        '@/views/reports/demographics/pda/components/shared/BaseCardViewComponent'
-    );
+    import('@/views/demographics/pda/components/shared/BaseCardViewComponent');
 
 export default {
     name: 'AxesBehaviorViewComponent',
@@ -48,7 +46,7 @@ export default {
             isDepartmentFilter ? 'área' : 'empresa'
         }`"
     >
-        <section slot="body">
+        <section slot="body" class="my-7">
             <BaseSkeletonLoader v-if="!data" type="card" />
             <section v-else>
                 <div v-for="item in data" :key="item.id">

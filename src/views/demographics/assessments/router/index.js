@@ -7,7 +7,7 @@ const routes = [
         path: '/Buo/Demographics/Assessments',
         name: 'BuoAssessmentsDemographicsViewComponent',
         component:
-            'reports/demographics/assessments/BuoAssessmentsDemographicsViewComponent',
+            'demographics/assessments/BuoAssessmentsDemographicsViewComponent',
         meta: {
             module: 'AssignmentViewComponent',
         },

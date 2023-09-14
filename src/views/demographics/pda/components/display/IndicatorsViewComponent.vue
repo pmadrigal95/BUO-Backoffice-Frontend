@@ -6,17 +6,13 @@
  *
  */
 
-import baseDataVisualizationColorsHelper from '@/views/reports/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
+import baseDataVisualizationColorsHelper from '@/views/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
 
 const BaseCardViewComponent = () =>
-    import(
-        '@/views/reports/demographics/pda/components/shared/BaseCardViewComponent'
-    );
+    import('@/views/demographics/pda/components/shared/BaseCardViewComponent');
 
 const RadarChartViewComponent = () =>
-    import(
-        '@/views/reports/demographics/pda/components/chart/RadarChartViewComponent'
-    );
+    import('@/views/demographics/pda/components/chart/RadarChartViewComponent');
 
 export default {
     name: 'IndicatorsViewComponent',
@@ -61,7 +57,7 @@ export default {
             isDepartmentFilter ? 'área' : 'empresa'
         }`"
     >
-        <section slot="body">
+        <section slot="body" class="my-7">
             <BaseSkeletonLoader v-if="!data" type="card" />
             <RadarChartViewComponent :data="data" :borderColor="borderColor" />
         </section>

@@ -11,28 +11,26 @@ import httpService from '@/services/axios/httpService';
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
 const ProfileViewComponent = () =>
-    import(
-        '@/views/reports/demographics/pda/components/display/ProfileViewComponent'
-    );
+    import('@/views/demographics/pda/components/display/ProfileViewComponent');
 
 const AxesBehaviorViewComponent = () =>
     import(
-        '@/views/reports/demographics/pda/components/display/AxesBehaviorViewComponent'
+        '@/views/demographics/pda/components/display/AxesBehaviorViewComponent'
     );
 
 const IndicatorsViewComponent = () =>
     import(
-        '@/views/reports/demographics/pda/components/display/IndicatorsViewComponent'
+        '@/views/demographics/pda/components/display/IndicatorsViewComponent'
     );
 
 const ProfileAccumulatedViewComponent = () =>
     import(
-        '@/views/reports/demographics/pda/components/display/ProfileAccumulatedViewComponent'
+        '@/views/demographics/pda/components/display/ProfileAccumulatedViewComponent'
     );
 
 const ProfileDistributionViewComponent = () =>
     import(
-        '@/views/reports/demographics/pda/components/display/ProfileDistributionViewComponent'
+        '@/views/demographics/pda/components/display/ProfileDistributionViewComponent'
     );
 
 export default {
@@ -126,7 +124,7 @@ export default {
     <BaseSkeletonLoader v-if="loading" type="card" />
     <section v-else>
         <v-row dense>
-            <v-col cols="12" order-sm="1" order-md="1">
+            <v-col cols="12">
                 <ProfileViewComponent
                     :entity="entity"
                     :profile="profile"
@@ -134,14 +132,18 @@ export default {
                 />
             </v-col>
 
-            <v-col cols="12" md="6" order-sm="2" order-md="2">
+            <v-col cols="12">
                 <ProfileAccumulatedViewComponent
                     :data="pie"
                     :isDepartmentFilter="isDepartmentFilter"
                 />
             </v-col>
 
-            <v-col cols="12" md="6" order-sm="4" order-md="3">
+            <v-col cols="12">
+                <ProfileDistributionViewComponent :data="bar" />
+            </v-col>
+
+            <v-col cols="12">
                 <IndicatorsViewComponent
                     :data="radar"
                     :color="report.selfName"
@@ -149,11 +151,7 @@ export default {
                 />
             </v-col>
 
-            <v-col cols="12" order-sm="3" order-md="4">
-                <ProfileDistributionViewComponent :data="bar" />
-            </v-col>
-
-            <v-col cols="12" order-sm="5" order-md="5">
+            <v-col cols="12">
                 <AxesBehaviorViewComponent
                     :data="axes"
                     :isDepartmentFilter="isDepartmentFilter"

@@ -11,7 +11,7 @@ const BaseCardViewComponent = () =>
 
 const AdvFiltersViewComponent = () =>
     import(
-        '@/views/reports/demographics/pda/components/filters/AdvFiltersViewComponent'
+        '@/views/demographics/pda/components/filters/AdvFiltersViewComponent'
     );
 
 export default {
@@ -26,7 +26,7 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="PDA Demographics"
+        title="BUO PDA Demographics"
         subtitle="Datos que Inspiran, Decisiones que Transforman: Buo PDA Demographics."
     >
         <div slot="card-text">

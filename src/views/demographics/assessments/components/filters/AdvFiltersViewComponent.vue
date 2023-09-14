@@ -14,7 +14,7 @@ const BaseAdvancedFilter = () =>
 
 const DisplayViewComponent = () =>
     import(
-        '@/views/reports/demographics/pda/components/display/DisplayViewComponent'
+        '@/views/demographics/assessments/components/display/DisplayViewComponent'
     );
 
 export default {
@@ -41,6 +41,8 @@ export default {
             return {
                 companyId: undefined,
                 departmentId: undefined,
+                assessmentTypeId: undefined,
+                assessmentId: undefined,
                 show: true,
             };
         },
@@ -52,15 +54,25 @@ export default {
     <BaseAdvancedFilter
         :show="entity.show"
         isDepartment
+        isAssessmentType
+        isAssessment
+        assessmentTypeEndpoint="findAllTree"
         v-model="entity"
-        :requiredCompany="false"
     >
         <div slot="body">
-            <v-card v-if="!entity.companyId" flat class="rounded-t-xl">
+            <v-card
+                v-if="!entity.companyId || !entity.assessmentId"
+                flat
+                class="rounded-t-xl"
+            >
                 <v-card-text>
                     <section class="pt-3">
                         <BaseNotFoundContent
-                            msg="Por favor seleccione una empresa"
+                            :msg="`Por favor seleccione ${
+                                !entity.assessmentId
+                                    ? 'un assessment'
+                                    : 'una empresa'
+                            }`"
                         />
                     </section>
                 </v-card-text>

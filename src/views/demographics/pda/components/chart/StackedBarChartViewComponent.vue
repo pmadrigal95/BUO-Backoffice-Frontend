@@ -7,7 +7,7 @@
 
 import { mapGetters } from 'vuex';
 
-import baseDataVisualizationColorsHelper from '@/views/reports/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
+import baseDataVisualizationColorsHelper from '@/views/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
 
 const BaseStackedBarImpl = () =>
     import('@/components/backoffice/chart/BaseStackedBarImpl');

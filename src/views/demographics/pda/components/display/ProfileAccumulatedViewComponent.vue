@@ -7,14 +7,10 @@
  */
 
 const BaseCardViewComponent = () =>
-    import(
-        '@/views/reports/demographics/pda/components/shared/BaseCardViewComponent'
-    );
+    import('@/views/demographics/pda/components/shared/BaseCardViewComponent');
 
 const PieChartViewComponent = () =>
-    import(
-        '@/views/reports/demographics/pda/components/chart/PieChartViewComponent'
-    );
+    import('@/views/demographics/pda/components/chart/PieChartViewComponent');
 
 export default {
     name: 'ProfileAccumulatedViewComponent',
@@ -45,7 +41,7 @@ export default {
             isDepartmentFilter ? 'un área' : 'toda la empresa'
         }`"
     >
-        <section slot="body">
+        <section slot="body" class="my-7">
             <BaseSkeletonLoader v-if="!data" type="card" />
             <PieChartViewComponent :data="data" />
         </section>
