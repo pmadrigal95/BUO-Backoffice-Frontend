@@ -10,6 +10,9 @@ import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
+const BaseNotFoundContent = () =>
+    import('@/components/core/cards/BaseNotFoundContent');
+
 const ProfileViewComponent = () =>
     import('@/views/demographics/pda/components/display/ProfileViewComponent');
 
@@ -44,6 +47,7 @@ export default {
     },
 
     components: {
+        BaseNotFoundContent,
         ProfileViewComponent,
         IndicatorsViewComponent,
         AxesBehaviorViewComponent,
@@ -107,7 +111,6 @@ export default {
                 .then((response) => {
                     this.loading = false;
                     if (response != undefined) {
-                        console.log(response.data);
                         // Encontro la entidad
                         this.report = BaseArrayHelper.SetObject(
                             {},
@@ -123,7 +126,7 @@ export default {
 <template>
     <BaseSkeletonLoader v-if="loading" type="card" />
     <section v-else>
-        <v-row dense>
+        <v-row dense v-if="report.selfName">
             <v-col cols="12">
                 <ProfileViewComponent
                     :entity="entity"
@@ -158,5 +161,9 @@ export default {
                 />
             </v-col>
         </v-row>
+        <BaseNotFoundContent
+            msg="Lamentablemente, no se han encontrado datos al aplicar el filtro seleccionado."
+            v-else
+        />
     </section>
 </template>

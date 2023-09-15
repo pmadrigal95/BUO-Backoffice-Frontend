@@ -7,7 +7,7 @@
 
 import { mapGetters } from 'vuex';
 
-// import baseDataVisualizationColorsHelper from '@/views/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
+import baseDataVisualizationColorsHelper from '@/views/demographics/assessments/components/shared/baseDataVisualizationColorsHelper';
 
 const BaseStackedBarImpl = () =>
     import('@/components/backoffice/chart/BaseStackedBarImpl');
@@ -42,23 +42,19 @@ export default {
             return {
                 label: item.label,
                 data: item.data,
-                // backgroundColor: baseDataVisualizationColorsHelper.$_getColor({
-                //     profile: item.color.toLowerCase(),
-                //     type: 'backgroundColor',
-                // }),
-                // hoverBackgroundColor:
-                //     baseDataVisualizationColorsHelper.$_getColor({
-                //         profile: item.color.toLowerCase(),
-                //         type: 'hoverBackgroundColor',
-                //     }),
-                // hoverBorderColor: baseDataVisualizationColorsHelper.$_getColor({
-                //     profile: item.color.toLowerCase(),
-                //     type: 'hoverBorderColor',
-                // }),
-                // borderColor: baseDataVisualizationColorsHelper.$_getColor({
-                //     profile: item.color.toLowerCase(),
-                //     type: 'borderColor',
-                // }),
+                backgroundColor: baseDataVisualizationColorsHelper.$_getColor({
+                    value: item.color,
+                }),
+                hoverBackgroundColor:
+                    baseDataVisualizationColorsHelper.$_getColor({
+                        value: item.color,
+                    }),
+                hoverBorderColor: baseDataVisualizationColorsHelper.$_getColor({
+                    value: item.color,
+                }),
+                borderColor: baseDataVisualizationColorsHelper.$_getColor({
+                    value: item.color,
+                }),
             };
         },
     },

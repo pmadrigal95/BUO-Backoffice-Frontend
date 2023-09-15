@@ -10,6 +10,9 @@ import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
+const BaseNotFoundContent = () =>
+    import('@/components/core/cards/BaseNotFoundContent');
+
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
@@ -34,6 +37,7 @@ export default {
     },
 
     components: {
+        BaseNotFoundContent,
         BaseCustomsButtonsGrid,
         ProfileAccumulatedViewComponent,
         ProfileDistributionViewComponent,
@@ -106,8 +110,14 @@ export default {
 <template>
     <BaseSkeletonLoader v-if="loading" type="card" />
     <section v-else>
-        <v-row dense>
-            <v-col cols="12">
+        <v-row
+            dense
+            v-if="
+                report.pieDto.labels.length > 0 ||
+                report.stackDto.labels.length > 0
+            "
+        >
+            <v-col cols="12" v-if="report.pieDto.labels.length > 0">
                 <v-card flat class="rounded-t-xl">
                     <v-card-text>
                         <v-row justify="end" class="pa-3">
@@ -133,7 +143,7 @@ export default {
                 </v-card>
             </v-col>
 
-            <v-col cols="12">
+            <v-col cols="12" v-if="report.stackDto.labels.length > 0">
                 <v-card flat>
                     <v-card-text>
                         <ProfileDistributionViewComponent :data="bar" />
@@ -141,5 +151,9 @@ export default {
                 </v-card>
             </v-col>
         </v-row>
+        <BaseNotFoundContent
+            msg="Lamentablemente, no se han encontrado datos al aplicar el filtro seleccionado."
+            v-else
+        />
     </section>
 </template>

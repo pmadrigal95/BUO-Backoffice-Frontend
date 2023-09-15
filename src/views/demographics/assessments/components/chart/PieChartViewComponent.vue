@@ -7,7 +7,7 @@
 
 import { mapGetters } from 'vuex';
 
-// import baseDataVisualizationColorsHelper from '@/views/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
+import baseDataVisualizationColorsHelper from '@/views/demographics/assessments/components/shared/baseDataVisualizationColorsHelper';
 
 const BasePieChartImpl = () =>
     import('@/components/backoffice/chart/BasePieChartImpl');
@@ -34,30 +34,26 @@ export default {
                 labels: this.data.labels,
                 datasets: [
                     {
-                        // backgroundColor: this.data.colors.map((profile) =>
-                        //     baseDataVisualizationColorsHelper.$_getColor({
-                        //         profile: profile.toLowerCase(),
-                        //         type: 'backgroundColor',
-                        //     })
-                        // ),
-                        // hoverBackgroundColor: this.data.colors.map((profile) =>
-                        //     baseDataVisualizationColorsHelper.$_getColor({
-                        //         profile: profile.toLowerCase(),
-                        //         type: 'hoverBackgroundColor',
-                        //     })
-                        // ),
-                        // hoverBorderColor: this.data.colors.map((profile) =>
-                        //     baseDataVisualizationColorsHelper.$_getColor({
-                        //         profile: profile.toLowerCase(),
-                        //         type: 'hoverBorderColor',
-                        //     })
-                        // ),
-                        // borderColor: this.data.colors.map((profile) =>
-                        //     baseDataVisualizationColorsHelper.$_getColor({
-                        //         profile: profile.toLowerCase(),
-                        //         type: 'borderColor',
-                        //     })
-                        // ),
+                        backgroundColor: this.data.colors.map((value) =>
+                            baseDataVisualizationColorsHelper.$_getColor({
+                                value,
+                            })
+                        ),
+                        hoverBackgroundColor: this.data.colors.map((value) =>
+                            baseDataVisualizationColorsHelper.$_getColor({
+                                value,
+                            })
+                        ),
+                        hoverBorderColor: this.data.colors.map((value) =>
+                            baseDataVisualizationColorsHelper.$_getColor({
+                                value,
+                            })
+                        ),
+                        borderColor: this.data.colors.map((value) =>
+                            baseDataVisualizationColorsHelper.$_getColor({
+                                value,
+                            })
+                        ),
                         data: this.data.data,
                     },
                 ],
