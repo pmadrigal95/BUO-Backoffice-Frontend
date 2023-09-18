@@ -313,7 +313,7 @@ export default {
                                 :setting="userSetting"
                                 :extraParams="extraParams"
                                 itemText="nombreCompleto"
-                                :readonly="extraParams == undefined"
+                                :readonly="extraParams.length == 0"
                                 :editText="entity.usuarioAdminNames"
                                 v-model="entity.usuarioAdminIds"
                                 :key="componentKey"
