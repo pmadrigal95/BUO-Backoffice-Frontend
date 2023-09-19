@@ -85,7 +85,12 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return this.filtersBypageView(this.pageView);
+            // return this.filtersBypageView(this.pageView);
+            return baseFilterSettingsHelper.$_setUserSetting({
+                companyId: this.entity.companyId,
+                departmentId: this.entity.departmentId,
+                singleSelect: false,
+            });
         },
 
         abilityPermission() {
@@ -105,7 +110,8 @@ export default {
     },
 
     created() {
-        this.$_setFilter();
+        //TODO: FIX IT
+        // this.$_setFilter();
     },
 
     methods: {
