@@ -89,12 +89,20 @@ export default {
          * Configuracion BaseServerDataTable
          */
         assessmentSetting() {
-            return this.advfiltersBypageView(this.assessmentDialogView);
+            // return this.advfiltersBypageView(this.assessmentDialogView);
+            return baseFilterSettingsHelper.$_setAssessmentSetting({
+                apiEndpoint: 'findByDeepWithDefault',
+                companyId: this.user.companyId,
+                assessmentTypeId: this.form.assessmentTypeId,
+                isFilter: true,
+                singleSelect: true,
+            });
         },
     },
 
     created() {
-        this.$_setAssessmentFilter();
+        //TODO: FIX IT
+        // this.$_setAssessmentFilter();
     },
 
     watch: {
