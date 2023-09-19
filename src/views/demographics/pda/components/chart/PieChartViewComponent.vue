@@ -38,6 +38,7 @@ export default {
                             baseDataVisualizationColorsHelper.$_getColor({
                                 profile: profile.toLowerCase(),
                                 type: 'backgroundColor',
+                                transparency: 0.6,
                             })
                         ),
                         hoverBackgroundColor: this.data.colors.map((profile) =>

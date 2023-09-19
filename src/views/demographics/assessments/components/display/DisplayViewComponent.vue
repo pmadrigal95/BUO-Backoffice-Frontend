@@ -94,7 +94,6 @@ export default {
                 .then((response) => {
                     this.loading = false;
                     if (response != undefined) {
-                        console.log(response.data);
                         // Encontro la entidad
                         this.report = BaseArrayHelper.SetObject(
                             {},

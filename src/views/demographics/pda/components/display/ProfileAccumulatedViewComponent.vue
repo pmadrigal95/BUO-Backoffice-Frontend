@@ -37,7 +37,7 @@ export default {
 <template>
     <BaseCardViewComponent
         title="Perfil Conductual"
-        :subtitle="`Demográfico Acumulado de Perfiles en ${
+        :subtitle="`Demográfico acumulado de perfiles en ${
             isDepartmentFilter ? 'un área' : 'toda la empresa'
         }`"
     >
