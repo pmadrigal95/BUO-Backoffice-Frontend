@@ -68,12 +68,17 @@ export default {
         },
 
         setting() {
-            return this.filtersBypageView(this.pageView);
+            // return this.filtersBypageView(this.pageView);
+            return baseFilterSettingsHelper.$_setAssessmentSetting({
+                companyId: this.user.companyId,
+                assessmentTypeId: this.entity.assessmentTypeId,
+            });
         },
     },
 
     created() {
-        this.$_setFilter();
+        //TODO: FIX IT
+        // this.$_setFilter();
     },
 
     methods: {

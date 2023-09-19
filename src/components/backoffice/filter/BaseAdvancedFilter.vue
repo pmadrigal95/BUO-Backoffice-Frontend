@@ -141,7 +141,13 @@ export default {
          * Configuracion BaseServerDataTable
          */
         userSetting() {
-            return this.advfiltersBypageView(this.userDialogView);
+            // return this.advfiltersBypageView(this.userDialogView);
+            return baseFilterSettingsHelper.$_setUserSetting({
+                companyId: this.user.companyId,
+                departmentId: this.temp.departmentId,
+                isFilter: true,
+                singleSelect: false,
+            });
         },
 
         /**
@@ -155,7 +161,14 @@ export default {
          * Configuracion BaseServerDataTable
          */
         assessmentSetting() {
-            return this.advfiltersBypageView(this.assessmentDialogView);
+            // return this.advfiltersBypageView(this.assessmentDialogView);
+            return baseFilterSettingsHelper.$_setAssessmentSetting({
+                apiEndpoint: 'findByDeepWithDefault',
+                companyId: this.user.companyId,
+                assessmentTypeId: this.temp.assessmentTypeId,
+                isFilter: true,
+                singleSelect: true,
+            });
         },
     },
 
@@ -193,18 +206,6 @@ export default {
             handler(newValue, oldValue) {
                 if (oldValue != newValue) {
                     this.temp.assessmentId = undefined;
-
-                    this.$_set_advfilter({
-                        [this.assessmentDialogView]:
-                            baseFilterSettingsHelper.$_setAssessmentSetting({
-                                apiEndpoint: 'findByDeepWithDefault',
-                                companyId: this.user.companyId,
-                                assessmentTypeId: this.temp.assessmentTypeId,
-                                isFilter: true,
-                                singleSelect: true,
-                            }),
-                    });
-
                     this.assessmentKey++;
                 }
             },
@@ -285,10 +286,11 @@ export default {
         },
 
         $_setFilter() {
+            //TODO: FIX IT
             this.$_setCompanyFilter();
-            this.$_setUserFilter();
+            // this.$_setUserFilter();
             this.$_setAbilityFilter();
-            this.$_setAssessmentFilter();
+            // this.$_setAssessmentFilter();
         },
 
         /**
