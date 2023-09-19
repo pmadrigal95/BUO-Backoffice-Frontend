@@ -6,202 +6,195 @@
 
 const colorConfig = {
     amigable: {
-        backgroundColor: 'rgb(201, 243, 26)',
-        hoverBackgroundColor: 'rgb(201, 243, 26)',
-        hoverBorderColor: 'rgb(171, 213, 0)',
-        borderColor: 'rgb(201, 243, 26)',
+        backgroundColor: 'rgba(201, 243, 26, 0.7)',
+        hoverBackgroundColor: '#C9F31A',
+        hoverBorderColor: '#ABD500',
+        borderColor: '#C9F31A',
     },
 
     amable: {
-        backgroundColor: 'rgb(150, 229, 123)',
-        hoverBackgroundColor: 'rgb(150, 229, 123)',
-        hoverBorderColor: 'rgb(78, 172, 62)',
-        borderColor: 'rgb(150, 229, 123)',
+        backgroundColor: 'rgba(150, 229, 123, 0.7)',
+        hoverBackgroundColor: '#96E57B',
+        hoverBorderColor: '#4EAC3E',
+        borderColor: '#96E57B',
     },
 
     audaz: {
-        backgroundColor: 'rgb(245, 108, 96)',
-        hoverBackgroundColor: 'rgb(245, 108, 96)',
-        hoverBorderColor: 'rgb(207, 99, 88)',
-        borderColor: 'rgb(245, 108, 96)',
+        backgroundColor: 'rgba(245, 108, 96, 0.7)',
+        hoverBackgroundColor: '#F56C60',
+        hoverBorderColor: '#CF6358',
+        borderColor: '#F56C60',
     },
 
     cautivadora: {
-        backgroundColor: 'rgb(239, 234, 81)',
-        hoverBackgroundColor: 'rgb(239, 234, 81)',
-        hoverBorderColor: 'rgb(216, 195, 99)',
-        borderColor: 'rgb(239, 234, 81)',
+        backgroundColor: 'rgba(239, 234, 81, 0.7)',
+        hoverBackgroundColor: '#EFEA51',
+        hoverBorderColor: '#D8C363',
+        borderColor: '#EFEA51',
     },
 
     colaboradora: {
-        backgroundColor: 'rgb(104, 203, 87)',
-        hoverBackgroundColor: 'rgb(104, 203, 87)',
-        hoverBorderColor: 'rgb(88, 159, 85)',
-        borderColor: 'rgb(104, 203, 87)',
+        backgroundColor: 'rgba(104, 203, 87, 0.7)',
+        hoverBackgroundColor: '#68CB57',
+        hoverBorderColor: '#589F55',
+        borderColor: '#68CB57',
     },
 
     concreta: {
-        backgroundColor: 'rgb(89, 164, 207)',
-        hoverBackgroundColor: 'rgb(89, 164, 207)',
-        hoverBorderColor: 'rgb(87, 135, 171)',
-        borderColor: 'rgb(89, 164, 207)',
+        backgroundColor: 'rgba(89, 164, 207, 0.7)',
+        hoverBackgroundColor: '#59A4CF',
+        hoverBorderColor: '#5787AB ',
+        borderColor: '#59A4CF ',
     },
 
     convincente: {
-        backgroundColor: 'rgb(254, 152, 137)',
-        hoverBackgroundColor: 'rgb(254, 152, 137)',
-        hoverBorderColor: 'rgb(245, 108, 96)',
-        borderColor: 'rgb(254, 152, 137)',
+        backgroundColor: 'rgba(254, 152, 137, 0.7)',
+        hoverBackgroundColor: '#FE9889',
+        hoverBorderColor: '#F56C60',
+        borderColor: '#FE9889',
     },
 
     creativa: {
-        backgroundColor: 'rgb(253, 184, 217)',
-        hoverBackgroundColor: 'rgb(253, 184, 217)',
-        hoverBorderColor: 'rgb(255, 185, 179)',
-        borderColor: 'rgb(253, 184, 217)',
+        backgroundColor: 'rgba(253, 184, 217, 0.7)',
+        hoverBackgroundColor: '#FDB8D9',
+        hoverBorderColor: '#FFB9B3',
+        borderColor: '#FDB8D9',
     },
 
     detallista: {
-        backgroundColor: 'rgb(207, 99, 88)',
-        hoverBackgroundColor: 'rgb(207, 99, 88)',
-        hoverBorderColor: 'rgb(142, 43, 33)',
-        borderColor: 'rgb(207, 99, 88)',
+        backgroundColor: 'rgba(207, 99, 88, 0.7)',
+        hoverBackgroundColor: '#CF6358',
+        hoverBorderColor: '#8E2B21',
+        borderColor: '#CF6358',
     },
 
     determinada: {
-        backgroundColor: 'rgb(255, 185, 179)',
-        hoverBackgroundColor: 'rgb(255, 185, 179)',
-        hoverBorderColor: 'rgb(254, 152, 137)',
-        borderColor: 'rgb(255, 185, 179)',
+        backgroundColor: 'rgba(255, 185, 179, 0.7)',
+        hoverBackgroundColor: '#FFB9B3',
+        hoverBorderColor: '#FE9889',
+        borderColor: '#FFB9B3',
     },
 
     dinamica: {
-        backgroundColor: 'rgb(188, 94, 143)',
-        hoverBackgroundColor: 'rgb(188, 94, 143)',
-        hoverBorderColor: 'rgb(255, 135, 195)',
-        borderColor: 'rgb(188, 94, 143)',
+        backgroundColor: 'rgba(188, 94, 143, 0.7)',
+        hoverBackgroundColor: '#BC5E8F',
+        hoverBorderColor: '#FF87C3',
+        borderColor: '#BC5E8F',
     },
 
     diplomatica: {
-        backgroundColor: 'rgb(88, 159, 85)',
-        hoverBackgroundColor: 'rgb(88, 159, 85)',
-        hoverBorderColor: 'rgb(86, 157, 151)',
-        borderColor: 'rgb(88, 159, 85)',
+        backgroundColor: 'rgba(88, 159, 85, 0.7)',
+        hoverBackgroundColor: '#589F55',
+        hoverBorderColor: '#569D97',
+        borderColor: '#589F55',
     },
 
     encantadora: {
-        backgroundColor: 'rgb(254, 229, 119)',
-        hoverBackgroundColor: 'rgb(254, 229, 119)',
-        hoverBorderColor: 'rgb(255, 199, 89)',
-        borderColor: 'rgb(254, 229, 119)',
+        backgroundColor: 'rgba(254, 229, 119, 0.7)',
+        hoverBackgroundColor: '#FEE577',
+        hoverBorderColor: '#FFC759',
+        borderColor: '#FEE577',
     },
 
     indagadora: {
-        backgroundColor: 'rgb(185, 167, 223)',
-        hoverBackgroundColor: 'rgb(185, 167, 223)',
-        hoverBorderColor: 'rgb(141, 119, 186)',
-        borderColor: 'rgb(254, 229, 119)',
+        backgroundColor: 'rgba(185, 167, 223, 0.7)',
+        hoverBackgroundColor: '#B9A7DF',
+        hoverBorderColor: '#8D77BA',
+        borderColor: '#FEE577',
     },
 
     influyente: {
-        backgroundColor: 'rgb(255, 199, 89)',
-        hoverBackgroundColor: 'rgb(255, 199, 89)',
-        hoverBorderColor: 'rgb(246, 160, 92)',
-        borderColor: 'rgb(255, 199, 89)',
+        backgroundColor: 'rgba(255, 199, 89, 0.7)',
+        hoverBackgroundColor: '#FFC759',
+        hoverBorderColor: '#F6A05C',
+        borderColor: '#FFC759',
     },
 
     intuitiva: {
-        backgroundColor: 'rgb(255, 129, 193)',
-        hoverBackgroundColor: 'rgb(255, 129, 193)',
-        hoverBorderColor: 'rgb(255, 200, 226)',
-        borderColor: 'rgb(255, 129, 193)',
+        backgroundColor: 'rgba(255, 129, 193, 0.7)',
+        hoverBackgroundColor: '#FF81C1',
+        hoverBorderColor: '#FFC8E2',
+        borderColor: '#FF81C1',
     },
 
     investigadora: {
-        backgroundColor: 'rgb(86, 157, 151)',
-        hoverBackgroundColor: 'rgb(86, 157, 151)',
-        hoverBorderColor: 'rgb(88, 198, 180)',
-        borderColor: 'rgb(86, 157, 151)',
+        backgroundColor: 'rgba(86, 157, 151, 0.7)',
+        hoverBackgroundColor: '#569D97',
+        hoverBorderColor: '#58C6B4',
+        borderColor: '#569D97',
     },
 
     logica: {
-        backgroundColor: 'rgb(156, 242, 229)',
-        hoverBackgroundColor: 'rgb(156, 242, 229)',
-        hoverBorderColor: 'rgb(101, 206, 190)',
-        borderColor: 'rgb(156, 242, 229)',
+        backgroundColor: 'rgba(156, 242, 229, 0.7)',
+        hoverBackgroundColor: '#9CF2E5',
+        hoverBorderColor: '#65CEBE',
+        borderColor: '#9CF2E5',
     },
 
     paciente: {
-        backgroundColor: 'rgb(157, 117, 222)',
-        hoverBackgroundColor: 'rgb(157, 117, 222)',
-        hoverBorderColor: 'rgb(185, 167, 223)',
-        borderColor: 'rgb(157, 117, 222)',
+        backgroundColor: 'rgba(157, 117, 222, 0.7)',
+        hoverBackgroundColor: '#9D75DE',
+        hoverBorderColor: '#B9A7DF',
+        borderColor: '#9D75DE',
     },
 
     precisa: {
-        backgroundColor: 'rgb(142, 214, 254)',
-        hoverBackgroundColor: 'rgb(142, 214, 254)',
-        hoverBorderColor: 'rgb(86, 190, 255)',
-        borderColor: 'rgb(142, 214, 254)',
+        backgroundColor: 'rgba(142, 214, 254, 0.7)',
+        hoverBackgroundColor: '#8ED6FE',
+        hoverBorderColor: '#56BEFF',
+        borderColor: '#8ED6FE',
     },
 
     proactiva: {
-        backgroundColor: 'rgb(246, 160, 92)',
-        hoverBackgroundColor: 'rgb(246, 160, 92)',
-        hoverBorderColor: 'rgb(198, 112, 44)',
-        borderColor: 'rgb(246, 160, 92)',
+        backgroundColor: 'rgba(246, 160, 92, 0.7)',
+        hoverBackgroundColor: '#F6A05C',
+        hoverBorderColor: '#C6702C',
+        borderColor: '#F6A05C',
     },
 
     promotora: {
-        backgroundColor: 'rgb(224, 102, 163)',
-        hoverBackgroundColor: 'rgb(224, 102, 163)',
-        hoverBorderColor: 'rgb(255, 172, 214)',
-        borderColor: 'rgb(224, 102, 163)',
+        backgroundColor: 'rgba(224, 102, 163, 0.7)',
+        hoverBackgroundColor: '#E066A3',
+        hoverBorderColor: '#FFACD6',
+        borderColor: '#E066A3',
     },
 
     receptiva: {
-        backgroundColor: 'rgb(88, 198, 180)',
-        hoverBackgroundColor: 'rgb(88, 198, 180)',
-        hoverBorderColor: 'rgb(98, 236, 221)',
-        borderColor: 'rgb(88, 198, 180)',
+        backgroundColor: 'rgba(88, 198, 180, 0.7)',
+        hoverBackgroundColor: '#58C6B4',
+        hoverBorderColor: '#62ECDD',
+        borderColor: '#58C6B4',
     },
 
     resolutiva: {
-        backgroundColor: 'rgb(86, 190, 255)',
-        hoverBackgroundColor: 'rgb(86, 190, 255)',
-        hoverBorderColor: 'rgb(89, 164, 207)',
-        borderColor: 'rgb(86, 190, 255)',
+        backgroundColor: 'rgba(86, 190, 255, 0.7)',
+        hoverBackgroundColor: '#56BEFF',
+        hoverBorderColor: '#59A4CF',
+        borderColor: '#56BEFF',
     },
 
     sensata: {
-        backgroundColor: 'rgb(102, 222, 208)',
-        hoverBackgroundColor: 'rgb(102, 222, 208)',
-        hoverBorderColor: 'rgb(152, 238, 226)',
-        borderColor: 'rgb(102, 222, 208)',
+        backgroundColor: 'rgba(102, 222, 208, 0.7)',
+        hoverBackgroundColor: '#66DED0',
+        hoverBorderColor: '#98EEE2',
+        borderColor: '#66DED0',
     },
 
     tenaz: {
-        backgroundColor: 'rgb(87, 135, 171)',
-        hoverBackgroundColor: 'rgb(87, 135, 171)',
-        hoverBorderColor: 'rgb(129, 175, 210)',
-        borderColor: 'rgb(87, 135, 171)',
+        backgroundColor: 'rgba(87, 135, 171, 0.7)',
+        hoverBackgroundColor: '#5787AB',
+        hoverBorderColor: '#81AFD2',
+        borderColor: '#5787AB',
     },
 };
 
-const getColor = ({ profile, type, transparency }) => {
+const getColor = ({ profile, type }) => {
     const color = colorConfig?.[profile]?.[type];
-
-    return transparency > 0
-        ? addTransparency(color, transparency)
-        : color || 'rgb(0, 63, 94)';
-};
-
-const addTransparency = (color, transparency) => {
-    return color.replace('rgb', 'rgba').replace(')', `, ${transparency})`);
+    return color ? color : '#003F5E';
 };
 
 export default {
-    $_getColor({ profile, type, transparency }) {
-        return getColor({ profile, type, transparency });
+    $_getColor({ profile, type }) {
+        return getColor({ profile, type });
     },
 };
