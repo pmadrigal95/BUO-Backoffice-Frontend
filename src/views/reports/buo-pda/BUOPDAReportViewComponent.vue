@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import baseFnFile from '@/helpers/baseFnFile';
 
@@ -45,6 +45,7 @@ export default {
     data() {
         return {
             entity: this.$_Object(),
+            key: 0,
             show: true,
             loading: [{ value: false }, { value: false }],
         };
@@ -54,6 +55,12 @@ export default {
         ...mapGetters('theme', ['app']),
 
         ...mapGetters('authentication', ['user', 'buoId']),
+
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('BUOPDAReport');
+        },
 
         extraParams() {
             return (
@@ -68,6 +75,8 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
+            //TODO: FIX IT
+            // return this.filtersBypageView(this.pageView);
             return baseFilterSettingsHelper.$_setUserSetting({
                 companyId: this.entity.companyId,
                 departmentId: this.entity.departmentId,
@@ -84,7 +93,29 @@ export default {
         },
     },
 
+    created() {
+        //TODO: FIX IT
+        // this.$_setFilter();
+    },
+
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]: baseFilterSettingsHelper.$_setUserSetting({
+                        companyId: this.entity.companyId,
+                        departmentId: this.entity.departmentId,
+                        singleSelect: false,
+                    }),
+                });
+                this.key++;
+            }
+        },
+
         /**
          * Entity Object
          */
@@ -123,7 +154,7 @@ export default {
          * Get a registry
          */
         $_GetRow() {
-            return this.$refs.UserFilter.$data.selected;
+            return this.$refs[this.pageView].$data.selected;
         },
 
         /**
@@ -220,9 +251,13 @@ export default {
             <BaseAdvancedFilter :show="show" v-model="entity" isDepartment>
                 <div slot="body">
                     <BaseServerDataTable
-                        ref="UserFilter"
+                        :key="key"
+                        v-if="setting"
+                        :ref="pageView"
+                        :pageView="pageView"
                         :setting="setting"
                         :extraParams="extraParams"
+                        :fnResetConfig="$_setFilter"
                         :fnDoubleClick="$_userDetails"
                     >
                         <div slot="btns">
@@ -259,6 +294,7 @@ export default {
                             />
                         </div>
                     </BaseServerDataTable>
+                    <BaseSkeletonLoader v-else type="table" />
                 </div>
             </BaseAdvancedFilter>
         </div>

@@ -27,7 +27,7 @@ export default {
 
     data() {
         return {
-            panel: [0, 1, 2],
+            panel: [0, 1, 2, 3],
         };
     },
 
@@ -39,12 +39,20 @@ export default {
         categoriesMenu() {
             return [
                 {
+                    name: 'BUO Demographics',
+                    list: [
+                        'BuoPdaDemographicsViewComponent',
+                        'BuoAssessmentsDemographicsViewComponent',
+                    ],
+                },
+                {
                     name: 'People Analytics',
                     list: [
                         'SearchPeopleByAbilityViewComponent',
                         'SearchAbilitiesByDepartmentOrPersonViewComponent',
                         'ProfileViewComponent',
                         'AssignmentViewComponent',
+                        'EvaluationViewComponent',
                         'ApprovalViewComponent',
                     ],
                 },
@@ -74,6 +82,10 @@ export default {
 
         menuList() {
             let result = [
+                {
+                    name: 'BUO Demographics',
+                    list: [],
+                },
                 {
                     name: 'People Analytics',
                     list: [],
@@ -109,12 +121,14 @@ export default {
                 positionSubtitle: 'align-center',
                 positionDescription: 'text-center',
                 fontTypeSubtitle: this.app
-                    ? 'BUO-Paragraph-Small-SemiBold white--text'
-                    : 'BUO-Paragraph-Small-SemiBold black--text',
+                    ? 'BUO-Paragraph-Medium-SemiBold white--text'
+                    : this.$vuetify.breakpoint.mobile
+                    ? 'BUO-Paragraph-Small-SemiBold black--text'
+                    : 'BUO-Paragraph-Medium-SemiBold black--text',
                 fontTypeDescription: this.app
-                    ? 'BUO-Paragraph-Small-SemiBold blueProgress600--text'
-                    : 'BUO-Paragraph-Small-SemiBold black--text',
-                width: '320',
+                    ? 'BUO-Paragraph-Small blueProgress600--text'
+                    : 'BUO-Paragraph-Small grey600--text',
+                width: '325',
                 heigh: '200',
                 centerBotton: true,
                 centerIcon: true,

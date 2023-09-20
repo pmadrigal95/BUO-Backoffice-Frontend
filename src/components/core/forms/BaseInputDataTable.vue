@@ -115,6 +115,29 @@ export default {
             type: Boolean,
             default: false,
         },
+
+        /**
+         * Identificador unico para
+         * almacenar config en cache
+         */
+        pageView: {
+            type: String,
+            default: undefined,
+        },
+
+        ispageView: {
+            type: Boolean,
+            default: false,
+        },
+
+        /**
+         * Función Reset Config cache
+         * Default undefined
+         */
+        fnResetConfig: {
+            type: Function,
+            default: undefined,
+        },
     },
 
     components: {
@@ -152,6 +175,8 @@ export default {
             refpopUp: 'popUp_',
 
             normalRules: [],
+
+            key: 0,
         };
     },
 
@@ -410,12 +435,17 @@ export default {
             const result = this.value.filter((item) => item != id);
             this.$_updateValue(result);
         },
+
+        $_resetColumnConfig() {
+            this.fnResetConfig();
+            this.key++;
+        },
     },
 };
 </script>
 
 <template>
-    <div>
+    <section>
         <BasePopUp
             :ref="refpopUp"
             :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '65%'"
@@ -434,6 +464,9 @@ export default {
 
                 <!-- @BaseServerDataTable -->
                 <BaseServerDataTable
+                    :key="key"
+                    :pageView="pageView"
+                    :ispageView="ispageView"
                     :setting="setting"
                     :dense="dense"
                     :rowsPerPage="rowsPerPage"
@@ -441,6 +474,11 @@ export default {
                     :cancel="$_openModal"
                     v-if="show === 'Server'"
                     :extraParams="extraParams"
+                    :fnResetConfig="
+                        fnResetConfig != undefined
+                            ? $_resetColumnConfig
+                            : undefined
+                    "
                 />
             </div>
         </BasePopUp>
@@ -499,5 +537,5 @@ export default {
                 </v-chip>
             </template>
         </v-combobox>
-    </div>
+    </section>
 </template>

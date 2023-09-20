@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import baseFnFile from '@/helpers/baseFnFile';
 
@@ -49,15 +49,18 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('filters', ['advfiltersBypageView', 'dialogViewById']),
+
+        companyDialogView() {
+            return this.dialogViewById('companyDialog');
+        },
+
         /**
          * Configuracion BaseInputDataTable
 
          */
         setting() {
-            return baseFilterSettingsHelper.$_setCompanySetting({
-                isFilter: true,
-                singleSelect: true,
-            });
+            return this.advfiltersBypageView(this.companyDialogView);
         },
     },
 
@@ -67,6 +70,8 @@ export default {
             this.$vuetify.theme.themes.light.white;
 
         this.$_reviewQueryParams();
+
+        this.$_setCompanyFilter();
     },
 
     destroyed() {
@@ -75,6 +80,24 @@ export default {
     },
 
     methods: {
+        ...mapActions('filters', ['$_set_advfilter']),
+
+        $_setCompanyFilter() {
+            const dialogView = this.advfiltersBypageView(
+                this.companyDialogView
+            );
+
+            if (!dialogView) {
+                this.$_set_advfilter({
+                    [this.companyDialogView]:
+                        baseFilterSettingsHelper.$_setCompanySetting({
+                            isFilter: true,
+                            singleSelect: true,
+                        }),
+                });
+            }
+        },
+
         $_reviewQueryParams() {
             if (this.$router.currentRoute.query.organizacionId) {
                 this.organizacionId =
@@ -197,7 +220,6 @@ export default {
                                     icon="mdi-numeric-1-circle"
                                     description="Selecciona la empresa."
                                     iconColor="greenC900"
-                                    font="BUO-Paragraph-Medium"
                                     :validate="['requiered']"
                                 ></StepViewComponent>
                             </v-col>
@@ -206,11 +228,13 @@ export default {
                                 <BaseInputDataTable
                                     v-if="
                                         !$router.currentRoute.query
-                                            .organizacionId
+                                            .organizacionId && setting
                                     "
+                                    :pageView="companyDialogView"
                                     label="Buscar empresa"
                                     :setting="setting"
                                     v-model.number="organizacionId"
+                                    :fnResetConfig="$_setCompanyFilter"
                                 />
                             </v-col>
 
@@ -267,7 +291,13 @@ export default {
 
                             <v-col cols="12" class="mb-4">
                                 <StepViewComponent
-                                    icon="mdi-numeric-3-circle"
+                                    :icon="`mdi-numeric-${
+                                        user.companyId != buoId ||
+                                        $router.currentRoute.query
+                                            .organizacionId
+                                            ? '2'
+                                            : '3'
+                                    }-circle`"
                                     description="Edita el mismo archivo con los datos de tus colaboradores, siguiendo el formato del archivo sin alterarlo."
                                     iconColor="greenC900"
                                     font="BUO-Paragraph-Medium"
@@ -276,7 +306,13 @@ export default {
 
                             <v-col cols="12">
                                 <StepViewComponent
-                                    icon="mdi-numeric-4-circle"
+                                    :icon="`mdi-numeric-${
+                                        user.companyId != buoId ||
+                                        $router.currentRoute.query
+                                            .organizacionId
+                                            ? '3'
+                                            : '4'
+                                    }-circle`"
                                     description="Sube el archivo editado."
                                     iconColor="greenC900"
                                     font="BUO-Paragraph-Medium"

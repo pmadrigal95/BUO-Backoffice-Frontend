@@ -1,6 +1,6 @@
 {
   "name": "buo-backoffice-frontend-app",
-  "version": "2.9.1",
+  "version": "2.10.2",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -17,13 +17,14 @@
     "vue": "^2.6.11",
     "vue-chartjs": "^4.1.2",
     "vue-gtag": "^1.16.1",
+    "vue-html2pdf": "^1.8.0",
     "vue-meta": "^2.4.0",
     "vue-recaptcha": "^1.3.0",
     "vue-router": "^3.2.0",
+    "vue-share-it": "^1.1.7",
     "vue-the-mask": "^0.11.1",
     "vuetify": "^2.6.14",
-    "vuex": "^3.4.0",
-    "vue-share-it": "^1.1.7"
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

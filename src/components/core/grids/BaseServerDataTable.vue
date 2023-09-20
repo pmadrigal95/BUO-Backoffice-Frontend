@@ -8,7 +8,7 @@
  * @displayName BaseServerDataTable
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -24,8 +24,7 @@ import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
 
-const BaseButtonsGrid = () =>
-    import('@/components/core/grids/BaseButtonsGrid.vue');
+const BaseButtonsGrid = () => import('@/components/core/grids/BaseButtonsGrid');
 
 export default {
     name: 'BaseServerDataTable',
@@ -51,6 +50,20 @@ export default {
         setting: {
             type: Object,
             required: true,
+        },
+
+        /**
+         * Identificador unico para
+         * almacenar config en cache
+         */
+        pageView: {
+            type: String,
+            default: undefined,
+        },
+
+        ispageView: {
+            type: Boolean,
+            default: true,
         },
 
         /**
@@ -165,6 +178,24 @@ export default {
          */
         fnDoubleClick: {
             type: Function,
+            default: undefined,
+        },
+
+        /**
+         * Función Reset Config cache
+         * Default undefined
+         */
+        fnResetConfig: {
+            type: Function,
+            default: undefined,
+        },
+
+        /**
+         * Función Menú Actiones
+         * Default undefined
+         */
+        fnActions: {
+            type: Array,
             default: undefined,
         },
     },
@@ -405,6 +436,7 @@ export default {
         objectFilter: {
             handler(val) {
                 this.$_initialize(val);
+                this.$_setCacheConfig();
             },
             deep: true,
         },
@@ -453,6 +485,28 @@ export default {
     },
 
     methods: {
+        ...mapActions('filters', [
+            '$_set_filter',
+            '$_set_advfilter',
+            '$_clean_filter',
+            '$_clean_advfilter',
+        ]),
+
+        $_setCacheConfig() {
+            if (this.pageView) {
+                const value = {
+                    [this.pageView]: baseArrayHelper.SetObject(
+                        {},
+                        this.setting
+                    ),
+                };
+
+                this.ispageView
+                    ? this.$_set_filter(value)
+                    : this.$_set_advfilter(value);
+            }
+        },
+
         /**
          *
          */
@@ -966,6 +1020,23 @@ export default {
                 ? `${type}: ${palette[degradedColor]}`
                 : `${palette[degradedColor]}`;
         },
+
+        $_resetColumnConfig() {
+            if (this.pageView) {
+                this.ispageView
+                    ? this.$_clean_filter(this.pageView)
+                    : this.$_clean_advfilter(this.pageView);
+            }
+
+            this.fnResetConfig();
+        },
+
+        /**
+         * Clean Selected Rows
+         */
+        $_cleanSelectedRows() {
+            this.selected = [];
+        },
     },
 };
 </script>
@@ -998,6 +1069,25 @@ export default {
                                     />
                                 </v-col>
                             </v-row>
+                            <v-layout
+                                justify-end
+                                align-center
+                                v-if="fnResetConfig"
+                            >
+                                <v-btn
+                                    color="primary"
+                                    text
+                                    elevation="0"
+                                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                                    small
+                                    @click="$_resetColumnConfig"
+                                >
+                                    Reiniciar
+                                    <v-icon right
+                                        >mdi-cog-refresh-outline</v-icon
+                                    >
+                                </v-btn>
+                            </v-layout>
                         </v-container>
 
                         <!-- @Componente:  BaseForm-->
@@ -1251,6 +1341,7 @@ export default {
                         :fnDelete="
                             fnDelete != undefined ? $_DeleteModal : undefined
                         "
+                        :fnActions="fnActions"
                         :rowCount="selected.length"
                     >
                         <!-- @slot Use este slot para agregar botones -->

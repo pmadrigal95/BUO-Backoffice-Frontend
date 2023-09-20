@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -38,8 +38,20 @@ export default {
         BaseServerDataTable,
     },
 
+    data() {
+        return {
+            key: 0,
+        };
+    },
+
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
+
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('MicroAbilityFilter');
+        },
 
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
@@ -55,9 +67,7 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return baseFilterSettingsHelper.$_setMicroAbilitySetting({
-                companyId: this.user.companyId,
-            });
+            return this.filtersBypageView(this.pageView);
         },
 
         write() {
@@ -69,7 +79,27 @@ export default {
         },
     },
 
+    created() {
+        this.$_setFilter();
+    },
+
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]:
+                        baseFilterSettingsHelper.$_setMicroAbilitySetting({
+                            companyId: this.user.companyId,
+                        }),
+                });
+                this.key++;
+            }
+        },
+
         /**
          * Body Request
          */
@@ -92,7 +122,7 @@ export default {
                 )
                 .then((response) => {
                     if (response != undefined) {
-                        this.$refs.microAbilityFilter.$_ParamsToAPI();
+                        this.$refs[this.pageView].$_ParamsToAPI();
                     }
                 });
         },
@@ -133,8 +163,11 @@ export default {
         <div slot="card-text">
             <BaseSkeletonLoader v-if="!user && !buoId" type="list-item" />
             <BaseServerDataTable
-                v-else
-                ref="microAbilityFilter"
+                :key="key"
+                :fnResetConfig="$_setFilter"
+                v-else-if="setting"
+                :ref="pageView"
+                :pageView="pageView"
                 :setting="setting"
                 :extraParams="extraParams"
                 :fnNew="write ? $_editor : undefined"

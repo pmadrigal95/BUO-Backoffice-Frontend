@@ -9,6 +9,8 @@ import baseLocalHelper from '@/helpers/baseLocalHelper';
 
 import { mapState } from 'vuex';
 
+const BaseMenuGrid = () => import('@/components/core/grids/BaseMenuGrid');
+
 export default {
     name: 'BaseButtonsGrid',
 
@@ -68,6 +70,15 @@ export default {
         },
 
         /**
+         * Función Menú Actiones
+         * Default undefined
+         */
+        fnActions: {
+            type: Array,
+            default: undefined,
+        },
+
+        /**
          * Cantidad de Filas seleccionadas
          * Default undefined
          */
@@ -75,6 +86,10 @@ export default {
             type: Number,
             default: undefined,
         },
+    },
+
+    components: {
+        BaseMenuGrid,
     },
 
     data() {
@@ -130,6 +145,10 @@ export default {
         this.fnDelete != undefined
             ? this.items.push(true)
             : this.items.push(false);
+
+        this.fnActions != undefined
+            ? this.items.push(true)
+            : this.items.push(false);
     },
 
     /**
@@ -164,90 +183,87 @@ export default {
 </script>
 
 <template>
-    <v-row align-content="center" class="py-6 px-3">
-        <v-layout
-            :justify-space-between="rows"
-            :justify-end="!rows"
-            align-content-center
+    <v-row align-content="center" justify="end" class="py-6 px-3">
+        <section
+            :class="[$vuetify.breakpoint.mdAndUp && 'd-flex justify-end mb-6']"
         >
-            <section
-                style="display: flex; flex-wrap: wrap; align-content: center"
-                class="BUO-Label-Small ma-2 d-flex justify-start mb-6"
-                v-if="rows && $vuetify.breakpoint.mdAndUp"
-            >
-                {{ rows }}
-            </section>
-            <section
-                :class="[
-                    $vuetify.breakpoint.mdAndUp && 'd-flex justify-end mb-6',
-                ]"
-            >
-                <v-tooltip top v-if="items[0]">
-                    <template v-slot:activator="{ on }">
-                        <v-btn icon :color="app ? 'clouds' : 'black'" v-on="on">
-                            <v-icon @click="$_Refresh" small
-                                >mdi-autorenew</v-icon
+            <v-tooltip top v-if="rowCount && rowCount > 0">
+                <template v-slot:activator="{ on }">
+                    <v-btn icon :color="app ? 'clouds' : 'black'" v-on="on">
+                        <v-badge color="primary" :content="rowCount">
+                            <v-icon small
+                                >mdi-cursor-default-click-outline</v-icon
                             >
-                        </v-btn>
-                    </template>
-                    <span>{{ lblRefresh }}</span>
-                </v-tooltip>
-                <v-tooltip top v-if="items[1]">
-                    <template v-slot:activator="{ on }">
-                        <v-btn icon :color="app ? 'clouds' : 'black'" v-on="on">
-                            <v-icon @click="$_Config" small>mdi-cog</v-icon>
-                        </v-btn>
-                    </template>
-                    <span>{{ lblConfig }}</span>
-                </v-tooltip>
-                <v-btn
-                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                    :color="app ? 'clouds' : 'blue900'"
-                    v-if="items[2]"
-                    @click="$_Filter"
-                    outlined
-                    small
-                >
-                    {{ lblFilter }}
-                    <v-icon right>mdi-tune</v-icon>
-                </v-btn>
-                <v-btn
-                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                    :color="app ? 'clouds' : 'blue900'"
-                    v-if="items[3]"
-                    @click="$_New"
-                    outlined
-                    small
-                >
-                    {{ lblNew }}
-                    <v-icon right>mdi-plus</v-icon>
-                </v-btn>
-                <v-btn
-                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                    :color="app ? 'clouds' : 'blue900'"
-                    v-if="items[4]"
-                    @click="$_Edit"
-                    outlined
-                    small
-                >
-                    {{ lblEdit }}
-                    <v-icon right>mdi-square-edit-outline</v-icon>
-                </v-btn>
+                        </v-badge>
+                    </v-btn>
+                </template>
+                <span>{{ rows }}</span>
+            </v-tooltip>
+            <v-tooltip top v-if="items[0]">
+                <template v-slot:activator="{ on }">
+                    <v-btn icon :color="app ? 'clouds' : 'black'" v-on="on">
+                        <v-icon @click="$_Refresh" small>mdi-autorenew</v-icon>
+                    </v-btn>
+                </template>
+                <span>{{ lblRefresh }}</span>
+            </v-tooltip>
+            <v-tooltip top v-if="items[1]">
+                <template v-slot:activator="{ on }">
+                    <v-btn icon :color="app ? 'clouds' : 'black'" v-on="on">
+                        <v-icon @click="$_Config" small>mdi-cog</v-icon>
+                    </v-btn>
+                </template>
+                <span>{{ lblConfig }}</span>
+            </v-tooltip>
+            <v-btn
+                class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                :color="app ? 'clouds' : 'blue900'"
+                v-if="items[2]"
+                @click="$_Filter"
+                outlined
+                small
+            >
+                {{ lblFilter }}
+                <v-icon right>mdi-tune</v-icon>
+            </v-btn>
+            <v-btn
+                class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                :color="app ? 'clouds' : 'blue900'"
+                v-if="items[3]"
+                @click="$_New"
+                outlined
+                small
+            >
+                {{ lblNew }}
+                <v-icon right>mdi-plus</v-icon>
+            </v-btn>
+            <v-btn
+                class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                :color="app ? 'clouds' : 'blue900'"
+                v-if="items[4]"
+                @click="$_Edit"
+                outlined
+                small
+            >
+                {{ lblEdit }}
+                <v-icon right>mdi-square-edit-outline</v-icon>
+            </v-btn>
 
-                <v-btn
-                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                    :color="app ? 'clouds' : 'blue900'"
-                    v-if="items[5]"
-                    @click="$_Delete"
-                    outlined
-                    small
-                >
-                    {{ lblDelete }}
-                    <v-icon right>mdi-delete-outline</v-icon>
-                </v-btn>
-                <!-- @slot Use este slot para agregar más botones -->
-                <slot name="btns"></slot>
-            </section>
-        </v-layout>
+            <v-btn
+                class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                :color="app ? 'clouds' : 'blue900'"
+                v-if="items[5]"
+                @click="$_Delete"
+                outlined
+                small
+            >
+                {{ lblDelete }}
+                <v-icon right>mdi-delete-outline</v-icon>
+            </v-btn>
+            <!-- @slot Use este slot para agregar más botones -->
+            <slot name="btns"></slot>
+
+            <BaseMenuGrid :actions="fnActions" class="ml-3" v-if="items[6]" />
+        </section>
     </v-row>
 </template>

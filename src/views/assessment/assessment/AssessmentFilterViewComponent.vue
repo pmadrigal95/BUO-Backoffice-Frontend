@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -40,11 +40,18 @@ export default {
         return {
             entity: this.$_Object(),
             show: true,
+            key: 0,
         };
     },
 
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
+
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('AssessmentFilter');
+        },
 
         write() {
             const result = baseSecurityHelper.$_ReadPermission(
@@ -61,6 +68,7 @@ export default {
         },
 
         setting() {
+            // return this.filtersBypageView(this.pageView);
             return baseFilterSettingsHelper.$_setAssessmentSetting({
                 companyId: this.user.companyId,
                 assessmentTypeId: this.entity.assessmentTypeId,
@@ -68,7 +76,29 @@ export default {
         },
     },
 
+    created() {
+        //TODO: FIX IT
+        // this.$_setFilter();
+    },
+
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]:
+                        baseFilterSettingsHelper.$_setAssessmentSetting({
+                            companyId: this.user.companyId,
+                            assessmentTypeId: this.entity.assessmentTypeId,
+                        }),
+                });
+                this.key++;
+            }
+        },
+
         /**
          * Entity Object
          */
@@ -97,7 +127,7 @@ export default {
                 .post('/prueba/deactivate', this.$_createBodyRequestDelete(row))
                 .then((response) => {
                     if (response != undefined) {
-                        this.$refs.Filter.$_ParamsToAPI();
+                        this.$refs[this.pageView].$_ParamsToAPI();
                     }
                 });
         },
@@ -135,9 +165,13 @@ export default {
             >
                 <div slot="body">
                     <BaseServerDataTable
-                        ref="Filter"
+                        v-if="setting"
+                        :key="key"
+                        :ref="pageView"
+                        :pageView="pageView"
                         :setting="setting"
                         :extraParams="extraParams"
+                        :fnResetConfig="$_setFilter"
                         :fnNew="write ? $_Editor : undefined"
                         :fnEdit="write ? $_Editor : undefined"
                         :fnDelete="write ? $_fnDelete : undefined"
@@ -151,6 +185,7 @@ export default {
                             />
                         </div>
                     </BaseServerDataTable>
+                    <BaseSkeletonLoader v-else type="table" />
                 </div>
             </BaseAdvancedFilter>
         </div>

@@ -6,24 +6,28 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
+import baseLocalHelper from '@/helpers/baseLocalHelper';
+
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
-import { baseAssessmentHelper } from '@/views/user/user/components/baseAssessmentHelper';
+import { baseAssessmentHelper } from '@/views/user/user/components/assessment/baseAssessmentHelper';
 
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
-const BaseCustomsButtonsGrid = () =>
-    import('@/components/core/grids/BaseCustomsButtonsGrid');
-
 const AssessmentViewComponent = () =>
-    import('@/views/user/user/components/AssessmentViewComponent');
+    import('@/views/user/user/components/assessment/AssessmentViewComponent');
+
+const UserPasswordViewComponent = () =>
+    import('@/views/user/user/components/password/UserPasswordViewComponent');
 
 export default {
     name: 'FilterViewComponent',
@@ -36,13 +40,14 @@ export default {
 
     components: {
         BaseServerDataTable,
-        BaseCustomsButtonsGrid,
         AssessmentViewComponent,
+        UserPasswordViewComponent,
     },
 
     data() {
         return {
             entity: {},
+            key: 0,
         };
     },
 
@@ -50,6 +55,12 @@ export default {
         ...mapGetters('authentication', ['user', 'buoId']),
 
         ...mapGetters('theme', ['app']),
+
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('UserFilter');
+        },
 
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
@@ -64,10 +75,7 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return baseFilterSettingsHelper.$_setUserSetting({
-                companyId: this.user.companyId,
-                singleSelect: false,
-            });
+            return this.filtersBypageView(this.pageView);
         },
 
         permission() {
@@ -85,16 +93,59 @@ export default {
             );
             return result;
         },
+
+        actions() {
+            return [
+                {
+                    icon: 'table-arrow-up',
+                    title: 'Carga Masiva',
+                    fn: this.$_fnLoad,
+                    show: this.permission?.Upload,
+                },
+                {
+                    icon: 'email-arrow-right-outline',
+                    title: 'Reenviar Activación',
+                    fn: this.$_fnResendActivation,
+                    show: this.permission?.Write,
+                },
+                {
+                    icon: 'account-lock-open-outline',
+                    title: 'Cambiar Contraseña',
+                    fn: this.$_openModalChangePwd,
+                    show: this.permission?.Write,
+                },
+            ];
+        },
+    },
+
+    created() {
+        this.$_setFilter();
     },
 
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]: baseFilterSettingsHelper.$_setUserSetting({
+                        companyId: this.user.companyId,
+                        singleSelect: false,
+                    }),
+                });
+                this.key++;
+            }
+        },
+
         /**
          * Body Request
          */
-        $_createBodyRequestDelete(id) {
+        $_createBodyRequestDelete(rows) {
             const request = {
                 userId: this.user.userId,
-                id: id,
+                ids: rows.map((element) => element.id),
             };
             return request;
         },
@@ -103,18 +154,16 @@ export default {
          * Desactive Function
          */
         $_fnDesactiveUser(row) {
-            row.forEach((element) => {
-                httpService
-                    .post(
-                        'user/deactivate',
-                        this.$_createBodyRequestDelete(element.id)
-                    )
-                    .then((response) => {
-                        if (response != undefined) {
-                            this.$refs.UserFilter.$_ParamsToAPI();
-                        }
-                    });
-            });
+            httpService
+                .post(
+                    'user/deactivateMassive',
+                    this.$_createBodyRequestDelete(row)
+                )
+                .then((response) => {
+                    if (response != undefined) {
+                        this.$refs[this.pageView].$_ParamsToAPI();
+                    }
+                });
         },
 
         $_setQuery() {
@@ -154,7 +203,7 @@ export default {
          * Get a registry
          */
         $_GetRow() {
-            return this.$refs.UserFilter.$data.selected;
+            return this.$refs[this.pageView].$data.selected;
         },
 
         $_setAssessmentByType(type) {
@@ -166,36 +215,118 @@ export default {
                 filterCompanyId: this.organizacionId,
             });
         },
+
+        $_validateRow({ callback, isMultiSelect }) {
+            const row = this.$_GetRow();
+
+            switch (true) {
+                case row.length == 0:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
+                    break;
+                case row.length > 0: {
+                    if (row.length > 1 && !isMultiSelect) {
+                        return baseNotificationsHelper.Message(
+                            true,
+                            baseLocalHelper.$_MsgRowNotMultiSelected
+                        );
+                    }
+
+                    callback(row);
+
+                    break;
+                }
+            }
+        },
+
+        $_cleanSelectedRows() {
+            this.$refs[this.pageView].$_cleanSelectedRows();
+        },
+
+        $_sentToResentActivation(row) {
+            const object = row.map((element) => element.id);
+            httpService
+                .post(`user/resendActivationEmail`, {
+                    usuarioIds: object,
+                })
+                .then((response) => {
+                    if (response != undefined) {
+                        this.$_cleanSelectedRows();
+                    }
+                });
+        },
+
+        $_fnResendActivation() {
+            this.$_validateRow({
+                callback: this.$_sentToResentActivation,
+                isMultiSelect: true,
+            });
+        },
+
+        $_setEntityForChangePwd() {
+            const row = this.$_GetRow();
+
+            this.entity = {};
+
+            this.entity = Object.assign(
+                {},
+                ...row.map((element) => ({
+                    userId: element.id,
+                    name: element.nombreCompleto,
+                    deparment: element.nombreDepartamento,
+                    organization: element.nombreOrganizacion,
+                }))
+            );
+        },
+
+        $_openModal() {
+            this.$refs['popUp'].$_open();
+        },
+
+        $_openModalChangePwd() {
+            this.$_setEntityForChangePwd();
+            this.$_validateRow({
+                callback: this.$_openModal,
+                isMultiSelect: false,
+            });
+        },
     },
 };
 </script>
 
 <template>
     <BaseServerDataTable
-        ref="UserFilter"
+        :key="key"
+        v-if="setting"
+        :ref="pageView"
+        :pageView="pageView"
         :setting="setting"
         :extraParams="extraParams"
         :fnNew="permission?.Write ? $_userEditor : undefined"
         :fnEdit="permission?.Write ? $_userEditor : undefined"
         :fnDelete="permission?.Write ? $_fnDesactiveUser : undefined"
+        :fnActions="actions"
+        :fnResetConfig="$_setFilter"
     >
         <div slot="btns">
             <v-row class="pl-3 pt-3">
-                <BaseCustomsButtonsGrid
-                    v-if="permission?.Upload"
-                    label="Carga Masiva"
-                    :fnMethod="$_fnLoad"
-                    icon="mdi-table-arrow-up"
-                    :color="app ? 'blueProgress600' : 'blue900'"
-                />
-
                 <AssessmentViewComponent
                     v-if="assessmentPermission"
                     :entity="entity"
                     :organizacionId="organizacionId"
                     :fn="$_setAssessmentByType"
                 />
+
+                <UserPasswordViewComponent
+                    ref="popUp"
+                    :entity="entity"
+                    :callback="$_cleanSelectedRows"
+                    v-if="entity"
+                />
             </v-row>
         </div>
     </BaseServerDataTable>
+    <BaseSkeletonLoader v-else type="table" />
 </template>

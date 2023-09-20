@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -36,16 +36,28 @@ export default {
         BaseCustomsButtonsGrid,
     },
 
+    data() {
+        return {
+            key: 0,
+        };
+    },
+
     computed: {
         ...mapGetters('theme', ['app']),
 
         ...mapGetters('authentication', ['user', 'buoId']),
 
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('CompanyFilter');
+        },
+
         /**
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return baseFilterSettingsHelper.$_setCompanySetting({});
+            return this.filtersBypageView(this.pageView);
         },
 
         write() {
@@ -64,9 +76,25 @@ export default {
                 params: { Id: this.user.companyId },
             });
         }
+
+        this.$_setFilter();
     },
 
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]:
+                        baseFilterSettingsHelper.$_setCompanySetting({}),
+                });
+                this.key++;
+            }
+        },
+
         /**
          * Body Request
          */
@@ -89,7 +117,7 @@ export default {
                 )
                 .then((response) => {
                     if (response != undefined) {
-                        this.$refs.CompanyFilter.$_ParamsToAPI();
+                        this.$refs[this.pageView].$_ParamsToAPI();
                     }
                 });
         },
@@ -108,7 +136,7 @@ export default {
          * Get a registry
          */
         $_GetRow() {
-            return this.$refs.CompanyFilter.$data.selected;
+            return this.$refs[this.pageView].$data.selected;
         },
 
         /**
@@ -135,8 +163,12 @@ export default {
     <BaseCardViewComponent title="Empresas">
         <div slot="card-text">
             <BaseServerDataTable
-                ref="CompanyFilter"
+                :key="key"
+                v-if="setting"
+                :ref="pageView"
+                :pageView="pageView"
                 :setting="setting"
+                :fnResetConfig="$_setFilter"
                 :fnNew="write ? $_companyEditor : undefined"
                 :fnEdit="write ? $_companyEditor : undefined"
                 :fnDelete="write ? $_fnDesactiveCompany : undefined"
@@ -150,6 +182,7 @@ export default {
                     />
                 </div>
             </BaseServerDataTable>
+            <BaseSkeletonLoader v-else type="table" />
         </div>
     </BaseCardViewComponent>
 </template>

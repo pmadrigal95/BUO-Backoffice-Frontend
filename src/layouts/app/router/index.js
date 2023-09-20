@@ -20,13 +20,15 @@ import approvalRoutes from '@/views/approval/router';
 
 import analyticsRoutes from '@/views/analytics/router';
 
-import assignmentRoutes from '@/views/assignment/router';
-
 import assessmentRoutes from '@/views/assessment/router';
 
 import departmentRoutes from '@/views/department/router';
 
+import demographicsRoutes from '@/views/demographics/router';
+
 import microAbilityRoutes from '@/views/microAbility/router';
+
+import setIndicatorRoutes from '@/views/setIndicator/router';
 
 import promotionalCodesRoutes from '@/views/promotionalCodes/router';
 
@@ -46,10 +48,11 @@ const routes = [
             ...approvalRoutes,
             ...companyRoutes,
             ...analyticsRoutes,
-            ...assignmentRoutes,
             ...assessmentRoutes,
             ...departmentRoutes,
+            ...demographicsRoutes,
             ...microAbilityRoutes,
+            ...setIndicatorRoutes,
             ...promotionalCodesRoutes,
         ],
     },

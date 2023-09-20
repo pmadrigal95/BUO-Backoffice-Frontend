@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 
@@ -16,7 +16,7 @@ import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
-import { baseAssessmentHelper } from '@/views/user/user/components/baseAssessmentHelper';
+import { baseAssessmentHelper } from '@/views/user/user/components/assessment/baseAssessmentHelper';
 
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
@@ -28,7 +28,7 @@ const RadarViewComponent = () =>
     import('@/views/b2b/filter/common/graph/RadarViewComponent');
 
 const AssessmentViewComponent = () =>
-    import('@/views/user/user/components/AssessmentViewComponent');
+    import('@/views/user/user/components/assessment/AssessmentViewComponent');
 
 export default {
     name: 'ProfileFilterViewComponent',
@@ -52,6 +52,7 @@ export default {
             assessment: {},
             usuarioIdList: undefined,
             componentKey: 0,
+            key: 0,
         };
     },
 
@@ -59,6 +60,12 @@ export default {
         ...mapGetters('authentication', ['user']),
 
         ...mapGetters('theme', ['app']),
+
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('ProfileFilter');
+        },
 
         extraParams() {
             return baseFilterSettingsHelper.$_setExtraParams({
@@ -70,6 +77,7 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
+            // return this.filtersBypageView(this.pageView);
             return baseFilterSettingsHelper.$_setUserSetting({
                 companyId: this.user.companyId,
                 departmentId: this.entity.departmentId,
@@ -86,12 +94,34 @@ export default {
         },
     },
 
+    created() {
+        //TODO: FIX IT
+        // this.$_setFilter();
+    },
+
     methods: {
+        ...mapActions('filters', ['$_set_filter']),
+
+        $_setFilter() {
+            const pageView = this.filtersBypageView(this.pageView);
+
+            if (!pageView) {
+                this.$_set_filter({
+                    [this.pageView]: baseFilterSettingsHelper.$_setUserSetting({
+                        companyId: this.user.companyId,
+                        departmentId: this.entity.departmentId,
+                        singleSelect: false,
+                    }),
+                });
+                this.key++;
+            }
+        },
+
         /**
          * Get a registry
          */
         $_GetRow() {
-            return this.$refs.ProfileFilter.$data.selected;
+            return this.$refs[this.pageView].$data.selected;
         },
 
         $_viewProfile(params) {
@@ -160,10 +190,14 @@ export default {
 <template>
     <section>
         <BaseServerDataTable
-            ref="ProfileFilter"
+            :key="key"
+            v-if="setting"
+            :ref="pageView"
+            :pageView="pageView"
             :setting="setting"
             :extraParams="extraParams"
             :fnDoubleClick="$_viewProfile"
+            :fnResetConfig="$_setFilter"
         >
             <div slot="btns">
                 <v-row class="pl-3 pt-3">
@@ -190,6 +224,7 @@ export default {
                 </v-row>
             </div>
         </BaseServerDataTable>
+        <BaseSkeletonLoader v-else type="table" />
 
         <RadarViewComponent
             :key="componentKey"
