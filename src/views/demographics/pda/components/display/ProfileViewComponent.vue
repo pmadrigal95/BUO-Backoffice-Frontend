@@ -8,6 +8,10 @@
 
 import { mapGetters } from 'vuex';
 
+import baseFnFile from '@/helpers/baseFnFile';
+import httpService from '@/services/axios/httpService';
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
@@ -35,8 +39,22 @@ export default {
         BaseCustomsButtonsGrid,
     },
 
+    data() {
+        return {
+            loading: false,
+        };
+    },
+
     computed: {
         ...mapGetters('theme', ['app']),
+
+        permission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'BuoPdaDemographicsViewComponent',
+                baseSecurityHelper.$_download
+            );
+            return result;
+        },
     },
 
     methods: {
@@ -44,7 +62,25 @@ export default {
             this.entity.show = !this.entity.show;
         },
 
-        $_sendToApi() {},
+        $_sendToApi() {
+            this.loading = true;
+
+            const object = {
+                organizacionId: this.entity.companyId,
+                departamentoId: this.entity.departmentId,
+            };
+
+            httpService.post('analytics/pdf/pda', object).then((response) => {
+                if (response != undefined) {
+                    baseFnFile.$_dowloadFile(
+                        response.data.fileEncoded,
+                        response.data.fileName,
+                        baseFnFile.$_extensionsName.zip
+                    );
+                    this.loading = false;
+                }
+            });
+        },
     },
 };
 </script>
@@ -54,9 +90,11 @@ export default {
         <v-card-text>
             <v-row justify="end" class="pa-3">
                 <BaseCustomsButtonsGrid
+                    v-if="permission"
                     label="Descargar"
                     :outlined="false"
                     :fnMethod="$_sendToApi"
+                    :loading="loading"
                     icon="mdi-download-circle-outline"
                 />
 

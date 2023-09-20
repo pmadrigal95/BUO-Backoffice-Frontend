@@ -39,6 +39,13 @@ export default {
         categoriesMenu() {
             return [
                 {
+                    name: 'BUO Demographics',
+                    list: [
+                        'BuoPdaDemographicsViewComponent',
+                        'BuoAssessmentsDemographicsViewComponent',
+                    ],
+                },
+                {
                     name: 'People Analytics',
                     list: [
                         'SearchPeopleByAbilityViewComponent',
@@ -75,6 +82,10 @@ export default {
 
         menuList() {
             let result = [
+                {
+                    name: 'BUO Demographics',
+                    list: [],
+                },
                 {
                     name: 'People Analytics',
                     list: [],

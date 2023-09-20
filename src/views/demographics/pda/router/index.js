@@ -8,7 +8,7 @@ const routes = [
         name: 'BuoPdaDemographicsViewComponent',
         component: 'demographics/pda/BuoPdaDemographicsViewComponent',
         meta: {
-            module: 'AssignmentViewComponent',
+            module: 'BuoPdaDemographicsViewComponent',
         },
     },
 ];

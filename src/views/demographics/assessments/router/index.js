@@ -9,7 +9,7 @@ const routes = [
         component:
             'demographics/assessments/BuoAssessmentsDemographicsViewComponent',
         meta: {
-            module: 'AssignmentViewComponent',
+            module: 'BuoAssessmentsDemographicsViewComponent',
         },
     },
 ];

@@ -5,10 +5,13 @@
  * @displayName DisplayViewComponent
  *
  */
+import baseFnFile from '@/helpers/baseFnFile';
 
 import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
+
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 const BaseNotFoundContent = () =>
     import('@/components/core/cards/BaseNotFoundContent');
@@ -47,6 +50,7 @@ export default {
         return {
             loading: false,
             report: undefined,
+            loadingBtn: false,
         };
     },
 
@@ -62,6 +66,14 @@ export default {
         bar() {
             return this.report.stackDto;
         },
+
+        permission() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'BuoAssessmentsDemographicsViewComponent',
+                baseSecurityHelper.$_download
+            );
+            return result;
+        },
     },
 
     created() {
@@ -73,7 +85,22 @@ export default {
             this.entity.show = !this.entity.show;
         },
 
-        $_sendToApi() {},
+        $_sendToApi() {
+            this.loadingBtn = true;
+
+            httpService
+                .post('analytics/pdf/assessments', this.$_setBody())
+                .then((response) => {
+                    if (response != undefined) {
+                        baseFnFile.$_dowloadFile(
+                            response.data.fileEncoded,
+                            response.data.fileName,
+                            baseFnFile.$_extensionsName.zip
+                        );
+                        this.loadingBtn = false;
+                    }
+                });
+        },
 
         $_setBody() {
             return {
@@ -121,9 +148,11 @@ export default {
                     <v-card-text>
                         <v-row justify="end" class="pa-3">
                             <BaseCustomsButtonsGrid
+                                v-if="permission"
                                 label="Descargar"
                                 :outlined="false"
                                 :fnMethod="$_sendToApi"
+                                :loading="loadingBtn"
                                 icon="mdi-download-circle-outline"
                             />
 
