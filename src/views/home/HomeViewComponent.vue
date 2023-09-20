@@ -27,7 +27,7 @@ export default {
 
     data() {
         return {
-            panel: [0, 1, 2],
+            panel: [0, 1, 2, 3],
         };
     },
 
