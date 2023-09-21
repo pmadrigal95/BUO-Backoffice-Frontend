@@ -496,8 +496,8 @@ export default {
             if (this.pageView) {
                 const value = {
                     [this.pageView]: baseArrayHelper.SetObject(
-                        {},
-                        this.setting
+                        [],
+                        this.setting?.columns
                     ),
                 };
 
@@ -1022,12 +1022,6 @@ export default {
         },
 
         $_resetColumnConfig() {
-            if (this.pageView) {
-                this.ispageView
-                    ? this.$_clean_filter(this.pageView)
-                    : this.$_clean_advfilter(this.pageView);
-            }
-
             this.fnResetConfig();
         },
 
