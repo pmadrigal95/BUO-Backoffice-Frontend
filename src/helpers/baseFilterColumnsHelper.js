@@ -6,6 +6,104 @@
 
 import store from '@/store/index';
 
+const setUpCache = ({ pageView, columns, isFilter }) => {
+    store.dispatch(
+        `filters/${isFilter ? '$_clean_advfilter' : '$_clean_filter'}`,
+        pageView,
+        { root: true }
+    );
+
+    store.dispatch(
+        `filters/${isFilter ? '$_set_advfilter' : '$_set_filter'}`,
+        {
+            [pageView]: columns,
+        },
+        { root: true }
+    );
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const abilityColumns = (isBuoUser, show) => {
+    return [
+        {
+            text: 'Definición',
+            align: 'start',
+            value: 'definicion',
+            show: true,
+        },
+        {
+            text: 'Descripción',
+            align: 'start',
+            value: 'otroNombre',
+            show: false,
+        },
+        {
+            text: 'Propósito',
+            align: 'start',
+            value: 'proposito',
+            show: false,
+        },
+        {
+            text: 'Ámbito Ocupacional',
+            align: 'start',
+            value: 'ambitoOcupacional',
+            show: false,
+        },
+        {
+            text: 'Link',
+            align: 'start',
+            value: 'link',
+            show: false,
+        },
+        {
+            text: 'Interna',
+            type: 'bool',
+            align: 'center',
+            value: 'esInterna',
+            show: isBuoUser,
+        },
+        {
+            text: 'Categoría',
+            align: 'start',
+            value: 'nombreCategoria',
+            show: true,
+        },
+        {
+            text: 'Categoría Superior',
+            align: 'start',
+            value: 'nombreCategoriaPadre',
+            show: false,
+        },
+        {
+            text: 'Empresa',
+            align: 'start',
+            value: 'nombreOrganizacion',
+            show: show,
+        },
+        {
+            text: 'Tipo',
+            align: 'start',
+            value: 'nombreTipoCualificacion',
+            show: false,
+        },
+        {
+            text: 'Estado',
+            align: 'center',
+            type: 'chip',
+            value: 'nombreEstado',
+            show: false,
+        },
+        {
+            text: 'Modificado Por',
+            align: 'start',
+            value: 'nombreUsuarioModifica',
+            show: false,
+        },
+    ];
+};
+
 /**
  * Configuracion BaseServerDataTable
  */
@@ -97,19 +195,18 @@ export const baseFilterColumnsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
+    $_setAbilityColumns({ isFilter, pageView, isBuoUser, show }) {
+        const columns = abilityColumns(isBuoUser, show);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
     $_setPromotionalCodeColumns({ isFilter, pageView }) {
         const columns = promotionalCodeColumns(isFilter);
-
-        store.dispatch('filters/$_clean_filter', pageView, { root: true });
-
-        store.dispatch(
-            'filters/$_set_filter',
-            {
-                [pageView]: columns,
-            },
-            { root: true }
-        );
-
+        setUpCache({ pageView, columns, isFilter });
         return columns;
     },
 };

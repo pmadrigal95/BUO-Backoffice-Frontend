@@ -287,9 +287,9 @@ export default {
 
         $_setFilter() {
             //TODO: FIX IT
-            this.$_setCompanyFilter();
+            // this.$_setCompanyFilter();
             // this.$_setUserFilter();
-            this.$_setAbilityFilter();
+            // this.$_setAbilityFilter();
             // this.$_setAssessmentFilter();
         },
 

@@ -6,15 +6,16 @@
  *
  */
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
-import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
-
-import { baseFilterColumnsHelper } from '@/helpers/baseFilterColumnsHelper';
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
@@ -65,10 +66,8 @@ export default {
     },
 
     methods: {
-        ...mapActions('filters', ['$_set_filter']),
-
         $_setFilter() {
-            baseFilterColumnsHelper.$_setPromotionalCodeColumns({
+            baseDataTableColumnsHelper.$_setPromotionalCodeColumns({
                 pageView: this.pageView,
             });
             this.key++;

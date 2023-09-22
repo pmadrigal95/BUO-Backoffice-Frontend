@@ -485,12 +485,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('filters', [
-            '$_set_filter',
-            '$_set_advfilter',
-            '$_clean_filter',
-            '$_clean_advfilter',
-        ]),
+        ...mapActions('filters', ['$_set_filter', '$_set_advfilter']),
 
         $_setCacheConfig() {
             if (this.pageView) {

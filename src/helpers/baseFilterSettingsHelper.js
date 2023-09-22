@@ -11,6 +11,10 @@ import { baseFilterColumnsHelper } from '@/helpers/baseFilterColumnsHelper';
  */
 const buoId = 1;
 
+const fnIsBuoUser = (companyId) => {
+    return companyId === buoId;
+};
+
 /**
  * Get companyId
  */
@@ -88,6 +92,25 @@ const extraParams = ({
 /**
  * Configuracion BaseServerDataTable
  */
+const abilitySetting = ({ key, categoryId, singleSelect, method, columns }) => {
+    const finalApi = method
+        ? method
+        : categoryId
+        ? `cualificacion/findByDeep/${categoryId}`
+        : 'cualificacion/findBy';
+
+    return {
+        endpoint: finalApi,
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
 const promotionalCodeSetting = ({ key, singleSelect, columns }) => {
     return {
         endpoint: 'codigoPromocion/findBy',
@@ -132,6 +155,41 @@ export const baseFilterSettingsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
+    $_setAbilitySetting({
+        key,
+        companyId,
+        categoryId,
+        singleSelect,
+        method,
+        isFilter,
+        list,
+        pageView,
+    }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+
+        const show = method ? true : isFilter ? false : fnIsBuoUser(companyId);
+
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setAbilityColumns({
+                  isFilter,
+                  pageView,
+                  isBuoUser,
+                  show,
+              });
+
+        return abilitySetting({
+            key,
+            categoryId,
+            singleSelect,
+            method,
+            columns,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
     $_setPromotionalCodeSetting({
         key,
         singleSelect,
@@ -147,5 +205,32 @@ export const baseFilterSettingsHelper = {
               });
 
         return promotionalCodeSetting({ key, singleSelect, columns });
+    },
+};
+
+export const baseDataTableColumnsHelper = {
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setAbilityColumns({ method, isFilter, pageView, companyId }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+
+        const show = method ? true : isFilter ? false : isBuoUser;
+        return baseFilterColumnsHelper.$_setAbilityColumns({
+            isFilter,
+            pageView,
+            isBuoUser,
+            show,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setPromotionalCodeColumns({ isFilter, pageView }) {
+        return baseFilterColumnsHelper.$_setPromotionalCodeColumns({
+            isFilter,
+            pageView,
+        });
     },
 };

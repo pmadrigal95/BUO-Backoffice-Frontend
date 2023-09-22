@@ -6,13 +6,16 @@
  *
  */
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
-import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
 
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
@@ -70,10 +73,11 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            // return this.filtersBypageView(this.pageView);
             return baseFilterSettingsHelper.$_setAbilitySetting({
                 companyId: this.user.companyId,
                 categoryId: this.entity.categoryId,
+                list: this.filtersBypageView(this.pageView),
+                pageView: this.pageView,
             });
         },
 
@@ -86,27 +90,14 @@ export default {
         },
     },
 
-    created() {
-        //TODO FIX IT
-        // this.$_setFilter();
-    },
-
     methods: {
-        ...mapActions('filters', ['$_set_filter']),
-
         $_setFilter() {
-            const pageView = this.filtersBypageView(this.pageView);
+            baseDataTableColumnsHelper.$_setAbilityColumns({
+                pageView: this.pageView,
+                companyId: this.user.companyId,
+            });
 
-            if (!pageView) {
-                this.$_set_filter({
-                    [this.pageView]:
-                        baseFilterSettingsHelper.$_setAbilitySetting({
-                            companyId: this.user.companyId,
-                            categoryId: this.entity.categoryId,
-                        }),
-                });
-                this.key++;
-            }
+            this.key++;
         },
 
         /**
