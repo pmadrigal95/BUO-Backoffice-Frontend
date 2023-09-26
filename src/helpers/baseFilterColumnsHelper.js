@@ -6,6 +6,9 @@
 
 import store from '@/store/index';
 
+/**
+ * Config Cache
+ */
 const setUpCache = ({ pageView, columns, isFilter }) => {
     store.dispatch(
         `filters/${isFilter ? '$_clean_advfilter' : '$_clean_filter'}`,
@@ -21,6 +24,10 @@ const setUpCache = ({ pageView, columns, isFilter }) => {
         { root: true }
     );
 };
+
+/**
+ * Columnas
+ */
 
 /**
  * Configuracion BaseServerDataTable
@@ -99,6 +106,142 @@ const abilityColumns = (isBuoUser, show) => {
             text: 'Modificado Por',
             align: 'start',
             value: 'nombreUsuarioModifica',
+            show: false,
+        },
+    ];
+};
+
+const assessmentColumns = (isBuoUser) => {
+    return [
+        {
+            text: 'Empresa',
+            align: 'start',
+            value: 'nombreOrganizacion',
+            show: isBuoUser,
+        },
+        {
+            text: 'Departamento',
+            align: 'start',
+            value: 'nombreDepartamento',
+            show: false,
+        },
+        {
+            text: 'Assessment',
+            align: 'start',
+            value: 'nombre',
+            show: true,
+        },
+        {
+            text: 'Descripción',
+            align: 'start',
+            value: 'descripcion',
+            show: false,
+        },
+        {
+            text: 'Tipo',
+            align: 'start',
+            value: 'nombreTipoPrueba',
+            show: true,
+        },
+        {
+            text: 'Enlace',
+            align: 'start',
+            value: 'enlace',
+            show: false,
+        },
+        {
+            text: 'Estado',
+            align: 'center',
+            type: 'chip',
+            value: 'nombreEstado',
+            show: false,
+        },
+        {
+            text: 'Creado Por',
+            align: 'start',
+            value: 'nombreUsuarioCrea',
+            show: false,
+        },
+    ];
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const userAssessmentColumns = (departmentId, isBuoUser, isFilter) => {
+    return [
+        {
+            text: 'Empresa',
+            align: 'start',
+            value: 'nombreOrganizacion',
+            show: isBuoUser,
+        },
+        {
+            text: 'Área / Departamento',
+            align: 'start',
+            value: 'nombreDepartamento',
+            show: departmentId != undefined,
+        },
+        {
+            text: 'Assessment',
+            align: 'start',
+            value: 'nombrePrueba',
+            show: true,
+        },
+        {
+            text: 'Tipo',
+            align: 'start',
+            value: 'nombreTipoPrueba',
+            show: true,
+        },
+        {
+            text: 'Nombre',
+            align: 'start',
+            value: 'nombreUsuario',
+            show: true,
+        },
+        {
+            text: 'Correo',
+            align: 'start',
+            value: 'correo',
+            show: isFilter ? true : false,
+        },
+        {
+            text: 'Asignado',
+            align: 'center',
+            type: 'bool',
+            value: 'asignado',
+            show: true,
+        },
+        {
+            text: 'Completado',
+            align: 'center',
+            type: 'bool',
+            value: 'completado',
+            show: true,
+        },
+        {
+            text: 'Resultado',
+            type: 'number',
+            value: 'resultado',
+            show: true,
+        },
+        {
+            text: 'Nivel',
+            type: 'color',
+            value: 'nivel',
+            show: true,
+        },
+        {
+            text: 'Fecha Asignación',
+            align: 'start',
+            value: 'fechaAsignacionFormato',
+            show: false,
+        },
+        {
+            text: 'Fecha Completado',
+            align: 'start',
+            value: 'fechaCompletadaFormato',
             show: false,
         },
     ];
@@ -191,12 +334,42 @@ const promotionalCodeColumns = (isFilter) => {
     ];
 };
 
+/**
+ * Exports
+ */
 export const baseFilterColumnsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
     $_setAbilityColumns({ isFilter, pageView, isBuoUser, show }) {
         const columns = abilityColumns(isBuoUser, show);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setAssessmentColumns({ isFilter, pageView, isBuoUser }) {
+        const columns = assessmentColumns(isBuoUser);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setUserAssessmentColumns({
+        isFilter,
+        pageView,
+        isBuoUser,
+        departmentId,
+    }) {
+        const columns = userAssessmentColumns(
+            departmentId,
+            isBuoUser,
+            isFilter
+        );
         setUpCache({ pageView, columns, isFilter });
         return columns;
     },

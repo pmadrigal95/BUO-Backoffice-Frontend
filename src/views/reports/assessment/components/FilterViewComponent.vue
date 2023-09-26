@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import baseFnFile from '@/helpers/baseFnFile';
 
@@ -18,7 +18,10 @@ import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
-import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
 
 import { baseAssessmentHelper } from '@/views/user/user/components/assessment/baseAssessmentHelper';
 
@@ -81,7 +84,13 @@ export default {
         },
 
         setting() {
-            return this.filtersBypageView(this.pageView);
+            return baseFilterSettingsHelper.$_setUserAssessmentSetting({
+                companyId: this.user.companyId,
+                departmentId: this.entity.departmentId,
+                singleSelect: false,
+                list: this.filtersBypageView(this.pageView),
+                pageView: this.pageView,
+            });
         },
 
         permission() {
@@ -93,27 +102,15 @@ export default {
         },
     },
 
-    created() {
-        this.$_setFilter();
-    },
-
     methods: {
-        ...mapActions('filters', ['$_set_filter']),
-
         $_setFilter() {
-            const pageView = this.filtersBypageView(this.pageView);
+            baseDataTableColumnsHelper.$_setUserAssessmentColumns({
+                companyId: this.user.companyId,
+                departmentId: this.entity.departmentId,
+                pageView: this.pageView,
+            });
 
-            if (!pageView) {
-                this.$_set_filter({
-                    [this.pageView]:
-                        baseFilterSettingsHelper.$_setUserAssessmentSetting({
-                            companyId: this.user.companyId,
-                            departmentId: this.entity.departmentId,
-                            singleSelect: false,
-                        }),
-                });
-                this.key++;
-            }
+            this.key++;
         },
 
         /**

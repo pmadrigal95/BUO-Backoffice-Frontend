@@ -7,6 +7,10 @@
 import { baseFilterColumnsHelper } from '@/helpers/baseFilterColumnsHelper';
 
 /**
+ * Configuraciones
+ */
+
+/**
  * Organizacion BUO
  */
 const buoId = 1;
@@ -90,6 +94,10 @@ const extraParams = ({
 };
 
 /**
+ * FILTROS
+ */
+
+/**
  * Configuracion BaseServerDataTable
  */
 const abilitySetting = ({ key, categoryId, singleSelect, method, columns }) => {
@@ -111,6 +119,47 @@ const abilitySetting = ({ key, categoryId, singleSelect, method, columns }) => {
 /**
  * Configuracion BaseServerDataTable
  */
+const assessmentSetting = ({
+    apiEndpoint = 'findByDeep',
+    key,
+    assessmentTypeId,
+    singleSelect,
+    columns,
+}) => {
+    return {
+        endpoint: assessmentTypeId
+            ? `prueba/${apiEndpoint}/${assessmentTypeId}`
+            : 'prueba/findBy',
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const userAssessmentSetting = ({
+    key,
+    departmentId,
+    singleSelect,
+    columns,
+}) => {
+    return {
+        endpoint: departmentId
+            ? `usuarioPrueba/findByDeep/${departmentId}`
+            : 'usuarioPrueba/findBy',
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
 const promotionalCodeSetting = ({ key, singleSelect, columns }) => {
     return {
         endpoint: 'codigoPromocion/findBy',
@@ -120,6 +169,10 @@ const promotionalCodeSetting = ({ key, singleSelect, columns }) => {
         multiSelect: !singleSelect,
     };
 };
+
+/**
+ * Exports
+ */
 
 export const baseFilterSettingsHelper = {
     /**
@@ -190,6 +243,69 @@ export const baseFilterSettingsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
+    $_setAssessmentSetting({
+        apiEndpoint,
+        key,
+        companyId,
+        assessmentTypeId,
+        singleSelect,
+        isFilter,
+        list,
+        pageView,
+    }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setAssessmentColumns({
+                  isFilter,
+                  pageView,
+                  isBuoUser,
+              });
+
+        return assessmentSetting({
+            apiEndpoint,
+            key,
+            assessmentTypeId,
+            singleSelect,
+            columns,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setUserAssessmentSetting({
+        key,
+        companyId,
+        departmentId,
+        singleSelect,
+        isFilter,
+        list,
+        pageView,
+    }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setUserAssessmentColumns({
+                  isFilter,
+                  pageView,
+                  isBuoUser,
+                  departmentId,
+              });
+
+        return userAssessmentSetting({
+            key,
+            departmentId,
+            singleSelect,
+            columns,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
     $_setPromotionalCodeSetting({
         key,
         singleSelect,
@@ -221,6 +337,36 @@ export const baseDataTableColumnsHelper = {
             pageView,
             isBuoUser,
             show,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setAssessmentColumns({ isFilter, pageView, companyId }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+        return baseFilterColumnsHelper.$_setAssessmentColumns({
+            isFilter,
+            pageView,
+            isBuoUser,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setUserAssessmentColumns({
+        isFilter,
+        pageView,
+        companyId,
+        departmentId,
+    }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+        return baseFilterColumnsHelper.$_setUserAssessmentColumns({
+            isFilter,
+            pageView,
+            isBuoUser,
+            departmentId,
         });
     },
 
