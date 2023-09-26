@@ -40,7 +40,7 @@ export default {
     },
 
     computed: {
-        borderColor() {
+        pdaColor() {
             return baseDataVisualizationColorsHelper.$_getColor({
                 profile: this.color.toLowerCase(),
                 type: 'backgroundColor',
@@ -59,7 +59,7 @@ export default {
     >
         <section slot="body" class="my-7">
             <BaseSkeletonLoader v-if="!data" type="card" />
-            <RadarChartViewComponent :data="data" :borderColor="borderColor" />
+            <RadarChartViewComponent :data="data" :pdaColor="pdaColor" />
         </section>
     </BaseCardViewComponent>
 </template>

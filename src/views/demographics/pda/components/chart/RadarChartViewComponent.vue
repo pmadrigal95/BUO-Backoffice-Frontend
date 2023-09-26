@@ -7,8 +7,7 @@
 
 import { mapGetters } from 'vuex';
 
-const BaseRadarChartImpl = () =>
-    import('@/components/backoffice/chart/BaseRadarChartImpl');
+const PDARadarChart = () => import('@/components/pda/PDARadarChart');
 
 export default {
     name: 'RadarChartViewComponent',
@@ -19,38 +18,34 @@ export default {
             required: true,
         },
 
-        borderColor: {
+        pdaColor: {
             type: String,
-            default: '#003F5E',
+            requiered: true,
         },
     },
 
     components: {
-        BaseRadarChartImpl,
+        PDARadarChart,
     },
 
     computed: {
         ...mapGetters('theme', ['app']),
 
         chartData() {
-            return {
-                labels: this.data.map((element) =>
-                    this.$vuetify.breakpoint.mobile
-                        ? element.abilityUI
-                        : element.ability
-                ),
-                datasets: [
-                    {
-                        borderColor: this.borderColor,
-                        data: this.data.map((element) => element.value),
-                    },
-                ],
-            };
+            return this.data.map((element, index) => {
+                return {
+                    id: index,
+                    habilidadUI: element.abilityUI,
+                    porcentajeNaturalHabilidad: element.value,
+                    porcentajeNaturalHabilidadFormato: element.value,
+                    resaltar: element.highlight,
+                };
+            });
         },
     },
 };
 </script>
 
 <template>
-    <BaseRadarChartImpl :chartData="chartData" :dark="app" />
+    <PDARadarChart :data="chartData" :profile="pdaColor" :dark="app" />
 </template>
