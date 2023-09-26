@@ -6,8 +6,6 @@
  *
  */
 
-import baseDataVisualizationColorsHelper from '@/views/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
-
 const BaseCardViewComponent = () =>
     import('@/views/demographics/pda/components/shared/BaseCardViewComponent');
 
@@ -40,11 +38,8 @@ export default {
     },
 
     computed: {
-        borderColor() {
-            return baseDataVisualizationColorsHelper.$_getColor({
-                profile: this.color.toLowerCase(),
-                type: 'backgroundColor',
-            });
+        pdaColor() {
+            return this.$vuetify.theme.themes.light[this.color.toLowerCase()];
         },
     },
 };
@@ -59,7 +54,7 @@ export default {
     >
         <section slot="body" class="my-7">
             <BaseSkeletonLoader v-if="!data" type="card" />
-            <RadarChartViewComponent :data="data" :borderColor="borderColor" />
+            <RadarChartViewComponent :data="data" :pdaColor="pdaColor" />
         </section>
     </BaseCardViewComponent>
 </template>
