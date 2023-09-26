@@ -119,6 +119,45 @@ const abilitySetting = ({ key, categoryId, singleSelect, method, columns }) => {
 /**
  * Configuracion BaseServerDataTable
  */
+const categorySetting = ({ key, singleSelect, columns }) => {
+    return {
+        endpoint: 'categoria/findBy',
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const departmentSetting = ({ key, singleSelect, columns }) => {
+    return {
+        endpoint: 'departamento/findBy',
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const assessmentTypeSetting = ({ key, singleSelect, columns }) => {
+    return {
+        endpoint: 'tipoPrueba/findBy',
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
 const assessmentSetting = ({
     apiEndpoint = 'findByDeep',
     key,
@@ -243,6 +282,78 @@ export const baseFilterSettingsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
+    $_setCategorySetting({
+        key,
+        companyId,
+        singleSelect,
+        isFilter,
+        list,
+        pageView,
+    }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setCategoryColumns({
+                  isFilter,
+                  pageView,
+                  isBuoUser,
+              });
+
+        return categorySetting({ key, singleSelect, columns });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDepartmentSetting({
+        key,
+        companyId,
+        singleSelect,
+        isFilter,
+        list,
+        pageView,
+    }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setDepartmentColumns({
+                  isFilter,
+                  pageView,
+                  isBuoUser,
+              });
+
+        return departmentSetting({ key, singleSelect, columns });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setAssessmentTypeSetting({
+        key,
+        companyId,
+        singleSelect,
+        isFilter,
+        list,
+        pageView,
+    }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setAssessmentTypeColumns({
+                  isFilter,
+                  pageView,
+                  isBuoUser,
+              });
+
+        return assessmentTypeSetting({ key, singleSelect, columns });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
     $_setAssessmentSetting({
         apiEndpoint,
         key,
@@ -337,6 +448,42 @@ export const baseDataTableColumnsHelper = {
             pageView,
             isBuoUser,
             show,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setCategoryColumns({ isFilter, pageView, companyId }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+        return baseFilterColumnsHelper.$_setCategoryColumns({
+            isFilter,
+            pageView,
+            isBuoUser,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDepartmentColumns({ isFilter, pageView, companyId }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+        return baseFilterColumnsHelper.$_setDepartmentColumns({
+            isFilter,
+            pageView,
+            isBuoUser,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setAssessmentTypeColumns({ isFilter, pageView, companyId }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+        return baseFilterColumnsHelper.$_setAssessmentTypeColumns({
+            isFilter,
+            pageView,
+            isBuoUser,
         });
     },
 

@@ -111,6 +111,197 @@ const abilityColumns = (isBuoUser, show) => {
     ];
 };
 
+/**
+ * Configuracion BaseServerDataTable
+ */
+const categoryColumns = (isBuoUser, isFilter) => {
+    return [
+        {
+            text: 'Nivel Superior',
+            align: 'start',
+            value: 'nombrePadre',
+            show: isFilter ? false : true,
+        },
+        {
+            text: 'Nombre',
+            align: 'start',
+            value: 'nombre',
+            show: true,
+        },
+        {
+            text: 'Descripción',
+            align: 'start',
+            value: 'descripcion',
+            show: false,
+        },
+        {
+            text: 'Empresa',
+            align: 'start',
+            value: 'nombreOrganizacion',
+            show: isBuoUser,
+        },
+        {
+            text: 'Interna',
+            type: 'bool',
+            align: 'center',
+            value: 'esInterna',
+            show: isBuoUser,
+        },
+        {
+            text: 'Estado',
+            align: 'center',
+            type: 'chip',
+            value: 'nombreEstado',
+            show: false,
+        },
+        {
+            text: 'Creado por',
+            align: 'start',
+            value: 'nombreUsuarioModifica',
+            show: false,
+        },
+    ];
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const departmentColumns = (isBuoUser, isFilter) => {
+    return [
+        {
+            text: 'Nivel Superior',
+            align: 'start',
+            value: 'etiquetaNivelPadre',
+            show: false,
+        },
+        {
+            text: 'Nivel',
+            align: 'start',
+            value: 'etiquetaNivel',
+            show: false,
+        },
+        {
+            text: 'Nombre',
+            align: 'start',
+            value: 'nombre',
+            show: true,
+        },
+        {
+            text: 'Área / Departamento',
+            align: 'start',
+            value: 'nombrePadre',
+            show: true,
+        },
+        {
+            text: 'Empresa',
+            align: 'start',
+            value: 'nombreOrganizacion',
+            show: isBuoUser,
+        },
+        {
+            text: 'Administrador',
+            align: 'start',
+            value: 'nombreUsuarioAdmin',
+            show: isFilter ? true : false,
+        },
+        {
+            text: 'Correo Administrador',
+            align: 'start',
+            value: 'correoUsuarioAdmin',
+            show: isFilter ? true : false,
+        },
+        {
+            text: 'Teléfono Administrador',
+            align: 'start',
+            value: 'telefonoUsuarioAdmin',
+            show: false,
+        },
+        {
+            text: 'Colaboradores',
+            align: 'end',
+            value: 'cantidadColaboradores',
+            show: isFilter ? false : true,
+        },
+        {
+            text: 'Descripción',
+            align: 'start',
+            value: 'descripcion',
+            show: false,
+        },
+        {
+            text: 'Estado',
+            align: 'center',
+            type: 'chip',
+            value: 'nombreEstado',
+            show: false,
+        },
+        {
+            text: 'Creado por',
+            align: 'start',
+            value: 'nombreUsuarioModifica',
+            show: false,
+        },
+    ];
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const assessmentTypeColumns = (isBuoUser, isFilter) => {
+    return [
+        {
+            text: 'Empresa',
+            align: 'start',
+            value: 'nombreOrganizacion',
+            show: isBuoUser,
+        },
+        {
+            text: 'Departamento',
+            align: 'start',
+            value: 'nombreDepartamento',
+            show: false,
+        },
+        {
+            text: 'Nivel Superior',
+            align: 'start',
+            value: 'nombrePadre',
+            show: isFilter ? false : true,
+        },
+        {
+            text: 'Nombre',
+            align: 'start',
+            value: 'nombre',
+            show: true,
+        },
+        {
+            text: 'Descripción',
+            align: 'start',
+            value: 'descripcion',
+            show: false,
+        },
+        {
+            text: 'Interna',
+            type: 'bool',
+            align: 'center',
+            value: 'esInterna',
+            show: isBuoUser,
+        },
+        {
+            text: 'Estado',
+            align: 'center',
+            type: 'chip',
+            value: 'nombreEstado',
+            show: false,
+        },
+        {
+            text: 'Creado Por',
+            align: 'start',
+            value: 'nombreUsuarioCrea',
+            show: false,
+        },
+    ];
+};
+
 const assessmentColumns = (isBuoUser) => {
     return [
         {
@@ -343,6 +534,33 @@ export const baseFilterColumnsHelper = {
      */
     $_setAbilityColumns({ isFilter, pageView, isBuoUser, show }) {
         const columns = abilityColumns(isBuoUser, show);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setCategoryColumns({ isFilter, pageView, isBuoUser }) {
+        const columns = categoryColumns(isBuoUser, isFilter);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDepartmentColumns({ isFilter, pageView, isBuoUser }) {
+        const columns = departmentColumns(isBuoUser, isFilter);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setAssessmentTypeColumns({ isFilter, pageView, isBuoUser }) {
+        const columns = assessmentTypeColumns(isBuoUser, isFilter);
         setUpCache({ pageView, columns, isFilter });
         return columns;
     },

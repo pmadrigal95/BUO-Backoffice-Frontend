@@ -82,18 +82,11 @@ export default {
 
     methods: {
         $_setFilter() {
-            const pageView = this.filtersBypageView(this.pageView);
-
-            if (!pageView) {
-                this.$_set_filter({
-                    [this.pageView]:
-                        baseFilterSettingsHelper.$_setAssessmentSetting({
-                            companyId: this.user.companyId,
-                            assessmentTypeId: this.entity.assessmentTypeId,
-                        }),
-                });
-                this.key++;
-            }
+            baseDataTableColumnsHelper.$_setAssessmentColumns({
+                pageView: this.pageView,
+                companyId: this.user.companyId,
+            });
+            this.key++;
         },
 
         /**

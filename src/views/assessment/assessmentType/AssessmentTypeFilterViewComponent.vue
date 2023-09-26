@@ -6,13 +6,16 @@
  *
  */
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
-import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
@@ -60,29 +63,21 @@ export default {
         },
 
         setting() {
-            return this.filtersBypageView(this.pageView);
+            return baseFilterSettingsHelper.$_setAssessmentTypeSetting({
+                companyId: this.user.companyId,
+                list: this.filtersBypageView(this.pageView),
+                pageView: this.pageView,
+            });
         },
     },
 
-    created() {
-        this.$_setFilter();
-    },
-
     methods: {
-        ...mapActions('filters', ['$_set_filter']),
-
         $_setFilter() {
-            const pageView = this.filtersBypageView(this.pageView);
-
-            if (!pageView) {
-                this.$_set_filter({
-                    [this.pageView]:
-                        baseFilterSettingsHelper.$_setAssessmentTypeSetting({
-                            companyId: this.user.companyId,
-                        }),
-                });
-                this.key++;
-            }
+            baseDataTableColumnsHelper.$_setAssessmentTypeColumns({
+                pageView: this.pageView,
+                companyId: this.user.companyId,
+            });
+            this.key++;
         },
 
         /**
