@@ -81,7 +81,12 @@ export default {
         },
 
         setting() {
-            return this.filtersBypageView(this.pageView);
+            // return this.filtersBypageView(this.pageView);
+            return baseFilterSettingsHelper.$_setUserAssessmentSetting({
+                companyId: this.user.companyId,
+                departmentId: this.entity.departmentId,
+                singleSelect: false,
+            });
         },
 
         permission() {
@@ -94,7 +99,7 @@ export default {
     },
 
     created() {
-        this.$_setFilter();
+        // this.$_setFilter();
     },
 
     methods: {

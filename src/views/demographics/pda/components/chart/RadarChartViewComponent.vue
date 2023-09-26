@@ -28,6 +28,12 @@ export default {
         PDARadarChart,
     },
 
+    data() {
+        return {
+            key: 0,
+        };
+    },
+
     computed: {
         ...mapGetters('theme', ['app']),
 
@@ -37,15 +43,28 @@ export default {
                     id: index,
                     habilidadUI: element.abilityUI,
                     porcentajeNaturalHabilidad: element.value,
-                    porcentajeNaturalHabilidadFormato: element.value,
+                    porcentajeNaturalHabilidadFormato: element.value * 100,
                     resaltar: element.highlight,
                 };
             });
+        },
+    },
+
+    watch: {
+        app: {
+            handler() {
+                this.key++;
+            },
         },
     },
 };
 </script>
 
 <template>
-    <PDARadarChart :data="chartData" :profile="pdaColor" :dark="app" />
+    <PDARadarChart
+        :data="chartData"
+        :profile="pdaColor"
+        :dark="app"
+        :key="key"
+    />
 </template>

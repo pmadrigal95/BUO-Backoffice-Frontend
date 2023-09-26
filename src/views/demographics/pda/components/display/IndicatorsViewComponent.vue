@@ -6,8 +6,6 @@
  *
  */
 
-import baseDataVisualizationColorsHelper from '@/views/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
-
 const BaseCardViewComponent = () =>
     import('@/views/demographics/pda/components/shared/BaseCardViewComponent');
 
@@ -41,10 +39,7 @@ export default {
 
     computed: {
         pdaColor() {
-            return baseDataVisualizationColorsHelper.$_getColor({
-                profile: this.color.toLowerCase(),
-                type: 'backgroundColor',
-            });
+            return this.$vuetify.theme.themes.light[this.color.toLowerCase()];
         },
     },
 };
