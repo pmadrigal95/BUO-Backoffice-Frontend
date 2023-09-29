@@ -6,13 +6,16 @@
  *
  */
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
-import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
@@ -67,7 +70,11 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return this.filtersBypageView(this.pageView);
+            return baseFilterSettingsHelper.$_setMicroAbilitySetting({
+                companyId: this.user.companyId,
+                list: this.filtersBypageView(this.pageView),
+                pageView: this.pageView,
+            });
         },
 
         write() {
@@ -79,25 +86,13 @@ export default {
         },
     },
 
-    created() {
-        this.$_setFilter();
-    },
-
     methods: {
-        ...mapActions('filters', ['$_set_filter']),
-
         $_setFilter() {
-            const pageView = this.filtersBypageView(this.pageView);
-
-            if (!pageView) {
-                this.$_set_filter({
-                    [this.pageView]:
-                        baseFilterSettingsHelper.$_setMicroAbilitySetting({
-                            companyId: this.user.companyId,
-                        }),
-                });
-                this.key++;
-            }
+            baseDataTableColumnsHelper.$_setMicroAbilityColumns({
+                companyId: this.user.companyId,
+                pageView: this.pageView,
+            });
+            this.key++;
         },
 
         /**

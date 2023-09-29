@@ -1,7 +1,7 @@
 /**
  * Descripción: Configuracion de Columnas de Filtros de los Grids
  *
- * @displayName baseFilterSettingsHelper
+ * @displayName baseFilterColumnsHelper
  */
 
 import store from '@/store/index';
@@ -28,6 +28,217 @@ const setUpCache = ({ pageView, columns, isFilter }) => {
 /**
  * Columnas
  */
+/**
+ * Configuracion BaseServerDataTable
+ */
+const userColumns = (departmentId, isBuoUser, isFilter) => {
+    return [
+        {
+            text: 'Empresa',
+            align: 'start',
+            value: 'nombreOrganizacion',
+            show: isBuoUser,
+        },
+        {
+            text: 'Área / Departamento',
+            align: 'start',
+            value: 'nombreDepartamento',
+            show: departmentId != undefined,
+        },
+        {
+            text: 'Nombre',
+            align: 'start',
+            value: 'nombre',
+            show: false,
+        },
+        {
+            text: 'Primer Apellido',
+            align: 'start',
+            value: 'primerApellido',
+            show: false,
+        },
+        {
+            text: 'Segundo Apellido',
+            align: 'start',
+            value: 'segundoApellido',
+            show: false,
+        },
+        {
+            text: 'Nombre Completo',
+            align: 'start',
+            value: 'nombreCompleto',
+            show: true,
+        },
+        {
+            text: 'Correo',
+            align: 'start',
+            value: 'correo',
+            show: true,
+        },
+        {
+            text: 'Username',
+            align: 'start',
+            value: 'username',
+            show: false,
+        },
+        {
+            text: 'País',
+            align: 'start',
+            value: 'nombrePais',
+            show: false,
+        },
+        {
+            text: 'Wallet Activo',
+            type: 'bool',
+            align: 'center',
+            value: 'walletActivo',
+            show: isFilter ? false : true,
+        },
+        {
+            text: 'Test PDA',
+            type: 'bool',
+            align: 'center',
+            value: 'conPda',
+            show: isFilter ? false : true,
+        },
+        {
+            text: 'Estado',
+            align: 'center',
+            type: 'chip',
+            value: 'nombreEstado',
+            show: false,
+        },
+        {
+            text: 'Identificación',
+            align: 'start',
+            value: 'identificacion',
+            show: false,
+        },
+        {
+            text: 'Género',
+            align: 'start',
+            value: 'nombreGenero',
+            show: false,
+        },
+        {
+            text: 'Ciudad',
+            align: 'start',
+            value: 'ciudad',
+            show: false,
+        },
+        {
+            text: 'Teléfono',
+            align: 'start',
+            value: 'telefono',
+            show: false,
+        },
+        {
+            text: 'Fecha Activación',
+            align: 'start',
+            value: 'fechaActivacionFormato',
+            show: isFilter ? false : true,
+        },
+    ];
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const companyColumns = (isFilter) => {
+    return [
+        {
+            text: 'Nombre',
+            align: 'start',
+            value: 'nombre',
+            show: true,
+        },
+        {
+            text: 'Nombre Contacto',
+            align: 'start',
+            value: 'nombreContacto',
+            show: isFilter ? true : false,
+        },
+        {
+            text: 'Correo Contacto',
+            align: 'start',
+            value: 'correoContacto',
+            show: isFilter ? true : false,
+        },
+        {
+            text: 'Token Colaborador',
+            type: 'number',
+            align: 'start',
+            value: 'tokenUsuario',
+            show: false,
+        },
+        {
+            text: 'Colaboradores',
+            type: 'number',
+            align: 'end',
+            value: 'totalUsuarios',
+            show: isFilter ? false : true,
+        },
+        {
+            text: 'Wallets Activas',
+            type: 'number',
+            align: 'end',
+            value: 'walletsActivas',
+            show: isFilter ? false : true,
+        },
+        {
+            text: 'Certifica Inmediato',
+            type: 'bool',
+            align: 'center',
+            value: 'certificaInmediato',
+            show: false,
+        },
+        {
+            text: 'Mostrar Puestos Genéricos',
+            type: 'bool',
+            align: 'center',
+            value: 'mostrarPuestosGenericos',
+            show: false,
+        },
+        {
+            text: 'Demo',
+            type: 'bool',
+            align: 'center',
+            value: 'esClienteDemo',
+            show: true,
+        },
+        {
+            text: 'Estado',
+            align: 'center',
+            type: 'chip',
+            value: 'nombreEstado',
+            show: true,
+        },
+        {
+            text: 'Industria',
+            align: 'start',
+            value: 'nombreIndustria',
+            show: false,
+        },
+        {
+            text: 'País',
+            align: 'start',
+            value: 'nombrePais',
+            show: false,
+        },
+        {
+            text: 'Ciudad',
+            align: 'start',
+            value: 'ciudad',
+            show: false,
+        },
+        {
+            text: 'Descripción',
+            align: 'start',
+            value: 'descripcion',
+            show: false,
+        },
+    ];
+};
 
 /**
  * Configuracion BaseServerDataTable
@@ -107,6 +318,122 @@ const abilityColumns = (isBuoUser, show) => {
             align: 'start',
             value: 'nombreUsuarioModifica',
             show: false,
+        },
+    ];
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const microAbilityColumns = (isBuoUser, isFilter) => {
+    return [
+        {
+            text: 'Indicador',
+            align: 'start',
+            value: 'definicionCualificacion',
+            show: true,
+        },
+        {
+            text: 'Definición',
+            align: 'start',
+            value: 'definicion',
+            show: true,
+        },
+        {
+            text: 'Interna',
+            type: 'bool',
+            align: 'center',
+            value: 'esInterna',
+            show: isBuoUser,
+        },
+        {
+            text: 'Empresa',
+            align: 'start',
+            value: 'nombreOrganizacion',
+            show: isFilter ? false : isBuoUser,
+        },
+        {
+            text: 'Estado',
+            align: 'center',
+            type: 'chip',
+            value: 'nombreEstado',
+            show: false,
+        },
+    ];
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const approvalColumns = (isBuoUser, isFilter) => {
+    return [
+        {
+            text: 'Nombre Empleado',
+            align: 'start',
+            value: 'nombreEmpleado',
+            show: true,
+        },
+        {
+            text: 'Indicador',
+            align: 'start',
+            value: 'definicionCualificacion',
+            show: true,
+        },
+        {
+            text: 'Micro-Indicador',
+            align: 'start',
+            value: 'definicionCompetencia',
+            show: true,
+        },
+        {
+            text: 'Empresa',
+            align: 'start',
+            value: 'nombreOrganizacion',
+            show: isBuoUser,
+        },
+        {
+            text: 'Área / Departamento',
+            align: 'start',
+            value: 'nombreDepartamento',
+            show: false,
+        },
+        {
+            text: 'Comentario',
+            align: 'start',
+            value: 'comentario',
+            show: false,
+        },
+        {
+            text: 'Comentario Usuario',
+            align: 'start',
+            value: 'comentarioUsuario',
+            show: false,
+        },
+        {
+            text: 'Estado',
+            type: 'chip',
+            align: 'center',
+            value: 'nombreEstado',
+            show: false,
+        },
+        {
+            text: 'Carga Masiva',
+            type: 'bool',
+            align: 'center',
+            value: 'esCargaMasiva',
+            show: false,
+        },
+        {
+            text: 'Fecha Ingreso',
+            align: 'start',
+            value: 'ingresadoFormato',
+            show: false,
+        },
+        {
+            text: 'Categoría',
+            align: 'start',
+            value: 'nombreCategoria',
+            show: isFilter ? true : false,
         },
     ];
 };
@@ -532,8 +859,44 @@ export const baseFilterColumnsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
+    $_setUserColumns({ isFilter, pageView, isBuoUser, departmentId }) {
+        const columns = userColumns(departmentId, isBuoUser, isFilter);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
     $_setAbilityColumns({ isFilter, pageView, isBuoUser, show }) {
         const columns = abilityColumns(isBuoUser, show);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setCompanyColumns({ isFilter, pageView }) {
+        const columns = companyColumns(isFilter);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setMicroAbilityColumns({ isFilter, pageView, isBuoUser }) {
+        const columns = microAbilityColumns(isBuoUser, isFilter);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setApprovalColumns({ isFilter, pageView, isBuoUser }) {
+        const columns = approvalColumns(isBuoUser, isFilter);
         setUpCache({ pageView, columns, isFilter });
         return columns;
     },

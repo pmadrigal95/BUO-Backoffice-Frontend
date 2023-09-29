@@ -100,6 +100,34 @@ const extraParams = ({
 /**
  * Configuracion BaseServerDataTable
  */
+const userSetting = ({ key, departmentId, singleSelect, columns }) => {
+    return {
+        endpoint: departmentId
+            ? `user/findByDeep/${departmentId}`
+            : 'user/findBy',
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const companySetting = ({ key, singleSelect, columns }) => {
+    return {
+        endpoint: 'organizacion/findBy',
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
 const abilitySetting = ({ key, categoryId, singleSelect, method, columns }) => {
     const finalApi = method
         ? method
@@ -109,6 +137,68 @@ const abilitySetting = ({ key, categoryId, singleSelect, method, columns }) => {
 
     return {
         endpoint: finalApi,
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const microAbilitySetting = ({ key, singleSelect, columns }) => {
+    return {
+        endpoint: 'competencia/findBy',
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const dinamycAbilitySetting = ({ departmentId, singleSelect }) => {
+    return {
+        endpoint: `ability/findBy/${departmentId ? departmentId : '0'}`,
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+        dynamic: true,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const dinamycMicroAbilitySetting = ({ departmentId, singleSelect }) => {
+    return {
+        endpoint: `abilityDetails/findBy/${departmentId ? departmentId : '0'}`,
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+        dynamic: true,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const dinamycTalentSetting = ({ departmentId, singleSelect }) => {
+    return {
+        endpoint: `talent/findBy/${departmentId ? departmentId : '0'}`,
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+        dynamic: true,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const approvalSetting = ({ key, singleSelect, columns }) => {
+    return {
+        endpoint: 'empleadoCompetencia/findBy',
         columns: columns,
         key: key ? key : 'id',
         singleSelect: singleSelect,
@@ -247,6 +337,51 @@ export const baseFilterSettingsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
+    $_setUserSetting({
+        key,
+        companyId,
+        departmentId,
+        singleSelect,
+        isFilter,
+        list,
+        pageView,
+    }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setUserColumns({
+                  isFilter,
+                  pageView,
+                  isBuoUser,
+                  departmentId,
+              });
+
+        return userSetting({
+            key,
+            departmentId,
+            singleSelect,
+            columns,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setCompanySetting({ key, singleSelect, isFilter, list, pageView }) {
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setCompanyColumns({
+                  isFilter,
+                  pageView,
+              });
+
+        return companySetting({ key, singleSelect, columns });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
     $_setAbilitySetting({
         key,
         companyId,
@@ -277,6 +412,75 @@ export const baseFilterSettingsHelper = {
             method,
             columns,
         });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setMicroAbilitySetting({
+        key,
+        companyId,
+        singleSelect,
+        isFilter,
+        list,
+        pageView,
+    }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setMicroAbilityColumns({
+                  isFilter,
+                  pageView,
+                  isBuoUser,
+              });
+
+        return microAbilitySetting({ key, singleSelect, columns });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDinamycAbilitySetting({ departmentId, singleSelect }) {
+        return dinamycAbilitySetting({ departmentId, singleSelect });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDinamycMicroAbilitySetting({ departmentId, singleSelect }) {
+        return dinamycMicroAbilitySetting({ departmentId, singleSelect });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDinamycTalentSetting({ departmentId, singleSelect }) {
+        return dinamycTalentSetting({ departmentId, singleSelect });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setApprovalSetting({
+        key,
+        companyId,
+        singleSelect,
+        isFilter,
+        list,
+        pageView,
+    }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setApprovalColumns({
+                  isFilter,
+                  pageView,
+                  isBuoUser,
+              });
+
+        return approvalSetting({ key, singleSelect, columns });
     },
 
     /**
@@ -439,6 +643,29 @@ export const baseDataTableColumnsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
+    $_setUserColumns({ isFilter, pageView, companyId, departmentId }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+        return baseFilterColumnsHelper.$_setUserColumns({
+            isFilter,
+            pageView,
+            isBuoUser,
+            departmentId,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setCompanyColumns({ isFilter, pageView }) {
+        return baseFilterColumnsHelper.$_setCompanyColumns({
+            isFilter,
+            pageView,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
     $_setAbilityColumns({ method, isFilter, pageView, companyId }) {
         const isBuoUser = fnIsBuoUser(companyId);
 
@@ -448,6 +675,18 @@ export const baseDataTableColumnsHelper = {
             pageView,
             isBuoUser,
             show,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setApprovalColumns({ isFilter, pageView, companyId }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+        return baseFilterColumnsHelper.$_setApprovalColumns({
+            isFilter,
+            pageView,
+            isBuoUser,
         });
     },
 

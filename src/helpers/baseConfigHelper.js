@@ -79,7 +79,7 @@ export default {
 
     $_security: 1,
 
-    $_filter: 'filtersBackOffice',
+    $_filter: 'filtersBackOfficeV2',
 
-    $_advfilter: 'advfiltersBackOffice',
+    $_advfilter: 'advfiltersBackOfficeV2',
 };

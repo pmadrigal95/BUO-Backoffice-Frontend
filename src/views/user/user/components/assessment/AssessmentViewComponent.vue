@@ -6,11 +6,14 @@
  *
  */
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
-import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
 
 const BaseInputDataTable = () =>
     import('@/components/core/forms/BaseInputDataTable');
@@ -89,20 +92,16 @@ export default {
          * Configuracion BaseServerDataTable
          */
         assessmentSetting() {
-            // return this.advfiltersBypageView(this.assessmentDialogView);
             return baseFilterSettingsHelper.$_setAssessmentSetting({
                 apiEndpoint: 'findByDeepWithDefault',
                 companyId: this.user.companyId,
                 assessmentTypeId: this.form.assessmentTypeId,
                 isFilter: true,
                 singleSelect: true,
+                list: this.advfiltersBypageView(this.assessmentDialogView),
+                pageView: this.assessmentDialogView,
             });
         },
-    },
-
-    created() {
-        //TODO: FIX IT
-        // this.$_setAssessmentFilter();
     },
 
     watch: {
@@ -148,25 +147,12 @@ export default {
     },
 
     methods: {
-        ...mapActions('filters', ['$_set_advfilter']),
-
         $_setAssessmentFilter() {
-            const dialogView = this.advfiltersBypageView(
-                this.assessmentDialogView
-            );
-
-            if (!dialogView) {
-                this.$_set_advfilter({
-                    [this.assessmentDialogView]:
-                        baseFilterSettingsHelper.$_setAssessmentSetting({
-                            apiEndpoint: 'findByDeepWithDefault',
-                            companyId: this.user.companyId,
-                            assessmentTypeId: this.form.assessmentTypeId,
-                            isFilter: true,
-                            singleSelect: true,
-                        }),
-                });
-            }
+            baseDataTableColumnsHelper.$_setAssessmentColumns({
+                companyId: this.user.companyId,
+                isFilter: true,
+                pageView: this.assessmentDialogView,
+            });
         },
 
         $_forceUpdateComponente() {

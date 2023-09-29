@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -18,7 +18,10 @@ import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
-import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
 
 import { baseAssessmentHelper } from '@/views/user/user/components/assessment/baseAssessmentHelper';
 
@@ -83,7 +86,12 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return this.filtersBypageView(this.pageView);
+            return baseFilterSettingsHelper.$_setApprovalSetting({
+                companyId: this.user.companyId,
+                singleSelect: false,
+                list: this.filtersBypageView(this.pageView),
+                pageView: this.pageView,
+            });
         },
 
         extraParams() {
@@ -133,26 +141,13 @@ export default {
         },
     },
 
-    created() {
-        this.$_setFilter();
-    },
-
     methods: {
-        ...mapActions('filters', ['$_set_filter']),
-
         $_setFilter() {
-            const pageView = this.filtersBypageView(this.pageView);
-
-            if (!pageView) {
-                this.$_set_filter({
-                    [this.pageView]:
-                        baseFilterSettingsHelper.$_setApprovalSetting({
-                            companyId: this.user.companyId,
-                            singleSelect: false,
-                        }),
-                });
-                this.key++;
-            }
+            baseDataTableColumnsHelper.$_setApprovalColumns({
+                companyId: this.user.companyId,
+                pageView: this.pageView,
+            });
+            this.key++;
         },
 
         /**

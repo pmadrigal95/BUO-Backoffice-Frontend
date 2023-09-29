@@ -70,6 +70,12 @@ function createStoreDefault() {
 
 export default {
     Initializer() {
+        //TODO: Limpiar en proximas versiones
+
+        localStorage.removeItem('filtersBackOffice');
+
+        localStorage.removeItem('advfiltersBackOffice');
+
         createStoreDefault();
 
         /**

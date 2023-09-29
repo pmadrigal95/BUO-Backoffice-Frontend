@@ -6,9 +6,12 @@
  *
  */
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
-import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
 
 const BaseInputDataTable = () =>
     import('@/components/core/forms/BaseInputDataTable');
@@ -42,7 +45,12 @@ export default {
          * Configuracion BaseInputDataTable
          */
         companySetting() {
-            return this.advfiltersBypageView(this.companyDialogView);
+            return baseFilterSettingsHelper.$_setCompanySetting({
+                isFilter: true,
+                singleSelect: true,
+                list: this.advfiltersBypageView(this.companyDialogView),
+                pageView: this.companyDialogView,
+            });
         },
 
         ...mapGetters('authentication', ['user', 'buoId']),
@@ -50,7 +58,6 @@ export default {
 
     mounted() {
         this.$_reviewQueryParams();
-        this.$_setCompanyFilter();
     },
 
     watch: {
@@ -68,22 +75,11 @@ export default {
     },
 
     methods: {
-        ...mapActions('filters', ['$_set_advfilter']),
-
         $_setCompanyFilter() {
-            const dialogView = this.advfiltersBypageView(
-                this.companyDialogView
-            );
-
-            if (!dialogView) {
-                this.$_set_advfilter({
-                    [this.companyDialogView]:
-                        baseFilterSettingsHelper.$_setCompanySetting({
-                            isFilter: true,
-                            singleSelect: true,
-                        }),
-                });
-            }
+            baseDataTableColumnsHelper.$_setCompanyColumns({
+                isFilter: true,
+                pageView: this.companyDialogView,
+            });
         },
 
         $_reviewQueryParams() {
