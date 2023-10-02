@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
@@ -14,7 +14,10 @@ import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 
-import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
@@ -58,7 +61,12 @@ export default {
 
          */
         settingOrganization() {
-            return this.advfiltersBypageView(this.companyDialogView);
+            return baseFilterSettingsHelper.$_setCompanySetting({
+                isFilter: true,
+                singleSelect: true,
+                list: this.advfiltersBypageView(this.companyDialogView),
+                pageView: this.companyDialogView,
+            });
         },
 
         userTypeList() {
@@ -77,8 +85,6 @@ export default {
         this.$_getObject();
 
         this.$_reviewQueryParams();
-
-        this.$_setCompanyFilter();
 
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
@@ -105,22 +111,11 @@ export default {
     },
 
     methods: {
-        ...mapActions('filters', ['$_set_advfilter']),
-
         $_setCompanyFilter() {
-            const dialogView = this.advfiltersBypageView(
-                this.companyDialogView
-            );
-
-            if (!dialogView) {
-                this.$_set_advfilter({
-                    [this.companyDialogView]:
-                        baseFilterSettingsHelper.$_setCompanySetting({
-                            isFilter: true,
-                            singleSelect: true,
-                        }),
-                });
-            }
+            baseDataTableColumnsHelper.$_setCompanyColumns({
+                isFilter: true,
+                pageView: this.companyDialogView,
+            });
         },
 
         $_Object() {

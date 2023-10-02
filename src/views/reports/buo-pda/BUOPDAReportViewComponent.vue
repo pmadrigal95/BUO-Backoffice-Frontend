@@ -6,7 +6,7 @@
  *
  */
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import baseFnFile from '@/helpers/baseFnFile';
 
@@ -18,7 +18,10 @@ import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
-import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
@@ -75,12 +78,12 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            //TODO: FIX IT
-            // return this.filtersBypageView(this.pageView);
             return baseFilterSettingsHelper.$_setUserSetting({
                 companyId: this.entity.companyId,
                 departmentId: this.entity.departmentId,
                 singleSelect: false,
+                list: this.filtersBypageView(this.pageView),
+                pageView: this.pageView,
             });
         },
 
@@ -93,27 +96,15 @@ export default {
         },
     },
 
-    created() {
-        //TODO: FIX IT
-        // this.$_setFilter();
-    },
-
     methods: {
-        ...mapActions('filters', ['$_set_filter']),
-
         $_setFilter() {
-            const pageView = this.filtersBypageView(this.pageView);
+            baseDataTableColumnsHelper.$_setUserColumns({
+                companyId: this.entity.companyId,
+                departmentId: this.entity.departmentId,
+                pageView: this.pageView,
+            });
 
-            if (!pageView) {
-                this.$_set_filter({
-                    [this.pageView]: baseFilterSettingsHelper.$_setUserSetting({
-                        companyId: this.entity.companyId,
-                        departmentId: this.entity.departmentId,
-                        singleSelect: false,
-                    }),
-                });
-                this.key++;
-            }
+            this.key++;
         },
 
         /**

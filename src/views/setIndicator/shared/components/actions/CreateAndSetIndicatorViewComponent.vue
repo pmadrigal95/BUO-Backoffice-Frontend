@@ -6,11 +6,14 @@
  *
  */
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
-import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
 
 import baseConfigHelper from '@/helpers/baseConfigHelper';
 
@@ -88,7 +91,14 @@ export default {
          * Configuracion BaseServerDataTable
          */
         userSetting() {
-            return this.advfiltersBypageView(this.userDialogView);
+            return baseFilterSettingsHelper.$_setUserSetting({
+                companyId: this.user.companyId,
+                departmentId: this.entity.departmentId,
+                isFilter: true,
+                singleSelect: false,
+                list: this.advfiltersBypageView(this.userDialogView),
+                pageView: this.userDialogView,
+            });
         },
 
         statusList() {
@@ -105,27 +115,14 @@ export default {
         },
     },
 
-    created() {
-        this.$_setUserFilter();
-    },
-
     methods: {
-        ...mapActions('filters', ['$_set_advfilter']),
-
         $_setUserFilter() {
-            const dialogView = this.advfiltersBypageView(this.userDialogView);
-
-            if (!dialogView) {
-                this.$_set_advfilter({
-                    [this.userDialogView]:
-                        baseFilterSettingsHelper.$_setUserSetting({
-                            companyId: this.user.companyId,
-                            departmentId: this.entity.departmentId,
-                            isFilter: true,
-                            singleSelect: false,
-                        }),
-                });
-            }
+            baseDataTableColumnsHelper.$_setUserColumns({
+                companyId: this.user.companyId,
+                departmentId: this.temp.departmentId,
+                isFilter: true,
+                pageView: this.userDialogView,
+            });
         },
 
         $_Object() {

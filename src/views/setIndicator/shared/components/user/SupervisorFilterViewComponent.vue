@@ -6,11 +6,14 @@
  *
  */
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
-import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
 
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
@@ -63,36 +66,24 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            // return this.filtersBypageView(this.pageView);
             return baseFilterSettingsHelper.$_setUserSetting({
                 companyId: this.entity.companyId,
                 departmentId: this.entity.departmentId,
                 singleSelect: false,
+                list: this.filtersBypageView(this.pageView),
+                pageView: this.pageView,
             });
         },
     },
 
-    created() {
-        //TODO: FIX IT
-        // this.$_setFilter();
-    },
-
     methods: {
-        ...mapActions('filters', ['$_set_filter']),
-
         $_setFilter() {
-            const pageView = this.filtersBypageView(this.pageView);
-
-            if (!pageView) {
-                this.$_set_filter({
-                    [this.pageView]: baseFilterSettingsHelper.$_setUserSetting({
-                        companyId: this.entity.companyId,
-                        departmentId: this.entity.departmentId,
-                        singleSelect: false,
-                    }),
-                });
-                this.key++;
-            }
+            baseDataTableColumnsHelper.$_setUserColumns({
+                companyId: this.entity.companyId,
+                departmentId: this.entity.departmentId,
+                pageView: this.pageView,
+            });
+            this.key++;
         },
 
         /**

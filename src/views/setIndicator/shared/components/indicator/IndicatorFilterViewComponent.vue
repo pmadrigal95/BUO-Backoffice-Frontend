@@ -6,13 +6,16 @@
  *
  */
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
-import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
 
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
@@ -61,7 +64,13 @@ export default {
          * Configuracion BaseServerDataTable
          */
         setting() {
-            return this.filtersBypageView(this.pageView);
+            return baseFilterSettingsHelper.$_setAbilitySetting({
+                companyId: this.user.companyId,
+                isFilter: true,
+                singleSelect: false,
+                list: this.filtersBypageView(this.pageView),
+                pageView: this.pageView,
+            });
         },
 
         extraParams() {
@@ -76,22 +85,13 @@ export default {
     },
 
     methods: {
-        ...mapActions('filters', ['$_set_filter']),
-
         $_setFilter() {
-            const pageView = this.filtersBypageView(this.pageView);
-
-            if (!pageView) {
-                this.$_set_filter({
-                    [this.pageView]:
-                        baseFilterSettingsHelper.$_setAbilitySetting({
-                            companyId: this.user.companyId,
-                            isFilter: true,
-                            singleSelect: false,
-                        }),
-                });
-                this.key++;
-            }
+            baseDataTableColumnsHelper.$_setAbilityColumns({
+                companyId: this.user.companyId,
+                isFilter: true,
+                pageView: this.pageView,
+            });
+            this.key++;
         },
 
         /**

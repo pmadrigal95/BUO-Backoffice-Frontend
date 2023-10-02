@@ -6,13 +6,16 @@
  *
  */
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
-import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
 
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
@@ -62,14 +65,25 @@ export default {
          * Configuracion BaseInputDataTable
          */
         companySetting() {
-            return this.advfiltersBypageView(this.companyDialogView);
+            return baseFilterSettingsHelper.$_setCompanySetting({
+                isFilter: true,
+                singleSelect: true,
+                list: this.advfiltersBypageView(this.companyDialogView),
+                pageView: this.companyDialogView,
+            });
         },
 
         /**
          * Configuracion BaseServerDataTable
          */
         abilitySetting() {
-            return this.advfiltersBypageView(this.abilityDialogView);
+            return baseFilterSettingsHelper.$_setAbilitySetting({
+                companyId: this.user.companyId,
+                isFilter: true,
+                singleSelect: true,
+                list: this.advfiltersBypageView(this.abilityDialogView),
+                pageView: this.abilityDialogView,
+            });
         },
     },
 
@@ -98,8 +112,6 @@ export default {
             this.$vuetify.theme.themes.light.white;
 
         this.$_reviewQueryParams();
-
-        this.$_setFilter();
     },
 
     destroyed() {
@@ -108,44 +120,19 @@ export default {
     },
 
     methods: {
-        ...mapActions('filters', ['$_set_advfilter']),
-
         $_setCompanyFilter() {
-            const dialogView = this.advfiltersBypageView(
-                this.companyDialogView
-            );
-
-            if (!dialogView) {
-                this.$_set_advfilter({
-                    [this.companyDialogView]:
-                        baseFilterSettingsHelper.$_setCompanySetting({
-                            isFilter: true,
-                            singleSelect: true,
-                        }),
-                });
-            }
+            baseDataTableColumnsHelper.$_setCompanyColumns({
+                isFilter: true,
+                pageView: this.companyDialogView,
+            });
         },
 
         $_setAbilityFilter() {
-            const dialogView = this.advfiltersBypageView(
-                this.abilityDialogView
-            );
-
-            if (!dialogView) {
-                this.$_set_advfilter({
-                    [this.abilityDialogView]:
-                        baseFilterSettingsHelper.$_setAbilitySetting({
-                            companyId: this.user.companyId,
-                            isFilter: true,
-                            singleSelect: true,
-                        }),
-                });
-            }
-        },
-
-        $_setFilter() {
-            this.$_setCompanyFilter();
-            this.$_setAbilityFilter();
+            baseDataTableColumnsHelper.$_setAbilityColumns({
+                companyId: this.user.companyId,
+                isFilter: true,
+                pageView: this.abilityDialogView,
+            });
         },
 
         /**
