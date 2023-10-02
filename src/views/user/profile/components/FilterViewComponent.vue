@@ -84,8 +84,8 @@ export default {
                 companyId: this.user.companyId,
                 departmentId: this.entity.departmentId,
                 singleSelect: false,
-                list: this.advfiltersBypageView(this.companyDialogView),
-                pageView: this.companyDialogView,
+                list: this.filtersBypageView(this.pageView),
+                pageView: this.pageView,
             });
         },
 
