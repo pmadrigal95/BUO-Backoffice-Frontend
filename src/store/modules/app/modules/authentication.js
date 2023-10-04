@@ -186,7 +186,7 @@ export const actions = {
 
     get_user_avatar({ commit }, userId) {
         httpService.get(`perfilUsuario/foto/${userId}`).then((response) => {
-            commit('SET_USER_AVATAR', response.data.fotoEncoded);
+            commit('SET_USER_AVATAR', response?.data?.fotoEncoded);
         });
     },
 
