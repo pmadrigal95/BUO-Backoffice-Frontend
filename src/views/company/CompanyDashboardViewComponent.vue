@@ -29,12 +29,16 @@ const DepartmentTreeViewComponent = () =>
 const DepartmentFilterViewComponent = () =>
     import('@/views/department/DepartmentFilterViewComponent');
 
+const BaseCardSignUpCompanyCode = () =>
+    import('@/views/company/components/BaseCardSignUpCompanyCode');
+
 export default {
     name: 'CompanyDashboardViewComponent',
 
     components: {
         BaseCardViewComponent,
         UserFilterViewComponent,
+        BaseCardSignUpCompanyCode,
         AbilityFilterViewComponent,
         DepartmentTreeViewComponent,
         DepartmentFilterViewComponent,
@@ -169,6 +173,9 @@ export default {
                 </v-layout>
             </div>
             <div slot="card-text">
+                <v-layout justify-center v-if="entity && entity.codigoSignUp">
+                    <BaseCardSignUpCompanyCode :code="entity.codigoSignUp" />
+                </v-layout>
                 <v-expansion-panels multiple flat v-model="panel">
                     <v-expansion-panel v-if="userPermission">
                         <v-expansion-panel-header
