@@ -173,9 +173,14 @@ export default {
                 </v-layout>
             </div>
             <div slot="card-text">
-                <v-layout justify-center v-if="entity && entity.codigoSignUp">
-                    <BaseCardSignUpCompanyCode :code="entity.codigoSignUp" />
-                </v-layout>
+                <v-row v-if="entity && entity.codigoSignUp" class="mx-3">
+                    <v-col>
+                        <BaseCardSignUpCompanyCode
+                            :code="entity.codigoSignUp"
+                            :organizationId="entity.id"
+                        />
+                    </v-col>
+                </v-row>
                 <v-expansion-panels multiple flat v-model="panel">
                     <v-expansion-panel v-if="userPermission">
                         <v-expansion-panel-header
