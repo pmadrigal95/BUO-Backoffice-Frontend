@@ -27,16 +27,12 @@ const BaseCardViewComponent = () =>
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
-const BaseCustomsButtonsGrid = () =>
-    import('@/components/core/grids/BaseCustomsButtonsGrid');
-
 export default {
     name: 'CompanyFilterViewComponent',
 
     components: {
         BaseCardViewComponent,
         BaseServerDataTable,
-        BaseCustomsButtonsGrid,
     },
 
     data() {
@@ -72,6 +68,23 @@ export default {
                 baseSecurityHelper.$_write
             );
             return result;
+        },
+
+        actions() {
+            return [
+                {
+                    icon: 'chevron-right',
+                    title: 'Ver más',
+                    fn: this.$_companyDashboard,
+                    show: true,
+                },
+                {
+                    icon: 'shield-key-outline',
+                    title: 'Reset Sign Up Code',
+                    fn: this.$_replaceSignUpCode,
+                    show: true,
+                },
+            ];
         },
     },
 
@@ -152,6 +165,28 @@ export default {
                 );
             }
         },
+
+        /**
+         * New Code
+         */
+        $_replaceSignUpCode() {
+            if (this.$_GetRow().length > 0) {
+                httpService
+                    .post('organizacion/replaceSignUpCode', {
+                        organizacionId: this.$_GetRow()[0].id,
+                    })
+                    .then((response) => {
+                        if (response != undefined) {
+                            this.$refs[this.pageView].$_ParamsToAPI();
+                        }
+                    });
+            } else {
+                baseNotificationsHelper.Message(
+                    true,
+                    baseLocalHelper.$_MsgRowNotSelected
+                );
+            }
+        },
     },
 };
 </script>
@@ -165,20 +200,12 @@ export default {
                 :ref="pageView"
                 :pageView="pageView"
                 :setting="setting"
+                :fnActions="actions"
                 :fnResetConfig="$_setFilter"
                 :fnNew="write ? $_companyEditor : undefined"
                 :fnEdit="write ? $_companyEditor : undefined"
                 :fnDelete="write ? $_fnDesactiveCompany : undefined"
-            >
-                <div slot="btns">
-                    <BaseCustomsButtonsGrid
-                        label="Ver más"
-                        :fnMethod="$_companyDashboard"
-                        icon="mdi-chevron-right"
-                        :color="app ? 'blueProgress600' : 'blue900'"
-                    />
-                </div>
-            </BaseServerDataTable>
+            />
             <BaseSkeletonLoader v-else type="table" />
         </div>
     </BaseCardViewComponent>
