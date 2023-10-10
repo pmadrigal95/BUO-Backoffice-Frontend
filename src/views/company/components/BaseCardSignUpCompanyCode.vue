@@ -8,10 +8,10 @@
 
 import httpService from '@/services/axios/httpService';
 
-const BaseAdvertisementMobileViewComponent = () =>
+/*const BaseAdvertisementMobileViewComponent = () =>
     import(
         '@/components/backoffice/covers/advertisement/BaseAdvertisementMobileViewComponent'
-    );
+    );*/
 
 const BaseAdvertisementDesktopViewComponent = () =>
     import(
@@ -39,7 +39,7 @@ export default {
     },
 
     components: {
-        BaseAdvertisementMobileViewComponent,
+        //BaseAdvertisementMobileViewComponent,
         BaseAdvertisementDesktopViewComponent,
     },
 
@@ -53,9 +53,26 @@ export default {
                 icon: 'share',
                 fnIcon: this.$_sharedCode,
                 image: 'https://ztdqsurxcyrlabzyhrud.supabase.co/storage/v1/object/public/src/images/Cloudy.svg',
-                nameButton: 'Crear nuevo código',
-                fnButton: this.$_replaceSignUpCode,
             };
+        },
+
+        actions() {
+            return [
+                {
+                    name: 'Nuevo código',
+                    style: 'BUO-Paragraph-Small-SemiBold ma-2 no-uppercase rounded-lg',
+                    color: 'blue900',
+                    fn: this.$_replaceSignUpCode,
+                    disabled: false,
+                },
+                {
+                    name: 'Compartir código',
+                    style: 'BUO-Paragraph-Small-SemiBold ma-2 no-uppercase rounded-lg',
+                    color: 'blue900',
+                    fn: this.$_sharedCode,
+                    disabled: false,
+                },
+            ];
         },
     },
 
@@ -81,9 +98,8 @@ export default {
 
 <template>
     <section>
-        <BaseAdvertisementMobileViewComponent
+        <!-- <BaseAdvertisementMobileViewComponent
             v-if="$vuetify.breakpoint.mobile"
-            :fnButton="$_sharedCode"
             :title="componentProps.title"
             styleTitle="BUO-Heading-Small white--text text-shadow text-center"
             :description="componentProps.description"
@@ -91,9 +107,8 @@ export default {
             :icon="componentProps.icon"
             :fnIcon="componentProps.fnIcon"
             image="https://ztdqsurxcyrlabzyhrud.supabase.co/storage/v1/object/public/src/images/Cloudy.svg"
-        />
+        />-->
         <BaseAdvertisementDesktopViewComponent
-            v-else
             :title="componentProps.title"
             styleTitle="BUO-Heading-Small white--text text-shadow"
             :description="componentProps.description"
@@ -101,8 +116,7 @@ export default {
             :icon="componentProps.icon"
             :fnIcon="componentProps.fnIcon"
             image="https://ztdqsurxcyrlabzyhrud.supabase.co/storage/v1/object/public/src/images/Cloudy.svg"
-            :nameButton="componentProps.nameButton"
-            :fnButton="componentProps.fnButton"
+            :actions="actions"
         />
     </section>
 </template>

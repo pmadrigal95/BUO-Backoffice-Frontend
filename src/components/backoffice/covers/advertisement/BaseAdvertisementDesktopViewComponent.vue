@@ -39,30 +39,9 @@ export default {
             default: 'BUO-Paragraph-Medium white--text',
         },
 
-        nameButton: {
-            type: String,
-            default: 'Descargar',
-        },
-
-        styleButton: {
-            type: String,
-            default:
-                'BUO-Paragraph-Small-SemiBold ma-2 no-uppercase rounded-lg',
-        },
-
-        colorButton: {
-            type: String,
-            default: 'blue900',
-        },
-
-        fnButton: {
-            type: Function,
-            required: true,
-        },
-
-        disabledButton: {
-            type: Boolean,
-            default: false,
+        actions: {
+            type: Array,
+            required: false,
         },
 
         icon: {
@@ -125,6 +104,7 @@ export default {
             :elevation="hover ? 8 : 3"
             class="rounded-lg"
             :class="`${color}`"
+            max-height="210"
         >
             <v-img :src="image">
                 <section class="d-flex flex-row justify-space-between">
@@ -150,17 +130,24 @@ export default {
                                 >
                             </v-btn>
                         </section>
-                        <section class="mt-5 mr-6">
-                            <v-btn
-                                dark
-                                depressed
-                                :color="colorButton"
-                                :class="styleButton"
-                                @click="$_fnButton"
-                                :disabled="disabledButton"
-                            >
-                                {{ nameButton }}
-                            </v-btn>
+
+                        <section
+                            v-for="(action, index) in actions"
+                            :key="index"
+                        >
+                            <section class="mr-14">
+                                <v-btn
+                                    dark
+                                    block
+                                    depressed
+                                    :color="action.color"
+                                    :class="action.style"
+                                    @click="action.fn"
+                                    :disabled="action.disabled"
+                                >
+                                    {{ action.name }}
+                                </v-btn>
+                            </section>
                         </section>
                     </section>
                 </section>
