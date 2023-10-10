@@ -39,29 +39,9 @@ export default {
             default: 'BUO-Paragraph-Medium white--text',
         },
 
-        nameButton: {
-            type: String,
-            default: 'Descargar',
-        },
-
-        styleButton: {
-            type: String,
-            default: 'ml-n1 ma-2 no-uppercase rounded-lg',
-        },
-
-        colorButton: {
-            type: String,
-            default: 'blue900',
-        },
-
-        fnButton: {
-            type: Function,
-            required: true,
-        },
-
-        disabledButton: {
-            type: Boolean,
-            default: false,
+        actions: {
+            type: Array,
+            required: false,
         },
 
         icon: {
@@ -147,17 +127,25 @@ export default {
                             </p>
                         </article>
                     </section>
-                    <section class="pb-4">
-                        <v-btn
-                            dark
-                            depressed
-                            :color="colorButton"
-                            :class="styleButton"
-                            @click="$_fnButton"
-                            :disabled="disabledButton"
-                        >
-                            {{ nameButton }}
-                        </v-btn>
+
+                    <section
+                        v-for="(action, index) in actions"
+                        :key="index"
+                        class="pb-2"
+                    >
+                        <section>
+                            <v-btn
+                                dark
+                                block
+                                depressed
+                                :color="action.color"
+                                :class="action.style"
+                                @click="action.fn"
+                                :disabled="action.disabled"
+                            >
+                                {{ action.name }}
+                            </v-btn>
+                        </section>
                     </section>
                 </section>
             </v-img>

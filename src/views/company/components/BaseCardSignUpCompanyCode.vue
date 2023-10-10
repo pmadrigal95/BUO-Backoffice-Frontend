@@ -8,7 +8,7 @@
 
 import httpService from '@/services/axios/httpService';
 
-/*import sharingLinks from '@/services/sharing/sharingLinks';
+import sharingLinks from '@/services/sharing/sharingLinks';
 
 const BaseSocialLinkSharing = () =>
     import('@/components/core/sharing/BaseSocialLinkSharing');
@@ -16,7 +16,7 @@ const BaseSocialLinkSharing = () =>
 const BaseAdvertisementMobileViewComponent = () =>
     import(
         '@/components/backoffice/covers/advertisement/BaseAdvertisementMobileViewComponent'
-    );*/
+    );
 
 const BaseAdvertisementDesktopViewComponent = () =>
     import(
@@ -46,7 +46,6 @@ export default {
     components: {
         BaseSocialLinkSharing,
         BaseAdvertisementMobileViewComponent,
-        //BaseAdvertisementMobileViewComponent,
         BaseAdvertisementDesktopViewComponent,
     },
 
@@ -66,29 +65,20 @@ export default {
         actions() {
             return [
                 {
-                    name: 'Nuevo código',
-                    style: 'BUO-Paragraph-Small-SemiBold ma-2 no-uppercase rounded-lg',
-                    color: 'blue900',
-                    fn: this.$_replaceSignUpCode,
-                    disabled: false,
-                },
-                {
                     name: 'Compartir código',
                     style: 'BUO-Paragraph-Small-SemiBold ma-2 no-uppercase rounded-lg',
                     color: 'blue900',
                     fn: this.$_sharedCode,
                     disabled: false,
                 },
+                {
+                    name: 'Nuevo código',
+                    style: 'BUO-Paragraph-Small-SemiBold ma-2 no-uppercase rounded-lg',
+                    color: 'blue900',
+                    fn: this.$_replaceSignUpCode,
+                    disabled: false,
+                },
             ];
-        },
-
-        sharing() {
-            return {
-                url: `${window.location.origin}/wallet/#/SignUp/${this.code}`,
-                title: 'Código de registro',
-                copy: this.copyURL,
-                socialNetworks: ['email', 'whatsapp'],
-            };
         },
 
         sharing() {
@@ -135,7 +125,7 @@ export default {
 <template>
     <section>
         <BaseSocialLinkSharing ref="baseSocialLinkSharing" :sharing="sharing" />
-        <!-- <BaseAdvertisementMobileViewComponent
+        <BaseAdvertisementMobileViewComponent
             v-if="$vuetify.breakpoint.mobile"
             :title="componentProps.title"
             styleTitle="BUO-Heading-Small white--text text-shadow text-center"
@@ -144,8 +134,10 @@ export default {
             :icon="componentProps.icon"
             :fnIcon="componentProps.fnIcon"
             image="https://ztdqsurxcyrlabzyhrud.supabase.co/storage/v1/object/public/src/images/Cloudy.svg"
-        />-->
+            :actions="actions"
+        />
         <BaseAdvertisementDesktopViewComponent
+            v-else
             :title="componentProps.title"
             styleTitle="BUO-Heading-Small white--text text-shadow"
             :description="componentProps.description"
