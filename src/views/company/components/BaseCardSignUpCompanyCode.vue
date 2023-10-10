@@ -31,12 +31,11 @@ export default {
             type: Number,
             required: true,
         },
-    },
 
-    data() {
-        return {
-            componentKey: 0,
-        };
+        callback: {
+            type: Function,
+            required: true,
+        },
     },
 
     components: {
@@ -53,7 +52,7 @@ export default {
                 styleDescription: 'BUO-Paragraph-Small white--text text-shadow',
                 icon: 'share',
                 fnIcon: this.$_sharedCode,
-                image: '@/assets/Cloudy(9).svg',
+                image: 'https://ztdqsurxcyrlabzyhrud.supabase.co/storage/v1/object/public/src/images/Cloudy.svg',
                 nameButton: 'Crear nuevo código',
                 fnButton: this.$_replaceSignUpCode,
             };
@@ -72,7 +71,7 @@ export default {
                 })
                 .then((response) => {
                     if (response != undefined) {
-                        this.componentKey++;
+                        this.callback();
                     }
                 });
         },
@@ -91,7 +90,7 @@ export default {
             styleDescription="BUO-Paragraph-Small white--text text-shadow text-center"
             :icon="componentProps.icon"
             :fnIcon="componentProps.fnIcon"
-            :image="require('@/assets/Cloudy(9).svg')"
+            image="https://ztdqsurxcyrlabzyhrud.supabase.co/storage/v1/object/public/src/images/Cloudy.svg"
         />
         <BaseAdvertisementDesktopViewComponent
             v-else
@@ -101,10 +100,9 @@ export default {
             styleDescription="BUO-Paragraph-Small white--text text-shadow"
             :icon="componentProps.icon"
             :fnIcon="componentProps.fnIcon"
-            :image="require('@/assets/Cloudy(9).svg')"
+            image="https://ztdqsurxcyrlabzyhrud.supabase.co/storage/v1/object/public/src/images/Cloudy.svg"
             :nameButton="componentProps.nameButton"
             :fnButton="componentProps.fnButton"
-            key="componentKey"
         />
     </section>
 </template>

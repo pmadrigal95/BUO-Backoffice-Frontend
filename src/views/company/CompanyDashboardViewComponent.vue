@@ -178,6 +178,7 @@ export default {
                         <BaseCardSignUpCompanyCode
                             :code="entity.codigoSignUp"
                             :organizationId="entity.id"
+                            :callback="$_getObject"
                         />
                     </v-col>
                 </v-row>
