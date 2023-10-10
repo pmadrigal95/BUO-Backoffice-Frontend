@@ -678,6 +678,15 @@ export const baseDataTableColumnsHelper = {
         });
     },
 
+    $_setMicroAbilityColumns({ isFilter, pageView, companyId }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+        return baseFilterColumnsHelper.$_setMicroAbilityColumns({
+            isFilter,
+            pageView,
+            isBuoUser,
+        });
+    },
+
     /**
      * Configuracion BaseServerDataTable
      */
