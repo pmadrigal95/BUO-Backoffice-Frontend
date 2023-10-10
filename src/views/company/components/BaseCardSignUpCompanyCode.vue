@@ -8,6 +8,11 @@
 
 import httpService from '@/services/axios/httpService';
 
+import sharingLinks from '@/services/sharing/sharingLinks';
+
+const BaseSocialLinkSharing = () =>
+    import('@/components/core/sharing/BaseSocialLinkSharing');
+
 const BaseAdvertisementMobileViewComponent = () =>
     import(
         '@/components/backoffice/covers/advertisement/BaseAdvertisementMobileViewComponent'
@@ -39,6 +44,7 @@ export default {
     },
 
     components: {
+        BaseSocialLinkSharing,
         BaseAdvertisementMobileViewComponent,
         BaseAdvertisementDesktopViewComponent,
     },
@@ -57,11 +63,31 @@ export default {
                 fnButton: this.$_replaceSignUpCode,
             };
         },
+
+        sharing() {
+            return {
+                url: `${window.location.origin}/wallet/#/SignUp/${this.code}`,
+                title: 'Código de registro',
+                copy: this.copyURL,
+                socialNetworks: ['email', 'whatsapp'],
+            };
+        },
     },
 
     methods: {
         $_sharedCode() {
-            alert('hola');
+            sharingLinks.$_share(
+                `${window.location.origin}/wallet/#/SignUp/${this.code}`,
+                'Código de registro',
+                this.$refs.baseSocialLinkSharing.$_open,
+                false
+            );
+        },
+
+        copyURL() {
+            sharingLinks.$_copyLink(
+                `${window.location.origin}/wallet/#/SignUp/${this.code}`
+            );
         },
 
         $_replaceSignUpCode() {
@@ -81,6 +107,7 @@ export default {
 
 <template>
     <section>
+        <BaseSocialLinkSharing ref="baseSocialLinkSharing" :sharing="sharing" />
         <BaseAdvertisementMobileViewComponent
             v-if="$vuetify.breakpoint.mobile"
             :fnButton="$_sharedCode"

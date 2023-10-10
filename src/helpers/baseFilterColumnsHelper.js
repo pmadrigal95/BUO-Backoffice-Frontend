@@ -147,6 +147,18 @@ const userColumns = (departmentId, isBuoUser, isFilter) => {
 const companyColumns = (isFilter) => {
     return [
         {
+            text: 'Código de registro',
+            align: 'start',
+            value: 'codigoSignUp',
+            show: false,
+        },
+        {
+            text: 'Cantidad de uso del código',
+            align: 'start',
+            value: 'UsuariosCodigo',
+            show: false,
+        },
+        {
             text: 'Nombre',
             align: 'start',
             value: 'nombre',
