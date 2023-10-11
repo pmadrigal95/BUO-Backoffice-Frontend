@@ -82,7 +82,7 @@ export default {
                     icon: 'shield-key-outline',
                     title: 'Reset Sign Up Code',
                     fn: this.$_replaceSignUpCode,
-                    show: true,
+                    show: this.write,
                 },
             ];
         },

@@ -10,6 +10,8 @@ import httpService from '@/services/axios/httpService';
 
 import sharingLinks from '@/services/sharing/sharingLinks';
 
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
 const BaseSocialLinkSharing = () =>
     import('@/components/core/sharing/BaseSocialLinkSharing');
 
@@ -62,6 +64,14 @@ export default {
             };
         },
 
+        write() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'CompanyViewComponent',
+                baseSecurityHelper.$_write
+            );
+            return result;
+        },
+
         actions() {
             return [
                 {
@@ -76,7 +86,7 @@ export default {
                     style: 'BUO-Paragraph-Small-SemiBold ma-2 no-uppercase rounded-lg',
                     color: 'blue900',
                     fn: this.$_replaceSignUpCode,
-                    disabled: false,
+                    disabled: !this.write,
                 },
             ];
         },
