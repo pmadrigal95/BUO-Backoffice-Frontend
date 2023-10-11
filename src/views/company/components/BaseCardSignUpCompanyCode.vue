@@ -60,7 +60,7 @@ export default {
                 styleDescription: 'BUO-Paragraph-Small white--text text-shadow',
                 icon: 'share',
                 fnIcon: this.$_sharedCode,
-                image: 'https://ztdqsurxcyrlabzyhrud.supabase.co/storage/v1/object/public/src/images/Cloudy.svg',
+                image: 'https://buo-resources.s3.us-east-2.amazonaws.com/compartidos/Cloudy.svg',
             };
         },
 
@@ -143,7 +143,7 @@ export default {
             styleDescription="BUO-Paragraph-Small white--text text-shadow text-center"
             :icon="componentProps.icon"
             :fnIcon="componentProps.fnIcon"
-            image="https://ztdqsurxcyrlabzyhrud.supabase.co/storage/v1/object/public/src/images/Cloudy.svg"
+            image="https://buo-resources.s3.us-east-2.amazonaws.com/compartidos/Cloudy.svg"
             :actions="actions"
         />
         <BaseAdvertisementDesktopViewComponent
@@ -154,7 +154,7 @@ export default {
             styleDescription="BUO-Paragraph-Small white--text text-shadow"
             :icon="componentProps.icon"
             :fnIcon="componentProps.fnIcon"
-            image="https://ztdqsurxcyrlabzyhrud.supabase.co/storage/v1/object/public/src/images/Cloudy.svg"
+            image="https://buo-resources.s3.us-east-2.amazonaws.com/compartidos/Cloudy.svg"
             :actions="actions"
         />
     </section>
