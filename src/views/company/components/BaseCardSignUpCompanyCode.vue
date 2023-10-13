@@ -56,7 +56,7 @@ export default {
             return {
                 title: 'Tu Código de Acceso',
                 styleTitle: 'BUO-Heading-Small white--text text-shadow',
-                description: `Usa nuestro este código único ${this.code} para que tus colaboradores se unan a nosotros. Dale clic en compartir y descubre nuestros beneficios.`,
+                description: `Usa este código único ${this.code} para que tus colaboradores se unan a tu empresa. Dale click en compartir y hazle llegar el código a todos los participantes de tu empresa para que disfruten de los beneficios de Buo.`,
                 styleDescription: 'BUO-Paragraph-Small white--text text-shadow',
                 icon: 'share',
                 fnIcon: this.$_sharedCode,
