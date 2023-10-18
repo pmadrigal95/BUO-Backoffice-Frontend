@@ -10,6 +10,8 @@
 
 import { mapGetters, mapActions } from 'vuex';
 
+import baseFnFile from '@/helpers/baseFnFile';
+
 import httpService from '@/services/axios/httpService';
 
 import baseLocalHelper from '@/helpers/baseLocalHelper';
@@ -1042,8 +1044,25 @@ export default {
             this.selected = [];
         },
 
+        $_setParamsToExcel() {
+            return {
+                grid: this.pageView,
+                filter: this.returnParams(),
+            };
+        },
+
         $_jsonToExcel() {
-            console.log('Hola');
+            httpService
+                .post('export', this.$_setParamsToExcel())
+                .then((response) => {
+                    if (response != undefined) {
+                        baseFnFile.$_dowloadFile(
+                            response.data.encodedFile,
+                            response.data.fileName,
+                            baseFnFile.$_extensionsName.excel
+                        );
+                    }
+                });
         },
     },
 };
