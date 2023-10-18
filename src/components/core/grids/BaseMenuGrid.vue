@@ -43,35 +43,33 @@ export default {
 </script>
 
 <template>
-    <section>
-        <v-menu
-            :close-on-content-click="false"
-            :open-on-hover="$vuetify.breakpoint.mdAndUp"
-            bottom
-            offset-y
-            :key="key"
-        >
-            <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                    :color="app ? 'blueProgress600' : 'blue900'"
-                    elevation="0"
-                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                    :class="{ 'mt-4': $vuetify.breakpoint.mobile }"
-                    outlined
-                    small
-                    v-bind="attrs"
-                    v-on="on"
-                >
-                    {{ title }}
-                    <v-icon right>mdi-chevron-down</v-icon>
-                </v-btn>
-            </template>
-            <section
-                class="mt-1 rounded-lg"
-                :class="[app ? 'background' : 'white']"
+    <v-menu
+        :close-on-content-click="false"
+        :open-on-hover="$vuetify.breakpoint.mdAndUp"
+        bottom
+        offset-y
+        :key="key"
+    >
+        <template v-slot:activator="{ on, attrs }">
+            <v-btn
+                :color="app ? 'blueProgress600' : 'blue900'"
+                elevation="0"
+                class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                :class="{ 'mt-4': $vuetify.breakpoint.mobile }"
+                outlined
+                small
+                v-bind="attrs"
+                v-on="on"
             >
-                <BaseMenuItemsRecursive :actions="actions" v-model="key" />
-            </section>
-        </v-menu>
-    </section>
+                {{ title }}
+                <v-icon right>mdi-chevron-down</v-icon>
+            </v-btn>
+        </template>
+        <section
+            class="mt-1 rounded-lg"
+            :class="[app ? 'background' : 'white']"
+        >
+            <BaseMenuItemsRecursive :actions="actions" v-model="key" />
+        </section>
+    </v-menu>
 </template>

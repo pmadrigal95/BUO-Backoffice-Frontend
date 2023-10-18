@@ -441,7 +441,7 @@ export default {
                 <v-btn
                     :color="app ? 'blueProgress600' : 'blue900'"
                     elevation="0"
-                    class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                    class="ma-1 mr-4 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                     outlined
                     small
                     v-bind="attrs"
