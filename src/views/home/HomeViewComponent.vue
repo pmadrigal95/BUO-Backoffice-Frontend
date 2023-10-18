@@ -201,9 +201,10 @@ export default {
                                 :key="i"
                                 class="pb-4"
                             >
-                                <v-layout justify-start>
+                                <v-row justify="start">
                                     <div v-for="(item, i) in array" :key="i">
                                         <BaseCardMenuViewComponent
+                                            class="ma-4"
                                             :icon="item.icono"
                                             :to="item.rutaURL"
                                             :subtitle="item.nombreUI"
@@ -233,7 +234,7 @@ export default {
                                             "
                                         />
                                     </div>
-                                </v-layout>
+                                </v-row>
                             </section>
                         </v-expansion-panel-content>
                         <v-expansion-panel-content

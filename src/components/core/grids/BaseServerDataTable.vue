@@ -354,6 +354,21 @@ export default {
         $_filterList() {
             return this.headers.filter((x) => x.show && x.type != 'hidden');
         },
+
+        $_fnActions() {
+            let array = this.fnActions ? this.fnActions : [];
+
+            if (this.ispageView) {
+                array.push({
+                    icon: 'microsoft-excel',
+                    title: 'Exportar',
+                    fn: this.$_jsonToExcel,
+                    show: true,
+                });
+            }
+
+            return array;
+        },
     },
 
     watch: {
@@ -1026,6 +1041,10 @@ export default {
         $_cleanSelectedRows() {
             this.selected = [];
         },
+
+        $_jsonToExcel() {
+            console.log('Hola');
+        },
     },
 };
 </script>
@@ -1330,7 +1349,7 @@ export default {
                         :fnDelete="
                             fnDelete != undefined ? $_DeleteModal : undefined
                         "
-                        :fnActions="fnActions"
+                        :fnActions="$_fnActions"
                         :rowCount="selected.length"
                     >
                         <!-- @slot Use este slot para agregar botones -->

@@ -146,7 +146,7 @@ export default {
             ? this.items.push(true)
             : this.items.push(false);
 
-        this.fnActions != undefined
+        this.fnActions != undefined && this.fnActions.length > 0
             ? this.items.push(true)
             : this.items.push(false);
     },
