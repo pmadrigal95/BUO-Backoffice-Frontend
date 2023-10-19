@@ -379,6 +379,7 @@ export default {
                                     :setting="companySetting"
                                     :editText="temp.companyName"
                                     v-model.number="temp.companyId"
+                                    itemText="nombre"
                                     :validate="['requiered']"
                                     :key="companyKey"
                                     :fnResetConfig="$_setCompanyFilter"
