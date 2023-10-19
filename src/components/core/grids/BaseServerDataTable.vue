@@ -360,7 +360,7 @@ export default {
         $_fnActions() {
             let array = this.fnActions ? this.fnActions : [];
 
-            if (this.ispageView) {
+            if (this.ispageView && this.pageView) {
                 array.push({
                     icon: 'microsoft-excel',
                     title: 'Exportar',
@@ -1044,10 +1044,32 @@ export default {
             this.selected = [];
         },
 
+        $_setDeepValue(value) {
+            const deepValue = value.split('/');
+
+            return deepValue[deepValue.length - 1];
+        },
+
+        $_reviewEndpointWithParameters() {
+            const reviewValue = this.returnEndPoint()
+                .toLowerCase()
+                .includes('deep');
+
+            const result = {
+                isDeep: reviewValue,
+                deepValue: reviewValue
+                    ? this.$_setDeepValue(this.returnEndPoint())
+                    : undefined,
+            };
+
+            return result;
+        },
+
         $_setParamsToExcel() {
             return {
                 grid: this.pageView,
                 filter: this.returnParams(),
+                ...this.$_reviewEndpointWithParameters(),
             };
         },
 
