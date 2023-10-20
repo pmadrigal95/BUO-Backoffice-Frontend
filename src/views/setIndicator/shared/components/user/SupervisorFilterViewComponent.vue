@@ -190,7 +190,7 @@ export default {
                         color="primary"
                         @click="$_setList"
                         elevation="0"
-                        class="mx-1"
+                        class="mx-4"
                     >
                         <v-icon dark> mdi-chevron-right </v-icon>
                     </v-btn>

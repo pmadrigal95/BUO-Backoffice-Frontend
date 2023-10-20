@@ -244,13 +244,6 @@ export default {
         >
             <div slot="btns">
                 <v-row class="pl-3 pt-3" v-if="entity.companyId">
-                    <AssessmentViewComponent
-                        :entity="assessment"
-                        :organizacionId="entity.companyId"
-                        :fn="$_setAssessmentByType"
-                        v-if="assessmentPermission"
-                    />
-
                     <CreateAndSetIndicatorViewComponent
                         :entity="entity"
                         :requiredTutors="requiredTutors"
@@ -279,6 +272,13 @@ export default {
                     >
                         <v-icon dark> mdi-chevron-right </v-icon>
                     </v-btn>
+
+                    <AssessmentViewComponent
+                        :entity="assessment"
+                        :organizacionId="entity.companyId"
+                        :fn="$_setAssessmentByType"
+                        v-if="assessmentPermission"
+                    />
                 </v-row>
             </div>
         </BaseServerDataTable>

@@ -198,19 +198,18 @@ export default {
                         icon="mdi-chevron-right"
                         :color="app ? 'blueProgress600' : 'blue900'"
                     />
+                    <BaseCustomsButtonsGrid
+                        label="Comparar PDA"
+                        :outlined="false"
+                        :fnMethod="$_userDetails"
+                        icon="mdi-account-group-outline"
+                    />
 
                     <AssessmentViewComponent
                         v-if="assessmentPermission"
                         :entity="assessment"
                         :organizacionId="entity.companyId"
                         :fn="$_setAssessmentByType"
-                    />
-
-                    <BaseCustomsButtonsGrid
-                        label="Comparar PDA"
-                        :outlined="false"
-                        :fnMethod="$_userDetails"
-                        icon="mdi-account-group-outline"
                     />
                 </v-row>
             </div>

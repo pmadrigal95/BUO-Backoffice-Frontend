@@ -262,6 +262,7 @@ export default {
                                 "
                                 :pageView="companyDialogView"
                                 label="Empresa"
+                                itemText="nombre"
                                 :setting="companySetting"
                                 :editText="entity.nombreOrganizacion"
                                 v-model.number="entity.organizacionId"

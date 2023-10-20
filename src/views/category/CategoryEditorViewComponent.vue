@@ -197,6 +197,7 @@ export default {
                                 label="Empresa"
                                 :pageView="companyDialogView"
                                 :setting="companySetting"
+                                itemText="nombre"
                                 :editText="entity.nombreOrganizacion"
                                 v-model.number="entity.organizacionId"
                                 :fnResetConfig="$_setCompanyFilter"

@@ -199,6 +199,7 @@ export default {
                                 v-if="companySetting"
                                 :pageView="companyDialogView"
                                 :setting="companySetting"
+                                itemText="nombre"
                                 :editText="entity.nombreOrganizacion"
                                 v-model.number="entity.organizacionId"
                                 :fnResetConfig="$_setCompanyFilter"

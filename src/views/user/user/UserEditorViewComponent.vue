@@ -316,6 +316,7 @@ export default {
                                         .organizacionId && settingOrganization
                                 "
                                 label="Empresa"
+                                itemText="nombre"
                                 :setting="settingOrganization"
                                 :pageView="companyDialogView"
                                 :editText="entity.nombreOrganizacion"

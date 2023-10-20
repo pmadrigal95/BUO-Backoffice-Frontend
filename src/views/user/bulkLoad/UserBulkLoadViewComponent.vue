@@ -227,6 +227,7 @@ export default {
                                     "
                                     :pageView="companyDialogView"
                                     label="Buscar empresa"
+                                    itemText="nombre"
                                     :setting="setting"
                                     v-model.number="organizacionId"
                                     :fnResetConfig="$_setCompanyFilter"

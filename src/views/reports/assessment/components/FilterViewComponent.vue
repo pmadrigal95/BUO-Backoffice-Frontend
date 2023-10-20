@@ -242,13 +242,6 @@ export default {
     >
         <div slot="btns">
             <v-row class="pl-3 pt-3">
-                <AssessmentViewComponent
-                    v-if="permission.Assessment"
-                    :entity="assessment"
-                    :organizacionId="entity.companyId"
-                    :fn="$_setAssessmentByType"
-                />
-
                 <BaseCustomsButtonsGrid
                     label="Ver Reporte"
                     :fnMethod="$_validatePreview"
@@ -272,6 +265,13 @@ export default {
                     :fnMethod="$_downloadAll"
                     :loading="loading[1].value"
                     icon="mdi-download-multiple"
+                />
+
+                <AssessmentViewComponent
+                    v-if="permission.Assessment"
+                    :entity="assessment"
+                    :organizacionId="entity.companyId"
+                    :fn="$_setAssessmentByType"
                 />
             </v-row>
         </div>

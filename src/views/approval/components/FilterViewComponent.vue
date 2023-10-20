@@ -306,13 +306,6 @@ export default {
         >
             <div slot="btns">
                 <v-row class="pl-3 pt-3">
-                    <AssessmentViewComponent
-                        v-if="assessmentPermission"
-                        :entity="assessment"
-                        :organizacionId="companyId"
-                        :fn="$_setAssessmentByType"
-                    />
-
                     <BaseCustomsButtonsGrid
                         v-if="permission && showBottonApprove"
                         label="Aprobar"
@@ -327,6 +320,13 @@ export default {
                         :fnMethod="$_rejectedAbility"
                         icon="mdi-thumb-down-outline"
                         color="redError900"
+                    />
+
+                    <AssessmentViewComponent
+                        v-if="assessmentPermission"
+                        :entity="assessment"
+                        :organizacionId="companyId"
+                        :fn="$_setAssessmentByType"
                     />
                 </v-row>
             </div>

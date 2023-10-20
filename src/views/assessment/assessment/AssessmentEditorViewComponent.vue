@@ -187,6 +187,7 @@ export default {
                                 :setting="companySetting"
                                 :editText="entity.nombreOrganizacion"
                                 v-model.number="entity.organizacionId"
+                                itemText="nombre"
                                 :validate="['requiered']"
                                 :fnResetConfig="$_setCompanyFilter"
                             />
