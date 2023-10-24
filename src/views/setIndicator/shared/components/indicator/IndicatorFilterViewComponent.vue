@@ -163,6 +163,7 @@ export default {
             cancellabelBtn="Regresar"
             :cancel="$_goBack"
             :fnResetConfig="$_setFilter"
+            :needExportToExcel="false"
         >
             <div slot="btns">
                 <v-btn

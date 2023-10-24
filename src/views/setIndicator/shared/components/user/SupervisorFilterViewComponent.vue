@@ -170,6 +170,7 @@ export default {
             cancellabelBtn="Regresar"
             :cancel="$_goBack"
             :fnResetConfig="$_setFilter"
+            :needExportToExcel="false"
         >
             <div slot="btns">
                 <v-row class="pl-3 pt-3" v-if="entity.companyId">

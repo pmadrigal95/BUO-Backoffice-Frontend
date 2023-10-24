@@ -200,6 +200,11 @@ export default {
             type: Array,
             default: undefined,
         },
+
+        needExportToExcel: {
+            type: Boolean,
+            default: true,
+        },
     },
 
     data() {
@@ -360,7 +365,7 @@ export default {
         $_fnActions() {
             let array = this.fnActions ? this.fnActions : [];
 
-            if (this.ispageView && this.pageView) {
+            if (this.ispageView && this.pageView && this.needExportToExcel) {
                 array.push({
                     icon: 'microsoft-excel',
                     title: 'Exportar',
