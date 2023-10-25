@@ -77,6 +77,7 @@ export default {
                 esClienteDemo: false,
                 tokenUsuario: undefined,
                 usuarioId: undefined,
+                pdaPremium: true,
             };
         },
 
@@ -241,6 +242,21 @@ export default {
                             <BaseSwitch
                                 label="Es cliente demo"
                                 v-model="entity.esClienteDemo"
+                            />
+                        </v-col>
+
+                        <v-col cols="12" v-if="user.companyId === buoId">
+                            <BaseSwitch
+                                :disabled="user.companyId != buoId"
+                                label="Interna"
+                                v-model="entity.esInterna"
+                            />
+                        </v-col>
+
+                        <v-col cols="12" v-if="user.companyId === buoId">
+                            <BaseSwitch
+                                label="PDA Premium"
+                                v-model="entity.pdaPremium"
                             />
                         </v-col>
 
