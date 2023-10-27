@@ -198,6 +198,13 @@ const companyColumns = (isFilter) => {
             show: isFilter ? false : true,
         },
         {
+            text: 'PDA Premium',
+            type: 'bool',
+            align: 'center',
+            value: 'pdaPremium',
+            show: true,
+        },
+        {
             text: 'Certifica Inmediato',
             type: 'bool',
             align: 'center',
