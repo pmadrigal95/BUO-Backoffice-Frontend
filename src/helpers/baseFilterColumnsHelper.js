@@ -198,7 +198,7 @@ const companyColumns = (isFilter) => {
             show: isFilter ? false : true,
         },
         {
-            text: 'PDA Premium',
+            text: 'BUO Psychometric Premium',
             type: 'bool',
             align: 'center',
             value: 'pdaPremium',

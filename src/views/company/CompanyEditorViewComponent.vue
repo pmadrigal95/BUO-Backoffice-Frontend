@@ -255,7 +255,7 @@ export default {
 
                         <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseSwitch
-                                label="PDA Premium"
+                                label="BUO Psychometric Premium"
                                 v-model="entity.pdaPremium"
                             />
                         </v-col>
