@@ -18,6 +18,8 @@ import categoryRoutes from '@/views/category/router';
 
 import approvalRoutes from '@/views/approval/router';
 
+import securityRoutes from '@/views/security/router';
+
 import analyticsRoutes from '@/views/analytics/router';
 
 import assessmentRoutes from '@/views/assessment/router';
@@ -46,6 +48,7 @@ const routes = [
             ...reportsRoutes,
             ...categoryRoutes,
             ...approvalRoutes,
+            ...securityRoutes,
             ...companyRoutes,
             ...analyticsRoutes,
             ...assessmentRoutes,

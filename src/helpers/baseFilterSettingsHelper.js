@@ -289,6 +289,19 @@ const userAssessmentSetting = ({
 /**
  * Configuracion BaseServerDataTable
  */
+const securitySetting = ({ key, singleSelect, columns }) => {
+    return {
+        endpoint: 'perfil/findBy',
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
 const promotionalCodeSetting = ({ key, singleSelect, columns }) => {
     return {
         endpoint: 'codigoPromocion/findBy',
@@ -621,6 +634,20 @@ export const baseFilterSettingsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
+    $_setSecuritySetting({ key, singleSelect, isFilter, list, pageView }) {
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setSecurityColumns({
+                  isFilter,
+                  pageView,
+              });
+
+        return securitySetting({ key, singleSelect, columns });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
     $_setPromotionalCodeSetting({
         key,
         singleSelect,
@@ -762,6 +789,16 @@ export const baseDataTableColumnsHelper = {
             pageView,
             isBuoUser,
             departmentId,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setSecurityColumns({ isFilter, pageView }) {
+        return baseFilterColumnsHelper.$_setSecurityColumns({
+            isFilter,
+            pageView,
         });
     },
 

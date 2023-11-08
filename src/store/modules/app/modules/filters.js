@@ -18,6 +18,7 @@ const $_pageView = () => {
         AbilityFilter: 'AbilityFilterViewComponent',
         ProfileFilter: 'ProfileFilterViewComponent',
         CategoryFilter: 'CategoryFilterViewComponent',
+        securityFilter: 'SecurityFilterViewComponent',
         AssessmentFilter: 'AssessmentFilterViewComponent',
         DepartmentFilter: 'DepartmentFilterViewComponent',
         MicroAbilityFilter: 'MicroAbilityFilterViewComponent',
