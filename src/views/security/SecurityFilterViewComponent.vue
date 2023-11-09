@@ -131,6 +131,18 @@ export default {
             //         }
             //     });
         },
+
+        $_fnNew() {
+            this.$router.push({
+                name: 'SecurityEditorViewComponent',
+            });
+        },
+
+        $_fnEditor() {
+            this.$router.push({
+                name: 'SecurityEditorViewComponent',
+            });
+        },
     },
 };
 </script>
@@ -167,6 +179,13 @@ export default {
                                     :extraParams="extraParams"
                                     :fnResetConfig="$_setFilter"
                                     :needExportToExcel="false"
+                                    :fnNew="permission ? $_fnNew : undefined"
+                                    :fnEdit="
+                                        permission ? $_fnEditor : undefined
+                                    "
+                                    :fnDelete="
+                                        permission ? $_fnDelete : undefined
+                                    "
                                 />
                                 <BaseSkeletonLoader v-else type="table" />
                             </section>
