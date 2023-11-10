@@ -23,6 +23,7 @@ const $_pageView = () => {
         DepartmentFilter: 'DepartmentFilterViewComponent',
         MicroAbilityFilter: 'MicroAbilityFilterViewComponent',
         setIndicadorFilter: 'SetIndicadorFilterViewComponent',
+        securityUserFilter: 'securityUserFilterViewComponent',
         AssessmentTypeFilter: 'AssessmentTypeFilterViewComponent',
         PromotionalCodesFilter: 'PromotionalCodesFilterViewComponent',
         setIndicadorUserFilter: 'SetIndicadorUserFilterViewComponent',

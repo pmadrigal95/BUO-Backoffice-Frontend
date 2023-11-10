@@ -17,6 +17,9 @@ const ActionFilterViewComponent = () =>
 const UserFilterViewComponent = () =>
     import('@/views/security/components/editor/users/UserFilterViewComponent');
 
+const PreviewViewComponent = () =>
+    import('@/views/security/components/editor/preview/PreviewViewComponent');
+
 export default {
     name: 'ContainerViewComponent',
 
@@ -24,6 +27,7 @@ export default {
         RoleEditorViewComponent,
         ActionFilterViewComponent,
         UserFilterViewComponent,
+        PreviewViewComponent,
     },
 
     data() {
@@ -73,7 +77,7 @@ export default {
                 </v-window-item>
 
                 <v-window-item :value="3">
-                    <p>Resumen</p>
+                    <PreviewViewComponent :entity="entity" />
                 </v-window-item>
             </v-window>
         </v-card-text>

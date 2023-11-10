@@ -46,7 +46,7 @@ export default {
         ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
 
         pageView() {
-            return this.pageViewById('UserFilter');
+            return this.pageViewById('securityUserFilter');
         },
 
         extraParams() {
