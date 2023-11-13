@@ -8,13 +8,13 @@
 
 import { mapGetters } from 'vuex';
 
-// import {
-//     baseFilterSettingsHelper,
-//     baseDataTableColumnsHelper,
-// } from '@/helpers/baseFilterSettingsHelper';
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
 
-// const BaseServerDataTable = () =>
-//     import('@/components/core/grids/BaseServerDataTable');
+const BaseServerDataTable = () =>
+    import('@/components/core/grids/BaseServerDataTable');
 
 const StepViewComponent = () =>
     import('@/views/user/bulkLoad/components/StepViewComponent');
@@ -30,7 +30,7 @@ export default {
     },
 
     components: {
-        // BaseServerDataTable,
+        BaseServerDataTable,
         StepViewComponent,
     },
 
@@ -43,46 +43,31 @@ export default {
     computed: {
         ...mapGetters('theme', ['app']),
 
-        // ...mapGetters('authentication', ['user', 'buoId']),
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
 
-        // ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+        pageView() {
+            return this.pageViewById('securityActionsFilter');
+        },
 
-        // pageView() {
-        //     return this.pageViewById('setIndicadorUserFilter');
-        // },
-
-        // extraParams() {
-        //     return (
-        //         this.entity.companyId &&
-        //         baseFilterSettingsHelper.$_setExtraParams({
-        //             companyId: this.entity.companyId,
-        //         })
-        //     );
-        // },
-
-        // /**
-        //  * Configuracion BaseServerDataTable
-        //  */
-        // setting() {
-        //     return baseFilterSettingsHelper.$_setUserSetting({
-        //         companyId: this.entity.companyId,
-        //         departmentId: this.entity.departmentId,
-        //         singleSelect: false,
-        //         list: this.filtersBypageView(this.pageView),
-        //         pageView: this.pageView,
-        //     });
-        // },
+        /**
+         * Configuracion BaseServerDataTable
+         */
+        setting() {
+            return baseFilterSettingsHelper.$_setSecurityActionSetting({
+                singleSelect: false,
+                list: this.filtersBypageView(this.pageView),
+                pageView: this.pageView,
+            });
+        },
     },
 
     methods: {
-        // $_setFilter() {
-        //     baseDataTableColumnsHelper.$_setUserColumns({
-        //         companyId: this.entity.companyId,
-        //         departmentId: this.entity.departmentId,
-        //         pageView: this.pageView,
-        //     });
-        //     this.key++;
-        // },
+        $_setFilter() {
+            baseDataTableColumnsHelper.$_setSecurityActionsColumns({
+                pageView: this.pageView,
+            });
+            this.key++;
+        },
 
         /**
          * Get a registry
@@ -96,6 +81,32 @@ export default {
             this.entity.form.accionIds = [];
 
             this.entity.step = 0;
+        },
+
+        $_setActionList(array) {
+            this.entity.form.tempAccionIds = array;
+            this.entity.form.accionIds = [];
+
+            this.entity.step = 2;
+        },
+
+        $_setList(params) {
+            const row =
+                Array.isArray(params) || params.selected
+                    ? params.selected
+                        ? [params.selected]
+                        : params
+                    : this.$_GetRow();
+
+            const array = row.map((element) => {
+                return {
+                    actionId: element.id,
+                    name: element.nombre,
+                    description: element.descripcion,
+                };
+            });
+
+            this.$_setActionList(array);
         },
     },
 };
@@ -114,13 +125,12 @@ export default {
             />
         </v-layout>
 
-        <!-- <BaseServerDataTable
+        <BaseServerDataTable
             :key="key"
             v-if="entity && setting"
             :ref="pageView"
             :pageView="pageView"
             :setting="setting"
-            :extraParams="extraParams"
             :fnDoubleClick="$_setList"
             cancellabelBtn="Regresar"
             :cancel="$_goBack"
@@ -128,7 +138,7 @@ export default {
             :needExportToExcel="false"
         >
             <div slot="btns">
-                <v-row class="pl-3 pt-3" v-if="entity.companyId">
+                <v-row class="pl-3 pt-3" v-if="entity.form.organizacionId">
                     <v-btn
                         fab
                         x-small
@@ -146,7 +156,7 @@ export default {
                         color="primary"
                         @click="$_setList"
                         elevation="0"
-                        class="mx-4"
+                        class="mx-1"
                     >
                         <v-icon dark> mdi-chevron-right </v-icon>
                     </v-btn>
@@ -163,6 +173,6 @@ export default {
                     >Continuar</v-btn
                 >
             </div>
-        </BaseServerDataTable> -->
+        </BaseServerDataTable>
     </section>
 </template>

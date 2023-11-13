@@ -11,6 +11,7 @@ const exclusionList = [
     'menuUsuario',
     'pda/getTestList',
     'pruebaResultado',
+    'perfil/getAcciones',
     '/user/authenticate',
     'createShareableLink',
     'misc/validateCaptcha',

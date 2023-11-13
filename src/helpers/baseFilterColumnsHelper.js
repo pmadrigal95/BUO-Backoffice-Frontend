@@ -787,13 +787,13 @@ const userAssessmentColumns = (departmentId, isBuoUser, isFilter) => {
 /**
  * Configuracion BaseServerDataTable
  */
-const securityColumns = (/*isFilter*/) => {
+const securityColumns = (isFilter) => {
     return [
         {
             text: 'Empresa',
             align: 'start',
             value: 'nombreOrganizacion',
-            show: false,
+            show: isFilter ? true : false,
         },
         {
             text: 'Rol',
@@ -837,6 +837,44 @@ const securityColumns = (/*isFilter*/) => {
             align: 'start',
             value: 'fechaModificacionFormato',
             show: false,
+        },
+    ];
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const securityActionsColumns = (isFilter) => {
+    return [
+        {
+            text: 'Código',
+            align: 'start',
+            value: 'codigo',
+            show: false,
+        },
+        {
+            text: 'Nombre',
+            align: 'start',
+            value: 'nombre',
+            show: true,
+        },
+        {
+            text: 'Descripción',
+            align: 'start',
+            value: 'descripcion',
+            show: true,
+        },
+        {
+            text: 'Tipo',
+            align: 'start',
+            value: 'tipo',
+            show: false,
+        },
+        {
+            text: 'Es interna',
+            align: 'start',
+            value: 'interna',
+            show: isFilter ? true : false,
         },
     ];
 };
@@ -1036,6 +1074,15 @@ export const baseFilterColumnsHelper = {
      */
     $_setSecurityColumns({ isFilter, pageView }) {
         const columns = securityColumns(isFilter);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setSecurityActionsColumns({ isFilter, pageView }) {
+        const columns = securityActionsColumns(isFilter);
         setUpCache({ pageView, columns, isFilter });
         return columns;
     },

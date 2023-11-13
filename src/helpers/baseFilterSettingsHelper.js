@@ -302,6 +302,19 @@ const securitySetting = ({ key, singleSelect, columns }) => {
 /**
  * Configuracion BaseServerDataTable
  */
+const securityActionSetting = ({ key, singleSelect, columns }) => {
+    return {
+        endpoint: 'perfil/getAcciones',
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
 const promotionalCodeSetting = ({ key, singleSelect, columns }) => {
     return {
         endpoint: 'codigoPromocion/findBy',
@@ -648,6 +661,26 @@ export const baseFilterSettingsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
+    $_setSecurityActionSetting({
+        key,
+        singleSelect,
+        isFilter,
+        list,
+        pageView,
+    }) {
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setSecurityActionsColumns({
+                  isFilter,
+                  pageView,
+              });
+
+        return securityActionSetting({ key, singleSelect, columns });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
     $_setPromotionalCodeSetting({
         key,
         singleSelect,
@@ -797,6 +830,16 @@ export const baseDataTableColumnsHelper = {
      */
     $_setSecurityColumns({ isFilter, pageView }) {
         return baseFilterColumnsHelper.$_setSecurityColumns({
+            isFilter,
+            pageView,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setSecurityActionsColumns({ isFilter, pageView }) {
+        return baseFilterColumnsHelper.$_setSecurityActionsColumns({
             isFilter,
             pageView,
         });

@@ -59,7 +59,7 @@ export default {
                     return element.userId;
                 }),
                 accionIds: this.entity.form.tempAccionIds.map((element) => {
-                    return element.id;
+                    return element.actionId;
                 }),
             };
         },
@@ -73,9 +73,12 @@ export default {
                     this.loading = false;
 
                     if (response != undefined) {
-                        //Logica JS luego de la acción exitosa!!!
-                        console.log(response);
-                        // response.data.id
+                        this.$router.push({
+                            name: 'SecurityDashboardViewComponent',
+                            params: response?.data?.id && {
+                                Id: response.data.id,
+                            },
+                        });
                     }
                 });
         },

@@ -25,6 +25,7 @@ const $_pageView = () => {
         setIndicadorFilter: 'SetIndicadorFilterViewComponent',
         securityUserFilter: 'securityUserFilterViewComponent',
         AssessmentTypeFilter: 'AssessmentTypeFilterViewComponent',
+        securityActionsFilter: 'securityActionsFilterViewComponent',
         PromotionalCodesFilter: 'PromotionalCodesFilterViewComponent',
         setIndicadorUserFilter: 'SetIndicadorUserFilterViewComponent',
     };
@@ -37,6 +38,7 @@ const $_dialogView = () => {
         companyDialog: 'companySetting',
         assessmentDialog: 'assessmentSetting',
         simpleAbilityDialog: 'simpleAbilitySetting',
+        securityActionsDialog: 'securityActionsSetting',
     };
 };
 

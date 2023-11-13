@@ -138,9 +138,10 @@ export default {
             });
         },
 
-        $_fnEditor() {
+        $_fnEditor(params) {
             this.$router.push({
-                name: 'SecurityEditorViewComponent',
+                name: 'SecurityDashboardViewComponent',
+                params: params && { Id: params.selected[this.setting.key] },
             });
         },
     },
