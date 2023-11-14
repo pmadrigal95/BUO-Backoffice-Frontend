@@ -17,6 +17,9 @@ import {
     baseDataTableColumnsHelper,
 } from '@/helpers/baseFilterSettingsHelper';
 
+const BaseInputDataTable = () =>
+    import('@/components/core/forms/BaseInputDataTable.vue');
+
 export default {
     name: 'RoleEditorViewComponent',
 
@@ -26,6 +29,8 @@ export default {
             requiered: true,
         },
     },
+
+    components: { BaseInputDataTable },
 
     data() {
         return {
