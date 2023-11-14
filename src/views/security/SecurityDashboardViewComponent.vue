@@ -9,16 +9,19 @@
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
+const RoleViewComponent = () =>
+    import('@/views/security/components/dashboard/role/RoleViewComponent');
+
 export default {
     name: 'SecurityDashboardViewComponent',
 
     components: {
+        RoleViewComponent,
         BaseCardViewComponent,
     },
 
     data() {
         return {
-            id: undefined,
             loading: false,
         };
     },
@@ -48,7 +51,7 @@ export default {
         v-if="$router.currentRoute.params.Id"
     >
         <div slot="card-text">
-            <p>{{ $router.currentRoute.params.Id }}</p>
+            <RoleViewComponent :id="$router.currentRoute.params.Id * 1" />
         </div>
     </BaseCardViewComponent>
 </template>
