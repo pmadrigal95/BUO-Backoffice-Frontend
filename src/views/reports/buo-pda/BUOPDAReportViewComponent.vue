@@ -126,7 +126,7 @@ export default {
                         if (response.data == '') {
                             baseNotificationsHelper.Message(
                                 true,
-                                'Solo se podra generar el reporte de aquellos usuarios que cuenten con el test PDA'
+                                'Solo se podra generar el reporte de aquellos usuarios que cuenten con el test Buo Psychometric'
                             );
                         } else {
                             baseFnFile.$_dowloadFile(
@@ -164,7 +164,7 @@ export default {
             ) {
                 baseNotificationsHelper.Message(
                     true,
-                    'Solo se podra generar el reporte de aquellos usuarios que cuenten con el test PDA'
+                    'Solo se podra generar el reporte de aquellos usuarios que cuenten con el test Buo Psychometric'
                 );
             }
 
@@ -216,7 +216,7 @@ export default {
                     } else {
                         baseNotificationsHelper.Message(
                             true,
-                            'Usuario no cuenta con test PDA'
+                            'Usuario no cuenta con test Buo Psychometric'
                         );
                     }
                     break;
@@ -237,7 +237,7 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="Generador de Reporte Buo-PDA">
+    <BaseCardViewComponent title="Generador de Reporte Buo Psychometric">
         <div slot="body">
             <BaseAdvancedFilter :show="show" v-model="entity" isDepartment>
                 <div slot="body">

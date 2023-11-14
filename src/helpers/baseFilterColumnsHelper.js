@@ -95,7 +95,7 @@ const userColumns = (departmentId, isBuoUser, isFilter) => {
             show: isFilter ? false : true,
         },
         {
-            text: 'Test PDA',
+            text: 'Buo Psychometric',
             type: 'bool',
             align: 'center',
             value: 'conPda',

@@ -26,7 +26,7 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="BUO PDA Demographics"
+        title="Buo Psychometric Demographics"
         subtitle="Datos que Inspiran, Decisiones que Transforman: Buo PDA Demographics."
     >
         <div slot="card-text">

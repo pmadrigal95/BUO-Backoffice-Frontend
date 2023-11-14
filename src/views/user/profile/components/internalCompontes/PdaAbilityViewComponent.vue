@@ -90,7 +90,7 @@ export default {
             } else {
                 baseNotificationsHelper.Message(
                     true,
-                    'Usuario no cuenta con test PDA'
+                    'Usuario no cuenta con test Buo Psychometric'
                 );
             }
         },
@@ -144,12 +144,12 @@ export default {
                     class="BUO-Paragraph-Large-SemiBold pl-6"
                     :class="[app ? 'white--text' : 'grey700--text']"
                 >
-                    Indicadores PDA
+                    Indicadores Buo Psychometric
                 </section>
             </v-col>
             <v-col cols="12" md="4" class="d-flex justify-end">
                 <BaseCustomsButtonsGrid
-                    label="Ver PDA"
+                    label="Ver Buo Psychometric"
                     :fnMethod="$_fnSendReportPDA"
                     icon="mdi-share-variant-outline"
                     v-if="permission"

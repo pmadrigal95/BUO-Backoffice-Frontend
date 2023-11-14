@@ -65,7 +65,7 @@ export default {
 <template>
     <BaseCardViewComponent
         title="Perfiles de Colaboradores"
-        subtitle="Descubre el perfil de cada persona, sus indicadores y PDA"
+        subtitle="Descubre el perfil de cada persona, sus indicadores y Buo Psychometric"
     >
         <div slot="card-text">
             <BaseAdvancedFilter

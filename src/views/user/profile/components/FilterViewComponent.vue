@@ -199,7 +199,7 @@ export default {
                         :color="app ? 'blueProgress600' : 'blue900'"
                     />
                     <BaseCustomsButtonsGrid
-                        label="Comparar PDA"
+                        label="Comparar Buo Psychometric"
                         :outlined="false"
                         :fnMethod="$_userDetails"
                         icon="mdi-account-group-outline"
