@@ -882,6 +882,51 @@ const securityActionsColumns = (isFilter) => {
 /**
  * Configuracion BaseServerDataTable
  */
+const securityActionsPerRoleColumns = (/*isFilter*/) => {
+    return [
+        // {
+        //     text: 'Código',
+        //     align: 'start',
+        //     value: 'codigo',
+        //     show: false,
+        // },
+        // {
+        //     text: 'Nombre',
+        //     align: 'start',
+        //     value: 'nombre',
+        //     show: true,
+        // },
+        // {
+        //     text: 'Descripción',
+        //     align: 'start',
+        //     value: 'descripcion',
+        //     show: true,
+        // },
+        // {
+        //     text: 'Tipo',
+        //     align: 'start',
+        //     value: 'tipo',
+        //     show: false,
+        // },
+        // {
+        //     text: 'Es interna',
+        //     align: 'start',
+        //     value: 'interna',
+        //     show: isFilter ? true : false,
+        // },
+    ];
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const securityUsersPerRoleColumns = (/*isFilter*/) => {
+    return [];
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
 const promotionalCodeColumns = (isFilter) => {
     return [
         {
@@ -1083,6 +1128,24 @@ export const baseFilterColumnsHelper = {
      */
     $_setSecurityActionsColumns({ isFilter, pageView }) {
         const columns = securityActionsColumns(isFilter);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setSecurityActionsPerRoleColumns({ isFilter, pageView }) {
+        const columns = securityActionsPerRoleColumns(isFilter);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setSecurityUsersPerRoleColumns({ isFilter, pageView }) {
+        const columns = securityUsersPerRoleColumns(isFilter);
         setUpCache({ pageView, columns, isFilter });
         return columns;
     },
