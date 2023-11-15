@@ -8,7 +8,7 @@
 
 import { mapGetters } from 'vuex';
 
-import httpService from '@/services/axios/httpService';
+// import httpService from '@/services/axios/httpService';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
@@ -19,6 +19,9 @@ import {
 
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
+
+const BaseCustomsButtonsGrid = () =>
+    import('@/components/core/grids/BaseCustomsButtonsGrid');
 
 export default {
     name: 'UserPerRoleFilterViewComponent',
@@ -32,6 +35,7 @@ export default {
 
     components: {
         BaseServerDataTable,
+        BaseCustomsButtonsGrid,
     },
 
     data() {
@@ -46,7 +50,7 @@ export default {
         ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
 
         pageView() {
-            return this.pageViewById('securityUserFilter');
+            return this.pageViewById('securityUserPerRoleFilter');
         },
 
         /**
@@ -62,7 +66,7 @@ export default {
 
         write() {
             const result = baseSecurityHelper.$_ReadPermission(
-                'PromotionalCodesViewComponent',
+                'SecurityViewComponent',
                 baseSecurityHelper.$_write
             );
             return result;
@@ -91,27 +95,33 @@ export default {
         /**
          * Delete Function
          */
-        $_fnDeletePromotionalCode(row) {
-            httpService
-                .post(
-                    'codigoPromocion/deactivate',
-                    this.$_createBodyRequestDelete(row)
-                )
-                .then((response) => {
-                    if (response != undefined) {
-                        this.$refs[this.pageView].$_ParamsToAPI();
-                    }
-                });
+        $_fnDelete() {
+            // httpService
+            //     .post(
+            //         'codigoPromocion/deactivate',
+            //         this.$_createBodyRequestDelete(row)
+            //     )
+            //     .then((response) => {
+            //         if (response != undefined) {
+            //             this.$refs[this.pageView].$_ParamsToAPI();
+            //         }
+            //     });
         },
 
         /**
-         * Pantalla Editor
+         * Add Function
          */
-        $_promotionalCodesEditor(params) {
-            this.$router.push({
-                name: 'PromotionalCodesEditorViewComponent',
-                params: params && { Id: params.selected[this.setting.key] },
-            });
+        $_fnAdd() {
+            // httpService
+            //     .post(
+            //         'codigoPromocion/deactivate',
+            //         this.$_createBodyRequestDelete(row)
+            //     )
+            //     .then((response) => {
+            //         if (response != undefined) {
+            //             this.$refs[this.pageView].$_ParamsToAPI();
+            //         }
+            //     });
         },
     },
 };
@@ -125,8 +135,27 @@ export default {
         :pageView="pageView"
         :fnResetConfig="$_setFilter"
         :setting="setting"
-        :fnNew="write ? $_promotionalCodesEditor : undefined"
-        :fnDelete="write ? $_fnDeletePromotionalCode : undefined"
-    />
+        :needExportToExcel="false"
+    >
+        <div slot="btns">
+            <v-row class="pl-3 pt-3">
+                <BaseCustomsButtonsGrid
+                    v-if="write"
+                    label="Agregar"
+                    :fnMethod="$_fnAdd"
+                    icon="mdi-plus"
+                    color="greenB900"
+                />
+
+                <BaseCustomsButtonsGrid
+                    v-if="write"
+                    label="Eliminar"
+                    :fnMethod="$_fnDelete"
+                    icon="mdi-delete-outline"
+                    color="redError900"
+                />
+            </v-row>
+        </div>
+    </BaseServerDataTable>
     <BaseSkeletonLoader v-else type="table" />
 </template>

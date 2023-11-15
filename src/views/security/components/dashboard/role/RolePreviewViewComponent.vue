@@ -8,6 +8,8 @@
 
 import { mapGetters } from 'vuex';
 
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid.vue');
 
@@ -25,6 +27,14 @@ export default {
 
     computed: {
         ...mapGetters('theme', ['app']),
+
+        write() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'SecurityViewComponent',
+                baseSecurityHelper.$_write
+            );
+            return result;
+        },
     },
 
     methods: {
@@ -49,7 +59,7 @@ export default {
                         {{ entity.form.nombre }}
                     </section>
                 </v-col>
-                <v-col cols="12" md="4" class="d-flex justify-end">
+                <v-col cols="12" md="4" class="d-flex justify-end" v-if="write">
                     <BaseCustomsButtonsGrid
                         label="Editar"
                         :fnMethod="$_fnEdit"

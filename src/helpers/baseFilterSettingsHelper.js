@@ -324,7 +324,7 @@ const securityActionPerRoleSetting = ({
     return {
         endpoint: `perfil/${perfilId}/getAcciones`,
         columns: columns,
-        key: key ? key : 'id',
+        key: key ? key : 'accionId',
         singleSelect: singleSelect,
         multiSelect: !singleSelect,
     };
@@ -342,7 +342,7 @@ const securityUserPerRoleSetting = ({
     return {
         endpoint: `perfil/${perfilId}/getUsuarios`,
         columns: columns,
-        key: key ? key : 'id',
+        key: key ? key : 'usuarioId',
         singleSelect: singleSelect,
         multiSelect: !singleSelect,
     };

@@ -882,46 +882,77 @@ const securityActionsColumns = (isFilter) => {
 /**
  * Configuracion BaseServerDataTable
  */
-const securityActionsPerRoleColumns = (/*isFilter*/) => {
+const securityActionsPerRoleColumns = (isFilter) => {
     return [
-        // {
-        //     text: 'Código',
-        //     align: 'start',
-        //     value: 'codigo',
-        //     show: false,
-        // },
-        // {
-        //     text: 'Nombre',
-        //     align: 'start',
-        //     value: 'nombre',
-        //     show: true,
-        // },
-        // {
-        //     text: 'Descripción',
-        //     align: 'start',
-        //     value: 'descripcion',
-        //     show: true,
-        // },
-        // {
-        //     text: 'Tipo',
-        //     align: 'start',
-        //     value: 'tipo',
-        //     show: false,
-        // },
-        // {
-        //     text: 'Es interna',
-        //     align: 'start',
-        //     value: 'interna',
-        //     show: isFilter ? true : false,
-        // },
+        {
+            text: 'Acción',
+            align: 'start',
+            value: 'nombreAccion',
+            show: true,
+        },
+        {
+            text: 'Descripción',
+            align: 'start',
+            value: 'descripcionAccion',
+            show: true,
+        },
+        {
+            text: 'Rol',
+            align: 'start',
+            value: 'nombrePerfil',
+            show: false,
+        },
+        {
+            text: 'Creado Por',
+            align: 'start',
+            value: 'nombreUsuarioCrea',
+            show: isFilter ? true : false,
+        },
+        {
+            text: 'Fecha Creación',
+            align: 'start',
+            value: 'fechaCreacionFormato',
+            show: isFilter ? true : false,
+        },
     ];
 };
 
 /**
  * Configuracion BaseServerDataTable
  */
-const securityUsersPerRoleColumns = (/*isFilter*/) => {
-    return [];
+const securityUsersPerRoleColumns = (isFilter) => {
+    return [
+        {
+            text: 'Nombre',
+            align: 'start',
+            value: 'nombreUsuario',
+            show: true,
+        },
+        {
+            text: 'Correo',
+            align: 'start',
+            value: 'username',
+            show: true,
+        },
+        {
+            text: 'Rol',
+            align: 'start',
+            value: 'nombrePerfil',
+            show: false,
+        },
+        {
+            text: 'Creado Por',
+            align: 'start',
+            value: 'nombreUsuarioCrea',
+            show: isFilter ? true : false,
+        },
+        {
+            text: 'Fecha Creación',
+            align: 'start',
+            value: 'fechaCreacionFormato',
+            show: isFilter ? true : false,
+        },
+    ];
 };
 
 /**

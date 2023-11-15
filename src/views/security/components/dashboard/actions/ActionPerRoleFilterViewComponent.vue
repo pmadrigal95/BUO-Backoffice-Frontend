@@ -46,7 +46,7 @@ export default {
         ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
 
         pageView() {
-            return this.pageViewById('securityActionsFilter');
+            return this.pageViewById('securityActionsPerRoleFilter');
         },
 
         /**
@@ -62,7 +62,7 @@ export default {
 
         write() {
             const result = baseSecurityHelper.$_ReadPermission(
-                'PromotionalCodesViewComponent',
+                'SecurityViewComponent',
                 baseSecurityHelper.$_write
             );
             return result;
@@ -125,8 +125,7 @@ export default {
         :pageView="pageView"
         :fnResetConfig="$_setFilter"
         :setting="setting"
-        :fnNew="write ? $_promotionalCodesEditor : undefined"
-        :fnDelete="write ? $_fnDeletePromotionalCode : undefined"
+        :needExportToExcel="false"
     />
     <BaseSkeletonLoader v-else type="table" />
 </template>

@@ -28,6 +28,9 @@ const $_pageView = () => {
         securityActionsFilter: 'securityActionsFilterViewComponent',
         PromotionalCodesFilter: 'PromotionalCodesFilterViewComponent',
         setIndicadorUserFilter: 'SetIndicadorUserFilterViewComponent',
+        securityUserPerRoleFilter: 'securityUserPerRoleFilterViewComponent',
+        securityActionsPerRoleFilter:
+            'securityActionsPerRoleFilterViewComponent',
     };
 };
 
