@@ -13,6 +13,8 @@ import {
     baseDataTableColumnsHelper,
 } from '@/helpers/baseFilterSettingsHelper';
 
+import httpService from '@/services/axios/httpService';
+
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 const BaseServerDataTable = () =>
@@ -119,17 +121,12 @@ export default {
          * Delete Function
          */
         $_fnDelete(row) {
-            console.log(row);
-            // httpService
-            //     .post(
-            //         '',
-            //         this.$_createBodyRequestDelete(row)
-            //     )
-            //     .then((response) => {
-            //         if (response != undefined) {
-            //             this.$refs[this.pageView].$_ParamsToAPI();
-            //         }
-            //     });
+            httpService.delete(`perfil/${row[0].id}`).then((response) => {
+                if (response != undefined) {
+                    this.$refs[this.pageView].$_ParamsToAPI();
+                    console.log(response);
+                }
+            });
         },
 
         $_fnNew() {
