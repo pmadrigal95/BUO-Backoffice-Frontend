@@ -20,6 +20,11 @@ import {
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
+const ActionDialogFilterViewComponent = () =>
+    import(
+        '@/views/security/components/dashboard/actions/ActionDialogFilterViewComponent'
+    );
+
 export default {
     name: 'ActionPerRoleFilterViewComponent',
 
@@ -32,6 +37,7 @@ export default {
 
     components: {
         BaseServerDataTable,
+        ActionDialogFilterViewComponent,
     },
 
     data() {
@@ -41,8 +47,6 @@ export default {
     },
 
     computed: {
-        ...mapGetters('authentication', ['user']),
-
         ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
 
         pageView() {
@@ -77,41 +81,26 @@ export default {
             this.key++;
         },
 
-        /**
-         * Body Request
-         */
-        $_createBodyRequestDelete(row) {
-            const request = {
-                userId: this.user.userId,
-                id: row[0].id,
-            };
-            return request;
+        $_refresh() {
+            this.$refs[this.pageView].$_ParamsToAPI();
         },
 
-        /**
-         * Delete Function
-         */
-        $_fnDeletePromotionalCode(row) {
+        $_fnNew() {
+            this.$refs['ActionDialogFilterViewComponent'].$_open();
+        },
+
+        $_delete(row) {
             httpService
-                .post(
-                    'codigoPromocion/deactivate',
-                    this.$_createBodyRequestDelete(row)
-                )
+                .post('perfil/handleActions', {
+                    perfilId: this.id,
+                    isDelete: true,
+                    accionIds: row.map((element) => element.accionId),
+                })
                 .then((response) => {
                     if (response != undefined) {
-                        this.$refs[this.pageView].$_ParamsToAPI();
+                        this.$_refresh();
                     }
                 });
-        },
-
-        /**
-         * Pantalla Editor
-         */
-        $_promotionalCodesEditor(params) {
-            this.$router.push({
-                name: 'PromotionalCodesEditorViewComponent',
-                params: params && { Id: params.selected[this.setting.key] },
-            });
         },
     },
 };
@@ -124,8 +113,19 @@ export default {
         :ref="pageView"
         :pageView="pageView"
         :fnResetConfig="$_setFilter"
+        :fnNew="write ? $_fnNew : undefined"
+        :fnDelete="write ? $_delete : undefined"
         :setting="setting"
         :needExportToExcel="false"
-    />
+    >
+        <div slot="btns">
+            <ActionDialogFilterViewComponent
+                ref="ActionDialogFilterViewComponent"
+                v-if="write"
+                :perfilId="id"
+                :fnCallback="$_refresh"
+            />
+        </div>
+    </BaseServerDataTable>
     <BaseSkeletonLoader v-else type="table" />
 </template>

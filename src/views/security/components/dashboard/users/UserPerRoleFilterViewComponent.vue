@@ -8,7 +8,7 @@
 
 import { mapGetters } from 'vuex';
 
-// import httpService from '@/services/axios/httpService';
+import httpService from '@/services/axios/httpService';
 
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
@@ -20,8 +20,10 @@ import {
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
-const BaseCustomsButtonsGrid = () =>
-    import('@/components/core/grids/BaseCustomsButtonsGrid');
+const UserDialogFilterViewComponent = () =>
+    import(
+        '@/views/security/components/dashboard/users/UserDialogFilterViewComponent'
+    );
 
 export default {
     name: 'UserPerRoleFilterViewComponent',
@@ -31,11 +33,16 @@ export default {
             type: Number,
             requiered: true,
         },
+
+        organizacionId: {
+            type: Number,
+            requiered: true,
+        },
     },
 
     components: {
         BaseServerDataTable,
-        BaseCustomsButtonsGrid,
+        UserDialogFilterViewComponent,
     },
 
     data() {
@@ -59,6 +66,7 @@ export default {
         setting() {
             return baseFilterSettingsHelper.$_setSecurityUserPerRoleSetting({
                 perfilId: this.id,
+                singleSelect: false,
                 list: this.filtersBypageView(this.pageView),
                 pageView: this.pageView,
             });
@@ -81,47 +89,26 @@ export default {
             this.key++;
         },
 
-        /**
-         * Body Request
-         */
-        $_createBodyRequestDelete(row) {
-            const request = {
-                userId: this.user.userId,
-                id: row[0].id,
-            };
-            return request;
+        $_refresh() {
+            this.$refs[this.pageView].$_ParamsToAPI();
         },
 
-        /**
-         * Delete Function
-         */
-        $_fnDelete() {
-            // httpService
-            //     .post(
-            //         'codigoPromocion/deactivate',
-            //         this.$_createBodyRequestDelete(row)
-            //     )
-            //     .then((response) => {
-            //         if (response != undefined) {
-            //             this.$refs[this.pageView].$_ParamsToAPI();
-            //         }
-            //     });
+        $_fnNew() {
+            this.$refs['UserDialogFilterViewComponent'].$_open();
         },
 
-        /**
-         * Add Function
-         */
-        $_fnAdd() {
-            // httpService
-            //     .post(
-            //         'codigoPromocion/deactivate',
-            //         this.$_createBodyRequestDelete(row)
-            //     )
-            //     .then((response) => {
-            //         if (response != undefined) {
-            //             this.$refs[this.pageView].$_ParamsToAPI();
-            //         }
-            //     });
+        $_delete(row) {
+            httpService
+                .post('perfil/handleUsers', {
+                    perfilId: this.id,
+                    isDelete: true,
+                    usuarioIds: row.map((element) => element.usuarioId),
+                })
+                .then((response) => {
+                    if (response != undefined) {
+                        this.$_refresh();
+                    }
+                });
         },
     },
 };
@@ -134,27 +121,19 @@ export default {
         :ref="pageView"
         :pageView="pageView"
         :fnResetConfig="$_setFilter"
+        :fnNew="write ? $_fnNew : undefined"
+        :fnDelete="write ? $_delete : undefined"
         :setting="setting"
         :needExportToExcel="false"
     >
         <div slot="btns">
-            <v-row class="pl-3 pt-3">
-                <BaseCustomsButtonsGrid
-                    v-if="write"
-                    label="Agregar"
-                    :fnMethod="$_fnAdd"
-                    icon="mdi-plus"
-                    color="greenB900"
-                />
-
-                <BaseCustomsButtonsGrid
-                    v-if="write"
-                    label="Eliminar"
-                    :fnMethod="$_fnDelete"
-                    icon="mdi-delete-outline"
-                    color="redError900"
-                />
-            </v-row>
+            <UserDialogFilterViewComponent
+                ref="UserDialogFilterViewComponent"
+                v-if="write"
+                :perfilId="id"
+                :organizacionId="organizacionId"
+                :fnCallback="$_refresh"
+            />
         </div>
     </BaseServerDataTable>
     <BaseSkeletonLoader v-else type="table" />

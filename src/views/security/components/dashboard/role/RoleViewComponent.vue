@@ -20,6 +20,9 @@ const RoleEditorViewComponent = () =>
         '@/views/security/components/dashboard/role/RoleEditorViewComponent'
     );
 
+const RoleListsViewComponent = () =>
+    import('@/views/security/components/dashboard/role/RoleListsViewComponent');
+
 export default {
     name: 'RoleViewComponent',
 
@@ -33,6 +36,7 @@ export default {
     components: {
         RolePreviewViewComponent,
         RoleEditorViewComponent,
+        RoleListsViewComponent,
     },
 
     data() {
@@ -94,16 +98,21 @@ export default {
 <template>
     <v-card flat class="rounded-t-xl">
         <v-card-text>
-            <BaseSkeletonLoader v-if="loading" type="article, actions" />
-            <v-window v-model="entity.step" touchless v-else>
-                <v-window-item :value="0">
-                    <RolePreviewViewComponent :entity="entity" />
-                </v-window-item>
+            <section>
+                <BaseSkeletonLoader v-if="loading" type="article, actions" />
+                <v-window v-model="entity.step" touchless v-else>
+                    <v-window-item :value="0">
+                        <RolePreviewViewComponent :entity="entity" />
+                    </v-window-item>
 
-                <v-window-item :value="1" :key="entity.componentKey">
-                    <RoleEditorViewComponent :entity="entity" />
-                </v-window-item>
-            </v-window>
+                    <v-window-item :value="1" :key="entity.componentKey">
+                        <RoleEditorViewComponent :entity="entity" />
+                    </v-window-item>
+                </v-window>
+            </section>
+            <section v-if="entity.form.id">
+                <RoleListsViewComponent :entity="entity.form" />
+            </section>
         </v-card-text>
     </v-card>
 </template>
