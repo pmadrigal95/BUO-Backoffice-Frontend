@@ -76,6 +76,10 @@ export default {
 
         localStorage.removeItem('advfiltersBackOffice');
 
+        localStorage.removeItem('filtersBackOfficeV2');
+
+        localStorage.removeItem('advfiltersBackOfficeV2');
+
         createStoreDefault();
 
         /**
