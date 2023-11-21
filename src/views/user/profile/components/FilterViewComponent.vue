@@ -24,9 +24,6 @@ import { baseAssessmentHelper } from '@/views/user/user/components/assessment/ba
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
-const BaseCustomsButtonsGrid = () =>
-    import('@/components/core/grids/BaseCustomsButtonsGrid');
-
 const RadarViewComponent = () =>
     import('@/views/b2b/filter/common/graph/RadarViewComponent');
 
@@ -46,7 +43,6 @@ export default {
     components: {
         RadarViewComponent,
         BaseServerDataTable,
-        BaseCustomsButtonsGrid,
         AssessmentViewComponent,
     },
 
@@ -95,6 +91,23 @@ export default {
                 baseSecurityHelper.$_assessment
             );
             return result;
+        },
+
+        actions() {
+            return [
+                {
+                    icon: 'account-outline',
+                    title: 'Ver Perfil',
+                    fn: this.$_viewProfile,
+                    show: true,
+                },
+                {
+                    icon: 'account-group-outline',
+                    title: 'Comparar Buo Psychometric',
+                    fn: this.$_userDetails,
+                    show: true,
+                },
+            ];
         },
     },
 
@@ -189,22 +202,10 @@ export default {
             :extraParams="extraParams"
             :fnDoubleClick="$_viewProfile"
             :fnResetConfig="$_setFilter"
+            :fnActions="actions"
         >
             <div slot="btns">
                 <v-row class="pl-3 pt-3">
-                    <BaseCustomsButtonsGrid
-                        label="Ver Perfil"
-                        :fnMethod="$_viewProfile"
-                        icon="mdi-chevron-right"
-                        :color="app ? 'blueProgress600' : 'blue900'"
-                    />
-                    <BaseCustomsButtonsGrid
-                        label="Comparar Buo Psychometric"
-                        :outlined="false"
-                        :fnMethod="$_userDetails"
-                        icon="mdi-account-group-outline"
-                    />
-
                     <AssessmentViewComponent
                         v-if="assessmentPermission"
                         :entity="assessment"

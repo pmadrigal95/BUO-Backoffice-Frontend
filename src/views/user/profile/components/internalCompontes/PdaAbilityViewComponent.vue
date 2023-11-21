@@ -147,7 +147,7 @@ export default {
                     Indicadores Buo Psychometric
                 </section>
             </v-col>
-            <v-col cols="12" md="4" class="d-flex justify-end">
+            <v-col cols="12" md="4" sm="12" class="d-flex justify-end">
                 <BaseCustomsButtonsGrid
                     label="Ver Buo Psychometric"
                     :fnMethod="$_fnSendReportPDA"
@@ -166,12 +166,12 @@ export default {
                     width="70"
                     :src="pda.hotcakeSimpleURL"
                 />
-                <section class="px-8">
+                <section class="px-3">
                     <section class="pt-2">
                         <v-layout>
                             <section class="pr-3" v-if="pda">
                                 <section
-                                    class="BUO-Label-XSmall pb-1"
+                                    class="BUO-Label-XSmall pb-4"
                                     :class="[
                                         app
                                             ? 'blueProgress600--text'
@@ -198,12 +198,12 @@ export default {
                             <v-divider vertical></v-divider>
                             <section class="pl-3" v-if="pda">
                                 <section
-                                    class="BUO-Label-XSmall pb-1"
+                                    class="BUO-Label-XSmall pb-4"
                                     :class="[
                                         app
                                             ? 'blueProgress600--text'
                                             : 'grey600--text',
-                                    ]"
+                                    ] "
                                 >
                                     Tu super poder es:
                                 </section>

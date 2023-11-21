@@ -55,7 +55,6 @@ export default {
                 :color="app ? 'blueProgress600' : 'blue900'"
                 elevation="0"
                 class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                :class="{ 'mt-4': $vuetify.breakpoint.mobile }"
                 outlined
                 small
                 v-bind="attrs"
