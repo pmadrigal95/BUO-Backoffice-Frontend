@@ -124,7 +124,6 @@ export default {
             httpService.delete(`perfil/${row[0].id}`).then((response) => {
                 if (response != undefined) {
                     this.$refs[this.pageView].$_ParamsToAPI();
-                    console.log(response);
                 }
             });
         },
