@@ -18,13 +18,19 @@ const $_pageView = () => {
         AbilityFilter: 'AbilityFilterViewComponent',
         ProfileFilter: 'ProfileFilterViewComponent',
         CategoryFilter: 'CategoryFilterViewComponent',
+        securityFilter: 'SecurityFilterViewComponent',
         AssessmentFilter: 'AssessmentFilterViewComponent',
         DepartmentFilter: 'DepartmentFilterViewComponent',
         MicroAbilityFilter: 'MicroAbilityFilterViewComponent',
         setIndicadorFilter: 'SetIndicadorFilterViewComponent',
+        securityUserFilter: 'securityUserFilterViewComponent',
         AssessmentTypeFilter: 'AssessmentTypeFilterViewComponent',
+        securityActionsFilter: 'securityActionsFilterViewComponent',
         PromotionalCodesFilter: 'PromotionalCodesFilterViewComponent',
         setIndicadorUserFilter: 'SetIndicadorUserFilterViewComponent',
+        securityUserPerRoleFilter: 'securityUserPerRoleFilterViewComponent',
+        securityActionsPerRoleFilter:
+            'securityActionsPerRoleFilterViewComponent',
     };
 };
 
@@ -35,6 +41,7 @@ const $_dialogView = () => {
         companyDialog: 'companySetting',
         assessmentDialog: 'assessmentSetting',
         simpleAbilityDialog: 'simpleAbilitySetting',
+        securityActionsDialog: 'securityActionsSetting',
     };
 };
 

@@ -9,6 +9,8 @@ const exclusionList = [
     '/findBy',
     'analytics',
     'menuUsuario',
+    'getUsuarios',
+    'getAcciones',
     'pda/getTestList',
     'pruebaResultado',
     '/user/authenticate',

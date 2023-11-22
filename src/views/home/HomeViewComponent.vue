@@ -74,6 +74,7 @@ export default {
                         'MicroAbilityViewComponent',
                         'AssessmentTypeViewComponent',
                         'AssessmentViewComponent',
+                        'SecurityViewComponent',
                         'PromotionalCodesViewComponent',
                     ],
                 },

@@ -787,6 +787,177 @@ const userAssessmentColumns = (departmentId, isBuoUser, isFilter) => {
 /**
  * Configuracion BaseServerDataTable
  */
+const securityColumns = (isFilter) => {
+    return [
+        {
+            text: 'Empresa',
+            align: 'start',
+            value: 'nombreOrganizacion',
+            show: isFilter ? true : false,
+        },
+        {
+            text: 'Rol',
+            align: 'start',
+            value: 'nombre',
+            show: true,
+        },
+        {
+            text: 'Descripción',
+            align: 'start',
+            value: 'descripcion',
+            show: true,
+        },
+        {
+            text: 'Estado',
+            align: 'center',
+            type: 'chip',
+            value: 'nombreEstado',
+            show: false,
+        },
+        {
+            text: 'Creado Por',
+            align: 'start',
+            value: 'nombreUsuarioCrea',
+            show: false,
+        },
+        {
+            text: 'Fecha Creación',
+            align: 'start',
+            value: 'fechaCreacionFormato',
+            show: false,
+        },
+        {
+            text: 'Modificado Por',
+            align: 'start',
+            value: 'nombreUsuarioModifica',
+            show: false,
+        },
+        {
+            text: 'Fecha Modificación',
+            align: 'start',
+            value: 'fechaModificacionFormato',
+            show: false,
+        },
+    ];
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const securityActionsColumns = (isFilter) => {
+    return [
+        {
+            text: 'Código',
+            align: 'start',
+            value: 'codigo',
+            show: false,
+        },
+        {
+            text: 'Nombre',
+            align: 'start',
+            value: 'nombre',
+            show: true,
+        },
+        {
+            text: 'Descripción',
+            align: 'start',
+            value: 'descripcion',
+            show: true,
+        },
+        {
+            text: 'Tipo',
+            align: 'start',
+            value: 'tipo',
+            show: false,
+        },
+        {
+            text: 'Es interna',
+            align: 'start',
+            value: 'interna',
+            show: isFilter ? true : false,
+        },
+    ];
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const securityActionsPerRoleColumns = (isFilter) => {
+    return [
+        {
+            text: 'Acción',
+            align: 'start',
+            value: 'nombreAccion',
+            show: true,
+        },
+        {
+            text: 'Descripción',
+            align: 'start',
+            value: 'descripcionAccion',
+            show: true,
+        },
+        {
+            text: 'Rol',
+            align: 'start',
+            value: 'nombrePerfil',
+            show: false,
+        },
+        {
+            text: 'Creado Por',
+            align: 'start',
+            value: 'nombreUsuarioCrea',
+            show: isFilter ? true : false,
+        },
+        {
+            text: 'Fecha Creación',
+            align: 'start',
+            value: 'fechaCreacionFormato',
+            show: isFilter ? true : false,
+        },
+    ];
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const securityUsersPerRoleColumns = (isFilter) => {
+    return [
+        {
+            text: 'Nombre',
+            align: 'start',
+            value: 'nombreUsuario',
+            show: true,
+        },
+        {
+            text: 'Correo',
+            align: 'start',
+            value: 'username',
+            show: true,
+        },
+        {
+            text: 'Rol',
+            align: 'start',
+            value: 'nombrePerfil',
+            show: false,
+        },
+        {
+            text: 'Creado Por',
+            align: 'start',
+            value: 'nombreUsuarioCrea',
+            show: isFilter ? true : false,
+        },
+        {
+            text: 'Fecha Creación',
+            align: 'start',
+            value: 'fechaCreacionFormato',
+            show: isFilter ? true : false,
+        },
+    ];
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
 const promotionalCodeColumns = (isFilter) => {
     return [
         {
@@ -970,6 +1141,42 @@ export const baseFilterColumnsHelper = {
             isBuoUser,
             isFilter
         );
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setSecurityColumns({ isFilter, pageView }) {
+        const columns = securityColumns(isFilter);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setSecurityActionsColumns({ isFilter, pageView }) {
+        const columns = securityActionsColumns(isFilter);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setSecurityActionsPerRoleColumns({ isFilter, pageView }) {
+        const columns = securityActionsPerRoleColumns(isFilter);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setSecurityUsersPerRoleColumns({ isFilter, pageView }) {
+        const columns = securityUsersPerRoleColumns(isFilter);
         setUpCache({ pageView, columns, isFilter });
         return columns;
     },

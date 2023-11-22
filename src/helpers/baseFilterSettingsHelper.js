@@ -289,6 +289,68 @@ const userAssessmentSetting = ({
 /**
  * Configuracion BaseServerDataTable
  */
+const securitySetting = ({ key, singleSelect, columns }) => {
+    return {
+        endpoint: 'perfil/findBy',
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const securityActionSetting = ({ key, singleSelect, columns }) => {
+    return {
+        endpoint: 'perfil/getAcciones',
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const securityActionPerRoleSetting = ({
+    key,
+    perfilId,
+    singleSelect,
+    columns,
+}) => {
+    return {
+        endpoint: `perfil/${perfilId}/getAcciones`,
+        columns: columns,
+        key: key ? key : 'accionId',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const securityUserPerRoleSetting = ({
+    key,
+    perfilId,
+    singleSelect,
+    columns,
+}) => {
+    return {
+        endpoint: `perfil/${perfilId}/getUsuarios`,
+        columns: columns,
+        key: key ? key : 'usuarioId',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
 const promotionalCodeSetting = ({ key, singleSelect, columns }) => {
     return {
         endpoint: 'codigoPromocion/findBy',
@@ -621,6 +683,92 @@ export const baseFilterSettingsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
+    $_setSecuritySetting({ key, singleSelect, isFilter, list, pageView }) {
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setSecurityColumns({
+                  isFilter,
+                  pageView,
+              });
+
+        return securitySetting({ key, singleSelect, columns });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setSecurityActionSetting({
+        key,
+        singleSelect,
+        isFilter,
+        list,
+        pageView,
+    }) {
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setSecurityActionsColumns({
+                  isFilter,
+                  pageView,
+              });
+
+        return securityActionSetting({ key, singleSelect, columns });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setSecurityActionPerRoleSetting({
+        key,
+        perfilId,
+        singleSelect,
+        isFilter,
+        list,
+        pageView,
+    }) {
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setSecurityActionsPerRoleColumns({
+                  isFilter,
+                  pageView,
+              });
+
+        return securityActionPerRoleSetting({
+            key,
+            perfilId,
+            singleSelect,
+            columns,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setSecurityUserPerRoleSetting({
+        key,
+        perfilId,
+        singleSelect,
+        isFilter,
+        list,
+        pageView,
+    }) {
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setSecurityUsersPerRoleColumns({
+                  isFilter,
+                  pageView,
+              });
+
+        return securityUserPerRoleSetting({
+            key,
+            perfilId,
+            singleSelect,
+            columns,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
     $_setPromotionalCodeSetting({
         key,
         singleSelect,
@@ -762,6 +910,46 @@ export const baseDataTableColumnsHelper = {
             pageView,
             isBuoUser,
             departmentId,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setSecurityColumns({ isFilter, pageView }) {
+        return baseFilterColumnsHelper.$_setSecurityColumns({
+            isFilter,
+            pageView,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setSecurityActionsColumns({ isFilter, pageView }) {
+        return baseFilterColumnsHelper.$_setSecurityActionsColumns({
+            isFilter,
+            pageView,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setSecurityActionsPerRoleColumns({ isFilter, pageView }) {
+        return baseFilterColumnsHelper.$_setSecurityActionsPerRoleColumns({
+            isFilter,
+            pageView,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setSecurityUsersPerRoleColumns({ isFilter, pageView }) {
+        return baseFilterColumnsHelper.$_setSecurityUsersPerRoleColumns({
+            isFilter,
+            pageView,
         });
     },
 

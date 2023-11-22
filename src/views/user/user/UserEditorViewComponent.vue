@@ -44,16 +44,26 @@ export default {
         return {
             entity: this.$_Object(),
             loading: false,
+            componentKey: 0,
         };
     },
 
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
-        ...mapGetters('filters', ['advfiltersBypageView', 'dialogViewById']),
+        ...mapGetters('filters', [
+            'advfiltersBypageView',
+            'dialogViewById',
+            'filtersBypageView',
+            'pageViewById',
+        ]),
 
         companyDialogView() {
             return this.dialogViewById('companyDialog');
+        },
+
+        securityDialogView() {
+            return this.pageViewById('securityFilter');
         },
 
         /**
@@ -66,6 +76,27 @@ export default {
                 singleSelect: true,
                 list: this.advfiltersBypageView(this.companyDialogView),
                 pageView: this.companyDialogView,
+            });
+        },
+
+        /**
+         * Configuracion BaseServerDataTable
+         */
+        settingRole() {
+            return baseFilterSettingsHelper.$_setSecuritySetting({
+                isFilter: true,
+                singleSelect: false,
+                list: this.filtersBypageView(this.securityDialogView),
+                pageView: this.securityDialogView,
+            });
+        },
+
+        /**
+         * Extra Params
+         */
+        extraParams() {
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity.organizacionId,
             });
         },
 
@@ -104,6 +135,8 @@ export default {
             handler(newValue, oldValue) {
                 if (oldValue) {
                     this.entity.departamentoId = undefined;
+                    this.entity.perfilIds = undefined;
+                    this.componentKey++;
                 }
             },
             immediate: true,
@@ -139,6 +172,7 @@ export default {
                 estadoId: 2,
                 tipoUsuarioId: 0,
                 usuarioModificaId: undefined,
+                perfilIds: undefined,
             };
         },
 
@@ -155,6 +189,14 @@ export default {
 
         $_setToUser() {
             this.entity.usuarioModificaId = this.user.userId;
+        },
+
+        $_setRoleListToEditor() {
+            this.entity.roleNames =
+                this.entity?.perfilList &&
+                this.entity?.perfilList.map((x) => {
+                    return { id: x.id, nombre: x.nombre };
+                });
         },
 
         /**
@@ -178,6 +220,8 @@ export default {
                             baseSharedFnHelper.$_parseArrayToDateISOString(
                                 this.entity.fechaNacimiento
                             );
+
+                        this.$_setRoleListToEditor();
                     }
                 });
             }
@@ -334,6 +378,21 @@ export default {
                                 itemText="nombre"
                                 itemChildren="subDepartamentos"
                                 :endpoint="`departamento/findAllTree/${entity.organizacionId}`"
+                            />
+                        </v-col>
+
+                        <v-col cols="12">
+                            <BaseInputDataTable
+                                label="Roles"
+                                v-if="settingRole"
+                                :pageView="securityDialogView"
+                                :setting="settingRole"
+                                :extraParams="extraParams"
+                                itemText="nombre"
+                                :readonly="extraParams.length == 0"
+                                :editText="entity.roleNames"
+                                v-model="entity.perfilIds"
+                                :key="componentKey"
                             />
                         </v-col>
 
