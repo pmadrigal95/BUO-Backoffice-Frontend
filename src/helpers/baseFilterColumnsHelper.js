@@ -796,7 +796,7 @@ const securityColumns = (isFilter) => {
             show: isFilter ? true : false,
         },
         {
-            text: 'Rol',
+            text: 'Permiso',
             align: 'start',
             value: 'nombre',
             show: true,
@@ -935,7 +935,7 @@ const securityUsersPerRoleColumns = (isFilter) => {
             show: true,
         },
         {
-            text: 'Rol',
+            text: 'Permiso',
             align: 'start',
             value: 'nombrePerfil',
             show: false,

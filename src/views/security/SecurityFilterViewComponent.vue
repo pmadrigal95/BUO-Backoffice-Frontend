@@ -146,8 +146,8 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="Seguridad"
-        subtitle="Crea, edita y administra la seguridad de tu organización"
+        title="Permisos"
+        subtitle="Crea, edita y administra los permisos de tu organización"
     >
         <div slot="body">
             <BaseAdvancedFilter :show="show" v-model="entity">

@@ -383,7 +383,7 @@ export default {
 
                         <v-col cols="12">
                             <BaseInputDataTable
-                                label="Roles"
+                                label="Permisos"
                                 v-if="settingRole"
                                 :pageView="securityDialogView"
                                 :setting="settingRole"

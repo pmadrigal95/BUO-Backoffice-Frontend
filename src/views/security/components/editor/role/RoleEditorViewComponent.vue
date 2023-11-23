@@ -117,7 +117,7 @@ export default {
         <v-layout justify-start>
             <StepViewComponent
                 icon="mdi-numeric-1-circle"
-                description="Ingresar la información del rol"
+                description="Ingresar la información del permiso"
                 iconColor="greenC900"
                 :font="`BUO-Paragraph-Large-SemiBold ${
                     app ? 'white--text' : 'grey700--text'

@@ -34,7 +34,7 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="Rol" :btnAction="$_returnToFilter">
+    <BaseCardViewComponent title="Crear Permiso" :btnAction="$_returnToFilter">
         <div slot="card-text">
             <ContainerViewComponent />
         </div>

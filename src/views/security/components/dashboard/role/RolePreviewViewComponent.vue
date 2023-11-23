@@ -75,7 +75,7 @@ export default {
                         class="BUO-Paragraph-Large-SemiBold"
                         :class="[app ? 'white--text' : 'grey700--text']"
                     >
-                        Información del rol: {{ entity.form.nombre }}
+                        Información del permiso: {{ entity.form.nombre }}
                     </section>
                 </v-col>
             </v-row>
