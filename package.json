@@ -1,6 +1,6 @@
 {
   "name": "buo-backoffice-frontend-app",
-  "version": "2.11.3",
+  "version": "2.13.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
