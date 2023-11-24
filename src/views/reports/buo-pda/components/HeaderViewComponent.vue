@@ -22,7 +22,7 @@ export default {
                 class="BUO-Label-XSmall"
                 :class="[app ? 'blueProgress600--text' : 'grey600--text']"
             >
-                Reporte BUO - Buo Psychometric
+                Reporte Buo Psychometric
             </section>
         </v-row>
         <v-row dense>
