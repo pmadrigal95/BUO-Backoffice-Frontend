@@ -68,7 +68,7 @@ export default {
          */
         clearable: {
             type: Boolean,
-            default: false,
+            default: true,
         },
 
         /**

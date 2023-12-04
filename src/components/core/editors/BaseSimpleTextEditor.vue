@@ -7,7 +7,7 @@
  * @displayName BaseSimpleTextEditor
  */
 
-import baseLocalHelper from '@/helpers/baseLocalHelper';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'BaseSimpleTextEditor',
@@ -51,11 +51,12 @@ export default {
             newData: null,
             menu: false,
             close: false,
-            formTitle: baseLocalHelper.$_LabelBtnEdit,
         };
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         listeners() {
             return {
                 ...this.$listeners,
@@ -96,7 +97,7 @@ export default {
 </script>
 
 <template>
-    <div @click="$_open" class="cursor">
+    <section @click="$_open" class="cursor py-1 pl-1">
         <v-menu
             v-model="menu"
             :close-on-content-click="close"
@@ -106,6 +107,7 @@ export default {
             transition="scale-transition"
             origin="top left"
             :max-width="width"
+            rounded
         >
             <template v-slot:activator="{ $_open }">
                 <div v-on="$_open">
@@ -127,26 +129,24 @@ export default {
                     <kbd v-if="type === 'kbd'">{{ value }}</kbd>
                 </div>
             </template>
-            <v-card :max-width="width">
-                <v-list dark color="#5d6d7e">
-                    <v-list-item>
-                        <v-list-item-avatar>
-                            <v-icon>mdi-circle-edit-outline</v-icon>
-                        </v-list-item-avatar>
-                        <v-list-item-content>
-                            <v-list-item-title>{{ value }}</v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                            <v-btn icon @click="$_cancel">
-                                <v-icon>mdi-close-circle</v-icon>
-                            </v-btn>
-                        </v-list-item-action>
-                    </v-list-item>
-                </v-list>
-                <v-list>
+            <v-card max-height="100%" max-width="100%" flat class="rounded-b-0">
+                <v-toolbar dense flat class="fixed-bar">
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        class="no-uppercase rounded-lg"
+                        text
+                        :color="app ? 'blueProgress600' : 'blue800'"
+                        @click="$_cancel"
+                    >
+                        Cerrar
+                    </v-btn>
+                </v-toolbar>
+
+                <v-divider></v-divider>
+                <v-card-text>
                     <BaseForm
                         ref="TextEditor"
-                        :labelBtn="formTitle"
+                        labelBtn="Aceptar"
                         :method="$_save"
                         :cancel="$_cancel"
                     >
@@ -154,33 +154,26 @@ export default {
                             <v-row>
                                 <v-col>
                                     <!-- @BaseInput -->
-                                    <v-textarea
-                                        :rules="[
-                                            (v) =>
-                                                (v && v.length >= 1) ||
-                                                baseLocalHelper.$_MsgFieldRequired(
-                                                    ''
-                                                ),
-                                        ]"
-                                        auto-grow
-                                        autofocus
-                                        clearable
+                                    <BaseTextArea
+                                        v-model.trim="newData"
+                                        :validate="['text']"
                                         rows="1"
-                                        v-model="newData"
-                                    ></v-textarea>
+                                    />
                                 </v-col>
                             </v-row>
                         </div>
                     </BaseForm>
-                </v-list>
+                </v-card-text>
             </v-card>
         </v-menu>
-    </div>
+    </section>
 </template>
 
 <style scoped>
 .cursor:hover {
     cursor: pointer;
-    color: #0e6655;
+    font-weight: bold;
+    color: #4c798e;
+    background-color: #f8f8f8;
 }
 </style>

@@ -1,243 +1,98 @@
 <script>
 /**
- * Descripción: Pantalla Editor Assessments
+ * Descripción: Pantalla Pruebas
  *
  * @displayName AssessmentEditorViewComponent
- *
  */
 
-import { mapGetters } from 'vuex';
+const BaseSimpleTextEditor = () =>
+    import('@/components/core/editors/BaseSimpleTextEditor.vue');
 
-import httpService from '@/services/axios/httpService';
+const BaseVue2Editor = () =>
+    import('@/components/core/editors/BaseVue2Editor.vue');
 
-import BaseArrayHelper from '@/helpers/baseArrayHelper';
-
-import {
-    baseFilterSettingsHelper,
-    baseDataTableColumnsHelper,
-} from '@/helpers/baseFilterSettingsHelper';
-
-const BaseCardViewComponent = () =>
-    import('@/components/core/cards/BaseCardViewComponent');
-
-const BaseInputDataTable = () =>
-    import('@/components/core/forms/BaseInputDataTable');
-
-const BaseInputTreeview = () =>
-    import('@/components/core/treeview/BaseInputTreeview');
+const BasePopUpVue2Editor = () =>
+    import('@/components/core/editors/BasePopUpVue2Editor.vue');
 
 export default {
     name: 'AssessmentEditorViewComponent',
 
     components: {
-        BaseInputTreeview,
-        BaseInputDataTable,
-        BaseCardViewComponent,
+        BaseSimpleTextEditor,
+        BaseVue2Editor,
+        BasePopUpVue2Editor,
     },
 
     data() {
         return {
-            entity: this.$_Object(),
-            loading: false,
+            html: undefined,
+            html2: 'undefined',
+            html3: 'undefined',
         };
     },
 
     computed: {
-        ...mapGetters('authentication', ['user', 'buoId']),
-
-        ...mapGetters('filters', ['advfiltersBypageView', 'dialogViewById']),
-
-        companyDialogView() {
-            return this.dialogViewById('companyDialog');
-        },
-
         /**
-         * Configuracion BaseInputDataTable
+         * Config Menú editor Html
          */
-        companySetting() {
-            return baseFilterSettingsHelper.$_setCompanySetting({
-                isFilter: true,
-                singleSelect: true,
-                list: this.advfiltersBypageView(this.companyDialogView),
-                pageView: this.companyDialogView,
-            });
-        },
-    },
-
-    created() {
-        /**
-         * Determinar si Es nuevo / editor
-         */
-        this.$_getObject();
-
-        this.entity.organizacionId =
-            this.user.companyId === this.buoId
-                ? undefined
-                : this.user.companyId;
-
-        //TODO: How to implement on vue router the background config
-        this.$vuetify.theme.themes.light.background =
-            this.$vuetify.theme.themes.light.white;
-    },
-
-    destroyed() {
-        this.$vuetify.theme.themes.light.background =
-            this.$vuetify.theme.themes.light.clouds;
-    },
-
-    methods: {
-        $_setCompanyFilter() {
-            baseDataTableColumnsHelper.$_setCompanyColumns({
-                isFilter: true,
-                pageView: this.companyDialogView,
-            });
-        },
-
-        /**
-         * Entity Object
-         */
-        $_Object() {
-            return {
-                id: undefined,
-                nombre: undefined,
-                descripcion: undefined,
-                tipoPruebaId: undefined,
-                nombreTipoPrueba: undefined,
-                enlace: undefined,
-                estadoId: 2,
-                organizacionId: undefined,
-                nombreOrganizacion: undefined,
-                usuarioModificaId: undefined,
-            };
-        },
-
-        $_setToUser() {
-            this.entity.usuarioModificaId = this.user.userId;
-        },
-
-        /**
-         * Determinar si Es nuevo / editor
-         */
-        $_getObject() {
-            let data = this.$router.currentRoute.params.Id;
-            if (data) {
-                //HttpServices a la vista para obtener Vista
-                this.loading = true;
-                httpService.get(`prueba/${data}`).then((response) => {
-                    this.loading = false;
-                    if (response != undefined) {
-                        // Encontro la entidad
-                        this.entity = BaseArrayHelper.SetObject(
-                            {},
-                            response.data
-                        );
-                    }
-                });
-            }
-        },
-
-        $_sendToApi() {
-            this.loading = true;
-            this.$_setToUser();
-            let object = BaseArrayHelper.SetObject({}, this.entity);
-
-            httpService.post('prueba/save', object).then((response) => {
-                this.loading = false;
-
-                if (response != undefined) {
-                    //Logica JS luego de la acción exitosa!!!
-                    this.$_returnToFilter();
-                }
-            });
-        },
-
-        /**
-         * Function to return the AssessmentFilterViewComponent
-         */
-        $_returnToFilter() {
-            this.$router.back();
+        customToolbar() {
+            return [
+                [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+                ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+                [
+                    { align: '' },
+                    { align: 'center' },
+                    { align: 'right' },
+                    { align: 'justify' },
+                ],
+                ['blockquote', 'code-block'],
+                [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
+                [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
+                [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+                ['link'],
+                ['clean'], // remove formatting button
+            ];
         },
     },
 };
 </script>
 
 <template>
-    <BaseCardViewComponent
-        title="Assessments"
-        :btnAction="$_returnToFilter"
-        class="mx-auto"
-        md="6"
-        offset="3"
-    >
-        <div slot="card-text">
-            <BaseSkeletonLoader v-if="loading" type="article, actions" />
-            <BaseForm
-                :block="$vuetify.breakpoint.mobile"
-                :method="$_sendToApi"
-                :cancel="$_returnToFilter"
-                v-else
-            >
-                <div slot="body">
-                    <v-row dense>
-                        <v-col cols="12" v-if="user.companyId === buoId">
-                            <BaseInputDataTable
-                                label="Empresa"
-                                v-if="companySetting"
-                                :pageView="companyDialogView"
-                                :setting="companySetting"
-                                :editText="entity.nombreOrganizacion"
-                                v-model.number="entity.organizacionId"
-                                itemText="nombre"
-                                :validate="['requiered']"
-                                :fnResetConfig="$_setCompanyFilter"
-                            />
-                        </v-col>
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Nombre"
-                                v-model.number="entity.nombre"
-                                :validate="['text']"
-                                :max="200"
-                            />
-                        </v-col>
-                        <v-col cols="12">
-                            <BaseInputTreeview
-                                label="Tipo de assessment"
-                                v-model.number="entity.tipoPruebaId"
-                                itemText="nombre"
-                                itemChildren="subTipos"
-                                :editText="entity.nombreTipoPrueba"
-                                :endpoint="`tipoPrueba/findAllTreeForm/${entity.organizacionId}`"
-                                :readonly="!entity.organizacionId"
-                                :validate="['requiered']"
-                            />
-                        </v-col>
-                        <v-col cols="12">
-                            <BaseInput
-                                label="Enlace"
-                                v-model.number="entity.enlace"
-                                :validate="['text']"
-                            />
-                        </v-col>
-                        <v-col cols="12">
-                            <BaseTextArea
-                                label="Descripción general"
-                                v-model.trim="entity.descripcion"
-                                :validate="['optionalText']"
-                                :max="200"
-                                counter="200"
-                            />
-                        </v-col>
-                        <v-col cols="12">
-                            <BaseRadioGroup
-                                v-model="entity.estadoId"
-                                endpoint="status"
-                                :validate="['requiered']"
-                            />
-                        </v-col>
-                    </v-row>
-                </div>
-            </BaseForm>
-        </div>
-    </BaseCardViewComponent>
+    <v-card flat>
+        <v-card-text>
+            <v-row align="center" justify="center">
+                <v-col cols="12">
+                    <BaseVue2Editor
+                        v-model="html"
+                        :customToolbar="customToolbar"
+                    />
+                    <section>
+                        <h1>Resultado:</h1>
+                        <div v-html="html" />
+                    </section>
+                    <hr />
+                </v-col>
+                <v-col cols="12">
+                    <BaseSimpleTextEditor type="subtitle" v-model="html2" />
+                    <hr />
+                </v-col>
+
+                <v-col cols="12">
+                    <BasePopUpVue2Editor
+                        :customToolbar="customToolbar"
+                        type="popUp"
+                        v-model="html3"
+                    />
+                    <hr />
+                </v-col>
+
+                <v-col cols="12">
+                    <BasePopUpVue2Editor
+                        :customToolbar="customToolbar"
+                        v-model="html3"
+                    />
+                </v-col>
+            </v-row>
+        </v-card-text>
+    </v-card>
 </template>
