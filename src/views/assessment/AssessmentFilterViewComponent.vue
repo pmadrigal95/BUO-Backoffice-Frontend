@@ -122,18 +122,21 @@ export default {
                 });
         },
 
-        /**
-         * Pantalla Editor
-         */
-        $_Editor(params) {
+        $_showAdvFilter() {
+            this.show = !this.show;
+        },
+
+        $_fnNew() {
             this.$router.push({
                 name: 'AssessmentEditorViewComponent',
-                params: params && { Id: params.selected[this.setting.key] },
             });
         },
 
-        $_showAdvFilter() {
-            this.show = !this.show;
+        $_fnEditor(params) {
+            this.$router.push({
+                name: 'AssessmentReviewViewComponent',
+                params: params && { Id: params.selected[this.setting.key] },
+            });
         },
     },
 };
@@ -162,8 +165,8 @@ export default {
                         :setting="setting"
                         :extraParams="extraParams"
                         :fnResetConfig="$_setFilter"
-                        :fnNew="write ? $_Editor : undefined"
-                        :fnEdit="write ? $_Editor : undefined"
+                        :fnNew="write ? $_fnNew : undefined"
+                        :fnEdit="write ? $_fnEditor : undefined"
                         :fnDelete="write ? $_fnDelete : undefined"
                     >
                         <div slot="btns">

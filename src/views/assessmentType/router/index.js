@@ -5,8 +5,7 @@ const routes = [
     {
         path: '/Assessments/Type/Filter',
         name: 'AssessmentTypeFilterViewComponent',
-        component:
-            'assessment/assessmentType/AssessmentTypeFilterViewComponent',
+        component: 'assessmentType/AssessmentTypeFilterViewComponent',
         meta: {
             module: 'AssessmentTypeViewComponent',
         },
@@ -15,8 +14,7 @@ const routes = [
     {
         path: '/Assessments/Type/Editor/:Id?',
         name: 'AssessmentTypeEditorViewComponent',
-        component:
-            'assessment/assessmentType/AssessmentTypeEditorViewComponent',
+        component: 'assessmentType/AssessmentTypeEditorViewComponent',
         meta: {
             module: 'AssessmentTypeViewComponent',
         },

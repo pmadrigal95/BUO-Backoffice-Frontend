@@ -1,10 +1,33 @@
 /**
- * Assessments ROUTES
+ * Type Assesments CODES ROUTES
  */
+const routes = [
+    {
+        path: '/Assessments/Filter',
+        name: 'AssessmentFilterViewComponent',
+        component: 'assessment/AssessmentFilterViewComponent',
+        meta: {
+            module: 'AssessmentViewComponent',
+        },
+    },
 
-import assessmentTypeRoutes from '@/views/assessment/assessmentType/router';
-import assessmentRoutes from '@/views/assessment/assessment/router';
+    {
+        path: '/Assessments/Editor',
+        name: 'AssessmentEditorViewComponent',
+        component: 'assessment/AssessmentEditorViewComponent',
+        meta: {
+            module: 'AssessmentViewComponent',
+        },
+    },
 
-const routes = [...assessmentTypeRoutes, ...assessmentRoutes];
+    {
+        path: '/Assessment/:Id',
+        name: 'AssessmentReviewViewComponent',
+        component: 'assessment/AssessmentReviewViewComponent',
+        meta: {
+            module: 'AssessmentViewComponent',
+        },
+    },
+];
 
 export default routes;
