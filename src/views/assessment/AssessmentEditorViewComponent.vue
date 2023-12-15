@@ -127,10 +127,12 @@ export default {
         },
 
         /**
-         * Function to return the UserFilterViewComponent
+         * Function to return the AssessmentFilterViewComponent
          */
         $_returnToFilter() {
-            this.$router.back();
+            this.$router.push({
+                name: 'AssessmentFilterViewComponent',
+            });
         },
     },
 };
@@ -259,7 +261,7 @@ export default {
                                 label="Resultado de ChatGPT"
                                 v-model.trim="entity.descripcion"
                                 :validate="['optionalText']"
-                                counter="200"
+                                counter
                             />
                         </v-col>
                     </v-row>

@@ -10,7 +10,11 @@ import { mapGetters } from 'vuex';
 
 import httpService from '@/services/axios/httpService';
 
+import baseLocalHelper from '@/helpers/baseLocalHelper';
+
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 import {
     baseFilterSettingsHelper,
@@ -78,6 +82,17 @@ export default {
                 pageView: this.pageView,
             });
         },
+
+        actions() {
+            return [
+                {
+                    icon: 'download-circle-outline',
+                    title: 'Descargar',
+                    fn: this.$_fnDownload,
+                    show: this.write,
+                },
+            ];
+        },
     },
 
     methods: {
@@ -138,6 +153,49 @@ export default {
                 params: params && { Id: params.selected[this.setting.key] },
             });
         },
+
+        /**
+         * Get a registry
+         */
+        $_GetRow() {
+            return this.$refs[this.pageView].$data.selected;
+        },
+
+        $_validateRow({ callback, isMultiSelect }) {
+            const row = this.$_GetRow();
+
+            switch (true) {
+                case row.length == 0:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
+                    break;
+                case row.length > 0: {
+                    if (row.length > 1 && !isMultiSelect) {
+                        return baseNotificationsHelper.Message(
+                            true,
+                            baseLocalHelper.$_MsgRowNotMultiSelected
+                        );
+                    }
+
+                    callback(row);
+
+                    break;
+                }
+            }
+        },
+
+        $_fnDownload() {
+            this.$_validateRow({
+                callback: this.$_AssessmentToPdf,
+                isMultiSelect: false,
+            });
+        },
+
+        $_AssessmentToPdf(row) {
+            console.log(row);
+        },
     },
 };
 </script>
@@ -163,6 +221,7 @@ export default {
                         :ref="pageView"
                         :pageView="pageView"
                         :setting="setting"
+                        :fnActions="actions"
                         :extraParams="extraParams"
                         :fnResetConfig="$_setFilter"
                         :fnNew="write ? $_fnNew : undefined"
