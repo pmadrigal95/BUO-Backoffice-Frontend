@@ -237,7 +237,7 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="Generador de Reporte Buo Psychometric">
+    <BaseCardViewComponent title="Generador de Reporte Psychometric">
         <div slot="body">
             <BaseAdvancedFilter :show="show" v-model="entity" isDepartment>
                 <div slot="body">

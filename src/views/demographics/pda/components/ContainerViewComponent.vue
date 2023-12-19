@@ -26,8 +26,8 @@ export default {
 
 <template>
     <BaseCardViewComponent
-        title="Buo Psychometric Demographics"
-        subtitle="Datos que Inspiran, Decisiones que Transforman: Buo Psychometric Demographics."
+        title="Psychometric Demographics"
+        subtitle="Datos que Inspiran, Decisiones que Transforman: Psychometric Demographics."
     >
         <div slot="card-text">
             <AdvFiltersViewComponent />
