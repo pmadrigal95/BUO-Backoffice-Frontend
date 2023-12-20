@@ -126,7 +126,7 @@ export default {
                         if (response.data == '') {
                             baseNotificationsHelper.Message(
                                 true,
-                                'Solo se podra generar el reporte de aquellos usuarios que cuenten con el test Buo Psychometric'
+                                'Solo se podra generar el reporte de aquellos usuarios que cuenten con el test Psychometric'
                             );
                         } else {
                             baseFnFile.$_dowloadFile(
@@ -164,7 +164,7 @@ export default {
             ) {
                 baseNotificationsHelper.Message(
                     true,
-                    'Solo se podra generar el reporte de aquellos usuarios que cuenten con el test Buo Psychometric'
+                    'Solo se podra generar el reporte de aquellos usuarios que cuenten con el test Psychometric'
                 );
             }
 
@@ -216,7 +216,7 @@ export default {
                     } else {
                         baseNotificationsHelper.Message(
                             true,
-                            'Usuario no cuenta con test Buo Psychometric'
+                            'Usuario no cuenta con test Psychometric'
                         );
                     }
                     break;

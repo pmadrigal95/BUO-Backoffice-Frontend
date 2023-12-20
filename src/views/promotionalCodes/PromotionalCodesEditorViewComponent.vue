@@ -42,7 +42,7 @@ export default {
         productList() {
             return [
                 { product: 'Tokens', value: 1 },
-                { product: 'Buo Psychometric', value: 2 },
+                { product: 'Psychometric', value: 2 },
             ];
         },
     },

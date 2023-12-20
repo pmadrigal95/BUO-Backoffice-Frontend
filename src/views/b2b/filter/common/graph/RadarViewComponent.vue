@@ -93,7 +93,7 @@ export default {
                     class="BUO-Heading-Small"
                     :class="[app ? 'blueProgress600--text' : 'blue900--text']"
                 >
-                    Comparación de indicadores Buo Psychometric
+                    Comparación de indicadores Psychometric
                 </section>
             </v-col>
         </v-row>
@@ -107,7 +107,7 @@ export default {
         />
         <BaseNotFoundContent
             v-else
-            msg="Actualmente los colaboradores seleccionados no poseen el test de Buo Psychometric."
+            msg="Actualmente los colaboradores seleccionados no poseen el test de Psychometric."
         />
     </div>
 </template>

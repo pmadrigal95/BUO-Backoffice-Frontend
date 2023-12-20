@@ -95,7 +95,7 @@ const userColumns = (departmentId, isBuoUser, isFilter) => {
             show: isFilter ? false : true,
         },
         {
-            text: 'Buo Psychometric',
+            text: 'Psychometric',
             type: 'bool',
             align: 'center',
             value: 'conPda',
@@ -198,7 +198,7 @@ const companyColumns = (isFilter) => {
             show: isFilter ? false : true,
         },
         {
-            text: 'BUO Psychometric Premium',
+            text: 'Psychometric Premium',
             type: 'bool',
             align: 'center',
             value: 'pdaPremium',
