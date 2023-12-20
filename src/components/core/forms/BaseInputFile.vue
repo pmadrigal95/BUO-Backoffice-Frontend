@@ -495,7 +495,7 @@ export default {
          *
          */
         fileType: {
-            type: String,
+            type: [String, Array],
             required: true,
         },
 
@@ -541,36 +541,143 @@ export default {
     created() {
         this.$_fnGetExtensionToAccept();
 
-        this.normalRules = [
-            (v) =>
-                !!v ||
-                baseLocalHelper.$_MsgFieldRequired(
-                    this.label != undefined ? this.label : ''
-                ),
-            (v) =>
-                (v && baseFnFile.$_isCorrectExtension(v, this.fileType)) ||
-                baseLocalHelper.$_MsgFileAllowedExtensionInvalid(
-                    this.label != undefined ? this.label : '',
-                    baseFnFile.$_extensionsFile[this.fileType].documentType
-                ),
-            (v) =>
-                (v && baseFnFile.$_isCorrectMime(v, this.fileType)) ||
-                baseLocalHelper.$_MsgFileAllowedMimeInvalid(
-                    this.label != undefined ? this.label : ''
-                ),
-            (v) =>
-                (v && this.fileType === 'imagenes') ||
-                baseFnFile.$_isCorrectSize(
-                    v,
-                    this.imagesWidth,
-                    this.imagesHeight
-                ) ||
-                baseLocalHelper.$_MsgFileAllowedSizeImagesInvalid(
-                    this.label != undefined ? this.label : '',
-                    this.imagesWidth,
-                    this.imagesHeight
-                ),
-        ];
+        if (this.validate != undefined) {
+            switch (this.validate[0]) {
+                case 'file':
+                    this.normalRules = [
+                        (v) =>
+                            !!v ||
+                            baseLocalHelper.$_MsgFieldRequired(
+                                this.label != undefined ? this.label : ''
+                            ),
+                        (v) =>
+                            (v &&
+                                baseFnFile.$_isCorrectExtension(
+                                    v,
+                                    this.fileType
+                                )) ||
+                            baseLocalHelper.$_MsgFileAllowedExtensionInvalid(
+                                this.label != undefined ? this.label : '',
+                                baseFnFile.$_extensionsFile[this.fileType]
+                                    .documentType
+                            ),
+                        (v) =>
+                            (v &&
+                                baseFnFile.$_isCorrectMime(v, this.fileType)) ||
+                            baseLocalHelper.$_MsgFileAllowedMimeInvalid(
+                                this.label != undefined ? this.label : ''
+                            ),
+                    ];
+                    break;
+                case 'optionalFile':
+                    this.normalRules = [
+                        (v) =>
+                            v === undefined ||
+                            v === null ||
+                            v === '' ||
+                            (v &&
+                                baseFnFile.$_isCorrectExtension(
+                                    v,
+                                    this.fileType
+                                )) ||
+                            baseLocalHelper.$_MsgFileAllowedExtensionInvalid(
+                                this.label != undefined ? this.label : '',
+                                baseFnFile.$_extensionsFile[this.fileType]
+                                    .documentType
+                            ),
+                        (v) =>
+                            v === undefined ||
+                            v === null ||
+                            v === '' ||
+                            (v &&
+                                baseFnFile.$_isCorrectMime(v, this.fileType)) ||
+                            baseLocalHelper.$_MsgFileAllowedMimeInvalid(
+                                this.label != undefined ? this.label : ''
+                            ),
+                    ];
+                    break;
+                case 'image':
+                    this.normalRules = [
+                        (v) =>
+                            !!v ||
+                            baseLocalHelper.$_MsgFieldRequired(
+                                this.label != undefined ? this.label : ''
+                            ),
+                        (v) =>
+                            (v &&
+                                baseFnFile.$_isCorrectExtension(
+                                    v,
+                                    this.fileType
+                                )) ||
+                            baseLocalHelper.$_MsgFileAllowedExtensionInvalid(
+                                this.label != undefined ? this.label : '',
+                                baseFnFile.$_extensionsFile[this.fileType]
+                                    .documentType
+                            ),
+                        (v) =>
+                            (v &&
+                                baseFnFile.$_isCorrectMime(v, this.fileType)) ||
+                            baseLocalHelper.$_MsgFileAllowedMimeInvalid(
+                                this.label != undefined ? this.label : ''
+                            ),
+                        (v) =>
+                            (v &&
+                                baseFnFile.$_isCorrectSize(
+                                    v,
+                                    this.imagesWidth,
+                                    this.imagesHeight
+                                )) ||
+                            baseLocalHelper.$_MsgFileAllowedSizeImagesInvalid(
+                                this.label != undefined ? this.label : '',
+                                this.imagesWidth,
+                                this.imagesHeight
+                            ),
+                    ];
+                    break;
+                case 'optionalImage':
+                    this.normalRules = [
+                        (v) =>
+                            v === undefined ||
+                            v === null ||
+                            v === '' ||
+                            (v &&
+                                baseFnFile.$_isCorrectExtension(
+                                    v,
+                                    this.fileType
+                                )) ||
+                            baseLocalHelper.$_MsgFileAllowedExtensionInvalid(
+                                this.label != undefined ? this.label : '',
+                                baseFnFile.$_extensionsFile[this.fileType]
+                                    .documentType
+                            ),
+                        (v) =>
+                            v === undefined ||
+                            v === null ||
+                            v === '' ||
+                            (v &&
+                                baseFnFile.$_isCorrectMime(v, this.fileType)) ||
+                            baseLocalHelper.$_MsgFileAllowedMimeInvalid(
+                                this.label != undefined ? this.label : ''
+                            ),
+                        (v) =>
+                            v === undefined ||
+                            v === null ||
+                            v === '' ||
+                            (v &&
+                                baseFnFile.$_isCorrectSize(
+                                    v,
+                                    this.imagesWidth,
+                                    this.imagesHeight
+                                )) ||
+                            baseLocalHelper.$_MsgFileAllowedSizeImagesInvalid(
+                                this.label != undefined ? this.label : '',
+                                this.imagesWidth,
+                                this.imagesHeight
+                            ),
+                    ];
+                    break;
+            }
+        }
     },
 
     methods: {
@@ -586,9 +693,15 @@ export default {
         },
 
         $_fnGetExtensionToAccept() {
-            baseFnFile.$_extensionsFile[this.fileType].extension.forEach(
-                (type) => (this.accept += `${type},`)
-            );
+            switch (true) {
+                case typeof this.fileType == 'string':
+                    baseFnFile.$_extensionsFile[
+                        this.fileType
+                    ].extension.forEach((type) => (this.accept += `${type},`));
+                    break;
+                case typeof this.fileType == 'object':
+                    break;
+            }
         },
     },
 };

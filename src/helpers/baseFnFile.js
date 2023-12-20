@@ -26,7 +26,7 @@ const extensionsFile = {
         ],
     },
 
-    imagenes: {
+    images: {
         extension: ['.jpg', '.jpeg', '.png'],
         documentType: 'Imágenes JPEG y PNG',
         mimeType: ['image/jpeg', 'image/png'],
@@ -43,6 +43,18 @@ const extensionsFile = {
         documentType: 'Archivos ZIP',
         mimeType: ['text/plain'],
     },
+
+    json: {
+        extension: ['.json'],
+        documentType: 'Archivos JSON',
+        mimeType: ['application/json'],
+    },
+
+    text: {
+        extension: ['.txt'],
+        documentType: 'Archivos TXT',
+        mimeType: ['text/plain'],
+    },
 };
 
 const extensionsName = {
@@ -50,11 +62,15 @@ const extensionsName = {
 
     excel: 'excel',
 
-    imagenes: 'imagenes',
+    image: 'image',
 
     pdf: 'pdf',
 
     zip: 'zip',
+
+    json: 'json',
+
+    text: 'text',
 };
 
 const isCorrectExtension = (file, fileType) => {

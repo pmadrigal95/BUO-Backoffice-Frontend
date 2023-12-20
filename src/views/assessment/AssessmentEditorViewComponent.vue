@@ -47,7 +47,11 @@ export default {
             loading: false,
             entity: this.$_Object(),
             warningList: undefined,
-            fileType: baseFnFile.$_extensionsName.excel,
+            //fileType: baseFnFile.$_extensionsName.text,
+            fileType: [
+                baseFnFile.$_extensionsName.text,
+                baseFnFile.$_extensionsName.json,
+            ],
         };
     },
 
@@ -246,7 +250,7 @@ export default {
                                 appendIcon="mdi-progress-upload"
                                 counter
                                 placeholder="Arrastra y suelta tu archivo aquí o búscalo"
-                                :validate="['extension']"
+                                :validate="['optionalFile']"
                                 v-model="entity.file"
                                 :disabled="!this.entity.organizacionId"
                             />
