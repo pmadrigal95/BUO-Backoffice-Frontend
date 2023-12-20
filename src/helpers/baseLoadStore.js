@@ -72,14 +72,6 @@ export default {
     Initializer() {
         //TODO: Limpiar en proximas versiones
 
-        localStorage.removeItem('filtersBackOffice');
-
-        localStorage.removeItem('advfiltersBackOffice');
-
-        localStorage.removeItem('filtersBackOfficeV2');
-
-        localStorage.removeItem('advfiltersBackOfficeV2');
-
         localStorage.removeItem('filtersBackOfficeV3');
 
         localStorage.removeItem('advfiltersBackOfficeV3');
