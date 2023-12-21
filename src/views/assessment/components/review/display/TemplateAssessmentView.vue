@@ -2,269 +2,75 @@
 /**
  * Descripción: Pantalla Pruebas
  *
- * @displayName TemplateAssessmentView
+ * @displayName HeaderAssessmentView
  */
 
-import { Container, Draggable } from 'vue-smooth-dnd';
+import { mapGetters } from 'vuex';
 
-const BaseSimpleTextEditor = () =>
-    import('@/components/core/editors/BaseSimpleTextEditor.vue');
+import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
-const BasePopUpVue2Editor = () =>
-    import('@/components/core/editors/BasePopUpVue2Editor.vue');
+const BaseTemplateListView = () =>
+    import(
+        '@/views/assessment/components/review/shared/template/BaseTemplateListView'
+    );
 
 export default {
-    name: 'TemplateAssessmentView',
+    name: 'HeaderAssessmentView',
 
-    inheritAttrs: false,
-
-    components: {
-        Draggable,
-        Container,
-        BaseSimpleTextEditor,
-        BasePopUpVue2Editor,
+    props: {
+        entity: {
+            type: Object,
+            requiered: true,
+        },
     },
 
-    data() {
-        return {
-            html: undefined,
-            html2: 'undefined',
-            html3: 'undefined',
-            panel: [],
-        };
-    },
+    components: { BaseTemplateListView },
 
     computed: {
-        /**
-         * Config Menú editor Html
-         */
-        customToolbar() {
-            return [
-                [{ header: [false, 1, 2, 3, 4, 5, 6] }],
-                ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-                [
-                    { align: '' },
-                    { align: 'center' },
-                    { align: 'right' },
-                    { align: 'justify' },
-                ],
-                ['blockquote', 'code-block'],
-                [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
-                [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-                [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-                ['link'],
-                ['clean'], // remove formatting button
-            ];
-        },
+        ...mapGetters('theme', ['app']),
 
-        preguntas() {
-            return [
-                {
-                    id: 1,
-                    textoHtml: 'Pregunta1',
-                    orden: 1,
-                    respuestas: [
-                        {
-                            id: 1,
-                            texto: 'RespuestaA',
-                            valor: 1,
-                            orden: 1,
-                        },
-                        {
-                            id: 1,
-                            texto: 'RespuestaB',
-                            valor: 0,
-                            orden: 2,
-                        },
-                        {
-                            id: 1,
-                            texto: 'RespuestaC',
-                            valor: 2,
-                            orden: 3,
-                        },
-                        {
-                            id: 1,
-                            texto: 'RespuestaD',
-                            valor: 5,
-                            orden: 4,
-                        },
-                    ],
-                },
-                {
-                    id: 2,
-                    textoHtml: 'Pregunta2',
-                    orden: 2,
-                    respuestas: [
-                        {
-                            id: 1,
-                            texto: 'RespuestaA',
-                            valor: 1,
-                            orden: 1,
-                        },
-                        {
-                            id: 1,
-                            texto: 'RespuestaB',
-                            valor: 2,
-                            orden: 2,
-                        },
-                        {
-                            id: 1,
-                            texto: 'RespuestaC',
-                            valor: 5,
-                            orden: 3,
-                        },
-                        {
-                            id: 1,
-                            texto: 'RespuestaD',
-                            valor: 0,
-                            orden: 4,
-                        },
-                    ],
-                },
-            ];
+        write() {
+            const result = baseSecurityHelper.$_ReadPermission(
+                'AssessmentViewComponent',
+                baseSecurityHelper.$_write
+            );
+            return result;
+        },
+    },
+
+    methods: {
+        $_fnEdit() {
+            this.entity.step.assessmentStep = 1;
         },
     },
 };
 </script>
 
 <template>
-    <v-card flat width="100%" height="100%">
-        <v-card-text>
-            <v-expansion-panels flat focusable multiple>
-                <div v-if="preguntas.length > 0">
-                    <Container>
-                        <Draggable
-                            v-for="pregunta in preguntas"
-                            :key="pregunta.orden"
-                        >
-                            <v-expansion-panel hide-actions flat>
-                                <v-expansion-panel-header>
-                                    <v-row
-                                        align="center"
-                                        class="spacer"
-                                        no-gutters
-                                    >
-                                        <v-col cols md="1">
-                                            <!-- @Icono de Topics -->
-                                            <v-icon color="red"
-                                                >mdi-comment-question</v-icon
-                                            >
-                                        </v-col>
-                                        <v-col cols md="9">
-                                            <!-- @Editor HTML de Preguntas -->
-                                            <BasePopUpVue2Editor
-                                                :customToolbar="customToolbar"
-                                                type="popUp"
-                                                v-model="pregunta.textoHtml"
-                                            />
-                                        </v-col>
-                                        <v-col cols md="2">
-                                            <!-- @total de respuestas -->
-                                            <v-layout align-end justify-end>
-                                                <!-- @Editar Pregunta -->
-                                                <v-tooltip bottom>
-                                                    <template
-                                                        v-slot:activator="{
-                                                            on,
-                                                        }"
-                                                    >
-                                                        <v-btn
-                                                            v-on="on"
-                                                            class="ma-2"
-                                                            icon
-                                                            color="success"
-                                                        >
-                                                            <v-icon
-                                                                >mdi-circle-edit-outline</v-icon
-                                                            >
-                                                        </v-btn>
-                                                    </template>
-                                                    <span>Editar</span>
-                                                </v-tooltip>
-                                                <!-- @Eliminar Pregunta -->
-                                                <v-tooltip bottom>
-                                                    <template
-                                                        v-slot:activator="{
-                                                            on,
-                                                        }"
-                                                    >
-                                                        <v-btn
-                                                            v-on="on"
-                                                            class="ma-2"
-                                                            icon
-                                                        >
-                                                            <v-icon color="red"
-                                                                >mdi-trash-can-outline</v-icon
-                                                            >
-                                                        </v-btn>
-                                                    </template>
-                                                    <span>Eliminar</span>
-                                                </v-tooltip>
-                                            </v-layout>
-                                        </v-col>
-                                    </v-row>
-                                </v-expansion-panel-header>
-
-                                <v-expansion-panel-content>
-                                    <v-divider></v-divider>
-                                    <v-card-text>
-                                        <!-- @Tiene lista de Respuestas -->
-                                        <!-- @DnD de Respuestas -->
-                                        <div
-                                            v-if="
-                                                pregunta.respuestas &&
-                                                pregunta.respuestas.length > 0
-                                            "
-                                        >
-                                            <Container>
-                                                <Draggable
-                                                    v-for="respuesta in pregunta.respuestas"
-                                                    :key="respuesta.orden"
-                                                >
-                                                    <v-row
-                                                        align="center"
-                                                        class="spacer"
-                                                        no-gutters
-                                                    >
-                                                        <v-col cols md="1">
-                                                            <!-- @Icono de Topics -->
-                                                            <v-icon color="red"
-                                                                >mdi-format-list-checkbox</v-icon
-                                                            >
-                                                        </v-col>
-                                                        <v-col cols md="9">
-                                                            <!-- @Editor de Respuestas -->
-                                                            <BaseSimpleTextEditor
-                                                                type="subtitle"
-                                                                v-model="
-                                                                    respuesta.texto
-                                                                "
-                                                            />
-                                                            <!--AQUI-->
-                                                        </v-col>
-                                                    </v-row>
-                                                </Draggable>
-                                            </Container>
-                                        </div>
-                                        <div v-else>
-                                            <!-- @No lista de Respuestas -->
-                                            <v-alert dense text type="error">
-                                                {{ validation }}
-                                            </v-alert>
-                                        </div>
-                                    </v-card-text>
-                                </v-expansion-panel-content>
-                            </v-expansion-panel>
-                        </Draggable>
-                    </Container>
-                </div>
-            </v-expansion-panels>
-        </v-card-text>
-    </v-card>
+    <v-slide-x-transition appear>
+        <v-card flat class="pa-6">
+            <v-row class="pb-5">
+                <v-col cols="12" md="8" class="d-flex align-self-end">
+                    <section
+                        class="BUO-Heading-Small"
+                        :class="[
+                            app ? 'blueProgress600--text' : 'blue900--text',
+                        ]"
+                    >
+                        Assessment Template
+                    </section>
+                </v-col>
+                <v-col cols="12" md="4" class="d-flex justify-end" v-if="write">
+                    <v-btn
+                        @click="$_fnEdit"
+                        icon
+                        :color="app ? 'clouds' : 'black'"
+                    >
+                        <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                </v-col>
+            </v-row>
+            <BaseTemplateListView :list="entity.template" />
+        </v-card>
+    </v-slide-x-transition>
 </template>
-
-<style scoped>
-.v-expansion-panels {
-    display: block !important;
-}
-</style>

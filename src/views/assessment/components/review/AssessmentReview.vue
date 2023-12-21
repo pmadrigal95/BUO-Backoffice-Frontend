@@ -8,9 +8,19 @@
 const HeaderAssessmentView = () =>
     import('@/views/assessment/components/review/display/HeaderAssessmentView');
 
+const HeaderAssessmentEditor = () =>
+    import(
+        '@/views/assessment/components/review/editor/HeaderAssessmentEditor'
+    );
+
 const TemplateAssessmentView = () =>
     import(
         '@/views/assessment/components/review/display/TemplateAssessmentView'
+    );
+
+const TemplateAssessmenEditor = () =>
+    import(
+        '@/views/assessment/components/review/editor/TemplateAssessmenEditor'
     );
 
 export default {
@@ -25,7 +35,9 @@ export default {
 
     components: {
         HeaderAssessmentView,
+        HeaderAssessmentEditor,
         TemplateAssessmentView,
+        TemplateAssessmenEditor,
     },
 
     data() {
@@ -144,8 +156,11 @@ export default {
                             <HeaderAssessmentView :entity="assessment" />
                         </v-window-item>
 
-                        <v-window-item :value="1">
-                            <p>Hola 2</p>
+                        <v-window-item
+                            :value="1"
+                            :key="assessment.key.headerKey"
+                        >
+                            <HeaderAssessmentEditor :entity="assessment" />
                         </v-window-item>
                     </v-window>
                 </section>
@@ -160,11 +175,14 @@ export default {
                         touchless
                     >
                         <v-window-item :value="0">
-                            <TemplateAssessmentView />
+                            <TemplateAssessmentView :entity="assessment" />
                         </v-window-item>
 
-                        <v-window-item :value="1" :key="entity.componentKey">
-                            <p>Hola 2</p>
+                        <v-window-item
+                            :value="1"
+                            :key="assessment.key.assessmentKey"
+                        >
+                            <TemplateAssessmenEditor :entity="assessment" />
                         </v-window-item>
                     </v-window>
                 </section>
