@@ -34,6 +34,8 @@ import setIndicatorRoutes from '@/views/setIndicator/router';
 
 import promotionalCodesRoutes from '@/views/promotionalCodes/router';
 
+import sandBoxRoutes from '@/views/sandBox/router';
+
 const routes = [
     {
         path: '/',
@@ -41,6 +43,7 @@ const routes = [
         name: 'TheMain',
         component: 'app',
         children: [
+            ...sandBoxRoutes,
             ...b2bRoutes,
             ...homeRoutes,
             ...userRoutes,
