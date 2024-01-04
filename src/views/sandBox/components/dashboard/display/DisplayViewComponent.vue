@@ -34,15 +34,15 @@ export default {
 
 <template>
     <v-row>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="4">
             <RotationViewComponent />
         </v-col>
 
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="4">
             <BenefitViewComponent />
         </v-col>
 
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="4">
             <DesertionSeniorityViewComponent />
         </v-col>
     </v-row>

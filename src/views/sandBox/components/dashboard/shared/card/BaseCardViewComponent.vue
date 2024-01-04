@@ -35,7 +35,7 @@ export default {
 </script>
 
 <template>
-    <v-card flat class="rounded-lg">
+    <v-card flat class="rounded-lg" height="100%" width="100%">
         <v-card-title
             class="BUO-Label-Small-SemiBold"
             :class="[app ? 'white--text' : 'grey700--text']"
