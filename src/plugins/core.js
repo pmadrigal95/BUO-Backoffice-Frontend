@@ -93,6 +93,10 @@ import shareIt from 'vue-share-it';
 
 Vue.use(shareIt);
 
+import VueMasonry from 'vue-masonry-css';
+
+Vue.use(VueMasonry);
+
 /**
  * Registro de Componente
  */

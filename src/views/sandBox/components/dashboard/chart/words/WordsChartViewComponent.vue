@@ -44,23 +44,29 @@ export default {
 <template>
     <BaseCardViewComponent title="Motivos de rotación">
         <div slot="card-text">
-            <v-container>
-                <v-card
-                    outlined
-                    flat
-                    class="rounded-lg ma-1"
-                    v-for="(item, i) in fake"
-                    :key="i"
-                >
-                    <v-card-text
-                        :class="[app ? 'white--text' : 'grey700--text']"
-                    >
-                        <span>
-                            {{ item.name }}
-                        </span>
-                    </v-card-text>
-                </v-card>
-            </v-container>
+            <masonry
+                :cols="{ default: 4, 1000: 3, 700: 2, 430: 1 }"
+                :gutter="{ default: '30px', 700: '15px' }"
+            >
+                <div v-for="(item, index) in fake" :key="index" class="mx-n2">
+                    <v-card outlined flat class="rounded-lg my-3">
+                        <v-card-text
+                            class="buo-word-break text-center"
+                            :class="[app ? 'white--text' : 'grey700--text']"
+                        >
+                            <div
+                                :class="[
+                                    item.bold
+                                        ? 'BUO-Heading-Medium'
+                                        : 'BUO-Paragraph-Large',
+                                ]"
+                            >
+                                {{ item.name }}
+                            </div>
+                        </v-card-text>
+                    </v-card>
+                </div>
+            </masonry>
         </div>
     </BaseCardViewComponent>
 </template>
