@@ -6,11 +6,20 @@
  *
  */
 
+const DashboardViewComponent = () =>
+    import('@/views/sandBox/components/dashboard/DashboardViewComponent');
+
 export default {
     name: 'SandBox1',
+
+    components: {
+        DashboardViewComponent,
+    },
 };
 </script>
 
 <template>
-    <p>Hola 1</p>
+    <v-container fluid>
+        <DashboardViewComponent />
+    </v-container>
 </template>
