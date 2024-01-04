@@ -12,11 +12,15 @@ import {
     baseDataTableColumnsHelper,
 } from '@/helpers/baseFilterSettingsHelper';
 
+import baseDateHelper from '@/helpers/baseDateHelper';
+
 const BaseInputDataTable = () =>
     import('@/components/core/forms/BaseInputDataTable');
 
 const BaseInputTreeview = () =>
     import('@/components/core/treeview/BaseInputTreeview');
+
+const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
 
 export default {
     name: 'BaseAdvancedFilter',
@@ -72,6 +76,16 @@ export default {
             default: false,
         },
 
+        isMonth: {
+            type: Boolean,
+            default: false,
+        },
+
+        requiredMonth: {
+            type: Boolean,
+            default: false,
+        },
+
         requiredResetStep: {
             type: Boolean,
             default: false,
@@ -89,6 +103,7 @@ export default {
     components: {
         BaseInputDataTable,
         BaseInputTreeview,
+        BaseDatePicker,
     },
 
     data() {
@@ -187,6 +202,10 @@ export default {
                 pageView: this.assessmentDialogView,
             });
         },
+
+        currentMonth() {
+            return baseDateHelper.$_setCurrentMonth();
+        },
     },
 
     created() {
@@ -275,6 +294,7 @@ export default {
                 categoryId: undefined,
                 assessmentTypeId: undefined,
                 assessmentId: undefined,
+                month: this.$_setCurrentMonth(),
             };
         },
 
@@ -323,6 +343,10 @@ export default {
                 this.value.assessmentId = this.temp.assessmentId;
             }
 
+            if (this.isMonth) {
+                this.value.month = this.temp.month;
+            }
+
             if (this.requiredResetStep) {
                 this.value.step = 0;
             }
@@ -346,7 +370,12 @@ export default {
             this.temp.categoryId = undefined;
             this.temp.assessmentTypeId = undefined;
             this.temp.assessmentId = undefined;
+            this.temp.month = this.$_setCurrentMonth();
             this.filterKey++;
+        },
+
+        $_setCurrentMonth() {
+            return this.requiredMonth ? this.currentMonth : undefined;
         },
     },
 };
@@ -466,6 +495,17 @@ export default {
                                     v-model.number="temp.assessmentId"
                                     :key="assessmentKey"
                                     :fnResetConfig="$_setAssessmentFilter"
+                                />
+                            </v-col>
+
+                            <v-col cols="12" v-if="isMonth">
+                                <BaseDatePicker
+                                    label="Período"
+                                    type="month"
+                                    appendIcon="mdi-calendar-month"
+                                    :max="currentMonth"
+                                    v-model="temp.month"
+                                    :validate="['text']"
                                 />
                             </v-col>
                         </v-row>
