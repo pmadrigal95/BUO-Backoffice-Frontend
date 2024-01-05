@@ -6,34 +6,36 @@
  *
  */
 
-import { mapGetters } from 'vuex';
-
-const BaseCardViewComponent = () =>
+const BasePieChartViewComponent = () =>
     import(
-        '@/views/sandBox/components/dashboard/shared/card/BaseCardViewComponent'
+        '@/views/sandBox/components/dashboard/shared/pie/BasePieChartViewComponent'
     );
 
 export default {
     name: 'ExitInterviewsChartComponent',
 
-    components: {
-        BaseCardViewComponent,
-    },
+    components: { BasePieChartViewComponent },
 
     computed: {
-        ...mapGetters('theme', ['app']),
-
         fake() {
-            return [];
+            return {
+                labels: [
+                    'Remuneración económica',
+                    'Balance trabajo-vida',
+                    'Beneficios',
+                    'Crecimiento profesional',
+                    'Personas en Liderazgo',
+                ],
+                data: [456, 345, 89, 100, 179],
+            };
         },
     },
 };
 </script>
 
 <template>
-    <BaseCardViewComponent title="Entrevistas de salida">
-        <div slot="card-text">
-            <p>Hola</p>
-        </div>
-    </BaseCardViewComponent>
+    <BasePieChartViewComponent
+        title="Entrevistas de salida"
+        :chartData="fake"
+    />
 </template>

@@ -36,12 +36,6 @@ export default {
             type: Boolean,
             default: true,
         },
-
-        // buffer-value
-        // bufferValue: {
-        //     type: [Number, String],
-        //     default: 100,
-        // },
     },
 
     components: { BaseCardViewComponent },

@@ -67,8 +67,8 @@ export default {
                                     <div
                                         :class="[
                                             item.bold
-                                                ? 'BUO-Heading-Medium'
-                                                : 'BUO-Paragraph-Large',
+                                                ? 'BUO-Heading-Small'
+                                                : 'BUO-Paragraph-Medium',
                                         ]"
                                     >
                                         {{ item.name }}

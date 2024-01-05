@@ -6,29 +6,19 @@
  *
  */
 
-import { mapGetters } from 'vuex';
-
-import baseDataVisualizationColorsHelper from '@/views/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
-
-const BasePieChartImpl = () =>
-    import('@/components/backoffice/chart/BasePieChartImpl');
-
-const BaseCardViewComponent = () =>
+const BasePieChartViewComponent = () =>
     import(
-        '@/views/sandBox/components/dashboard/shared/card/BaseCardViewComponent'
+        '@/views/sandBox/components/dashboard/shared/pie/BasePieChartViewComponent'
     );
 
 export default {
     name: 'AscendingPersonalitiesChartComponent',
 
     components: {
-        BasePieChartImpl,
-        BaseCardViewComponent,
+        BasePieChartViewComponent,
     },
 
     computed: {
-        ...mapGetters('theme', ['app']),
-
         fake() {
             return {
                 labels: [
@@ -37,55 +27,14 @@ export default {
                     'Audaz',
                     'Tenaz',
                     'Detallista',
-                    'Intuitiva',
-                    'Proactiva',
-                    'Dinámica',
                 ],
-                data: [4, 1, 1, 1, 2, 1, 2, 1],
+                data: [4, 1, 1, 1, 2],
                 colors: [
                     'Amigable',
                     'Cautivadora',
                     'Audaz',
                     'Tenaz',
                     'Detallista',
-                    'Intuitiva',
-                    'Proactiva',
-                    'Dinamica',
-                ],
-            };
-        },
-
-        chartData() {
-            return {
-                labels: this.fake.labels,
-                datasets: [
-                    {
-                        backgroundColor: this.fake.colors.map((profile) =>
-                            baseDataVisualizationColorsHelper.$_getColor({
-                                profile: profile.toLowerCase(),
-                                type: 'backgroundColor',
-                            })
-                        ),
-                        hoverBackgroundColor: this.fake.colors.map((profile) =>
-                            baseDataVisualizationColorsHelper.$_getColor({
-                                profile: profile.toLowerCase(),
-                                type: 'hoverBackgroundColor',
-                            })
-                        ),
-                        hoverBorderColor: this.fake.colors.map((profile) =>
-                            baseDataVisualizationColorsHelper.$_getColor({
-                                profile: profile.toLowerCase(),
-                                type: 'hoverBorderColor',
-                            })
-                        ),
-                        borderColor: this.fake.colors.map((profile) =>
-                            baseDataVisualizationColorsHelper.$_getColor({
-                                profile: profile.toLowerCase(),
-                                type: 'borderColor',
-                            })
-                        ),
-                        data: this.fake.data,
-                    },
                 ],
             };
         },
@@ -94,14 +43,10 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent title="Personalidades con más ascensos">
-        <div slot="card-text">
-            <BasePieChartImpl
-                :chartData="chartData"
-                positionLegend="right"
-                :dark="app"
-                :showLegend="!$vuetify.breakpoint.mobile"
-            />
-        </div>
-    </BaseCardViewComponent>
+    <BasePieChartViewComponent
+        title="Personalidades con más ascensos"
+        :chartData="fake"
+        isPDA
+        isPie
+    />
 </template>

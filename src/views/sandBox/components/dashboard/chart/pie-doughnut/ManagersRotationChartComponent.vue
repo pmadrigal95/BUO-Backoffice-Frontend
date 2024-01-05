@@ -6,34 +6,30 @@
  *
  */
 
-import { mapGetters } from 'vuex';
-
-const BaseCardViewComponent = () =>
+const BasePieChartViewComponent = () =>
     import(
-        '@/views/sandBox/components/dashboard/shared/card/BaseCardViewComponent'
+        '@/views/sandBox/components/dashboard/shared/pie/BasePieChartViewComponent'
     );
 
 export default {
     name: 'ManagersRotationChartComponent',
 
-    components: {
-        BaseCardViewComponent,
-    },
+    components: { BasePieChartViewComponent },
 
     computed: {
-        ...mapGetters('theme', ['app']),
-
         fake() {
-            return [];
+            return {
+                labels: ['Manager 1', 'Manager 2', 'Manager 3'],
+                data: [456, 345, 50],
+            };
         },
     },
 };
 </script>
 
 <template>
-    <BaseCardViewComponent title="Managers y su porcentaje de rotación">
-        <div slot="card-text">
-            <p>Hola</p>
-        </div>
-    </BaseCardViewComponent>
+    <BasePieChartViewComponent
+        title="Managers y su porcentaje de rotación"
+        :chartData="fake"
+    />
 </template>

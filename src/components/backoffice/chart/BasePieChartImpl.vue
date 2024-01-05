@@ -37,6 +37,11 @@ export default {
             type: Boolean,
             required: true,
         },
+
+        isPie: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     components: {
@@ -48,8 +53,8 @@ export default {
             return {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '70',
-                spacing: 12,
+                cutout: this.isPie ? '0' : '70',
+                spacing: this.isPie ? '0' : 12,
                 borderAlign: 'inner',
                 borderWidth: 2,
                 hoverOffset: 10,

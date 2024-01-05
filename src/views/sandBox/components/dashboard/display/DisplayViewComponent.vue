@@ -63,43 +63,75 @@ export default {
 </script>
 
 <template>
-    <v-row>
-        <v-col cols="12" md="6">
-            <RotationViewComponent />
-        </v-col>
+    <section>
+        <h1>Opcion 1</h1>
+        <v-row>
+            <v-col cols="12" md="4">
+                <RotationViewComponent />
+            </v-col>
 
-        <v-col cols="12" md="6">
-            <WordsChartViewComponent />
-        </v-col>
+            <v-col cols="12" md="4">
+                <EmployeeDeparturesChartComponent />
+            </v-col>
 
-        <v-col cols="12" md="6">
-            <DesertionSeniorityViewComponent />
-        </v-col>
+            <v-col cols="12" md="4">
+                <WordsChartViewComponent />
+            </v-col>
 
-        <v-col cols="12" md="6">
-            <BenefitViewComponent />
-        </v-col>
+            <v-col cols="12" md="4">
+                <BenefitViewComponent />
+            </v-col>
 
-        <v-col cols="12" md="12">
-            <ManagersRotationChartComponent />
-        </v-col>
+            <v-col cols="12" md="4">
+                <ManagersRotationChartComponent />
+            </v-col>
 
-        <v-col cols="12" md="12">
-            <ExitInterviewsChartComponent />
-        </v-col>
+            <v-col cols="12" md="4">
+                <ExitInterviewsChartComponent />
+            </v-col>
 
-        <v-col cols="12" md="4">
-            <AscendingPersonalitiesChartComponent />
-        </v-col>
-        <v-col cols="12" md="4">
-            <AscendingPersonalitiesChartComponent />
-        </v-col>
-        <v-col cols="12" md="4">
-            <AscendingPersonalitiesChartComponent />
-        </v-col>
+            <v-col cols="12" md="6">
+                <AscendingPersonalitiesChartComponent />
+            </v-col>
 
-        <v-col cols="12" md="12">
-            <EmployeeDeparturesChartComponent />
-        </v-col>
-    </v-row>
+            <v-col cols="12" md="6">
+                <DesertionSeniorityViewComponent />
+            </v-col>
+        </v-row>
+        <br />
+        <h1>Opcion 2</h1>
+        <v-row>
+            <v-col cols="12" md="6">
+                <RotationViewComponent />
+            </v-col>
+
+            <v-col cols="12" md="6">
+                <WordsChartViewComponent />
+            </v-col>
+
+            <v-col cols="12" md="6">
+                <DesertionSeniorityViewComponent />
+            </v-col>
+
+            <v-col cols="12" md="6">
+                <BenefitViewComponent />
+            </v-col>
+
+            <v-col cols="12" md="12">
+                <ManagersRotationChartComponent />
+            </v-col>
+
+            <v-col cols="12" md="12">
+                <ExitInterviewsChartComponent />
+            </v-col>
+
+            <v-col cols="12" md="12">
+                <AscendingPersonalitiesChartComponent />
+            </v-col>
+
+            <v-col cols="12" md="12">
+                <EmployeeDeparturesChartComponent />
+            </v-col>
+        </v-row>
+    </section>
 </template>
