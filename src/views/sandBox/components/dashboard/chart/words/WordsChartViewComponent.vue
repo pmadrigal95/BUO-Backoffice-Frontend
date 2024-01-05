@@ -13,11 +13,17 @@ const BaseCardViewComponent = () =>
         '@/views/sandBox/components/dashboard/shared/card/BaseCardViewComponent'
     );
 
+const BaseTooltipViewComponent = () =>
+    import(
+        '@/views/sandBox/components/dashboard/shared/tooltip/BaseTooltipViewComponent'
+    );
+
 export default {
     name: 'WordsChartViewComponent',
 
     components: {
         BaseCardViewComponent,
+        BaseTooltipViewComponent,
     },
 
     computed: {
@@ -49,22 +55,42 @@ export default {
                 :gutter="{ default: '30px', 700: '15px' }"
             >
                 <div v-for="(item, index) in fake" :key="index" class="mx-n2">
-                    <v-card outlined flat class="rounded-lg my-3">
-                        <v-card-text
-                            class="buo-word-break text-center"
-                            :class="[app ? 'white--text' : 'grey700--text']"
-                        >
-                            <div
-                                :class="[
-                                    item.bold
-                                        ? 'BUO-Heading-Medium'
-                                        : 'BUO-Paragraph-Large',
-                                ]"
+                    <BaseTooltipViewComponent>
+                        <div slot="activator">
+                            <v-card outlined flat class="rounded-lg my-3">
+                                <v-card-text
+                                    class="buo-word-break text-center"
+                                    :class="[
+                                        app ? 'white--text' : 'grey700--text',
+                                    ]"
+                                >
+                                    <div
+                                        :class="[
+                                            item.bold
+                                                ? 'BUO-Heading-Medium'
+                                                : 'BUO-Paragraph-Large',
+                                        ]"
+                                    >
+                                        {{ item.name }}
+                                    </div>
+                                </v-card-text>
+                            </v-card>
+                        </div>
+
+                        <div slot="title">{{ item.name }}</div>
+                        <div slot="text">{{ item.value }} votos</div>
+                        <div slot="actions">
+                            <v-btn
+                                class="no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                                :color="app ? 'blueProgress600' : 'blue800'"
+                                elevation="0"
+                                large
+                                text
                             >
-                                {{ item.name }}
-                            </div>
-                        </v-card-text>
-                    </v-card>
+                                Ver más
+                            </v-btn>
+                        </div>
+                    </BaseTooltipViewComponent>
                 </div>
             </masonry>
         </div>
