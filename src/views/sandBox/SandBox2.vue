@@ -7,18 +7,30 @@
  */
 import { mapGetters } from 'vuex';
 
+const StadisticCardViewComponent = () =>
+    import('@/views/sandBox/components/joselyn/StadisticCardViewComponent');
+
 export default {
     name: 'SandBox2',
+
+    components: {
+        StadisticCardViewComponent,
+    },
 
     data() {
         return {
             tab: null,
-            tabActive: false,
         };
     },
 
     computed: {
         ...mapGetters('theme', ['app']),
+    },
+
+    methods: {
+        $_fnTest() {
+            alert('hola');
+        },
     },
 };
 </script>
@@ -74,7 +86,46 @@ export default {
         </v-tabs>
 
         <v-tabs-items v-model="tab" class="pa-5 mx-3 transparent">
-            <v-tab-item> hola </v-tab-item>
+            <v-tab-item>
+                <v-row>
+                    <v-col>
+                        <StadisticCardViewComponent
+                            title="Rotación"
+                            :fnCallback="$_fnTest"
+                            percentage="4"
+                            :isUp="false"
+                            description="+0.5 vs el mes anterior"
+                        />
+                    </v-col>
+                    <v-col>
+                        <StadisticCardViewComponent
+                            title="Rotación promedio"
+                            :fnCallback="$_fnTest"
+                            percentage="12.5"
+                            :isUp="false"
+                            description="-3 vs el mes anterior"
+                        />
+                    </v-col>
+                    <v-col>
+                        <StadisticCardViewComponent
+                            title="Attrition"
+                            :fnCallback="$_fnTest"
+                            percentage="4.5"
+                            :isUp="false"
+                            description="-3.5 vs el mes anterior"
+                        />
+                    </v-col>
+                    <v-col>
+                        <StadisticCardViewComponent
+                            title="Deserción"
+                            :fnCallback="$_fnTest"
+                            percentage="10.5"
+                            :isUp="true"
+                            description="+2.8 vs el mes anterior"
+                        />
+                    </v-col>
+                </v-row>
+            </v-tab-item>
 
             <v-tab-item> hola 2 </v-tab-item>
 
