@@ -9,12 +9,16 @@ import { mapGetters } from 'vuex';
 
 const StadisticCardViewComponent = () =>
     import('@/views/sandBox/components/joselyn/StadisticCardViewComponent');
+    
+const BaseNotFoundContent = () =>
+    import('@/components/core/cards/BaseNotFoundContent');
 
 export default {
     name: 'SandBox2',
 
     components: {
-        StadisticCardViewComponent,
+        BaseNotFoundContent,
+        StadisticCardViewComponent
     },
 
     data() {
@@ -49,11 +53,11 @@ export default {
             <v-tab
                 :class="`rounded-pill no-uppercase mr-3 ${
                     app
-                        ? 'bg-blueProgress600 black--text'
+                        ? 'bg-blueProgress600 black--text BUO-Display-Large'
                         : 'bg-white grey600--text'
                 }`"
                 active-class="bg-blue900 white--text"
-                >Rotación
+                ><p class="BUO-Label-Small pt-3">Rotación</p>
             </v-tab>
             <v-tab
                 :class="`rounded-pill no-uppercase mr-3 ${
@@ -62,8 +66,8 @@ export default {
                         : 'bg-white grey600--text'
                 }`"
                 active-class="bg-blue900 white--text"
-            >
-                Desempeño
+            ><p class="BUO-Label-Small pt-3">Desempeño</p>
+                
             </v-tab>
             <v-tab
                 :class="`rounded-pill no-uppercase mr-3 ${
@@ -72,16 +76,16 @@ export default {
                         : 'bg-white grey600--text'
                 }`"
                 active-class="bg-blue900 white--text"
-            >
-                Crecimiento
+            ><p class="BUO-Label-Small pt-3">Crecimiento</p>
+                
             </v-tab>
             <v-tab
                 :class="`rounded-pill no-uppercase mr-3 ${
                     app ? 'bg-blueProgress600' : 'bg-white'
                 }`"
-                active-class="bg-blue900"
+                active-class="bg-blue900 white--text"
             >
-                <v-icon small color="black"> mdi mdi-plus </v-icon>
+                <v-icon small> mdi mdi-plus </v-icon>
             </v-tab>
         </v-tabs>
 
@@ -127,9 +131,11 @@ export default {
                 </v-row>
             </v-tab-item>
 
-            <v-tab-item> hola 2 </v-tab-item>
+            <v-tab-item> <BaseNotFoundContent img="https://buo-resources.s3.us-east-2.amazonaws.com/aproveBUO.png" msg="¡Gracias por tu paciencia!  La función que buscas aún no está disponible, pero pronto lo
+                    estará."/> </v-tab-item>
 
-            <v-tab-item> hola 3 </v-tab-item>
+            <v-tab-item>  <BaseNotFoundContent img="https://buo-resources.s3.us-east-2.amazonaws.com/aproveBUO.png" msg="¡Gracias por tu paciencia!  La función que buscas aún no está disponible, pero pronto lo
+                    estará."/> </v-tab-item>
 
             <v-tab-item> Más </v-tab-item>
         </v-tabs-items>
