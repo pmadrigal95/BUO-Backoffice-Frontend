@@ -16,6 +16,11 @@ const BenefitViewComponent = () =>
         '@/views/sandBox/components/dashboard/chart/progress-linear/BenefitViewComponent'
     );
 
+const HistoricalRotationChartComponent = () =>
+    import(
+        '@/views/sandBox/components/dashboard/chart/line/HistoricalRotationChartComponent'
+    );
+
 const RotationViewComponent = () =>
     import(
         '@/views/sandBox/components/dashboard/chart/progress-linear/RotationViewComponent'
@@ -57,6 +62,7 @@ export default {
         ManagersRotationChartComponent,
         DesertionSeniorityViewComponent,
         EmployeeDeparturesChartComponent,
+        HistoricalRotationChartComponent,
         AscendingPersonalitiesChartComponent,
     },
 };
@@ -64,8 +70,11 @@ export default {
 
 <template>
     <section>
-        <h1>Opcion 1</h1>
         <v-row>
+            <v-col cols="12" md="12">
+                <HistoricalRotationChartComponent />
+            </v-col>
+
             <v-col cols="12" md="4">
                 <RotationViewComponent />
             </v-col>
@@ -96,41 +105,6 @@ export default {
 
             <v-col cols="12" md="6">
                 <DesertionSeniorityViewComponent />
-            </v-col>
-        </v-row>
-        <br />
-        <h1>Opcion 2</h1>
-        <v-row>
-            <v-col cols="12" md="6">
-                <RotationViewComponent />
-            </v-col>
-
-            <v-col cols="12" md="6">
-                <WordsChartViewComponent />
-            </v-col>
-
-            <v-col cols="12" md="6">
-                <DesertionSeniorityViewComponent />
-            </v-col>
-
-            <v-col cols="12" md="6">
-                <BenefitViewComponent />
-            </v-col>
-
-            <v-col cols="12" md="12">
-                <ManagersRotationChartComponent />
-            </v-col>
-
-            <v-col cols="12" md="12">
-                <ExitInterviewsChartComponent />
-            </v-col>
-
-            <v-col cols="12" md="12">
-                <AscendingPersonalitiesChartComponent />
-            </v-col>
-
-            <v-col cols="12" md="12">
-                <EmployeeDeparturesChartComponent />
             </v-col>
         </v-row>
     </section>

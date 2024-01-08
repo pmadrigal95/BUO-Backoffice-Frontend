@@ -1,16 +1,18 @@
 <script>
 /**
- * Descripción: Grafico Stacked Bar reutilizable
+ * Descripción: Grafico Lineal reutilizable
  *
- * @displayName BaseStackedBarImpl
+ * @displayName BaseLinearChartImpl
  */
 
 const darkTheme = '#282828';
 const lightTheme = '#fff';
 
-const BaseBarChart = () => import('@/components/core/charts/BaseBarChart');
+const BaseLinearChart = () =>
+    import('@/components/core/charts/BaseLinearChart');
+
 export default {
-    name: 'BaseStackedBarImpl',
+    name: 'BaseLinearChartImpl',
 
     props: {
         chartData: {
@@ -37,10 +39,25 @@ export default {
             type: Boolean,
             required: true,
         },
+
+        isRound: {
+            type: Boolean,
+            default: false,
+        },
+
+        aspectRatio: {
+            type: Number,
+            default: 4,
+        },
+
+        point: {
+            type: Number,
+            default: 0,
+        },
     },
 
     components: {
-        BaseBarChart,
+        BaseLinearChart,
     },
 
     data() {
@@ -53,15 +70,7 @@ export default {
         chartOptions() {
             return {
                 responsive: true,
-                maintainAspectRatio: this.$vuetify.breakpoint.mdAndUp,
-                borderWidth: 2,
-                borderRadius: {
-                    topLeft: 8,
-                    topRight: 8,
-                    bottomLeft: 8,
-                    bottomRight: 8,
-                },
-                borderSkipped: false,
+                aspectRatio: this.aspectRatio,
                 animation: {
                     onComplete: () => {
                         this.delayed = true;
@@ -86,7 +95,7 @@ export default {
                         ticks: {
                             color: this.dark ? lightTheme : darkTheme,
                             font: {
-                                size: 14,
+                                size: 12,
                                 family: "'Montserrat', 'sans-serif'",
                                 weight: '400',
                             },
@@ -97,21 +106,36 @@ export default {
                     },
                     y: {
                         stacked: true,
+                        color: this.dark ? lightTheme : darkTheme,
                         ticks: {
-                            color: this.dark ? lightTheme : darkTheme,
                             font: {
-                                size: 14,
+                                size: 12,
                                 family: "'Montserrat', 'sans-serif'",
                                 weight: '400',
                             },
                         },
                     },
                 },
+                elements: {
+                    point: {
+                        radius: this.point,
+                    },
+                    line: {
+                        borderJoinStyle:
+                            this.isRound == true ? 'round' : 'miter',
+                        tension: this.isRound == true ? 0.4 : 0,
+                    },
+                },
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
                 plugins: {
                     legend: {
                         display: this.showLegend,
                         position: this.positionLegend,
                         align: this.alignLegend,
+                        padding: 40,
                         labels: {
                             padding: 20,
                             color: this.dark ? lightTheme : darkTheme,
@@ -132,5 +156,5 @@ export default {
 </script>
 
 <template>
-    <BaseBarChart :chartData="chartData" :chartOptions="chartOptions" />
+    <BaseLinearChart :chartData="chartData" :chartOptions="chartOptions" />
 </template>
