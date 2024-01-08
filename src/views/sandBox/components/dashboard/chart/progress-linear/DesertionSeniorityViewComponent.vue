@@ -19,10 +19,10 @@ export default {
     computed: {
         fake() {
             return [
-                { name: '+50', value: '20' },
-                { name: '40-50', value: '68' },
-                { name: '30-40', value: '80' },
-                { name: '20-30', value: '40' },
+                { name: '10+', value: '20' },
+                { name: '5-10', value: '68' },
+                { name: '3-5', value: '80' },
+                { name: '1-3', value: '40' },
             ];
         },
     },
@@ -30,10 +30,5 @@ export default {
 </script>
 
 <template>
-    <ProgressLinearComponent
-        title="Antigüedad de deserción"
-        subtitle="Edad"
-        :list="fake"
-        :showValue="false"
-    />
+    <ProgressLinearComponent title="Antigüedad de deserción" :list="fake" />
 </template>
