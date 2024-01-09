@@ -75,9 +75,11 @@ export default {
 
     computed: {
         rowSize() {
-            return this.windowSize.x >= 1800
-                ? { one: 4, two: 4, three: 6 }
-                : { one: 6, two: 6, three: 6 };
+            return this.windowSize.x <= 1024
+                ? { one: 12, two: 12, three: 12 }
+                : this.windowSize.x < 1800 && this.windowSize.x >1024
+                ? { one: 6, two: 6, three: 6 }
+                : { one: 4, two: 4, three: 6 };
         },
     },
 
