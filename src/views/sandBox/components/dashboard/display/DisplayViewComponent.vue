@@ -65,47 +65,70 @@ export default {
         HistoricalRotationChartComponent,
         AscendingPersonalitiesChartComponent,
     },
+
+    data: () => ({
+        windowSize: {
+            x: 0,
+            y: 0,
+        },
+    }),
+
+    computed: {
+        rowSize() {
+            return this.windowSize.x >= 1800
+                ? { one: 4, two: 4, three: 6 }
+                : { one: 6, two: 6, three: 6 };
+        },
+    },
+
+    mounted() {
+        this.onResize();
+    },
+
+    methods: {
+        onResize() {
+            this.windowSize = { x: window.innerWidth, y: window.innerHeight };
+        },
+    },
 };
 </script>
 
 <template>
-    <section>
-        <v-row>
-            <v-col cols="12" md="12">
-                <HistoricalRotationChartComponent />
-            </v-col>
+    <v-row v-resize="onResize">
+        <v-col cols="12" md="12">
+            <HistoricalRotationChartComponent />
+        </v-col>
 
-            <v-col cols="12" md="4">
-                <RotationViewComponent />
-            </v-col>
+        <v-col cols="12" :md="rowSize.one">
+            <RotationViewComponent />
+        </v-col>
 
-            <v-col cols="12" md="4">
-                <EmployeeDeparturesChartComponent />
-            </v-col>
+        <v-col cols="12" :md="rowSize.one">
+            <EmployeeDeparturesChartComponent />
+        </v-col>
 
-            <v-col cols="12" md="4">
-                <WordsChartViewComponent />
-            </v-col>
+        <v-col cols="12" :md="rowSize.one">
+            <WordsChartViewComponent />
+        </v-col>
 
-            <v-col cols="12" md="4">
-                <BenefitViewComponent />
-            </v-col>
+        <v-col cols="12" :md="rowSize.two">
+            <BenefitViewComponent />
+        </v-col>
 
-            <v-col cols="12" md="4">
-                <ManagersRotationChartComponent />
-            </v-col>
+        <v-col cols="12" :md="rowSize.two">
+            <ManagersRotationChartComponent />
+        </v-col>
 
-            <v-col cols="12" md="4">
-                <ExitInterviewsChartComponent />
-            </v-col>
+        <v-col cols="12" :md="rowSize.two">
+            <ExitInterviewsChartComponent />
+        </v-col>
 
-            <v-col cols="12" md="6">
-                <AscendingPersonalitiesChartComponent />
-            </v-col>
+        <v-col cols="12" :md="rowSize.three">
+            <AscendingPersonalitiesChartComponent />
+        </v-col>
 
-            <v-col cols="12" md="6">
-                <DesertionSeniorityViewComponent />
-            </v-col>
-        </v-row>
-    </section>
+        <v-col cols="12" :md="rowSize.three">
+            <DesertionSeniorityViewComponent />
+        </v-col>
+    </v-row>
 </template>
