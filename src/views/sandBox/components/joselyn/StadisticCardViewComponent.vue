@@ -44,12 +44,7 @@ export default {
 </script>
 
 <template>
-    <v-card
-        flat
-        class="rounded-lg"
-        height="178"
-        :width="$vuetify.breakpoint.mobile ? '100%' : '288'"
-    >
+    <v-card flat class="rounded-lg" height="100%" width="100%">
         <v-card-title
             class="BUO-Label-Small-SemiBold"
             :class="[app ? 'white--text' : 'grey700--text']"
@@ -67,34 +62,34 @@ export default {
             </v-layout>
         </v-card-title>
         <v-card-text>
-            <v-layout align-end>
-                <div>
+            <section class="d-flex flex-row justify-end align-center">
+                <section class="flex-grow-0 flex-shrink-0">
                     <strong
                         class="pr-4"
                         :class="[
                             app ? 'blue900--text' : 'grey700--text',
                             $vuetify.breakpoint.mobile
                                 ? 'BUO-Display-XSmall'
-                                : 'BUO-Display-Small',
+                                : 'BUO-Display-XSmall',
                         ]"
                         >{{ this.percentage }} %</strong
                     >
-                    <section>
-                        <v-icon :color="isUp ? 'redError900' : 'greenA800'">{{
-                            isUp ? 'mdi-menu-up' : 'mdi-menu-down'
-                        }}</v-icon>
-                        <p
-                            class="BUO-Label-XSmall"
-                            :class="[
-                                app ? 'blueProgress600--text' : 'grey700--text',
-                            ]"
-                        >
-                            {{ this.description }}
-                        </p>
-                    </section>
-                </div>
-                <p></p>
-            </v-layout>
+                </section>
+
+                <section class="flex-grow-1">
+                    <v-icon :color="isUp ? 'redError900' : 'greenA800'">{{
+                        isUp ? 'mdi-menu-up' : 'mdi-menu-down'
+                    }}</v-icon>
+                    <p
+                        class="BUO-Label-XSmall"
+                        :class="[
+                            app ? 'blueProgress600--text' : 'grey700--text',
+                        ]"
+                    >
+                        {{ this.description }}
+                    </p>
+                </section>
+            </section>
         </v-card-text>
     </v-card>
 </template>

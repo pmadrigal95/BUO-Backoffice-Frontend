@@ -92,7 +92,7 @@ export default {
         <v-tabs-items v-model="tab" class="pa-5 mx-3 transparent">
             <v-tab-item>
                 <v-row>
-                    <v-col cols="12" md="3">
+                    <v-col cols="12" md="4">
                         <StadisticCardViewComponent
                             title="Rotación"
                             :fnCallback="$_fnTest"
@@ -101,7 +101,7 @@ export default {
                             description="+0.5 vs el mes anterior"
                         />
                     </v-col>
-                    <v-col cols="12" md="3">
+                    <v-col cols="12" md="4">
                         <StadisticCardViewComponent
                             title="Rotación promedio"
                             :fnCallback="$_fnTest"
@@ -110,7 +110,7 @@ export default {
                             description="-3 vs el mes anterior"
                         />
                     </v-col>
-                    <v-col cols="12" md="3">
+                    <v-col cols="12" md="4">
                         <StadisticCardViewComponent
                             title="Attrition"
                             :fnCallback="$_fnTest"
@@ -119,7 +119,7 @@ export default {
                             description="-3.5 vs el mes anterior"
                         />
                     </v-col>
-                    <v-col cols="12" md="3">
+                    <v-col cols="12" md="4">
                         <StadisticCardViewComponent
                             title="Deserción"
                             :fnCallback="$_fnTest"
@@ -128,7 +128,7 @@ export default {
                             description="+2.8 vs el mes anterior"
                         />
                     </v-col> 
-                    <v-col cols="12" md="3">
+                    <v-col cols="12" md="4">
                         <StadisticCardViewComponent
                             title="Prueba"
                             :fnCallback="$_fnTest"
@@ -137,7 +137,7 @@ export default {
                             description="+2.8 vs el mes anterior"
                         />
                     </v-col>
-                    <v-col cols="12" md="3">
+                    <v-col cols="12" md="4">
                         <StadisticCardViewComponent
                             title="Prueba"
                             :fnCallback="$_fnTest"
@@ -149,11 +149,15 @@ export default {
                 </v-row>
             </v-tab-item>
 
-            <v-tab-item> <BaseNotFoundContent img="https://buo-resources.s3.us-east-2.amazonaws.com/aproveBUO.png" msg="¡Gracias por tu paciencia!  La función que buscas aún no está disponible, pero pronto lo
-                    estará."/> </v-tab-item>
+            <v-tab-item> 
+                <BaseNotFoundContent img="https://buo-resources.s3.us-east-2.amazonaws.com/aproveBUO.png" msg="¡Gracias por tu paciencia!  La función que buscas aún no está disponible, pero pronto lo
+                    estará."/>
+                 </v-tab-item>
 
-            <v-tab-item>  <BaseNotFoundContent img="https://buo-resources.s3.us-east-2.amazonaws.com/aproveBUO.png" msg="¡Gracias por tu paciencia!  La función que buscas aún no está disponible, pero pronto lo
-                    estará."/> </v-tab-item>
+            <v-tab-item> 
+                 <BaseNotFoundContent img="https://buo-resources.s3.us-east-2.amazonaws.com/aproveBUO.png" msg="¡Gracias por tu paciencia!  La función que buscas aún no está disponible, pero pronto lo
+                    estará."/>
+                 </v-tab-item>
 
             <v-tab-item> Más </v-tab-item>
         </v-tabs-items>
