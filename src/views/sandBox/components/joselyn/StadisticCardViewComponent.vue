@@ -44,7 +44,12 @@ export default {
 </script>
 
 <template>
-    <v-card flat class="rounded-lg" height="100%" width="100%">
+    <v-card
+        flat
+        class="rounded-lg"
+        height="178"
+        :width="$vuetify.breakpoint.mobile ? '100%' : '288'"
+    >
         <v-card-title
             class="BUO-Label-Small-SemiBold"
             :class="[app ? 'white--text' : 'grey700--text']"
@@ -62,21 +67,34 @@ export default {
             </v-layout>
         </v-card-title>
         <v-card-text>
-            <v-row>
-                <v-col cols="10">
-                    <p class="BUO-Display-Small grey700--text">
-                        {{ this.percentage }} %
-                    </p></v-col
-                >
-                <v-col cols="">
-                    <v-icon :color="isUp ? 'redError900' : 'greenA800'">{{
-                        isUp ? 'mdi-menu-up' : 'mdi-menu-down'
-                    }}</v-icon>
-                    <p class="BUO-Label-XSmall grey700--text">
-                        {{ this.description }}
-                    </p>
-                </v-col>
-            </v-row>
+            <v-layout align-end>
+                <div>
+                    <strong
+                        class="pr-4"
+                        :class="[
+                            app ? 'blue900--text' : 'grey700--text',
+                            $vuetify.breakpoint.mobile
+                                ? 'BUO-Display-XSmall'
+                                : 'BUO-Display-Small',
+                        ]"
+                        >{{ this.percentage }} %</strong
+                    >
+                    <section>
+                        <v-icon :color="isUp ? 'redError900' : 'greenA800'">{{
+                            isUp ? 'mdi-menu-up' : 'mdi-menu-down'
+                        }}</v-icon>
+                        <p
+                            class="BUO-Label-XSmall"
+                            :class="[
+                                app ? 'blueProgress600--text' : 'grey700--text',
+                            ]"
+                        >
+                            {{ this.description }}
+                        </p>
+                    </section>
+                </div>
+                <p></p>
+            </v-layout>
         </v-card-text>
     </v-card>
 </template>

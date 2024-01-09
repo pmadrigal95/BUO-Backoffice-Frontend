@@ -92,38 +92,56 @@ export default {
         <v-tabs-items v-model="tab" class="pa-5 mx-3 transparent">
             <v-tab-item>
                 <v-row>
-                    <v-col>
+                    <v-col cols="12" md="3">
                         <StadisticCardViewComponent
                             title="Rotación"
                             :fnCallback="$_fnTest"
-                            percentage="4"
+                            :percentage="4"
                             :isUp="false"
                             description="+0.5 vs el mes anterior"
                         />
                     </v-col>
-                    <v-col>
+                    <v-col cols="12" md="3">
                         <StadisticCardViewComponent
                             title="Rotación promedio"
                             :fnCallback="$_fnTest"
-                            percentage="12.5"
+                            :percentage="12.5"
                             :isUp="false"
                             description="-3 vs el mes anterior"
                         />
                     </v-col>
-                    <v-col>
+                    <v-col cols="12" md="3">
                         <StadisticCardViewComponent
                             title="Attrition"
                             :fnCallback="$_fnTest"
-                            percentage="4.5"
+                            :percentage="4.5"
                             :isUp="false"
                             description="-3.5 vs el mes anterior"
                         />
                     </v-col>
-                    <v-col>
+                    <v-col cols="12" md="3">
                         <StadisticCardViewComponent
                             title="Deserción"
                             :fnCallback="$_fnTest"
-                            percentage="10.5"
+                            :percentage="10.5"
+                            :isUp="true"
+                            description="+2.8 vs el mes anterior"
+                        />
+                    </v-col> 
+                    <v-col cols="12" md="3">
+                        <StadisticCardViewComponent
+                            title="Prueba"
+                            :fnCallback="$_fnTest"
+                            :percentage="10.5"
+                            :isUp="true"
+                            description="+2.8 vs el mes anterior"
+                        />
+                    </v-col>
+                    <v-col cols="12" md="3">
+                        <StadisticCardViewComponent
+                            title="Prueba"
+                            :fnCallback="$_fnTest"
+                            :percentage="10.5"
                             :isUp="true"
                             description="+2.8 vs el mes anterior"
                         />
