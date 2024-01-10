@@ -7,18 +7,23 @@
  */
 import { mapGetters } from 'vuex';
 
-const StadisticCardViewComponent = () =>
-    import('@/views/sandBox/components/joselyn/StadisticCardViewComponent');
-    
+
 const BaseNotFoundContent = () =>
     import('@/components/core/cards/BaseNotFoundContent');
+
+const StadisticCardViewComponent = () =>
+    import('@/views/sandBox/components/joselyn/StadisticCardViewComponent');
+
+const BaseBubblesChartViewComponent = () =>
+    import('@/views/sandBox/components/joselyn/BaseBubblesChartViewComponent');
 
 export default {
     name: 'SandBox2',
 
     components: {
         BaseNotFoundContent,
-        StadisticCardViewComponent
+        StadisticCardViewComponent,
+        BaseBubblesChartViewComponent
     },
 
     data() {
@@ -159,7 +164,14 @@ export default {
                     estará."/>
                  </v-tab-item>
 
-            <v-tab-item> Más </v-tab-item>
+            <v-tab-item>
+                <v-row>
+                <v-col cols="12" md="4">
+                    <BaseBubblesChartViewComponent/> 
+                    </v-col>
+                </v-row>
+              
+            </v-tab-item>
         </v-tabs-items>
     </div>
 </template>
