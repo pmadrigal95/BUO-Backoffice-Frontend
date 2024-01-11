@@ -20,6 +20,8 @@ import approvalRoutes from '@/views/approval/router';
 
 import securityRoutes from '@/views/security/router';
 
+import dashboardRoutes from '@/views/dashboard/router';
+
 import analyticsRoutes from '@/views/analytics/router';
 
 import assessmentRoutes from '@/views/assessment/router';
@@ -47,12 +49,13 @@ const routes = [
             ...b2bRoutes,
             ...homeRoutes,
             ...userRoutes,
+            ...companyRoutes,
             ...abilityRoutes,
             ...reportsRoutes,
             ...categoryRoutes,
             ...approvalRoutes,
             ...securityRoutes,
-            ...companyRoutes,
+            ...dashboardRoutes,
             ...analyticsRoutes,
             ...assessmentRoutes,
             ...departmentRoutes,
