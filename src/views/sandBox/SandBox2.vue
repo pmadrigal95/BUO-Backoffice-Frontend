@@ -7,7 +7,6 @@
  */
 import { mapGetters } from 'vuex';
 
-
 const BaseNotFoundContent = () =>
     import('@/components/core/cards/BaseNotFoundContent');
 
@@ -23,7 +22,7 @@ export default {
     components: {
         BaseNotFoundContent,
         StadisticCardViewComponent,
-        BaseBubblesChartViewComponent
+        BaseBubblesChartViewComponent,
     },
 
     data() {
@@ -34,6 +33,18 @@ export default {
 
     computed: {
         ...mapGetters('theme', ['app']),
+        chartData() {
+            return {
+                labels: [
+                    'Tenaz',
+                    'Cautivadora',
+                    'Detallista',
+                    'Proactiva',
+                    'Audaz',
+                ],
+                data: [456, 345, 50, 10, 5],
+            };
+        },
     },
 
     methods: {
@@ -71,8 +82,7 @@ export default {
                         : 'bg-white grey600--text'
                 }`"
                 active-class="bg-blue900 white--text"
-            ><p class="BUO-Label-Small pt-3">Desempeño</p>
-                
+                ><p class="BUO-Label-Small pt-3">Desempeño</p>
             </v-tab>
             <v-tab
                 :class="`rounded-pill no-uppercase mr-3 ${
@@ -81,8 +91,7 @@ export default {
                         : 'bg-white grey600--text'
                 }`"
                 active-class="bg-blue900 white--text"
-            ><p class="BUO-Label-Small pt-3">Crecimiento</p>
-                
+                ><p class="BUO-Label-Small pt-3">Crecimiento</p>
             </v-tab>
             <v-tab
                 :class="`rounded-pill no-uppercase mr-3 ${
@@ -132,7 +141,7 @@ export default {
                             :isUp="true"
                             description="+2.8 vs el mes anterior"
                         />
-                    </v-col> 
+                    </v-col>
                     <v-col cols="12" md="4">
                         <StadisticCardViewComponent
                             title="Prueba"
@@ -154,23 +163,34 @@ export default {
                 </v-row>
             </v-tab-item>
 
-            <v-tab-item> 
-                <BaseNotFoundContent img="https://buo-resources.s3.us-east-2.amazonaws.com/aproveBUO.png" msg="¡Gracias por tu paciencia!  La función que buscas aún no está disponible, pero pronto lo
-                    estará."/>
-                 </v-tab-item>
+            <v-tab-item>
+                <BaseNotFoundContent
+                    img="https://buo-resources.s3.us-east-2.amazonaws.com/aproveBUO.png"
+                    msg="¡Gracias por tu paciencia!  La función que buscas aún no está disponible, pero pronto lo
+                    estará."
+                />
+            </v-tab-item>
 
-            <v-tab-item> 
-                 <BaseNotFoundContent img="https://buo-resources.s3.us-east-2.amazonaws.com/aproveBUO.png" msg="¡Gracias por tu paciencia!  La función que buscas aún no está disponible, pero pronto lo
-                    estará."/>
-                 </v-tab-item>
+            <v-tab-item>
+                <BaseNotFoundContent
+                    img="https://buo-resources.s3.us-east-2.amazonaws.com/aproveBUO.png"
+                    msg="¡Gracias por tu paciencia!  La función que buscas aún no está disponible, pero pronto lo
+                    estará."
+                />
+            </v-tab-item>
 
             <v-tab-item>
                 <v-row>
-                <v-col cols="12" md="4">
-                    <BaseBubblesChartViewComponent/> 
+                    <v-col cols="12" md="4">
+                        <BaseBubblesChartViewComponent
+                            title="% y número de salidas de colaboradores"
+                            :chartData="chartData"
+                            :showLegend="true"
+                            :isPDA="true"
+                            positionLegend="bottom"
+                        />
                     </v-col>
                 </v-row>
-              
             </v-tab-item>
         </v-tabs-items>
     </div>

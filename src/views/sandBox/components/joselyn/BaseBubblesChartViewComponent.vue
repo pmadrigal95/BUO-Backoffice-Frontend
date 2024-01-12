@@ -12,56 +12,74 @@ const BaseCardViewComponent = () =>
 
 export default {
     name: 'BaseBubblesChartViewComponent',
+
+    props: {
+        title: {
+            type: String,
+            default: undefined,
+        },
+
+        showLegend: {
+            type: Boolean,
+            default: true,
+        },
+
+        // top, bottom, left, right
+        positionLegend: {
+            type: String,
+            requiered: true,
+        },
+
+        isPDA: {
+            type: Boolean,
+            default: false,
+        },
+
+        chartData: {
+            type: Object,
+            requiered: true,
+        },
+    },
+
     components: {
         BaseCardViewComponent,
     },
 
-    data() {
-        return {
-            bubbles: [
-                { size: 142, order: 1 },
-                { size: 107, order: 2 },
-                { size: 60, order: 3 },
-                { size: 60, order: 4 },
-                { size: 21, order: 5 },
-            ],
-        };
-    },
-
     computed: {
-        sortedBubbles() {
-            // Ordena las burbujas de mayor a menor tamaño
-            return this.bubbles.slice().sort((a, b) => b.size - a.size);
+        directionLegends() {
+            switch (this.positionLegend) {
+                case 'left':
+                    return 'flex-row-reverse';
+                case 'right':
+                    return 'flex-row';
+                case 'top':
+                    return 'flex-column-reverse';
+                case 'bottom':
+                    return 'flex-column';
+                default:
+                    return '';
+            }
+        },
+
+        directionLabels() {
+            switch (this.positionLegend) {
+                case 'left' || 'right':
+                    return 'flex-column';
+                case 'top' || 'bottom':
+                    return 'flex-row';
+                default:
+                    return '';
+            }
         },
     },
 };
 </script>
 
 <template>
-    <div>
-        <BaseCardViewComponent title="% y número de salidas de colaboradores">
-            <div slot="card-text">
-                <div>
-                    <masonry
-                        :cols="{ default: 4, '1100': 3, '700': 2, '500': 1 }"
-                        gutter="30px"
-                    >
-                        <div
-                            v-for="(bubble, index) in sortedBubbles"
-                            :key="index"
-                            class="rounded-pill blue900 bubble"
-                            :style="{
-                                width: bubble.size + 'px',
-                                height: bubble.size + 'px',
-                            }"
-                        ></div>
-                    </masonry>
-                </div>
-            </div>
-        </BaseCardViewComponent>
-        <BaseCardViewComponent title="% y número de salidas de colaboradores">
-            <div slot="card-text">
-                <section class="d-flex flex-row justify-center">
+    <BaseCardViewComponent :title="title">
+        <div slot="card-text">
+            <section class="d-flex" :class="directionLegends">
+                <section class="d-flex flex-row justify-center flex-grow-1">
                     <section class="mt-4">
                         <div class="rounded-pill blue900 big"></div>
                         <div class="rounded-pill blue900 xsmall ml-auto"></div>
@@ -76,9 +94,21 @@ export default {
                         </section>
                     </section>
                 </section>
-            </div>
-        </BaseCardViewComponent>
-    </div>
+                <section
+                    v-if="showLegend"
+                    class="d-flex"
+                    :class="directionLabels"
+                >
+                    <section
+                        v-for="(item, index) in chartData.labels"
+                        :key="index"
+                    >
+                        <p class="BUO-Label-XSmall grey700--text ">{{ item }}</p>
+                    </section>
+                </section>
+            </section>
+        </div>
+    </BaseCardViewComponent>
 </template>
 
 <style scoped>
