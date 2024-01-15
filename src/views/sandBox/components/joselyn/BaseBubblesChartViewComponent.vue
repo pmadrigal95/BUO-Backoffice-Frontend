@@ -12,10 +12,10 @@ const BaseCardViewComponent = () =>
         '@/views/sandBox/components/dashboard/shared/card/BaseCardViewComponent'
     );
 
-/*const BaseTooltipViewComponent = () =>
+const BaseTooltipViewComponent = () =>
     import(
         '@/views/sandBox/components/dashboard/shared/tooltip/BaseTooltipViewComponent'
-    );*/
+    );
 
 export default {
     name: 'BaseBubblesChartViewComponent',
@@ -50,7 +50,7 @@ export default {
 
     components: {
         BaseCardViewComponent,
-        //BaseTooltipViewComponent,
+        BaseTooltipViewComponent,
     },
 
     data() {
@@ -105,8 +105,7 @@ export default {
                 color: this.isPDA
                     ? this.chartData.labels[index].toLowerCase()
                     : '',
-                size: '',
-                style: 'circle rounded-pill big order0',
+                style: ' big order0',
             }));
 
             console.log(newEntity);
@@ -122,67 +121,38 @@ export default {
 <template>
     <BaseCardViewComponent :title="title">
         <div slot="card-text">
-            <div v-for="(item, index) in entity" :key="index" class="container">
-                <div :class="`${item.style} ${item.color}`"></div>
-            </div>
-            <!--  <section class="container">
-                <div class="circle rounded-pill blue900 big"></div>
-                <div class="circle rounded-pill blue900 xsmall"></div>
-                <div class="circle rounded-pill blue900 medium"></div>
-                <div class="circle rounded-pill blue900 small"></div>
-                <div class="circle rounded-pill blue900 small"></div>
+            <section
+                v-for="(item, index) in entity"
+                :key="index"
+                class="container"
+            >
+                <BaseTooltipViewComponent>
+                    <div slot="activator">
+                        <div class="circle rounded-pill" :class="`${item.style} ${item.color}`"></div>
+                    </div>
+
+                    <div slot="title" class="BUO-Label-XSmall grey700--text">
+                        {{ item.name }}
+                    </div>
+                    <div slot="text" class="BUO-Paragraph-Medium">
+                        {{ item.value }}
+                    </div>
+                    <div slot="actions">
+                        <v-btn
+                            class="no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                            color="blueProgress600"
+                            elevation="0"
+                            large
+                            text
+                        >
+                            Ver más
+                        </v-btn>
+                    </div>
+                </BaseTooltipViewComponent>
             </section>
-            -->
-
-            <!-- <section class="d-flex" :class="directionLegends">
-                <section class="d-flex flex-row justify-center flex-grow-1">
-                    <section class="mt-4">
-                        <BaseTooltipViewComponent>
-                            <div slot="activator">
-                                <div
-                                    class="rounded-pill blue900 big bubble"
-                                ></div>
-                            </div>
-
-                            <div
-                                slot="title"
-                                class="BUO-Label-XSmall grey700--text"
-                            >
-                                hola
-                            </div>
-                            <div slot="text" class="BUO-Paragraph-Medium">
-                                1 votos
-                            </div>
-                            <div slot="actions">
-                                <v-btn
-                                    class="no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                                    color="blueProgress600"
-                                    elevation="0"
-                                    large
-                                    text
-                                >
-                                    Ver más
-                                </v-btn>
-                            </div>
-                        </BaseTooltipViewComponent>
-
-                        <div
-                            class="rounded-pill blue900 xsmall ml-auto bubble"
-                        ></div>
-                    </section>
-                    <section class="">
-                        <div
-                            class="rounded-pill blue900 medium mx-4 bubble"
-                        ></div>
-                        <section class="d-flex flex-row">
-                            <div
-                                class="rounded-pill blue900 small mt-2 mr-3 bubble"
-                            ></div>
-                            <div
-                                class="rounded-pill blue900 small mb-2 bubble"
-                            ></div>
-                        </section>
-                    </section>
+            <section class="d-flex" :class="directionLegends">
+                <section>
+                    <h1>prueba</h1>
                 </section>
                 <section
                     v-if="showLegend"
@@ -201,7 +171,7 @@ export default {
                         </section>
                     </section>
                 </section>
-            </section>-->
+            </section>
         </div>
     </BaseCardViewComponent>
 </template>
