@@ -181,13 +181,13 @@ export default {
 
             <v-tab-item>
                 <v-row>
-                    <v-col cols="12" md="4">
+                    <v-col cols="12" md="6">
                         <BaseBubblesChartViewComponent
                             title="% y número de salidas de colaboradores"
                             :chartData="chartData"
                             :showLegend="true"
                             :isPDA="true"
-                            positionLegend="bottom"
+                            positionLegend="right"
                         />
                     </v-col>
                 </v-row>
