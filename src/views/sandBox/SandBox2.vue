@@ -7,6 +7,8 @@
  */
 import { mapGetters } from 'vuex';
 
+import baseArrayHelper from '@/helpers/baseArrayHelper.js';
+
 const BaseNotFoundContent = () =>
     import('@/components/core/cards/BaseNotFoundContent');
 
@@ -28,28 +30,51 @@ export default {
     data() {
         return {
             tab: null,
+            entity: {},
         };
     },
 
     computed: {
         ...mapGetters('theme', ['app']),
+
         chartData() {
             return {
                 labels: [
                     'Tenaz',
-                    'Cautivadora',
                     'Detallista',
-                    'Proactiva',
                     'Audaz',
+                    'Cautivadora',
+                    'Proactiva',
                 ],
-                data: [456, 345, 50, 10, 5],
+                data: [456, 50, 5, 345, 10],
             };
         },
+
+        sortChartData() {
+            return baseArrayHelper.SortArray(this.chartData.data, 'desc');
+        },
+    },
+
+    created() {
+        this.$_setEntity();
     },
 
     methods: {
         $_fnTest() {
             alert('hola');
+        },
+
+        $_setEntity() {
+            this.entity = this.$_mapperEntity();
+        },
+
+        $_mapperEntity() {
+            return this.sortChartData.map((element, index) => ({
+                name: this.chartData.labels[index],
+                value: element,
+                color: this.chartData.labels[index].toLowerCase(),
+                style: `size-${index}`,
+            }));
         },
     },
 };
@@ -184,7 +209,7 @@ export default {
                     <v-col cols="12" md="6">
                         <BaseBubblesChartViewComponent
                             title="% y número de salidas de colaboradores"
-                            :chartData="chartData"
+                            :entity="entity"
                             :showLegend="true"
                             :isPDA="true"
                             positionLegend="right"
