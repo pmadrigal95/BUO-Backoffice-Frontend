@@ -79,8 +79,8 @@ export default {
     },
 
     methods: {
-        $_showCircle() {
-            alert('hola');
+        $_showCircle(item) {
+            item.show = !item.show;
         },
     },
 };
@@ -105,7 +105,10 @@ export default {
                                     :class="`${item.style} ${item.color}`"
                                     :style="{
                                         order: index,
+                                        boxShadow: `1px 1px 10px`,
+                                        border: '1px solid black',
                                     }"
+                                    v-if="item.show"
                                 ></div>
                             </div>
 
@@ -145,12 +148,17 @@ export default {
                     <section v-for="(item, index) in entity" :key="index">
                         <section
                             class="d-flex flex-row align-center pl-4"
-                            @click="$_showCircle"
+                            @click="$_showCircle(item)"
                         >
                             <v-icon :color="item.color" class="pb-3">
-                                mdi-circle-medium
+                                {{ item.iconLegend }}
                             </v-icon>
-                            <p class="BUO-Label-XSmall grey700--text">
+                            <p
+                                class="BUO-Label-XSmall grey700--text"
+                                :class="
+                                    !item.show && 'text-decoration-line-through'
+                                "
+                            >
                                 {{ item.name }} |
                                 <strong class="BUO-Label-Small-SemiBold"
                                     >{{ item.value }}%</strong
@@ -168,7 +176,7 @@ export default {
 .graphic-container {
     display: grid;
     grid-template-columns: auto auto auto;
-    grid-gap: 10px;
+    grid-gap: 5px;
 }
 .size-0 {
     width: 142px;
@@ -195,7 +203,6 @@ export default {
 }
 
 .circle {
-    box-shadow: 5px 5px;
 }
 .circle:hover {
     transform: scale(1.2);

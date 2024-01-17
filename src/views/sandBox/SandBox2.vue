@@ -72,8 +72,10 @@ export default {
             return this.sortChartData.map((element, index) => ({
                 name: this.chartData.labels[index],
                 value: element,
+                iconLegend: 'mdi-circle-medium',
                 color: this.chartData.labels[index].toLowerCase(),
                 style: `size-${index}`,
+                show: true,
             }));
         },
     },
