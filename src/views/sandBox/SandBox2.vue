@@ -9,6 +9,10 @@ import { mapGetters } from 'vuex';
 
 import baseArrayHelper from '@/helpers/baseArrayHelper.js';
 
+import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
+
+import baseDataVisualizationColorsHelperPDA from '@/views/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
+
 const BaseNotFoundContent = () =>
     import('@/components/core/cards/BaseNotFoundContent');
 
@@ -68,12 +72,24 @@ export default {
             this.entity = this.$_mapperEntity();
         },
 
+        $_setColor(isPDA, profile) {
+            if (isPDA) {
+                return baseDataVisualizationColorsHelperPDA.$_getColor({
+                    profile: profile.toLowerCase(),
+                    type: 'backgroundColor',
+                });
+            } else {
+                return baseDataVisualizationColorsHelper.$_randomColor().main;
+            }
+        },
+
         $_mapperEntity() {
+            const isPDA = true;
             return this.sortChartData.map((element, index) => ({
                 name: this.chartData.labels[index],
                 value: element,
                 iconLegend: 'mdi-circle-medium',
-                color: this.chartData.labels[index].toLowerCase(),
+                color: this.$_setColor(isPDA, this.chartData.labels[index]),
                 style: `size-${index}`,
                 show: true,
             }));
@@ -213,7 +229,6 @@ export default {
                             title="% y número de salidas de colaboradores"
                             :entity="entity"
                             :showLegend="true"
-                            :isPDA="true"
                             positionLegend="right"
                         />
                     </v-col>

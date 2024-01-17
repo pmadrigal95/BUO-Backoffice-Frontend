@@ -39,11 +39,6 @@ export default {
             requiered: true,
         },
 
-        isPDA: {
-            type: Boolean,
-            default: false,
-        },
-
         entity: {
             type: Array,
             requiered: true,
@@ -102,20 +97,18 @@ export default {
                             <div slot="activator">
                                 <div
                                     class="circle rounded-pill"
-                                    :class="`${item.style} ${item.color}`"
+                                    :class="`${item.style}`"
                                     :style="{
                                         order: index,
-                                        boxShadow: `1px 1px 10px`,
-                                        border: '1px solid black',
+                                        boxShadow: '1px 1px 10px',
+                                       
+                                        backgroundColor: `${item.color}`,
                                     }"
                                     v-if="item.show"
                                 ></div>
                             </div>
 
-                            <div
-                                slot="title"
-                                class="BUO-Label-XSmall grey700--text"
-                            >
+                            <div slot="title" class="BUO-Label-XSmall">
                                 {{ item.name }}
                             </div>
                             <div slot="text" class="BUO-Paragraph-Medium">
@@ -136,7 +129,7 @@ export default {
                     </section>
                 </section>
                 <section
-                    v-if="showLegend"
+                    v-if="showLegend && !$vuetify.breakpoint.mobile"
                     class="d-flex"
                     :class="`${
                         this.positionLegend === 'right' ||
@@ -150,17 +143,25 @@ export default {
                             class="d-flex flex-row align-center pl-4"
                             @click="$_showCircle(item)"
                         >
-                            <v-icon :color="item.color" class="pb-3">
+                            <v-icon :color="item.color" class="pb-4">
                                 {{ item.iconLegend }}
                             </v-icon>
                             <p
-                                class="BUO-Label-XSmall grey700--text"
-                                :class="
-                                    !item.show && 'text-decoration-line-through'
-                                "
+                                class="BUO-Label-XSmall"
+                                :class="[
+                                    !item.show &&
+                                        'text-decoration-line-through',
+                                    app ? 'white--text' : 'grey700--text',
+                                ]"
                             >
                                 {{ item.name }} |
-                                <strong class="BUO-Label-Small-SemiBold"
+                                <strong
+                                    class="BUO-Label-Small-SemiBold"
+                                    :class="[
+                                        app
+                                            ? 'blueProgress600--text'
+                                            : 'grey700--text',
+                                    ]"
                                     >{{ item.value }}%</strong
                                 >
                             </p>
