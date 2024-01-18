@@ -36,7 +36,7 @@ export default {
         // top, bottom, left, right
         positionLegend: {
             type: String,
-            requiered: true,
+            default: 'right',
         },
 
         entity: {
@@ -56,13 +56,13 @@ export default {
         directionLegends() {
             switch (this.positionLegend) {
                 case 'left':
-                    return 'flex-row-reverse';
+                    return 'flex-row-reverse justify-space-around';
                 case 'right':
-                    return 'flex-row';
+                    return 'flex-row justify-space-around';
                 case 'top':
-                    return 'flex-column-reverse';
+                    return 'flex-column-reverse align-center';
                 case 'bottom':
-                    return 'flex-column';
+                    return 'flex-column align-center';
                 default:
                     return 'flex-row';
             }
@@ -84,11 +84,14 @@ export default {
 <template>
     <BaseCardViewComponent :title="title">
         <div slot="card-text">
-            <section
-                class="d-flex justify-space-around"
-                :class="directionLegends"
-            >
-                <section class="graphic-container">
+            <section class="d-flex" :class="directionLegends">
+                <section
+                    :class="`${
+                        $vuetify.breakpoint.mobile
+                            ? 'graphic-sm-container'
+                            : 'graphic-container'
+                    }`"
+                >
                     <section
                         v-for="(item, index) in shuffleChartData"
                         :key="index"
@@ -96,15 +99,14 @@ export default {
                         <BaseTooltipViewComponent>
                             <div slot="activator">
                                 <div
+                                    v-if="item.show"
                                     class="circle rounded-pill"
                                     :class="`${item.style}`"
                                     :style="{
                                         order: index,
                                         boxShadow: '1px 1px 10px',
-                                       
                                         backgroundColor: `${item.color}`,
                                     }"
-                                    v-if="item.show"
                                 ></div>
                             </div>
 
@@ -130,17 +132,17 @@ export default {
                 </section>
                 <section
                     v-if="showLegend && !$vuetify.breakpoint.mobile"
-                    class="d-flex"
+                    class="d-flex flex-wrap"
                     :class="`${
                         this.positionLegend === 'right' ||
                         this.positionLegend === 'left'
                             ? 'flex-column justify-center'
-                            : 'flex-row justify-center align-center'
+                            : 'flex-row justify-center align-center pt-3'
                     }`"
                 >
-                    <section v-for="(item, index) in entity" :key="index">
+                    <section v-for="(item, index) in shuffleChartData" :key="index">
                         <section
-                            class="d-flex flex-row align-center pl-4"
+                            class="d-flex flex-row align-center"
                             @click="$_showCircle(item)"
                         >
                             <v-icon :color="item.color" class="pb-4">
@@ -155,13 +157,7 @@ export default {
                                 ]"
                             >
                                 {{ item.name }} |
-                                <strong
-                                    class="BUO-Label-Small-SemiBold"
-                                    :class="[
-                                        app
-                                            ? 'blueProgress600--text'
-                                            : 'grey700--text',
-                                    ]"
+                                <strong class="BUO-Label-Small-SemiBold"
                                     >{{ item.value }}%</strong
                                 >
                             </p>
@@ -174,10 +170,15 @@ export default {
 </template>
 
 <style scoped>
+.graphic-sm-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 15px;
+}
 .graphic-container {
     display: grid;
     grid-template-columns: auto auto auto;
-    grid-gap: 5px;
+    grid-gap: 15px;
 }
 .size-0 {
     width: 142px;
@@ -203,8 +204,6 @@ export default {
     height: 21px;
 }
 
-.circle {
-}
 .circle:hover {
     transform: scale(1.2);
     animation: none;
