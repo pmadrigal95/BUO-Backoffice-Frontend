@@ -82,4 +82,6 @@ export default {
     $_filter: 'filtersBackOfficeV4',
 
     $_advfilter: 'advfiltersBackOfficeV4',
+
+    $_buoDashboardNotifier: 'buoDashboardNotifierBackOffice',
 };

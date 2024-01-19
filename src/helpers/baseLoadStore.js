@@ -49,6 +49,7 @@ function createStoreDefault() {
         'authentication/SET_USER_DATA',
         'String'
     );
+
     buildStore(baseConfigHelper.$_app, 'theme/CHANGEMODE', 'Boolean', false);
 
     buildStore(
@@ -64,6 +65,14 @@ function createStoreDefault() {
         'filters/GET_ADVFILTERS',
         'String',
         undefined,
+        true
+    );
+
+    buildStore(
+        baseConfigHelper.$_buoDashboardNotifier,
+        'dashboard/NOTIFIER',
+        'Boolean',
+        false,
         true
     );
 }
