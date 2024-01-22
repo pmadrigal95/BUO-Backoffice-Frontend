@@ -89,7 +89,7 @@ export default {
                     :class="`${
                         $vuetify.breakpoint.mobile
                             ? 'graphic-sm-container'
-                            : 'graphic-container'
+                            : 'graphic-container w-70'
                     }`"
                 >
                     <section
@@ -136,11 +136,14 @@ export default {
                     :class="`${
                         this.positionLegend === 'right' ||
                         this.positionLegend === 'left'
-                            ? 'flex-column justify-center'
+                            ? 'flex-column justify-center w-30'
                             : 'flex-row justify-center align-center pt-3'
                     }`"
                 >
-                    <section v-for="(item, index) in shuffleChartData" :key="index">
+                    <section
+                        v-for="(item, index) in shuffleChartData"
+                        :key="index"
+                    >
                         <section
                             class="d-flex flex-row align-center"
                             @click="$_showCircle(item)"
@@ -170,6 +173,13 @@ export default {
 </template>
 
 <style scoped>
+.w-70 {
+    width: 70%;
+}
+
+.w-30 {
+    width: 30%;
+}
 .graphic-sm-container {
     display: grid;
     grid-template-columns: auto auto;
@@ -179,6 +189,7 @@ export default {
     display: grid;
     grid-template-columns: auto auto auto;
     grid-gap: 15px;
+    height: 300px !important;
 }
 .size-0 {
     width: 142px;
