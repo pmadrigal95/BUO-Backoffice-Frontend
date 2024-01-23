@@ -181,7 +181,7 @@ export default {
                             colorIcon="greenA800"
                             directionIcon="up"
                             description="+5 vs el mes anterior"
-                            justifyContent="justify-end"
+                            justifyContent="justify-center"
                         />
                     </v-col>
                     <v-col cols="12" md="4">
@@ -191,7 +191,6 @@ export default {
                             colorIcon="greenA800"
                             directionIcon="up"
                             description="+3.5 vs el mes anterior"
-                            justifyContent="justify-end"
                         />
                     </v-col>
                     <v-col cols="12" md="4">
@@ -201,7 +200,7 @@ export default {
                             colorIcon="redError900"
                             directionIcon="down"
                             description="+3.5 vs el mes anterior"
-                            justifyContent="justify-end"
+                            justifyContent="justify-center"
                             titleButton="Ver más"
                             :fnButton="$_fnTest"
                             directionButton="justify-end"
