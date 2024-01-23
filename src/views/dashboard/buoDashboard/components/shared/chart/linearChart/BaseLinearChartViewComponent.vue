@@ -15,7 +15,7 @@ const BaseLinearChartImpl = () =>
 
 const BaseCardViewComponent = () =>
     import(
-        '@/views/sandBox/components/dashboard/shared/card/BaseCardViewComponent'
+        '@/views/dashboard/buoDashboard/components/shared/card/BaseCardViewComponent'
     );
 
 export default {

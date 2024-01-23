@@ -45,20 +45,20 @@ const ManagersRotationChartComponent = () =>
         '@/views/dashboard/buoDashboard/components/rotation/chart/pie/ManagersRotationChartComponent'
     );
 
-// const EmployeeDeparturesChartComponent = () =>
-//     import(
-//         '@/views/sandBox/components/dashboard/chart/pie-doughnut/EmployeeDeparturesChartComponent'
-//     );
+const EmployeeDeparturesChartComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/chart/bubbleChart/EmployeeDeparturesChartComponent'
+    );
 
 const DesertionSeniorityViewComponent = () =>
     import(
         '@/views/dashboard/buoDashboard/components/rotation/chart/progressLinearChart/DesertionSeniorityViewComponent'
     );
 
-// const AscendingPersonalitiesChartComponent = () =>
-//     import(
-//         '@/views/sandBox/components/dashboard/chart/pie-doughnut/AscendingPersonalitiesChartComponent'
-//     );
+const AscendingPersonalitiesChartComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/chart/bubbleChart/AscendingPersonalitiesChartComponent'
+    );
 
 export default {
     name: 'DisplayViewComponent',
@@ -82,10 +82,10 @@ export default {
         ExitInterviewsChartComponent,
         ManagersRotationChartComponent,
         DesertionSeniorityViewComponent,
-        // EmployeeDeparturesChartComponent,
+        EmployeeDeparturesChartComponent,
         HistoricalRotationChartComponent,
         StatisticalRotationCardsViewComponent,
-        // AscendingPersonalitiesChartComponent,
+        AscendingPersonalitiesChartComponent,
     },
 
     data: () => ({
@@ -170,8 +170,10 @@ export default {
                 <RotationViewComponent :chartData="entity.departmentRotation" />
             </v-col>
 
-            <v-col cols="12" :md="rowSize.one">
-                <!-- <EmployeeDeparturesChartComponent /> -->
+            <v-col cols="12" :md="rowSize.one" v-if="entity.quantityDispersion">
+                <EmployeeDeparturesChartComponent
+                    :chartData="entity.quantityDispersion"
+                />
             </v-col>
 
             <v-col cols="12" :md="rowSize.one">
@@ -202,8 +204,10 @@ export default {
                 />
             </v-col>
 
-            <v-col cols="12" :md="rowSize.three">
-                <!-- <AscendingPersonalitiesChartComponent /> -->
+            <v-col cols="12" :md="rowSize.three" v-if="entity.personalities">
+                <AscendingPersonalitiesChartComponent
+                    :chartData="entity.personalities"
+                />
             </v-col>
         </v-row>
     </section>

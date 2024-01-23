@@ -55,6 +55,12 @@ export default {
         BaseCardViewComponent,
     },
 
+    data() {
+        return {
+            isBubbleChart: true,
+        };
+    },
+
     computed: {
         ...mapGetters('theme', ['app']),
 
@@ -136,8 +142,21 @@ export default {
 
 <template>
     <BaseCardViewComponent :title="title">
+        <div slot="top-actions">
+            <v-btn
+                icon
+                :color="app ? 'clouds' : 'black'"
+                @click="isBubbleChart = !isBubbleChart"
+            >
+                <v-icon>{{
+                    `mdi-${isBubbleChart ? 'chart-pie' : 'chart-bubble'}`
+                }}</v-icon>
+            </v-btn>
+        </div>
         <div slot="card-text">
+            <span v-if="isBubbleChart">burbuja</span>
             <BasePieChartImpl
+                v-else
                 :chartData="chartConfig"
                 positionLegend="right"
                 :dark="app"
