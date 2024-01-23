@@ -125,21 +125,28 @@ export default {
 
 <template>
     <section v-if="$router.currentRoute.params.Id">
-        <v-tabs
-            v-model="tab"
-            right
-            show-arrows
-            height="25"
-            class="pa-3 background"
-            :color="app ? 'white' : 'primary'"
-        >
+        <v-tabs v-model="tab" right show-arrows height="34">
             <v-tabs-slider color="transparent"></v-tabs-slider>
-            <v-tab class="rounded-pill no-uppercase"> Indicador </v-tab>
             <v-tab
-                class="rounded-pill no-uppercase"
+                :class="`rounded-pill no-uppercase mr-3 ${
+                    app
+                        ? 'bg-tab-idle-dark black--text BUO-Display-Large'
+                        : 'bg-tab-idle-clear grey600--text'
+                }`"
+                active-class="bg-tab-active white--text"
+            >
+                <p class="BUO-Label-Small pt-4">Indicador</p>
+            </v-tab>
+            <v-tab
+                :class="`rounded-pill no-uppercase mr-3 ${
+                    app
+                        ? 'bg-tab-idle-dark black--text BUO-Display-Large'
+                        : 'bg-tab-idle-clear grey600--text'
+                }`"
+                active-class="bg-tab-active white--text"
                 v-if="microabilityPermission"
             >
-                Micro-Indicadores
+                <p class="BUO-Label-Small pt-4">Micro-Indicadores</p>
             </v-tab>
         </v-tabs>
 

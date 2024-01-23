@@ -182,14 +182,38 @@ export default {
             v-model="tab"
             right
             show-arrows
-            height="25"
+            height="34"
             class="pa-3"
             :color="app ? 'blueProgress600' : 'blue800'"
         >
             <v-tabs-slider color="transparent"></v-tabs-slider>
-            <v-tab class="rounded-pill no-uppercase"> En Progreso </v-tab>
-            <v-tab class="rounded-pill no-uppercase"> Validadas </v-tab>
-            <v-tab class="rounded-pill no-uppercase"> Por Validar </v-tab>
+            <v-tab
+                :class="`rounded-pill no-uppercase mr-3 ${
+                    app
+                        ? 'bg-tab-idle-dark black--text BUO-Display-Large'
+                        : 'bg-tab-idle-clear grey600--text'
+                }`"
+                active-class="bg-tab-active white--text"
+                ><p class="BUO-Label-Small pt-4">En Progreso</p>
+            </v-tab>
+            <v-tab
+                :class="`rounded-pill no-uppercase mr-3 ${
+                    app
+                        ? 'bg-tab-idle-dark black--text BUO-Display-Large'
+                        : 'bg-tab-idle-clear grey600--text'
+                }`"
+                active-class="bg-tab-active white--text"
+                ><p class="BUO-Label-Small pt-4">Validadas</p>
+            </v-tab>
+            <v-tab
+                :class="`rounded-pill no-uppercase mr-3 ${
+                    app
+                        ? 'bg-tab-idle-dark black--text BUO-Display-Large'
+                        : 'bg-tab-idle-clear grey600--text'
+                }`"
+                active-class="bg-tab-active white--text"
+                ><p class="BUO-Label-Small pt-4">Por Validar</p>
+            </v-tab>
         </v-tabs>
 
         <v-tabs-items v-model="tab" class="pa-5">

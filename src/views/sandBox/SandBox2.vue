@@ -16,8 +16,10 @@ import baseDataVisualizationColorsHelperPDA from '@/views/demographics/pda/compo
 const BaseNotFoundContent = () =>
     import('@/components/core/cards/BaseNotFoundContent');
 
-const StadisticCardViewComponent = () =>
-    import('@/views/sandBox/components/joselyn/StadisticCardViewComponent');
+const BaseStadisticCardViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/shared/stadisticCard/BaseStadisticCardViewComponent'
+    );
 
 const BaseBubblesChartViewComponent = () =>
     import('@/views/sandBox/components/joselyn/BaseBubblesChartViewComponent');
@@ -27,7 +29,7 @@ export default {
 
     components: {
         BaseNotFoundContent,
-        StadisticCardViewComponent,
+        BaseStadisticCardViewComponent,
         BaseBubblesChartViewComponent,
     },
 
@@ -150,7 +152,7 @@ export default {
             <v-tab-item>
                 <v-row>
                     <v-col cols="12" md="4">
-                        <StadisticCardViewComponent
+                        <BaseStadisticCardViewComponent
                             title="Rotación"
                             :fnCallback="$_fnTest"
                             :percentage="4"
@@ -159,7 +161,7 @@ export default {
                         />
                     </v-col>
                     <v-col cols="12" md="4">
-                        <StadisticCardViewComponent
+                        <BaseStadisticCardViewComponent
                             title="Rotación promedio"
                             :fnCallback="$_fnTest"
                             :percentage="12.5"
@@ -168,7 +170,7 @@ export default {
                         />
                     </v-col>
                     <v-col cols="12" md="4">
-                        <StadisticCardViewComponent
+                        <BaseStadisticCardViewComponent
                             title="Attrition"
                             :fnCallback="$_fnTest"
                             :percentage="4.5"
@@ -177,7 +179,7 @@ export default {
                         />
                     </v-col>
                     <v-col cols="12" md="4">
-                        <StadisticCardViewComponent
+                        <BaseStadisticCardViewComponent
                             title="Deserción"
                             :fnCallback="$_fnTest"
                             :percentage="10.5"
@@ -186,7 +188,7 @@ export default {
                         />
                     </v-col>
                     <v-col cols="12" md="4">
-                        <StadisticCardViewComponent
+                        <BaseStadisticCardViewComponent
                             title="Prueba"
                             :fnCallback="$_fnTest"
                             :percentage="10.5"
@@ -195,7 +197,7 @@ export default {
                         />
                     </v-col>
                     <v-col cols="12" md="4">
-                        <StadisticCardViewComponent
+                        <BaseStadisticCardViewComponent
                             title="Prueba"
                             :fnCallback="$_fnTest"
                             :percentage="10.5"
