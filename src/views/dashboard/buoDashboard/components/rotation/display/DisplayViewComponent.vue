@@ -63,6 +63,11 @@ export default {
             type: Object,
             required: true,
         },
+
+        innerWidth: {
+            type: [Number, String],
+            required: true,
+        },
     },
 
     components: {
@@ -78,19 +83,15 @@ export default {
     },
 
     data: () => ({
-        windowSize: {
-            x: 0,
-            y: 0,
-        },
         loading: false,
         entity: undefined,
     }),
 
     computed: {
         rowSize() {
-            return this.windowSize.x <= 1024
+            return this.innerWidth <= 1024
                 ? { one: 12, two: 12, three: 12 }
-                : this.windowSize.x < 1800 && this.windowSize.x > 1024
+                : this.innerWidth < 1800 && this.innerWidth > 1024
                 ? { one: 6, two: 6, three: 6 }
                 : { one: 4, two: 4, three: 6 };
         },
@@ -100,30 +101,12 @@ export default {
         this.$_getToAPi();
     },
 
-    mounted() {
-        this.onResize();
-    },
-
     methods: {
-        onResize() {
-            this.windowSize = { x: window.innerWidth, y: window.innerHeight };
-        },
-
-        $_setFilter() {
-            return {
-                organizacionId: this.filter.companyId,
-                departamentoId: this.filter.departmentId
-                    ? this.filter.departmentId
-                    : 0,
-                fecha: `${this.filter.month}-01T00:00:00`,
-            };
-        },
-
         $_getToAPi() {
             this.loading = true;
 
             httpService
-                .post('dashboard/rotacion/detalles', this.$_setFilter())
+                .post('dashboard/rotacion/detalles', this.filter)
                 .then((response) => {
                     this.loading = false;
 
@@ -143,7 +126,7 @@ export default {
 
 <template>
     <BaseSkeletonLoader v-if="loading" type="list-item" />
-    <v-row v-resize="onResize" v-else>
+    <v-row v-else>
         <v-col cols="12" md="12">
             <!-- <HistoricalRotationChartComponent /> -->
         </v-col>

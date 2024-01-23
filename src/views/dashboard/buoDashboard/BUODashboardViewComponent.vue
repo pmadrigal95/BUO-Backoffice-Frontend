@@ -34,6 +34,10 @@ export default {
     data() {
         return {
             step: 1,
+            windowSize: {
+                x: 0,
+                y: 0,
+            },
             entity: undefined,
         };
     },
@@ -42,10 +46,26 @@ export default {
         ...mapGetters('theme', ['app']),
 
         ...mapGetters('dashboard', ['notifier', 'filter']),
+
+        $_filter() {
+            return {
+                organizacionId: this.entity?.companyId,
+                departamentoId: this.entity?.departmentId
+                    ? this.entity?.departmentId
+                    : 0,
+                fecha: this.entity?.month
+                    ? `${this.entity?.month}-01T00:00:00`
+                    : undefined,
+            };
+        },
     },
 
     created() {
         this.$_setFilter();
+    },
+
+    mounted() {
+        this.onResize();
     },
 
     watch: {
@@ -62,6 +82,10 @@ export default {
     methods: {
         ...mapActions('dashboard', ['filter_user']),
 
+        onResize() {
+            this.windowSize = { x: window.innerWidth, y: window.innerHeight };
+        },
+
         $_setFilter() {
             this.entity = this.filter;
         },
@@ -74,7 +98,7 @@ export default {
 </script>
 
 <template>
-    <v-container fluid>
+    <v-container fluid v-resize="onResize">
         <NotifierViewComponent v-if="!notifier" />
 
         <HeaderViewComponent class="mb-8 mt-n6 ml-n4" />
@@ -141,7 +165,11 @@ export default {
             <v-tab-item> </v-tab-item>
 
             <v-tab-item>
-                <RotationDashboardViewComponent :filter="entity" />
+                <RotationDashboardViewComponent
+                    :entity="entity"
+                    :filter="$_filter"
+                    :innerWidth="windowSize.x"
+                />
             </v-tab-item>
 
             <v-tab-item> </v-tab-item>

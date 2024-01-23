@@ -22,6 +22,16 @@ export default {
             type: Object,
             required: true,
         },
+
+        entity: {
+            type: Object,
+            required: true,
+        },
+
+        innerWidth: {
+            type: [Number, String],
+            required: true,
+        },
     },
 
     components: {
@@ -37,10 +47,14 @@ export default {
         isMonth
         requiredMonth
         :show="true"
-        v-model="filter"
+        v-model="entity"
     >
         <div slot="body">
-            <DisplayViewComponent :filter="filter" />
+            <DisplayViewComponent
+                :filter="filter"
+                :innerWidth="innerWidth"
+                v-if="filter.organizacionId"
+            />
         </div>
     </BaseAdvancedFilter>
 </template>

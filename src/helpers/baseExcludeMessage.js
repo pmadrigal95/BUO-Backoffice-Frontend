@@ -7,6 +7,7 @@
 const exclusionList = [
     '/cards',
     '/findBy',
+    'dashboard',
     'analytics',
     'menuUsuario',
     'getUsuarios',
