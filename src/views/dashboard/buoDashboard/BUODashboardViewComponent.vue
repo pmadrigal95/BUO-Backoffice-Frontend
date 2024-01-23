@@ -103,13 +103,7 @@ export default {
 
         <HeaderViewComponent class="mb-8 mt-n6 ml-n4" />
 
-        <v-tabs
-            v-model="step"
-            left
-            show-arrows
-            height="34"
-        
-        >
+        <v-tabs v-model="step" left show-arrows height="34">
             <v-tabs-slider color="transparent"></v-tabs-slider>
             <v-tab
                 disabled
