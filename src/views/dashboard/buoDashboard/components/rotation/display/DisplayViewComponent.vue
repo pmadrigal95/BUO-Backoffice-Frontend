@@ -89,11 +89,21 @@ export default {
 
     computed: {
         rowSize() {
-            return this.innerWidth <= 1024
-                ? { one: 12, two: 12, three: 12 }
-                : this.innerWidth < 1800 && this.innerWidth > 1024
-                ? { one: 6, two: 6, three: 6 }
-                : { one: 4, two: 4, three: 6 };
+            let size = undefined;
+
+            switch (true) {
+                case this.innerWidth <= 1024:
+                    size = { one: 12, two: 12, three: 12 };
+                    break;
+                case this.innerWidth < 1800 && this.innerWidth > 1024:
+                    size = { one: 6, two: 6, three: 6 };
+                    break;
+                default:
+                    size = { one: 4, two: 4, three: 6 };
+                    break;
+            }
+
+            return size;
         },
     },
 
@@ -111,7 +121,7 @@ export default {
                     this.loading = false;
 
                     if (response != undefined) {
-                        console.log(response);
+                        console.log(response.data);
                         //Logica JS luego de la acción exitosa!!!
                         // this.entity = BaseArrayHelper.SetObject(
                         //     {},
@@ -125,7 +135,10 @@ export default {
 </script>
 
 <template>
-    <BaseSkeletonLoader v-if="loading" type="list-item" />
+    <BaseSkeletonLoader
+        v-if="loading"
+        type="image, date-picker-days, date-picker-days, image"
+    />
     <v-row v-else>
         <v-col cols="12" md="12">
             <!-- <HistoricalRotationChartComponent /> -->
