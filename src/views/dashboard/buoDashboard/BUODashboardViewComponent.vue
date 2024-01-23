@@ -83,7 +83,7 @@ export default {
             v-model="step"
             left
             show-arrows
-            height="25"
+            height="34"
             :color="app ? 'blueProgress600' : 'blue800'"
         >
             <v-tabs-slider color="transparent"></v-tabs-slider>
@@ -91,47 +91,47 @@ export default {
                 disabled
                 :class="`rounded-pill no-uppercase mr-3 ${
                     app
-                        ? 'bg-blueProgress600 black--text BUO-Display-Large'
-                        : 'bg-white grey600--text'
+                        ? 'bg-tab-idle-dark black--text BUO-Display-Large'
+                        : 'bg-tab-idle-clear grey600--text'
                 }`"
-                active-class="bg-blue900 white--text"
-                ><p class="BUO-Label-Small pt-3">Inicio</p>
+                active-class="bg-tab-active white--text"
+                ><p class="BUO-Label-Small pt-4">Inicio</p>
             </v-tab>
             <v-tab
                 :class="`rounded-pill no-uppercase mr-3 ${
                     app
-                        ? 'bg-blueProgress600 black--text BUO-Display-Large'
-                        : 'bg-white grey600--text'
+                        ? 'bg-tab-idle-dark black--text BUO-Display-Large'
+                        : 'bg-tab-idle-clear grey600--text'
                 }`"
-                active-class="bg-blue900 white--text"
-                ><p class="BUO-Label-Small pt-3">Rotación</p>
+                active-class="bg-tab-active white--text"
+                ><p class="BUO-Label-Small pt-4">Rotación</p>
             </v-tab>
             <v-tab
                 disabled
                 :class="`rounded-pill no-uppercase mr-3 ${
                     app
-                        ? 'bg-blueProgress600 black--text'
-                        : 'bg-white grey600--text'
+                        ? 'bg-tab-idle-dark black--text'
+                        : 'bg-tab-idle-clear grey600--text'
                 }`"
-                active-class="bg-blue900 white--text"
-                ><p class="BUO-Label-Small pt-3">Desempeño</p>
+                active-class="bg-tab-active white--text"
+                ><p class="BUO-Label-Small pt-4">Desempeño</p>
             </v-tab>
             <v-tab
                 disabled
                 :class="`rounded-pill no-uppercase mr-3 ${
                     app
-                        ? 'bg-blueProgress600 black--text'
-                        : 'bg-white grey600--text'
+                        ? 'bg-tab-idle-dark black--text'
+                        : 'bg-tab-idle-clear grey600--text'
                 }`"
-                active-class="bg-blue900 white--text"
-                ><p class="BUO-Label-Small pt-3">Crecimiento</p>
+                active-class="bg-tab-active white--text"
+                ><p class="BUO-Label-Small pt-4">Crecimiento</p>
             </v-tab>
             <v-tab
                 disabled
                 :class="`rounded-pill no-uppercase mr-3 ${
-                    app ? 'bg-blueProgress600' : 'bg-white'
+                    app ? 'bg-tab-idle-dark' : 'bg-tab-idle-clear'
                 }`"
-                active-class="bg-blue900 white--text"
+                active-class="bg-tab-active white--text"
             >
                 <v-icon small> mdi mdi-plus </v-icon>
             </v-tab>
@@ -152,17 +152,3 @@ export default {
         </v-tabs-items>
     </v-container>
 </template>
-
-<style scoped>
-.bg-white {
-    background-color: #ffffff;
-}
-
-.bg-blue900 {
-    background-color: #003f5e !important;
-}
-
-.bg-blueProgress600 {
-    background-color: #b9c9dc;
-}
-</style>
