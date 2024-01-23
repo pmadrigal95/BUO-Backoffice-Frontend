@@ -8,7 +8,7 @@
 
 import httpService from '@/services/axios/httpService';
 
-// import BaseArrayHelper from '@/helpers/baseArrayHelper';
+import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
 // const WordsChartViewComponent = () =>
 //     import(
@@ -20,15 +20,15 @@ import httpService from '@/services/axios/httpService';
 //         '@/views/sandBox/components/dashboard/chart/progress-linear/BenefitViewComponent'
 //     );
 
-// const HistoricalRotationChartComponent = () =>
-//     import(
-//         '@/views/sandBox/components/dashboard/chart/line/HistoricalRotationChartComponent'
-//     );
+const HistoricalRotationChartComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/chart/linealChart/HistoricalRotationChartComponent'
+    );
 
-// const RotationViewComponent = () =>
-//     import(
-//         '@/views/sandBox/components/dashboard/chart/progress-linear/RotationViewComponent'
-//     );
+const RotationViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/chart/progressLinearChart/RotationViewComponent'
+    );
 
 // const ExitInterviewsChartComponent = () =>
 //     import(
@@ -72,13 +72,13 @@ export default {
 
     components: {
         // BenefitViewComponent,
-        // RotationViewComponent,
+        RotationViewComponent,
         // WordsChartViewComponent,
         // ExitInterviewsChartComponent,
         // ManagersRotationChartComponent,
         // DesertionSeniorityViewComponent,
         // EmployeeDeparturesChartComponent,
-        // HistoricalRotationChartComponent,
+        HistoricalRotationChartComponent,
         // AscendingPersonalitiesChartComponent,
     },
 
@@ -121,12 +121,11 @@ export default {
                     this.loading = false;
 
                     if (response != undefined) {
-                        console.log(response.data);
                         //Logica JS luego de la acción exitosa!!!
-                        // this.entity = BaseArrayHelper.SetObject(
-                        //     {},
-                        //     response.data
-                        // );
+                        this.entity = BaseArrayHelper.SetObject(
+                            {},
+                            response.data
+                        );
                     }
                 });
         },
@@ -139,41 +138,52 @@ export default {
         v-if="loading"
         type="image, date-picker-days, date-picker-days, image"
     />
-    <v-row v-else>
-        <v-col cols="12" md="12">
-            <!-- <HistoricalRotationChartComponent /> -->
-        </v-col>
+    <section v-else>
+        <v-row>
+            <v-col cols="12" md="12" v-if="entity.historicUser">
+                <HistoricalRotationChartComponent
+                    :chartData="entity.historicUser"
+                />
+            </v-col>
 
-        <v-col cols="12" :md="rowSize.one">
-            <!-- <RotationViewComponent /> -->
-        </v-col>
+            <v-col
+                cols="12"
+                :md="rowSize.one"
+                v-if="
+                    entity.departmentRotation &&
+                    entity.departmentRotation.length > 0
+                "
+            >
+                <RotationViewComponent :chartData="entity.departmentRotation" />
+            </v-col>
 
-        <v-col cols="12" :md="rowSize.one">
-            <!-- <EmployeeDeparturesChartComponent /> -->
-        </v-col>
+            <v-col cols="12" :md="rowSize.one">
+                <!-- <EmployeeDeparturesChartComponent /> -->
+            </v-col>
 
-        <v-col cols="12" :md="rowSize.one">
-            <!-- <WordsChartViewComponent /> -->
-        </v-col>
+            <v-col cols="12" :md="rowSize.one">
+                <!-- <WordsChartViewComponent /> -->
+            </v-col>
 
-        <v-col cols="12" :md="rowSize.two">
-            <!-- <BenefitViewComponent /> -->
-        </v-col>
+            <v-col cols="12" :md="rowSize.two">
+                <!-- <BenefitViewComponent /> -->
+            </v-col>
 
-        <v-col cols="12" :md="rowSize.two">
-            <!-- <ManagersRotationChartComponent /> -->
-        </v-col>
+            <v-col cols="12" :md="rowSize.two">
+                <!-- <ManagersRotationChartComponent /> -->
+            </v-col>
 
-        <v-col cols="12" :md="rowSize.two">
-            <!-- <ExitInterviewsChartComponent /> -->
-        </v-col>
+            <v-col cols="12" :md="rowSize.two">
+                <!-- <ExitInterviewsChartComponent /> -->
+            </v-col>
 
-        <v-col cols="12" :md="rowSize.three">
-            <!-- <AscendingPersonalitiesChartComponent /> -->
-        </v-col>
+            <v-col cols="12" :md="rowSize.three">
+                <!-- <AscendingPersonalitiesChartComponent /> -->
+            </v-col>
 
-        <v-col cols="12" :md="rowSize.three">
-            <!-- <DesertionSeniorityViewComponent /> -->
-        </v-col>
-    </v-row>
+            <v-col cols="12" :md="rowSize.three">
+                <!-- <DesertionSeniorityViewComponent /> -->
+            </v-col>
+        </v-row>
+    </section>
 </template>

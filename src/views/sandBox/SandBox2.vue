@@ -18,7 +18,7 @@ const BaseNotFoundContent = () =>
 
 const BaseStadisticCardViewComponent = () =>
     import(
-        '@/views/dashboard/buoDashboard/components/shared/stadisticCard/BaseStadisticCardViewComponent'
+        '@/views/dashboard/buoDashboard/components/shared/card/BaseStadisticCardViewComponent'
     );
 
 const BaseBubblesChartViewComponent = () =>
