@@ -17,9 +17,7 @@ const BaseNotFoundContent = () =>
     import('@/components/core/cards/BaseNotFoundContent');
 
 const BaseStadisticCardViewComponent = () =>
-    import(
-        '@/views/dashboard/buoDashboard/components/shared/card/BaseStadisticCardViewComponent'
-    );
+    import('@/views/sandBox/components/joselyn/BaseStadisticCardViewComponent');
 
 const BaseBubblesChartViewComponent = () =>
     import('@/views/sandBox/components/joselyn/BaseBubblesChartViewComponent');
@@ -153,56 +151,88 @@ export default {
                 <v-row>
                     <v-col cols="12" md="4">
                         <BaseStadisticCardViewComponent
-                            title="Rotación"
+                            title="Attrition Risk"
                             :fnCallback="$_fnTest"
-                            :percentage="4"
-                            :isUp="false"
-                            description="+0.5 vs el mes anterior"
-                        />
-                    </v-col>
-                    <v-col cols="12" md="4">
-                        <BaseStadisticCardViewComponent
-                            title="Rotación promedio"
-                            :fnCallback="$_fnTest"
-                            :percentage="12.5"
-                            :isUp="false"
-                            description="-3 vs el mes anterior"
-                        />
-                    </v-col>
-                    <v-col cols="12" md="4">
-                        <BaseStadisticCardViewComponent
-                            title="Attrition"
-                            :fnCallback="$_fnTest"
-                            :percentage="4.5"
-                            :isUp="false"
+                            subtitle="4.5%"
+                            colorIcon="greenA800"
+                            directionIcon="down"
                             description="-3.5 vs el mes anterior"
+                            alignContent="align-center"
                         />
                     </v-col>
                     <v-col cols="12" md="4">
                         <BaseStadisticCardViewComponent
-                            title="Deserción"
-                            :fnCallback="$_fnTest"
-                            :percentage="10.5"
-                            :isUp="true"
-                            description="+2.8 vs el mes anterior"
+                            title="Crecimiento"
+                            subtitle="42"
+                            description="personas"
+                            alignContent="align-end"
                         />
                     </v-col>
                     <v-col cols="12" md="4">
                         <BaseStadisticCardViewComponent
-                            title="Prueba"
-                            :fnCallback="$_fnTest"
-                            :percentage="10.5"
-                            :isUp="true"
-                            description="+2.8 vs el mes anterior"
+                            title="Empleados"
+                            subtitle="350"
                         />
                     </v-col>
                     <v-col cols="12" md="4">
                         <BaseStadisticCardViewComponent
-                            title="Prueba"
+                            title="Paridad de género"
+                            subtitle="50%"
+                            colorIcon="greenA800"
+                            directionIcon="up"
+                            description="+5 vs el mes anterior"
+                            justifyContent="justify-end"
+                        />
+                    </v-col>
+                    <v-col cols="12" md="4">
+                        <BaseStadisticCardViewComponent
+                            title="Edad promedio"
+                            subtitle="40años"
+                            colorIcon="greenA800"
+                            directionIcon="up"
+                            description="+3.5 vs el mes anterior"
+                            justifyContent="justify-end"
+                        />
+                    </v-col>
+                    <v-col cols="12" md="4">
+                        <BaseStadisticCardViewComponent
+                            title="Crecimiento promedio"
+                            subtitle="8%"
+                            colorIcon="redError900"
+                            directionIcon="down"
+                            description="+3.5 vs el mes anterior"
+                            justifyContent="justify-end"
+                            titleButton="Ver más"
+                            :fnButton="$_fnTest"
+                            directionButton="justify-end"
+                        />
+                    </v-col>
+                    <v-col cols="12" md="4">
+                        <BaseStadisticCardViewComponent
+                            title="Deudas"
                             :fnCallback="$_fnTest"
-                            :percentage="10.5"
-                            :isUp="true"
-                            description="+2.8 vs el mes anterior"
+                            subtitle="7"
+                            description="deudas"
+                            alignContent="align-end"
+                        />
+                    </v-col>
+                    <v-col cols="12" md="4">
+                        <BaseStadisticCardViewComponent
+                            title="Salario"
+                            :fnCallback="$_fnTest"
+                            subtitle="$1000-1200"
+                            description="mensuales"
+                            directionContent="flex-column"
+                            justifyContent="justify-end"
+                            alignContent="align-start"
+                        />
+                    </v-col>
+                    <v-col cols="12" md="4">
+                        <BaseStadisticCardViewComponent
+                            title="Estado cívil"
+                            subtitle="casado"
+                            iconCard="mdi-arrow-expand"
+                            :fnCard="$_fnTest"
                         />
                     </v-col>
                 </v-row>
