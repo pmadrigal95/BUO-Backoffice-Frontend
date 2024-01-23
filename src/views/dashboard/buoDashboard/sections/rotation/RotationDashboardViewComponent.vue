@@ -9,6 +9,11 @@
 const BaseAdvancedFilter = () =>
     import('@/components/backoffice/filter/BaseAdvancedFilter');
 
+const DisplayViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/display/DisplayViewComponent'
+    );
+
 export default {
     name: 'RotationDashboardViewComponent',
 
@@ -21,6 +26,7 @@ export default {
 
     components: {
         BaseAdvancedFilter,
+        DisplayViewComponent,
     },
 };
 </script>
@@ -34,7 +40,7 @@ export default {
         v-model="filter"
     >
         <div slot="body">
-            <span>Hola</span>
+            <DisplayViewComponent :filter="filter" />
         </div>
     </BaseAdvancedFilter>
 </template>

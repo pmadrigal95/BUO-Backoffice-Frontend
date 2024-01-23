@@ -88,6 +88,7 @@ export default {
         >
             <v-tabs-slider color="transparent"></v-tabs-slider>
             <v-tab
+                disabled
                 :class="`rounded-pill no-uppercase mr-3 ${
                     app
                         ? 'bg-tab-idle-dark black--text BUO-Display-Large'
@@ -106,6 +107,7 @@ export default {
                 ><p class="BUO-Label-Small pt-4">Rotación</p>
             </v-tab>
             <v-tab
+                disabled
                 :class="`rounded-pill no-uppercase mr-3 ${
                     app
                         ? 'bg-tab-idle-dark black--text'
@@ -115,6 +117,7 @@ export default {
                 ><p class="BUO-Label-Small pt-4">Desempeño</p>
             </v-tab>
             <v-tab
+                disabled
                 :class="`rounded-pill no-uppercase mr-3 ${
                     app
                         ? 'bg-tab-idle-dark black--text'
@@ -124,6 +127,7 @@ export default {
                 ><p class="BUO-Label-Small pt-4">Crecimiento</p>
             </v-tab>
             <v-tab
+                disabled
                 :class="`rounded-pill no-uppercase mr-3 ${
                     app ? 'bg-tab-idle-dark' : 'bg-tab-idle-clear'
                 }`"
@@ -134,25 +138,17 @@ export default {
         </v-tabs>
 
         <v-tabs-items v-model="step" class="mx-n2 transparent">
-            <v-tab-item>
-                <span>Hola 0</span>
-            </v-tab-item>
+            <v-tab-item> </v-tab-item>
 
             <v-tab-item>
                 <RotationDashboardViewComponent :filter="entity" />
             </v-tab-item>
 
-            <v-tab-item>
-                <span>Hola 2</span>
-            </v-tab-item>
+            <v-tab-item> </v-tab-item>
 
-            <v-tab-item>
-                <span>Hola 3</span>
-            </v-tab-item>
+            <v-tab-item> </v-tab-item>
 
-            <v-tab-item>
-                <span>Hola 4</span>
-            </v-tab-item>
+            <v-tab-item> </v-tab-item>
         </v-tabs-items>
     </v-container>
 </template>
