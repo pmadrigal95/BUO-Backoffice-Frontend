@@ -15,9 +15,14 @@ import BaseArrayHelper from '@/helpers/baseArrayHelper';
 //         '@/views/sandBox/components/dashboard/chart/words/WordsChartViewComponent'
 //     );
 
+const StatisticalRotationCardsViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/card/StatisticalRotationCardsViewComponent'
+    );
+
 // const BenefitViewComponent = () =>
 //     import(
-//         '@/views/sandBox/components/dashboard/chart/progress-linear/BenefitViewComponent'
+//         '@/views/dashboard/buoDashboard/components/rotation/chart/progressLinearChart/BenefitViewComponent'
 //     );
 
 const HistoricalRotationChartComponent = () =>
@@ -30,25 +35,25 @@ const RotationViewComponent = () =>
         '@/views/dashboard/buoDashboard/components/rotation/chart/progressLinearChart/RotationViewComponent'
     );
 
-// const ExitInterviewsChartComponent = () =>
-//     import(
-//         '@/views/sandBox/components/dashboard/chart/pie-doughnut/ExitInterviewsChartComponent'
-//     );
+const ExitInterviewsChartComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/chart/pie/ExitInterviewsChartComponent'
+    );
 
-// const ManagersRotationChartComponent = () =>
-//     import(
-//         '@/views/sandBox/components/dashboard/chart/pie-doughnut/ManagersRotationChartComponent'
-//     );
+const ManagersRotationChartComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/chart/pie/ManagersRotationChartComponent'
+    );
 
 // const EmployeeDeparturesChartComponent = () =>
 //     import(
 //         '@/views/sandBox/components/dashboard/chart/pie-doughnut/EmployeeDeparturesChartComponent'
 //     );
 
-// const DesertionSeniorityViewComponent = () =>
-//     import(
-//         '@/views/sandBox/components/dashboard/chart/progress-linear/DesertionSeniorityViewComponent'
-//     );
+const DesertionSeniorityViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/chart/progressLinearChart/DesertionSeniorityViewComponent'
+    );
 
 // const AscendingPersonalitiesChartComponent = () =>
 //     import(
@@ -74,11 +79,12 @@ export default {
         // BenefitViewComponent,
         RotationViewComponent,
         // WordsChartViewComponent,
-        // ExitInterviewsChartComponent,
-        // ManagersRotationChartComponent,
-        // DesertionSeniorityViewComponent,
+        ExitInterviewsChartComponent,
+        ManagersRotationChartComponent,
+        DesertionSeniorityViewComponent,
         // EmployeeDeparturesChartComponent,
         HistoricalRotationChartComponent,
+        StatisticalRotationCardsViewComponent,
         // AscendingPersonalitiesChartComponent,
     },
 
@@ -139,6 +145,13 @@ export default {
         type="image, date-picker-days, date-picker-days, image"
     />
     <section v-else>
+        <section class="my-6">
+            <StatisticalRotationCardsViewComponent
+                v-if="entity.cardList && entity.cardList.length > 0"
+                :chartData="entity.cardList"
+                :innerWidth="innerWidth"
+            />
+        </section>
         <v-row>
             <v-col cols="12" md="12" v-if="entity.historicUser">
                 <HistoricalRotationChartComponent
@@ -165,24 +178,32 @@ export default {
                 <!-- <WordsChartViewComponent /> -->
             </v-col>
 
+            <v-col cols="12" :md="rowSize.two" v-if="entity.managersPie">
+                <ManagersRotationChartComponent
+                    :chartData="entity.managersPie"
+                />
+            </v-col>
+
+            <v-col cols="12" :md="rowSize.two" v-if="entity.exitPie">
+                <ExitInterviewsChartComponent :chartData="entity.exitPie" />
+            </v-col>
+
             <v-col cols="12" :md="rowSize.two">
                 <!-- <BenefitViewComponent /> -->
             </v-col>
 
-            <v-col cols="12" :md="rowSize.two">
-                <!-- <ManagersRotationChartComponent /> -->
-            </v-col>
-
-            <v-col cols="12" :md="rowSize.two">
-                <!-- <ExitInterviewsChartComponent /> -->
+            <v-col
+                cols="12"
+                :md="rowSize.three"
+                v-if="entity.tenureProgress && entity.tenureProgress.length > 0"
+            >
+                <DesertionSeniorityViewComponent
+                    :chartData="entity.tenureProgress"
+                />
             </v-col>
 
             <v-col cols="12" :md="rowSize.three">
                 <!-- <AscendingPersonalitiesChartComponent /> -->
-            </v-col>
-
-            <v-col cols="12" :md="rowSize.three">
-                <!-- <DesertionSeniorityViewComponent /> -->
             </v-col>
         </v-row>
     </section>

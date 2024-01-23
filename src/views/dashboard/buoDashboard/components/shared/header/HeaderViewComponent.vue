@@ -6,13 +6,15 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
     name: 'HeaderViewComponent',
 
     computed: {
         ...mapGetters('theme', ['app']),
+
+        ...mapGetters('dashboard', ['showFilter']),
 
         ...mapGetters('authentication', ['user', 'buoId']),
 
@@ -22,6 +24,10 @@ export default {
                 !this.$vuetify.breakpoint.mobile
             );
         },
+    },
+
+    methods: {
+        ...mapActions('dashboard', ['show_filter_user']),
     },
 };
 </script>
@@ -39,12 +45,24 @@ export default {
             :class="[app ? 'white--text' : 'grey700--text']"
             >{{ user.companyName }}</span
         >
-        <v-img
-            src="https://buo-resources.s3.us-east-2.amazonaws.com/b2b/HRInsightsBuo.svg"
-            alt=""
-            max-height="30"
-            max-width="200"
-            contain
-        />
+        <v-layout justify-end align-end>
+            <v-btn
+                icon
+                :color="app ? 'clouds' : 'black'"
+                @click="show_filter_user"
+            >
+                <v-icon>{{
+                    `mdi-filter${showFilter ? '' : '-off'}-outline`
+                }}</v-icon>
+            </v-btn>
+
+            <v-img
+                src="https://buo-resources.s3.us-east-2.amazonaws.com/b2b/HRInsightsBuo.svg"
+                alt=""
+                max-height="30"
+                max-width="200"
+                contain
+            />
+        </v-layout>
     </v-layout>
 </template>
