@@ -8,7 +8,7 @@
 
 const BasePieChartViewComponent = () =>
     import(
-        '@/views/dashboard/buoDashboard/components/shared/chart/pieChart/BasePieChartViewComponent'
+        '@/views/dashboard/components/shared/chart/pieChart/BasePieChartViewComponent'
     );
 
 export default {

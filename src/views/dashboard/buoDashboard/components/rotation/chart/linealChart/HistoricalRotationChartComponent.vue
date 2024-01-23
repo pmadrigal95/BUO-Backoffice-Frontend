@@ -8,7 +8,7 @@
 
 const BaseLinearChartViewComponent = () =>
     import(
-        '@/views/dashboard/buoDashboard/components/shared/chart/linearChart/BaseLinearChartViewComponent'
+        '@/views/dashboard/components/shared/chart/linearChart/BaseLinearChartViewComponent'
     );
 
 export default {

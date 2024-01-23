@@ -8,7 +8,7 @@
 
 const BasePieBubbleChartViewComponent = () =>
     import(
-        '@/views/dashboard/buoDashboard/components/shared/chart/MixChart/BasePieBubbleChartViewComponent'
+        '@/views/dashboard/components/shared/chart/MixChart/BasePieBubbleChartViewComponent'
     );
 
 export default {

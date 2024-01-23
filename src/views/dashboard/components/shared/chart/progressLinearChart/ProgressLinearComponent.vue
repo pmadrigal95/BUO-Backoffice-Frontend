@@ -10,7 +10,7 @@ import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationCo
 
 const BaseCardViewComponent = () =>
     import(
-        '@/views/dashboard/buoDashboard/components/shared/card/BaseCardViewComponent'
+        '@/views/dashboard/components/shared/card/BaseCardViewComponent'
     );
 
 export default {

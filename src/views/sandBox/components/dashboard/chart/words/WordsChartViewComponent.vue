@@ -10,7 +10,7 @@ import { mapGetters } from 'vuex';
 
 const BaseCardViewComponent = () =>
     import(
-        '@/views/dashboard/buoDashboard/components/shared/card/BaseCardViewComponent'
+        '@/views/dashboard/components/shared/card/BaseCardViewComponent'
     );
 
 const BaseTooltipViewComponent = () =>

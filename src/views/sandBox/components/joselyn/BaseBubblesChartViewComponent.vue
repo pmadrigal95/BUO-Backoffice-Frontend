@@ -11,7 +11,7 @@ import baseArrayHelper from '@/helpers/baseArrayHelper.js';
 
 const BaseCardViewComponent = () =>
     import(
-        '@/views/dashboard/buoDashboard/components/shared/card/BaseCardViewComponent'
+        '@/views/dashboard/components/shared/card/BaseCardViewComponent'
     );
 
 const BaseTooltipViewComponent = () =>

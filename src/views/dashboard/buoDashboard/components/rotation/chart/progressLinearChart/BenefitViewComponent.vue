@@ -8,7 +8,7 @@
 
 const ProgressLinearComponent = () =>
     import(
-        '@/views/dashboard/buoDashboard/components/shared/chart/progressLinearChart/ProgressLinearComponent'
+        '@/views/dashboard/components/shared/chart/progressLinearChart/ProgressLinearComponent'
     );
 
 export default {

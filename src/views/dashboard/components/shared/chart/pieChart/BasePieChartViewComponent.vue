@@ -17,7 +17,7 @@ const BasePieChartImpl = () =>
 
 const BaseCardViewComponent = () =>
     import(
-        '@/views/dashboard/buoDashboard/components/shared/card/BaseCardViewComponent'
+        '@/views/dashboard/components/shared/card/BaseCardViewComponent'
     );
 
 export default {
