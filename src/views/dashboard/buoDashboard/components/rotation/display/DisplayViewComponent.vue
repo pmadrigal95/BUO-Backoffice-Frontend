@@ -15,9 +15,14 @@ import BaseArrayHelper from '@/helpers/baseArrayHelper';
 //         '@/views/sandBox/components/dashboard/chart/words/WordsChartViewComponent'
 //     );
 
+const StatisticalRotationCardsViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/card/StatisticalRotationCardsViewComponent'
+    );
+
 // const BenefitViewComponent = () =>
 //     import(
-//         '@/views/sandBox/components/dashboard/chart/progress-linear/BenefitViewComponent'
+//         '@/views/dashboard/buoDashboard/components/rotation/chart/progressLinearChart/BenefitViewComponent'
 //     );
 
 const HistoricalRotationChartComponent = () =>
@@ -30,30 +35,30 @@ const RotationViewComponent = () =>
         '@/views/dashboard/buoDashboard/components/rotation/chart/progressLinearChart/RotationViewComponent'
     );
 
-// const ExitInterviewsChartComponent = () =>
-//     import(
-//         '@/views/sandBox/components/dashboard/chart/pie-doughnut/ExitInterviewsChartComponent'
-//     );
+const ExitInterviewsChartComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/chart/pie/ExitInterviewsChartComponent'
+    );
 
-// const ManagersRotationChartComponent = () =>
-//     import(
-//         '@/views/sandBox/components/dashboard/chart/pie-doughnut/ManagersRotationChartComponent'
-//     );
+const ManagersRotationChartComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/chart/pie/ManagersRotationChartComponent'
+    );
 
-// const EmployeeDeparturesChartComponent = () =>
-//     import(
-//         '@/views/sandBox/components/dashboard/chart/pie-doughnut/EmployeeDeparturesChartComponent'
-//     );
+const EmployeeDeparturesChartComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/chart/bubbleChart/EmployeeDeparturesChartComponent'
+    );
 
-// const DesertionSeniorityViewComponent = () =>
-//     import(
-//         '@/views/sandBox/components/dashboard/chart/progress-linear/DesertionSeniorityViewComponent'
-//     );
+const DesertionSeniorityViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/chart/progressLinearChart/DesertionSeniorityViewComponent'
+    );
 
-// const AscendingPersonalitiesChartComponent = () =>
-//     import(
-//         '@/views/sandBox/components/dashboard/chart/pie-doughnut/AscendingPersonalitiesChartComponent'
-//     );
+const AscendingPersonalitiesChartComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/chart/bubbleChart/AscendingPersonalitiesChartComponent'
+    );
 
 export default {
     name: 'DisplayViewComponent',
@@ -74,12 +79,13 @@ export default {
         // BenefitViewComponent,
         RotationViewComponent,
         // WordsChartViewComponent,
-        // ExitInterviewsChartComponent,
-        // ManagersRotationChartComponent,
-        // DesertionSeniorityViewComponent,
-        // EmployeeDeparturesChartComponent,
+        ExitInterviewsChartComponent,
+        ManagersRotationChartComponent,
+        DesertionSeniorityViewComponent,
+        EmployeeDeparturesChartComponent,
         HistoricalRotationChartComponent,
-        // AscendingPersonalitiesChartComponent,
+        StatisticalRotationCardsViewComponent,
+        AscendingPersonalitiesChartComponent,
     },
 
     data: () => ({
@@ -139,6 +145,13 @@ export default {
         type="image, date-picker-days, date-picker-days, image"
     />
     <section v-else>
+        <section class="my-6">
+            <StatisticalRotationCardsViewComponent
+                v-if="entity.cardList && entity.cardList.length > 0"
+                :chartData="entity.cardList"
+                :innerWidth="innerWidth"
+            />
+        </section>
         <v-row>
             <v-col cols="12" md="12" v-if="entity.historicUser">
                 <HistoricalRotationChartComponent
@@ -157,32 +170,44 @@ export default {
                 <RotationViewComponent :chartData="entity.departmentRotation" />
             </v-col>
 
-            <v-col cols="12" :md="rowSize.one">
-                <!-- <EmployeeDeparturesChartComponent /> -->
+            <v-col cols="12" :md="rowSize.one" v-if="entity.quantityDispersion">
+                <EmployeeDeparturesChartComponent
+                    :chartData="entity.quantityDispersion"
+                />
             </v-col>
 
             <v-col cols="12" :md="rowSize.one">
                 <!-- <WordsChartViewComponent /> -->
             </v-col>
 
+            <v-col cols="12" :md="rowSize.two" v-if="entity.managersPie">
+                <ManagersRotationChartComponent
+                    :chartData="entity.managersPie"
+                />
+            </v-col>
+
+            <v-col cols="12" :md="rowSize.two" v-if="entity.exitPie">
+                <ExitInterviewsChartComponent :chartData="entity.exitPie" />
+            </v-col>
+
             <v-col cols="12" :md="rowSize.two">
                 <!-- <BenefitViewComponent /> -->
             </v-col>
 
-            <v-col cols="12" :md="rowSize.two">
-                <!-- <ManagersRotationChartComponent /> -->
+            <v-col
+                cols="12"
+                :md="rowSize.three"
+                v-if="entity.tenureProgress && entity.tenureProgress.length > 0"
+            >
+                <DesertionSeniorityViewComponent
+                    :chartData="entity.tenureProgress"
+                />
             </v-col>
 
-            <v-col cols="12" :md="rowSize.two">
-                <!-- <ExitInterviewsChartComponent /> -->
-            </v-col>
-
-            <v-col cols="12" :md="rowSize.three">
-                <!-- <AscendingPersonalitiesChartComponent /> -->
-            </v-col>
-
-            <v-col cols="12" :md="rowSize.three">
-                <!-- <DesertionSeniorityViewComponent /> -->
+            <v-col cols="12" :md="rowSize.three" v-if="entity.personalities">
+                <AscendingPersonalitiesChartComponent
+                    :chartData="entity.personalities"
+                />
             </v-col>
         </v-row>
     </section>

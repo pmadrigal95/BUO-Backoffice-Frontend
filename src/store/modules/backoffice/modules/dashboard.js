@@ -7,6 +7,7 @@
 export const namespaced = true;
 
 export const state = {
+    showFilter: true,
     notifier: undefined,
     filter: {
         month: null,
@@ -18,6 +19,7 @@ export const state = {
 export const getters = {
     filter: (state) => state.filter,
     notifier: (state) => state.notifier,
+    showFilter: (state) => state.showFilter,
 };
 
 export const mutations = {
@@ -29,6 +31,10 @@ export const mutations = {
     FILTER(state, data) {
         state.filter = data;
     },
+
+    SHOWFILTER(state) {
+        state.showFilter = !state.showFilter;
+    },
 };
 
 export const actions = {
@@ -38,5 +44,9 @@ export const actions = {
 
     filter_user({ commit }, data) {
         commit('FILTER', data);
+    },
+
+    show_filter_user({ commit }) {
+        commit('SHOWFILTER');
     },
 };

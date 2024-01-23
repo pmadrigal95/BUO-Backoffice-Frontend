@@ -32,6 +32,11 @@ export default {
             type: [Number, String],
             required: true,
         },
+
+        showFilter: {
+            type: Boolean,
+            default: true,
+        },
     },
 
     components: {
@@ -46,7 +51,7 @@ export default {
         isDepartment
         isMonth
         requiredMonth
-        :show="true"
+        :show="showFilter"
         v-model="entity"
     >
         <div slot="body">

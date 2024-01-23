@@ -45,7 +45,7 @@ export default {
     computed: {
         ...mapGetters('theme', ['app']),
 
-        ...mapGetters('dashboard', ['notifier', 'filter']),
+        ...mapGetters('dashboard', ['notifier', 'filter', 'showFilter']),
 
         $_filter() {
             return {
@@ -162,6 +162,7 @@ export default {
                 <RotationDashboardViewComponent
                     :entity="entity"
                     :filter="$_filter"
+                    :showFilter="showFilter"
                     :innerWidth="windowSize.x"
                 />
             </v-tab-item>
