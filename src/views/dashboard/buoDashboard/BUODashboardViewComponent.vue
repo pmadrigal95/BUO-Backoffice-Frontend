@@ -84,7 +84,7 @@ export default {
             left
             show-arrows
             height="34"
-            :color="app ? 'blueProgress600' : 'blue800'"
+        
         >
             <v-tabs-slider color="transparent"></v-tabs-slider>
             <v-tab

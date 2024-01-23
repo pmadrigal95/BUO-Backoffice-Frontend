@@ -116,26 +116,58 @@ export default {
                                     v-model="tab"
                                     right
                                     show-arrows
-                                    height="25"
-                                    class="pa-6 pt-5"
-                                    flat
-                                    :color="app ? 'white' : 'primary'"
+                                    height="34"
                                 >
                                     <v-tabs-slider
                                         color="transparent"
                                     ></v-tabs-slider>
-                                    <v-tab class="rounded-pill no-uppercase"
-                                        >Pendientes</v-tab
-                                    >
-                                    <v-tab class="rounded-pill no-uppercase">
-                                        Aprobadas
+                                    <v-tab
+                                        :class="`rounded-pill no-uppercase mr-3 ${
+                                            app
+                                                ? 'bg-tab-idle-dark black--text BUO-Display-Large'
+                                                : 'bg-tab-idle-clear grey600--text'
+                                        }`"
+                                        active-class="bg-tab-active white--text"
+                                        ><p class="BUO-Label-Small pt-4">
+                                            Pendientes
+                                        </p>
                                     </v-tab>
-                                    <v-tab class="rounded-pill no-uppercase">
-                                        Rechazadas</v-tab
-                                    >
-                                    <v-tab class="rounded-pill no-uppercase">
-                                        Asignadas</v-tab
-                                    >
+
+                                    <v-tab
+                                        :class="`rounded-pill no-uppercase mr-3 ${
+                                            app
+                                                ? 'bg-tab-idle-dark black--text BUO-Display-Large'
+                                                : 'bg-tab-idle-clear grey600--text'
+                                        }`"
+                                        active-class="bg-tab-active white--text"
+                                        ><p class="BUO-Label-Small pt-4">
+                                            Aprobadas
+                                        </p>
+                                    </v-tab>
+
+                                    <v-tab
+                                        :class="`rounded-pill no-uppercase mr-3 ${
+                                            app
+                                                ? 'bg-tab-idle-dark black--text BUO-Display-Large'
+                                                : 'bg-tab-idle-clear grey600--text'
+                                        }`"
+                                        active-class="bg-tab-active white--text"
+                                        ><p class="BUO-Label-Small pt-4">
+                                            Rechazadas
+                                        </p>
+                                    </v-tab>
+
+                                    <v-tab
+                                        :class="`rounded-pill no-uppercase mr-3 ${
+                                            app
+                                                ? 'bg-tab-idle-dark black--text BUO-Display-Large'
+                                                : 'bg-tab-idle-clear grey600--text'
+                                        }`"
+                                        active-class="bg-tab-active white--text"
+                                        ><p class="BUO-Label-Small pt-4">
+                                            Asignadas
+                                        </p>
+                                    </v-tab>
                                 </v-tabs>
 
                                 <v-tabs-items v-model="tab" class="pa-5">
