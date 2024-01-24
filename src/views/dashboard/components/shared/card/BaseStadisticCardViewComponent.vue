@@ -5,7 +5,11 @@
  * @displayName BaseStadisticCardViewComponent
  *
  */
+
 import { mapGetters } from 'vuex';
+
+const BaseCardViewComponent = () =>
+    import('@/views/dashboard/components/shared/card/BaseCardViewComponent');
 
 export default {
     name: 'BaseStadisticCardViewComponent',
@@ -16,69 +20,96 @@ export default {
             default: undefined,
         },
 
-        fnCallback: {
-            type: Function,
-            default: () => {},
-        },
-
-        percentage: {
-            type: Number,
+        subtitle: {
+            type: String,
             default: undefined,
-        },
-
-        isUp: {
-            type: Boolean,
-            default: false,
         },
 
         description: {
             type: String,
             default: undefined,
         },
+
+        fnCard: {
+            type: Function,
+            default: () => {},
+        },
+
+        directionContent: {
+            type: String,
+            default: 'flex-row',
+        },
+
+        justifyContent: {
+            type: String,
+            default: 'justify-start',
+        },
+
+        alignContent: {
+            type: String,
+            default: 'align-center',
+        },
+
+        colorIcon: {
+            type: String,
+            default: 'greenA800',
+        },
+
+        directionIcon: {
+            type: String,
+            default: undefined,
+        },
+
+        titleButton: {
+            type: String,
+            default: undefined,
+        },
+
+        fnButton: {
+            type: Function,
+            default: () => {},
+        },
+
+        directionButton: {
+            type: String,
+            default: 'justify-end',
+        },
+    },
+
+    components: {
+        BaseCardViewComponent,
     },
 
     computed: {
         ...mapGetters('theme', ['app']),
     },
+
+    methods: {
+        $_fnButton() {
+            this.fnButton();
+        },
+    },
 };
 </script>
 
 <template>
-    <v-card flat class="rounded-lg" height="100%" width="100%">
-        <v-card-title
-            class="BUO-Label-Small-SemiBold"
-            :class="[app ? 'white--text' : 'grey700--text']"
-            v-if="title"
-        >
-            {{ title }}
-            <v-layout justify-end>
-                <v-btn
-                    icon
-                    :color="app ? 'clouds' : 'black'"
-                    @click="fnCallback"
-                >
-                    <v-icon>mdi-arrow-expand</v-icon>
-                </v-btn>
-            </v-layout>
-        </v-card-title>
-        <v-card-text>
-            <section class="d-flex flex-row justify-end align-center">
+    <BaseCardViewComponent :title="title" :fnCallback="fnCard">
+        <div slot="card-text">
+            <section
+                class="d-flex"
+                :class="`${directionContent} ${justifyContent} ${alignContent}`"
+            >
                 <section class="flex-grow-0 flex-shrink-0">
                     <strong
-                        class="pr-4"
-                        :class="[
-                            app ? 'blue900--text' : 'grey700--text',
-                            $vuetify.breakpoint.mobile
-                                ? 'BUO-Display-XSmall'
-                                : 'BUO-Display-XSmall',
-                        ]"
-                        >{{ this.percentage }} %</strong
+                        class="pr-4 BUO-Display-XSmall"
+                        :class="[app ? 'blue900--text' : 'grey700--text']"
+                        >{{ this.subtitle }}</strong
                     >
                 </section>
 
-                <section class="flex-grow-1">
-                    <v-icon :color="isUp ? 'redError900' : 'greenA800'">{{
-                        isUp ? 'mdi-menu-up' : 'mdi-menu-down'
+                <section>
+                    <v-icon v-if="directionIcon" :color="colorIcon">{{
+                        directionIcon === 'up' ? 'mdi-menu-up' : 'mdi-menu-down'
                     }}</v-icon>
                     <p
                         class="BUO-Label-XSmall"
@@ -90,6 +121,17 @@ export default {
                     </p>
                 </section>
             </section>
-        </v-card-text>
-    </v-card>
+            <section v-if="titleButton">
+                <section class="d-flex flex-row" :class="directionButton">
+                    <v-btn
+                        text
+                        color="blue900"
+                        @click="$_fnButton()"
+                        class="BUO-Label-XSmall no-uppercase"
+                        >{{ titleButton }}</v-btn
+                    >
+                </section>
+            </section>
+        </div>
+    </BaseCardViewComponent>
 </template>

@@ -149,7 +149,8 @@ export default {
             <StatisticalRotationCardsViewComponent
                 v-if="entity.cardList && entity.cardList.length > 0"
                 :chartData="entity.cardList"
-                :innerWidth="innerWidth"
+                innerHeight="auto"
+                innerWidth="auto"
             />
         </section>
         <v-row>
