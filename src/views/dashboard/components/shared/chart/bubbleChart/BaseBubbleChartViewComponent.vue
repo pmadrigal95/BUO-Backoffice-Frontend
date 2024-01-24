@@ -1,8 +1,8 @@
 <script>
 /**
- * Descripción: Pantalla  BasePieChartViewComponent
+ * Descripción: Pantalla  BaseBubbleChartViewComponent
  *
- * @displayName BasePieChartViewComponent
+ * @displayName BaseBubbleChartViewComponent
  *
  */
 
@@ -12,14 +12,14 @@ import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationCo
 
 import baseDataVisualizationColorsHelperPDA from '@/views/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
 
-const BasePieChartImpl = () =>
-    import('@/components/backoffice/chart/BasePieChartImpl');
+const BaseCustomBubbleChartImpl = () =>
+    import('@/components/backoffice/chart/BaseCustomBubbleChartImpl');
 
 const BaseCardViewComponent = () =>
     import('@/views/dashboard/components/shared/card/BaseCardViewComponent');
 
 export default {
-    name: 'BasePieChartViewComponent',
+    name: 'BaseBubbleChartViewComponent',
 
     props: {
         title: {
@@ -41,15 +41,10 @@ export default {
             type: Boolean,
             default: false,
         },
-
-        isPie: {
-            type: Boolean,
-            default: false,
-        },
     },
 
     components: {
-        BasePieChartImpl,
+        BaseCustomBubbleChartImpl,
         BaseCardViewComponent,
     },
 
@@ -135,12 +130,11 @@ export default {
 <template>
     <BaseCardViewComponent :title="title">
         <div slot="card-text">
-            <BasePieChartImpl
+            <BaseCustomBubbleChartImpl
                 :chartData="chartConfig"
                 positionLegend="right"
                 :dark="app"
                 :showLegend="showLegend && !$vuetify.breakpoint.mobile"
-                :isPie="isPie"
             />
         </div>
     </BaseCardViewComponent>

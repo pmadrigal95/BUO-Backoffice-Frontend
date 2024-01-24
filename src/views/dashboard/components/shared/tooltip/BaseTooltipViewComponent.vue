@@ -6,49 +6,33 @@
  *
  */
 
-import { mapGetters } from 'vuex';
+const BaseTooltipViewComponent = () =>
+    import('@/components/core/tooltip/BaseTooltipViewComponent');
 
 export default {
     name: 'BaseTooltipViewComponent',
 
-    computed: {
-        ...mapGetters('theme', ['app']),
+    components: {
+        BaseTooltipViewComponent,
     },
 };
 </script>
 
 <template>
-    <v-menu open-on-hover top offset-y>
-        <template v-slot:activator="{ on, attrs }">
-            <section class="activator" v-bind="attrs" v-on="on">
-                <slot name="activator"></slot>
-            </section>
-        </template>
+    <BaseTooltipViewComponent>
+        <div slot="activator">
+            <slot name="activator"></slot>
+        </div>
+        <div slot="title">
+            <slot name="title"></slot>
+        </div>
 
-        <v-card flat class="rounded-lg" height="100%" width="100%">
-            <v-card-title
-                class="BUO-Label-XSmall ma-3"
-                :class="[app ? 'white--text' : 'grey700--text']"
-            >
-                <slot name="title"></slot>
-            </v-card-title>
-            <v-card-text
-                class="BUO-Heading-XSmall ma-3"
-                :class="[app ? 'white--text' : 'grey600--text']"
-            >
-                <slot name="text"></slot>
-            </v-card-text>
-            <v-card-actions>
-                <v-layout justify-end align-center>
-                    <slot name="actions"></slot>
-                </v-layout>
-            </v-card-actions>
-        </v-card>
-    </v-menu>
+        <div slot="text">
+            <slot name="text"></slot>
+        </div>
+
+        <div slot="actions">
+            <slot name="actions"></slot>
+        </div>
+    </BaseTooltipViewComponent>
 </template>
-
-<style scoped>
-.activator:hover {
-    cursor: pointer;
-}
-</style>
