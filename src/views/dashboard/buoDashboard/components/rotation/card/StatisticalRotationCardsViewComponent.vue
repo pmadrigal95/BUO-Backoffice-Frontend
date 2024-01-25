@@ -22,31 +22,21 @@ export default {
 
         innerWidth: {
             type: [Number, String],
+            default: undefined,
+        },
+
+        width: {
+            type: String,
             default: '288px',
         },
 
-        innerHeight: {
-            type: [Number, String],
+        height: {
+            type: String,
             default: '177px',
         },
     },
 
     components: { BaseStadisticCardViewComponent },
-
-    data: () => ({
-        model: null,
-    }),
-
-    computed: {
-        data() {
-            return [
-                { title: 'Rotación a', percentage: '10%' },
-                { title: 'Rotación b', percentage: '10%' },
-                { title: 'Rotación c', percentage: '10%' },
-                { title: 'Rotación d', percentage: '10%' },
-            ];
-        },
-    },
 };
 </script>
 
@@ -58,8 +48,8 @@ export default {
                     class="transparent pt-4 mx-2"
                     elevation="0"
                     flat
-                    :height="innerHeight"
-                    :width="innerWidth"
+                    :height="height"
+                    :width="width"
                 >
                     <BaseStadisticCardViewComponent
                         :title="item.title"
