@@ -13,9 +13,7 @@ const NotifierViewComponent = () =>
     );
 
 const HeaderViewComponent = () =>
-    import(
-        '@/views/dashboard/components/shared/header/HeaderViewComponent'
-    );
+    import('@/views/dashboard/components/shared/header/HeaderViewComponent');
 
 const RotationDashboardViewComponent = () =>
     import(
