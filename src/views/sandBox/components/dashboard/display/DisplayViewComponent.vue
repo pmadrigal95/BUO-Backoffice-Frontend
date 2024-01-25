@@ -109,7 +109,7 @@ export default {
             <EmployeeDeparturesChartComponent />
         </v-col>
 
-        <v-col cols="12" :md="rowSize.one">
+        <v-col cols="12" :md="rowSize.one" v-if=false>
             <WordsChartViewComponent />
         </v-col>
 
