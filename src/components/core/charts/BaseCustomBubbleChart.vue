@@ -129,7 +129,7 @@ export default {
                             v-if="item.show"
                             transition="fab-transition"
                             class="circle rounded-pill"
-                            :class="`size-${index}`"
+                            :class="item.size"
                             :style="{
                                 order: index,
                                 boxShadow: '1px 1px 10px',

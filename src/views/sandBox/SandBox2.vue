@@ -9,9 +9,9 @@ import { mapGetters } from 'vuex';
 
 import baseArrayHelper from '@/helpers/baseArrayHelper.js';
 
-import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
+/*import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
 
-import baseDataVisualizationColorsHelperPDA from '@/views/demographics/pda/components/shared/baseDataVisualizationColorsHelper';
+import baseDataVisualizationColorsHelperPDA from '@/views/demographics/pda/components/shared/baseDataVisualizationColorsHelper';*/
 
 const BaseNotFoundContent = () =>
     import('@/components/core/cards/BaseNotFoundContent');
@@ -19,8 +19,8 @@ const BaseNotFoundContent = () =>
 const BaseStadisticCardViewComponent = () =>
     import('@/views/sandBox/components/joselyn/BaseStadisticCardViewComponent');
 
-const BaseBubblesChartViewComponent = () =>
-    import('@/views/sandBox/components/joselyn/BaseBubblesChartViewComponent');
+/*const BaseBubblesChartViewComponent = () =>
+    import('@/views/sandBox/components/joselyn/BaseBubblesChartViewComponent');*/
 
 const EmployeeDeparturesChartComponent = () =>
     import(
@@ -33,7 +33,7 @@ export default {
     components: {
         BaseNotFoundContent,
         BaseStadisticCardViewComponent,
-        BaseBubblesChartViewComponent,
+        //BaseBubblesChartViewComponent,
         EmployeeDeparturesChartComponent,
     },
 
@@ -42,15 +42,9 @@ export default {
             tab: null,
             entity: {},
             data: {
-                labels: [
-                    'Software',
-                    'Deparmento QA',
-                    'Recursos humanos',
-                    'Contabilidad',
-                    'TI',
-                ],
-                data: [2, 1, 3, 6, 8],
-                colors: null,
+               
+                data: [2, 1],
+                colors: ['Cautivadora', 'Encantadora'],
             },
         };
     },
@@ -60,13 +54,7 @@ export default {
 
         chartData() {
             return {
-                labels: [
-                    'Software',
-                    'Deparmento QA',
-                    'Recursos humanos',
-                    'Contabilidad',
-                    'TI',
-                ],
+            
                 data: [2, 1, 3, 6, 8],
             };
         },
@@ -77,7 +65,7 @@ export default {
     },
 
     created() {
-        this.$_setEntity();
+        //this.$_setEntity();
     },
 
     methods: {
@@ -86,10 +74,10 @@ export default {
         },
 
         $_setEntity() {
-            this.entity = this.$_mapperEntity();
+            //this.entity = this.$_mapperEntity();
         },
 
-        $_setColor(isPDA, profile) {
+        /*$_setColor(isPDA, profile) {
             if (isPDA) {
                 return baseDataVisualizationColorsHelperPDA.$_getColor({
                     profile: profile.toLowerCase(),
@@ -98,19 +86,19 @@ export default {
             } else {
                 return baseDataVisualizationColorsHelper.$_randomColor().main;
             }
-        },
+        },*/
 
-        $_mapperEntity() {
+        /*$_mapperEntity() {
             const isPDA = true;
             return this.sortChartData.map((element, index) => ({
-                name: this.chartData.labels[index],
+                name: 'a',
                 value: element,
                 iconLegend: 'mdi-circle-medium',
                 color: this.$_setColor(isPDA, this.chartData.labels[index]),
                 style: `size-${index}`,
                 show: true,
             }));
-        },
+        },*/
     },
 };
 </script>
@@ -242,6 +230,7 @@ export default {
                             justifyContent="justify-end"
                             alignContent="align-start"
                         />
+                        
                     </v-col>
                     <v-col cols="12" md="4">
                         <BaseStadisticCardViewComponent
@@ -273,12 +262,13 @@ export default {
             <v-tab-item>
                 <v-row>
                     <v-col cols="12" md="6">
-                        <BaseBubblesChartViewComponent
+                      <!--  <BaseBubblesChartViewComponent
                             title="% y número de salidas de colaboradores"
                             :entity="entity"
                             :showLegend="true"
                             positionLegend="right"
                         />
+                        -->
                     </v-col>
                 </v-row>
                 <v-row>
