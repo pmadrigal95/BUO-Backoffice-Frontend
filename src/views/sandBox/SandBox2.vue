@@ -22,6 +22,11 @@ const BaseStadisticCardViewComponent = () =>
 const BaseBubblesChartViewComponent = () =>
     import('@/views/sandBox/components/joselyn/BaseBubblesChartViewComponent');
 
+const EmployeeDeparturesChartComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/chart/bubbleChart/EmployeeDeparturesChartComponent'
+    );
+
 export default {
     name: 'SandBox2',
 
@@ -29,12 +34,24 @@ export default {
         BaseNotFoundContent,
         BaseStadisticCardViewComponent,
         BaseBubblesChartViewComponent,
+        EmployeeDeparturesChartComponent,
     },
 
     data() {
         return {
             tab: null,
             entity: {},
+            data: {
+                labels: [
+                    'Software',
+                    'Deparmento QA',
+                    'Recursos humanos',
+                    'Contabilidad',
+                    'TI',
+                ],
+                data: [2, 1, 3, 6, 8],
+                colors: null,
+            },
         };
     },
 
@@ -44,13 +61,13 @@ export default {
         chartData() {
             return {
                 labels: [
-                    'Tenaz',
-                    'Detallista',
-                    'Audaz',
-                    'Cautivadora',
-                    'Proactiva',
+                    'Software',
+                    'Deparmento QA',
+                    'Recursos humanos',
+                    'Contabilidad',
+                    'TI',
                 ],
-                data: [456, 50, 5, 345, 10],
+                data: [2, 1, 3, 6, 8],
             };
         },
 
@@ -262,6 +279,11 @@ export default {
                             :showLegend="true"
                             positionLegend="right"
                         />
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="12" md="6">
+                        <EmployeeDeparturesChartComponent :chartData="data" />
                     </v-col>
                 </v-row>
             </v-tab-item>

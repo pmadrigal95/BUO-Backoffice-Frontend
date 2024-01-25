@@ -57,7 +57,11 @@ export default {
                     baseArrayHelper.SortArray(
                         this.chartData?.datasets[0]?.data.map(
                             (element, index) => ({
-                                label: this.chartData?.labels[index],
+                                label:
+                                    this.chartData?.labels?.isArray &&
+                                    this.chartData?.labels?.length > 0
+                                        ? this.chartData?.labels[index]  
+                                        : undefined,
                                 backgroundColor:
                                     this.chartData?.datasets[0]
                                         ?.backgroundColor[index],
