@@ -53,32 +53,31 @@ export default {
         $_mapperChartData() {
             return {
                 labels: this.chartData?.labels,
-                datasets: baseArrayHelper.ShuffleArray(
-                    baseArrayHelper.SortArray(
-                        this.chartData?.datasets[0]?.data.map(
-                            (element, index) => ({
-                                label:
-                                    this.chartData?.labels?.isArray &&
-                                    this.chartData?.labels?.length > 0
-                                        ? this.chartData?.labels[index]  
-                                        : undefined,
-                                backgroundColor:
-                                    this.chartData?.datasets[0]
-                                        ?.backgroundColor[index],
-                                hoverBackgroundColor:
-                                    this.chartData?.datasets[0]
-                                        ?.hoverBackgroundColor[index],
-                                hoverBorderColor:
-                                    this.chartData?.datasets[0]
-                                        ?.hoverBorderColor[index],
-                                borderColor:
-                                    this.chartData?.datasets[0]?.borderColor[
-                                        index
-                                    ],
-                                data: element,
-                            }),
-                            'desc'
-                        )
+                datasets: baseArrayHelper.SortArray(
+                    this.chartData?.datasets[0]?.data.map(
+                        (element, index) => ({
+                            size: `size-${index}`,
+                            label:
+                                Array.isArray(this.chartData.labels) &&
+                                this.chartData?.labels?.length > 0
+                                    ? this.chartData?.labels[index]
+                                    : undefined,
+                            backgroundColor:
+                                this.chartData?.datasets[0]?.backgroundColor[
+                                    index
+                                ],
+                            hoverBackgroundColor:
+                                this.chartData?.datasets[0]
+                                    ?.hoverBackgroundColor[index],
+                            hoverBorderColor:
+                                this.chartData?.datasets[0]?.hoverBorderColor[
+                                    index
+                                ],
+                            borderColor:
+                                this.chartData?.datasets[0]?.borderColor[index],
+                            data: element,
+                        }),
+                        'desc'
                     )
                 ),
             };
