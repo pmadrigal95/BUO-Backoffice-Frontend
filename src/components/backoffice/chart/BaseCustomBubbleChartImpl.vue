@@ -29,11 +29,6 @@ export default {
             default: 'top',
         },
 
-        alignLegend: {
-            type: String,
-            default: 'center',
-        },
-
         showLegend: {
             type: Boolean,
             required: true,
@@ -92,12 +87,17 @@ export default {
                         icon: this.iconLegend,
                         display: this.showLegend,
                         position: this.positionLegend,
-                        align: this.alignLegend,
                         labels: {
                             isDarkTheme: this.dark,
                             font: {
                                 name: 'BUO-Label-XSmall',
                                 value: 'BUO-Label-Small-SemiBold',
+                            },
+                        },
+                        tooltip: {
+                            font: {
+                                name: 'BUO-Label-XSmall',
+                                value: 'BUO-Paragraph-Medium',
                             },
                         },
                     },

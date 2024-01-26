@@ -82,6 +82,20 @@ export default {
         app() {
             return this.chartOptions.plugins.legend.labels.isDarkTheme;
         },
+
+        styleLabels() {
+            return {
+                name: this.chartOptions.plugins.legend.labels.font.name,
+                value: this.chartOptions.plugins.legend.labels.font.value,
+            };
+        },
+
+        styleTooltip() {
+            return {
+                name: this.chartOptions.plugins.legend.tooltip.font.name,
+                value: this.chartOptions.plugins.legend.tooltip.font.value,
+            };
+        },
     },
 
     created() {
@@ -139,7 +153,7 @@ export default {
                         <div
                             v-if="item.show"
                             transition="fab-transition"
-                            class="circle rounded-pill"
+                            class="circle rounded-pill scale-up-center"
                             :class="item.size"
                             :style="{
                                 order: index,
@@ -150,14 +164,14 @@ export default {
                     </div>
                     <div
                         slot="title"
-                        class="BUO-Label-XSmall"
+                        :class="styleTooltip.name"
                         v-if="item.label"
                     >
                         {{ item.label }}
                     </div>
                     <div
                         slot="text"
-                        class="BUO-Paragraph-Medium"
+                        :class="styleTooltip.value"
                         v-if="item.data"
                     >
                         {{ item.data }}
@@ -167,9 +181,9 @@ export default {
         </section>
         <!--Label-->
         <section v-if="showLabels" class="d-flex flex-wrap" :class="alignText">
-            <section v-for="(item, index) in $_shuffleChartData()" :key="index">
+            <section v-for="(item, index) in datasets" :key="index">
                 <section
-                    class="d-flex flex-row align-center"
+                    class="d-flex flex-row align-center px-1"
                     style="cursor: pointer"
                     transition="fab-transition"
                     @click="$_showCircle(index)"
@@ -178,14 +192,14 @@ export default {
                         {{ iconLegend }}
                     </v-icon>
                     <p
-                        class="BUO-Label-XSmall"
                         :class="[
+                            styleLabels.name,
                             !item.show && 'text-decoration-line-through',
                             app ? 'white--text' : 'grey700--text',
                         ]"
                     >
                         {{ item.label }} |
-                        <strong class="BUO-Label-Small-SemiBold">{{
+                        <strong :class="styleLabels.value">{{
                             item.data
                         }}</strong>
                     </p>
@@ -213,6 +227,8 @@ export default {
     grid-template-columns: auto auto auto;
     grid-gap: 15px;
     height: 300px !important;
+    justify-content: center;
+    align-content: center;
 }
 .size-0 {
     width: 142px;
@@ -241,5 +257,32 @@ export default {
 .circle:hover {
     transform: scale(1.2);
     animation: none;
+}
+
+.scale-up-center {
+    -webkit-animation: scale-up-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1)
+        both;
+    animation: scale-up-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+
+@-webkit-keyframes scale-up-center {
+    0% {
+        -webkit-transform: scale(0.5);
+        transform: scale(0.5);
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+@keyframes scale-up-center {
+    0% {
+        -webkit-transform: scale(0.5);
+        transform: scale(0.5);
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
 }
 </style>
