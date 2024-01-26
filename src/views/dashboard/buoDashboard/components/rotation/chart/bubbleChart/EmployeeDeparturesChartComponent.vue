@@ -29,7 +29,7 @@ export default {
     <BasePieBubbleChartViewComponent
         title="% y número de salidas de colaboradores"
         :chartData="chartData"
-        :showLegend="true"
+        :showLegend="false"
         isPie
     />
 </template>
