@@ -51,36 +51,38 @@ export default {
 
     computed: {
         $_mapperChartData() {
-            return {
+            const objectChartData = {
                 labels: this.chartData?.labels,
-                datasets: baseArrayHelper.SortArray(
-                    this.chartData?.datasets[0]?.data.map(
-                        (element, index) => ({
-                            size: `size-${index}`,
-                            label:
-                                Array.isArray(this.chartData.labels) &&
-                                this.chartData?.labels?.length > 0
-                                    ? this.chartData?.labels[index]
-                                    : undefined,
-                            backgroundColor:
-                                this.chartData?.datasets[0]?.backgroundColor[
-                                    index
-                                ],
-                            hoverBackgroundColor:
-                                this.chartData?.datasets[0]
-                                    ?.hoverBackgroundColor[index],
-                            hoverBorderColor:
-                                this.chartData?.datasets[0]?.hoverBorderColor[
-                                    index
-                                ],
-                            borderColor:
-                                this.chartData?.datasets[0]?.borderColor[index],
-                            data: element,
-                        }),
-                        'desc'
-                    )
+                datasets: this.chartData?.datasets[0]?.data.map(
+                    (element, index) => ({
+                        label:
+                            Array.isArray(this.chartData.labels) &&
+                            this.chartData?.labels?.length > 0
+                                ? this.chartData?.labels[index]
+                                : undefined,
+                        backgroundColor:
+                            this.chartData?.datasets[0]?.backgroundColor[index],
+                        hoverBackgroundColor:
+                            this.chartData?.datasets[0]?.hoverBackgroundColor[
+                                index
+                            ],
+                        hoverBorderColor:
+                            this.chartData?.datasets[0]?.hoverBorderColor[
+                                index
+                            ],
+                        borderColor:
+                            this.chartData?.datasets[0]?.borderColor[index],
+                        data: element,
+                    })
                 ),
             };
+
+            baseArrayHelper.SortObjectByProperty(objectChartData, 'desc', {
+                father: 'datasets',
+                child: 'data',
+            });
+
+            return objectChartData;
         },
 
         chartOptions() {

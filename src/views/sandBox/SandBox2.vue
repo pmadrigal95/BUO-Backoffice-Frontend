@@ -42,9 +42,21 @@ export default {
             tab: null,
             entity: {},
             data: {
-               
-                data: [2, 1],
-                colors: ['Cautivadora', 'Encantadora'],
+                labels: [
+                    'Cautivadora',
+                    'Encantadora',
+                    'Amigable',
+                    'Proactiva',
+                    'Tenaz',
+                ],
+                data: [2, 1, 5, 8, 10],
+                colors: [
+                    'Cautivadora',
+                    'Encantadora',
+                    'Amigable',
+                    'Proactiva',
+                    'Tenaz',
+                ],
             },
         };
     },
@@ -54,7 +66,6 @@ export default {
 
         chartData() {
             return {
-            
                 data: [2, 1, 3, 6, 8],
             };
         },
@@ -230,7 +241,6 @@ export default {
                             justifyContent="justify-end"
                             alignContent="align-start"
                         />
-                        
                     </v-col>
                     <v-col cols="12" md="4">
                         <BaseStadisticCardViewComponent
@@ -262,7 +272,7 @@ export default {
             <v-tab-item>
                 <v-row>
                     <v-col cols="12" md="6">
-                      <!--  <BaseBubblesChartViewComponent
+                        <!--  <BaseBubblesChartViewComponent
                             title="% y número de salidas de colaboradores"
                             :entity="entity"
                             :showLegend="true"

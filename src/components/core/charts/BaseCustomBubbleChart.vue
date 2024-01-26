@@ -7,6 +7,8 @@
 
 import { v4 as uuidv4 } from 'uuid';
 
+import baseArrayHelper from '@/helpers/baseArrayHelper';
+
 const BaseTooltipViewComponent = () =>
     import('@/components/core/tooltip/BaseTooltipViewComponent');
 
@@ -80,6 +82,13 @@ export default {
         app() {
             return this.chartOptions.plugins.legend.labels.isDarkTheme;
         },
+
+        shuffleChartData() {
+            return baseArrayHelper.shuffleObject(this.chartData, {
+                father: 'datasets',
+                child: 'data',
+            });
+        },
     },
 
     created() {
@@ -102,8 +111,9 @@ export default {
 
         $_configDatasets() {
             this.chartData.datasets = this.chartData.datasets.map(
-                (element) => ({
+                (element, index) => ({
                     ...element,
+                    size: `size-${index}`,
                     show: true,
                 })
             );

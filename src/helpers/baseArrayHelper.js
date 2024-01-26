@@ -54,9 +54,36 @@ export default {
         return array;
     },
 
+    shuffleObject(object, properties) {
+        if (properties?.father && properties.father in object) {
+            for (let i = object[properties.father].length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [
+                    object[properties.father][i][properties.child],
+                    object[properties.father][j][properties.child],
+                ] = [
+                    object[properties.father][j][properties.child],
+                    object[properties.father][i][properties.child],
+                ];
+            }
+        }
+
+        return object;
+    },
+
     SortArray(array, typeOrder) {
         return array.sort(function (a, b) {
             return typeOrder === 'desc' ? b - a : a - b;
         });
+    },
+
+    SortObjectByProperty(object, typeOrder, properties) {
+        if (properties?.father && properties.father in object) {
+            return object[properties.father].sort(function (a, b) {
+                return typeOrder === 'desc'
+                    ? b[properties.child] - a[properties.child]
+                    : a[properties.child] - b[properties.child];
+            });
+        }
     },
 };
