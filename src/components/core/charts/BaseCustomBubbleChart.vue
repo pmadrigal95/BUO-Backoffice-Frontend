@@ -82,13 +82,6 @@ export default {
         app() {
             return this.chartOptions.plugins.legend.labels.isDarkTheme;
         },
-
-        shuffleChartData() {
-            return baseArrayHelper.shuffleObject(this.chartData, {
-                father: 'datasets',
-                child: 'data',
-            });
-        },
     },
 
     created() {
@@ -109,6 +102,12 @@ export default {
             this.componentKey++;
         },
 
+        $_shuffleChartData() {
+            return baseArrayHelper.shuffleObject(this.chartData, {
+                value: 'datasets',
+            });
+        },
+
         $_configDatasets() {
             this.chartData.datasets = this.chartData.datasets.map(
                 (element, index) => ({
@@ -117,6 +116,8 @@ export default {
                     show: true,
                 })
             );
+
+            this.$_shuffleChartData();
         },
     },
 };
@@ -166,7 +167,7 @@ export default {
         </section>
         <!--Label-->
         <section v-if="showLabels" class="d-flex flex-wrap" :class="alignText">
-            <section v-for="(item, index) in datasets" :key="index">
+            <section v-for="(item, index) in $_shuffleChartData()" :key="index">
                 <section
                     class="d-flex flex-row align-center"
                     style="cursor: pointer"

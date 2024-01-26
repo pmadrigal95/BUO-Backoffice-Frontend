@@ -50,24 +50,21 @@ export default {
             const j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
         }
-
         return array;
     },
 
-    shuffleObject(object, properties) {
-        if (properties?.father && properties.father in object) {
-            for (let i = object[properties.father].length - 1; i > 0; i--) {
+    shuffleObject(object, property) {
+        if (property && property.value in object) {
+            for (let i = object[property.value].length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [
-                    object[properties.father][i][properties.child],
-                    object[properties.father][j][properties.child],
-                ] = [
-                    object[properties.father][j][properties.child],
-                    object[properties.father][i][properties.child],
-                ];
+
+                const temp = { ...object[property.value][i] };
+                object[property.value][i] = {
+                    ...object[property.value][j],
+                };
+                object[property.value][j] = temp;
             }
         }
-
         return object;
     },
 
