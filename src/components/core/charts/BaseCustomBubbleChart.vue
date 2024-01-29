@@ -44,7 +44,7 @@ export default {
         },
 
         alignLegend() {
-            switch (this.chartOptions.plugins.legend.position) {
+            switch (this.chartOptions?.plugins?.legend?.position) {
                 case 'left':
                     return 'flex-row-reverse justify-space-around';
                 case 'right':
@@ -59,41 +59,57 @@ export default {
         },
 
         alignText() {
-            return this.chartOptions.plugins.legend.position === 'right' ||
-                this.chartOptions.plugins.legend.position === 'left'
-                ? 'flex-column justify-center w-30'
-                : 'flex-row justify-center align-center pt-3';
+            return this.chartOptions?.plugins?.legend?.position
+                ? this.chartOptions.plugins.legend.position === 'right' ||
+                  this.chartOptions.plugins.legend.position === 'left'
+                    ? 'flex-column justify-center w-30'
+                    : 'flex-row justify-center align-center pt-3'
+                : 'flex-column justify-center w-30';
         },
 
         showLabels() {
-            if (!this.chartOptions.plugins.legend.display) {
+            if (!this.chartOptions?.plugins?.legend?.display) {
                 return false;
             }
 
-            return this.chartData.labels && this.chartData.labels.length > 0
+            return this.chartData?.labels && this.chartData?.labels?.length > 0
                 ? true
                 : false;
         },
 
         iconLegend() {
-            return `mdi-${this.chartOptions.plugins.legend.icon}`;
+            return `mdi-${
+                this.chartOptions?.plugins?.legend?.icon
+                    ? this.chartOptions?.plugins?.legend?.icon
+                    : 'circle-medium'
+            }`;
         },
 
         app() {
-            return this.chartOptions.plugins.legend.labels.isDarkTheme;
+            return this.chartOptions?.plugins?.legend?.labels?.isDarkTheme
+                ? this.chartOptions?.plugins?.legend?.labels?.isDarkTheme
+                : false;
         },
 
         styleLabels() {
             return {
-                name: this.chartOptions.plugins.legend.labels.font.name,
-                value: this.chartOptions.plugins.legend.labels.font.value,
+                name: this.chartOptions?.plugins?.legend?.labels?.font?.name
+                    ? this.chartOptions?.plugins?.legend?.labels?.font?.name
+                    : 'BUO-Label-XSmall',
+                value: this.chartOptions?.plugins?.legend?.labels?.font?.value
+                    ? this.chartOptions?.plugins?.legend?.labels?.font?.value
+                    : 'BUO-Label-Small-SemiBold',
             };
         },
 
         styleTooltip() {
             return {
-                name: this.chartOptions.plugins.legend.tooltip.font.name,
-                value: this.chartOptions.plugins.legend.tooltip.font.value,
+                name: this.chartOptions?.plugins?.legend?.tooltip?.font?.name
+                    ? this.chartOptions?.plugins?.legend?.tooltip?.font?.name
+                    : 'BUO-Label-XSmall',
+                value: this.chartOptions?.plugins?.legend?.tooltip?.font?.value
+                    ? this.chartOptions?.plugins?.legend?.tooltip?.font?.value
+                    : 'BUO-Paragraph-Medium',
             };
         },
     },
@@ -154,11 +170,15 @@ export default {
                             v-if="item.show"
                             transition="fab-transition"
                             class="circle rounded-pill scale-up-center"
-                            :class="item.size"
+                            :class="`${item.size ? item.size : 'size-0'}`"
                             :style="{
                                 order: index,
                                 boxShadow: '1px 1px 10px',
-                                backgroundColor: `${item.backgroundColor}`,
+                                backgroundColor: `${
+                                    item.backgroundColor
+                                        ? item.backgroundColor
+                                        : '#4C798E'
+                                }`,
                             }"
                         />
                     </div>
@@ -188,7 +208,14 @@ export default {
                     transition="fab-transition"
                     @click="$_showCircle(index)"
                 >
-                    <v-icon :color="item.backgroundColor" class="pb-4">
+                    <v-icon
+                        :color="`${
+                            item.backgroundColor
+                                ? item.backgroundColor
+                                : '#4C798E'
+                        }`"
+                        class="pb-4"
+                    >
                         {{ iconLegend }}
                     </v-icon>
                     <p
