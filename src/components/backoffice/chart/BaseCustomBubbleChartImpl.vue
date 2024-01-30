@@ -90,7 +90,7 @@ export default {
                         labels: {
                             isDarkTheme: this.dark,
                             font: {
-                                name: 'BUO-Label-XSmall',
+                                name: 'BUO-Label-Small',
                                 value: 'BUO-Label-Small-SemiBold',
                             },
                         },

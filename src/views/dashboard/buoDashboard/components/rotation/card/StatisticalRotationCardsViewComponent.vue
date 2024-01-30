@@ -54,9 +54,9 @@ export default {
                     <BaseStadisticCardViewComponent
                         :title="item.title"
                         :subtitle="item.percentage"
-                        colorIcon="greenA800"
-                        directionIcon="down"
-                        description="-3.5 vs el mes anterior"
+                        :colorIcon="item.color"
+                        :directionIcon="item.direction"
+                        :description="item.description"
                     />
                 </v-card>
             </v-slide-item>
