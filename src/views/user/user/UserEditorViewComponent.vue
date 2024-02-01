@@ -173,6 +173,9 @@ export default {
                 tipoUsuarioId: 0,
                 usuarioModificaId: undefined,
                 perfilIds: undefined,
+                fechaIngreso: undefined,
+                fechaTerminacion: undefined,
+                esRenuncia: false,
             };
         },
 
@@ -353,6 +356,16 @@ export default {
                             />
                         </v-col>
 
+                        <v-col cols="12">
+                            <BaseDatePicker
+                                label="Fecha de ingreso"
+                                appendIcon="mdi-calendar-month"
+                                v-model.trim="entity.fechaIngreso"
+                                :max="entity.fechaTerminacion"
+                                reqCurrentMaxDate
+                            />
+                        </v-col>
+
                         <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseInputDataTable
                                 v-if="
@@ -401,6 +414,22 @@ export default {
                                 label="Tipo de usuario"
                                 v-model="entity.tipoUsuarioId"
                                 :endpoint="userTypeList"
+                            />
+                        </v-col>
+
+                        <v-col cols="12">
+                            <BaseDatePicker
+                                label="Fecha de salida"
+                                appendIcon="mdi-calendar-month"
+                                v-model.trim="entity.fechaTerminacion"
+                                :min="entity.fechaIngreso"
+                            />
+                        </v-col>
+
+                        <v-col cols="12">
+                            <BaseSwitch
+                                label="Renuncia"
+                                v-model="entity.esRenuncia"
                             />
                         </v-col>
 

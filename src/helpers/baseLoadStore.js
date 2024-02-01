@@ -81,9 +81,9 @@ export default {
     Initializer() {
         //TODO: Limpiar en proximas versiones
 
-        localStorage.removeItem('filtersBackOfficeV3');
+        localStorage.removeItem('filtersBackOfficeV4');
 
-        localStorage.removeItem('advfiltersBackOfficeV3');
+        localStorage.removeItem('advfiltersBackOfficeV4');
 
         createStoreDefault();
 

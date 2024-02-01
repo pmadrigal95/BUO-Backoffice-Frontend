@@ -138,6 +138,25 @@ const userColumns = (departmentId, isBuoUser, isFilter) => {
             value: 'fechaActivacionFormato',
             show: isFilter ? false : true,
         },
+        {
+            text: 'Fecha Ingreso',
+            align: 'start',
+            value: 'fechaIngresoFormato',
+            show: isFilter ? false : true,
+        },
+        {
+            text: 'Fecha Salida',
+            align: 'start',
+            value: 'fechaTerminacionFormato',
+            show: isFilter ? false : true,
+        },
+        {
+            text: 'Renuncia',
+            type: 'bool',
+            align: 'center',
+            value: 'esRenuncia',
+            show: isFilter ? false : true,
+        }
     ];
 };
 
