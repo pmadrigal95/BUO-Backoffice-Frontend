@@ -224,6 +224,16 @@ export default {
                                 this.entity.fechaNacimiento
                             );
 
+                        this.entity.fechaIngreso =
+                            baseSharedFnHelper.$_parseArrayToDateISOString(
+                                this.entity.fechaIngreso
+                            );
+
+                        this.entity.fechaTerminacion =
+                            baseSharedFnHelper.$_parseArrayToDateISOString(
+                                this.entity.fechaTerminacion
+                            );
+
                         this.$_setRoleListToEditor();
                     }
                 });

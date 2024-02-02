@@ -290,7 +290,7 @@ export default {
                             <v-icon small class="pr-1">
                                 mdi-calendar-end
                             </v-icon>
-                            {{ entity.fechaTerminacion }}
+                            {{ entity.fechaTerminacionFormato }}
                         </section>
                     </template>
                     <span>Fecha de salida</span>
@@ -312,7 +312,7 @@ export default {
                             <v-icon small class="pr-1">
                                 mdi-account-cancel
                             </v-icon>
-                            {{ entity.esRenuncia ? 'Si' : 'No' }}
+                            {{ Renuncio }}
                         </section>
                     </template>
                     <span>Renuncia</span>

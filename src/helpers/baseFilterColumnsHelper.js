@@ -156,7 +156,7 @@ const userColumns = (departmentId, isBuoUser, isFilter) => {
             align: 'center',
             value: 'esRenuncia',
             show: isFilter ? false : true,
-        }
+        },
     ];
 };
 
