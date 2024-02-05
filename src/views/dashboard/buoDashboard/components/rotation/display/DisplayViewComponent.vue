@@ -98,22 +98,13 @@ export default {
     }),
 
     computed: {
-        rowSize() {
-            let size = undefined;
-
-            switch (true) {
-                case this.innerWidth <= 1024:
-                    size = { one: 12, two: 12, three: 12 };
-                    break;
-                case this.innerWidth < 1800 && this.innerWidth > 1024:
-                    size = { one: 6, two: 6, three: 6 };
-                    break;
-                default:
-                    size = { one: 4, two: 4, three: 6 };
-                    break;
+        hasData() {
+            for (const [, value] of Object.entries(this.entity)) {
+                if (value) {
+                    return true;
+                }
             }
-
-            return size;
+            return false;
         },
 
         departmentRotationSize() {
@@ -262,53 +253,6 @@ export default {
                             {},
                             response.data
                         );
-
-                        //TODO: Eliminar Fake data
-
-                        // this.entity.reasonProgress = [
-                        //     { name: 'Salarios', value: '456', bold: true },
-                        //     {
-                        //         name: 'Días de vacaciones',
-                        //         value: '342',
-                        //         bold: false,
-                        //     },
-                        //     {
-                        //         name: 'Ambiente laboral',
-                        //         value: '300',
-                        //         bold: true,
-                        //     },
-                        //     { name: 'Beneficios', value: '148', bold: false },
-                        //     {
-                        //         name: 'Poca motivación',
-                        //         value: '148',
-                        //         bold: false,
-                        //     },
-                        //     { name: 'Salarios', value: '456', bold: true },
-                        //     {
-                        //         name: 'Días de vacaciones',
-                        //         value: '342',
-                        //         bold: false,
-                        //     },
-                        //     {
-                        //         name: 'Ambiente laboral',
-                        //         value: '300',
-                        //         bold: true,
-                        //     },
-                        //     { name: 'Beneficios', value: '148', bold: false },
-                        //     {
-                        //         name: 'Poca motivación',
-                        //         value: '148',
-                        //         bold: false,
-                        //     },
-                        // ];
-
-                        // this.entity.perks = [
-                        //     { name: 'Beneficio 1', value: '456' },
-                        //     { name: 'Beneficio 2', value: '342' },
-                        //     { name: 'Beneficio 3', value: '300' },
-                        //     { name: 'Beneficio 4', value: '148' },
-                        //     { name: 'Beneficio 5', value: '148' },
-                        // ];
                     }
                 });
         },
@@ -368,7 +312,7 @@ export default {
         type="image, date-picker-days, date-picker-days, image"
     />
     <section v-else>
-        <section v-if="entity">
+        <section v-if="hasData">
             <section class="my-6">
                 <StatisticalRotationCardsViewComponent
                     v-if="entity.cardList && entity.cardList.length > 0"
