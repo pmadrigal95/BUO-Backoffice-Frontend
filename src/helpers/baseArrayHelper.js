@@ -53,34 +53,15 @@ export default {
         return array;
     },
 
-    shuffleObject(object, property) {
-        if (property && property.value in object) {
-            for (let i = object[property.value].length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-
-                const temp = { ...object[property.value][i] };
-                object[property.value][i] = {
-                    ...object[property.value][j],
-                };
-                object[property.value][j] = temp;
-            }
-        }
-        return object;
-    },
-
     SortArray(array, typeOrder) {
         return array.sort(function (a, b) {
             return typeOrder === 'desc' ? b - a : a - b;
         });
     },
 
-    SortObjectByProperty(object, typeOrder, properties) {
-        if (properties?.father && properties.father in object) {
-            return object[properties.father].sort(function (a, b) {
-                return typeOrder === 'desc'
-                    ? b[properties.child] - a[properties.child]
-                    : a[properties.child] - b[properties.child];
-            });
-        }
+    SortArrayByProperty({ array, typeOrder = 'desc', prop }) {
+        return array.sort(function (a, b) {
+            return typeOrder === 'desc' ? b[prop] - a[prop] : a[prop] - b[prop];
+        });
     },
 };

@@ -30,5 +30,8 @@ export default {
 </script>
 
 <template>
-    <ProgressLinearComponent title="Antigüedad de deserción" :list="fake" />
+    <ProgressLinearComponent
+        title="Antigüedad de deserción (años)"
+        :list="fake"
+    />
 </template>
