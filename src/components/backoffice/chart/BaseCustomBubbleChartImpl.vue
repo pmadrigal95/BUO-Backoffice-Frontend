@@ -72,9 +72,9 @@ export default {
                 ),
             };
 
-            baseArrayHelper.SortObjectByProperty(objectChartData, 'desc', {
-                father: 'datasets',
-                child: 'data',
+            baseArrayHelper.SortArrayByProperty({
+                array: objectChartData.datasets,
+                prop: 'data',
             });
 
             return objectChartData;

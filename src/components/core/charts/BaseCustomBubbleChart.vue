@@ -133,9 +133,7 @@ export default {
         },
 
         $_shuffleChartData() {
-            return baseArrayHelper.shuffleObject(this.chartData, {
-                value: 'datasets',
-            });
+            return baseArrayHelper.ShuffleArray(this.chartData?.datasets);
         },
 
         $_configDatasets() {
