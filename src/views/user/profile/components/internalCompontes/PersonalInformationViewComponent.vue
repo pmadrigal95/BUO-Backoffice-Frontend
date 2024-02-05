@@ -21,9 +21,11 @@ export default {
 
     computed: {
         age() {
-            return baseSharedFnHelper.$_getAge(
-                new Date(this.entity.fechaNacimiento)
-            );
+            return this.entity.fechaNacimiento
+                ? baseSharedFnHelper.$_getAge(
+                      new Date(this.entity.fechaNacimiento)
+                  )
+                : null;
         },
 
         ...mapGetters('theme', ['app']),
@@ -312,7 +314,7 @@ export default {
                             <v-icon small class="pr-1">
                                 mdi-account-cancel
                             </v-icon>
-                            {{ Renuncio }}
+                            Renuncio
                         </section>
                     </template>
                     <span>Renuncia</span>
