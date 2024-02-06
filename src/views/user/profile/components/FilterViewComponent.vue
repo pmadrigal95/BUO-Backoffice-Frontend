@@ -103,7 +103,7 @@ export default {
                 },
                 {
                     icon: 'account-group-outline',
-                    title: 'Comparar Buo Psychometric',
+                    title: 'Comparar Psychometric',
                     fn: this.$_userDetails,
                     show: true,
                 },

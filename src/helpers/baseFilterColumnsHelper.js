@@ -95,7 +95,7 @@ const userColumns = (departmentId, isBuoUser, isFilter) => {
             show: isFilter ? false : true,
         },
         {
-            text: 'Buo Psychometric',
+            text: 'Psychometric',
             type: 'bool',
             align: 'center',
             value: 'conPda',
@@ -136,6 +136,25 @@ const userColumns = (departmentId, isBuoUser, isFilter) => {
             text: 'Fecha Activación',
             align: 'start',
             value: 'fechaActivacionFormato',
+            show: isFilter ? false : true,
+        },
+        {
+            text: 'Fecha Ingreso',
+            align: 'start',
+            value: 'fechaIngresoFormato',
+            show: isFilter ? false : true,
+        },
+        {
+            text: 'Fecha Salida',
+            align: 'start',
+            value: 'fechaTerminacionFormato',
+            show: isFilter ? false : true,
+        },
+        {
+            text: 'Renuncia',
+            type: 'bool',
+            align: 'center',
+            value: 'esRenuncia',
             show: isFilter ? false : true,
         },
     ];
@@ -198,7 +217,7 @@ const companyColumns = (isFilter) => {
             show: isFilter ? false : true,
         },
         {
-            text: 'BUO Psychometric Premium',
+            text: 'Psychometric Premium',
             type: 'bool',
             align: 'center',
             value: 'pdaPremium',

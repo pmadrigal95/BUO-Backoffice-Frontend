@@ -1,6 +1,6 @@
 {
   "name": "buo-backoffice-frontend-app",
-  "version": "2.13.1",
+  "version": "2.14.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -44,6 +44,7 @@
     "sass": "~1.32.0",
     "sass-loader": "^10.0.0",
     "vue-cli-plugin-vuetify": "~2.4.1",
+    "vue-masonry-css": "^1.0.3",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.7.0"
   }

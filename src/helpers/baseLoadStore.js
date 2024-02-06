@@ -49,6 +49,7 @@ function createStoreDefault() {
         'authentication/SET_USER_DATA',
         'String'
     );
+
     buildStore(baseConfigHelper.$_app, 'theme/CHANGEMODE', 'Boolean', false);
 
     buildStore(
@@ -66,19 +67,23 @@ function createStoreDefault() {
         undefined,
         true
     );
+
+    buildStore(
+        baseConfigHelper.$_buoDashboardNotifier,
+        'dashboard/NOTIFIER',
+        'Boolean',
+        false,
+        true
+    );
 }
 
 export default {
     Initializer() {
         //TODO: Limpiar en proximas versiones
 
-        localStorage.removeItem('filtersBackOffice');
+        localStorage.removeItem('filtersBackOfficeV4');
 
-        localStorage.removeItem('advfiltersBackOffice');
-
-        localStorage.removeItem('filtersBackOfficeV2');
-
-        localStorage.removeItem('advfiltersBackOfficeV2');
+        localStorage.removeItem('advfiltersBackOfficeV4');
 
         createStoreDefault();
 

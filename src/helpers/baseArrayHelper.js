@@ -44,4 +44,24 @@ export default {
             return array.find((Element) => Element[prop] === value[prop]);
         }
     },
+
+    ShuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    },
+
+    SortArray(array, typeOrder) {
+        return array.sort(function (a, b) {
+            return typeOrder === 'desc' ? b - a : a - b;
+        });
+    },
+
+    SortArrayByProperty({ array, typeOrder = 'desc', prop }) {
+        return array.sort(function (a, b) {
+            return typeOrder === 'desc' ? b[prop] - a[prop] : a[prop] - b[prop];
+        });
+    },
 };

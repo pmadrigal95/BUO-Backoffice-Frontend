@@ -39,6 +39,10 @@ export default {
         categoriesMenu() {
             return [
                 {
+                    name: 'BUO Dashboard',
+                    list: ['BUODashboardViewComponent'],
+                },
+                {
                     name: 'BUO Demographics',
                     list: [
                         'BuoPdaDemographicsViewComponent',
@@ -83,6 +87,10 @@ export default {
 
         menuList() {
             let result = [
+                {
+                    name: 'BUO Dashboard',
+                    list: [],
+                },
                 {
                     name: 'BUO Demographics',
                     list: [],
@@ -181,6 +189,7 @@ export default {
                 <v-expansion-panels multiple flat v-model="panel">
                     <v-expansion-panel v-for="(menu, i) in menuList" :key="i">
                         <v-expansion-panel-header
+                            v-if="menu.list.length > 0"
                             :color="app ? 'background' : 'clouds'"
                             ><section
                                 class="BUO-Heading-Small"

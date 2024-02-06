@@ -336,3 +336,15 @@ html {
 .text-shadow {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
+
+/*Background tabs*/
+.bg-tab-idle-clear {
+    background-color: #ffffff;
+}
+.bg-tab-active {
+    background-color: #003f5e !important;
+}
+
+.bg-tab-idle-dark {
+    background-color: #b9c9dc;
+}

@@ -91,6 +91,9 @@ export default {
                                 weight: '400',
                             },
                         },
+                        grid: {
+                            color: 'transparent',
+                        },
                     },
                     y: {
                         stacked: true,

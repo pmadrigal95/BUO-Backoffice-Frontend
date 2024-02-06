@@ -202,7 +202,7 @@ export default {
                     />
 
                     <BaseCustomsButtonsGrid
-                        label="Comparar Buo Psychometric"
+                        label="Comparar Psychometric"
                         :outlined="false"
                         :fnMethod="$_userDetails"
                         icon="mdi-account-group-outline"

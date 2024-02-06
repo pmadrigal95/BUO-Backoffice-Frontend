@@ -21,9 +21,11 @@ export default {
 
     computed: {
         age() {
-            return baseSharedFnHelper.$_getAge(
-                new Date(this.entity.fechaNacimiento)
-            );
+            return this.entity.fechaNacimiento
+                ? baseSharedFnHelper.$_getAge(
+                      new Date(this.entity.fechaNacimiento)
+                  )
+                : null;
         },
 
         ...mapGetters('theme', ['app']),
@@ -224,6 +226,98 @@ export default {
                         </section>
                     </template>
                     <span>País</span>
+                </v-tooltip>
+                <v-divider></v-divider>
+            </v-col>
+
+            <v-col cols="12" md="6" v-if="entity.fechaIngresoFormato">
+                <v-tooltip right>
+                    <template v-slot:activator="{ on, attrs }">
+                        <section
+                            class="BUO-Label-XSmall pb-2"
+                            :class="[
+                                app ? 'blueProgress600--text' : 'black--text',
+                            ]"
+                            v-bind="attrs"
+                            v-on="on"
+                        >
+                            <v-icon small class="pr-1">
+                                mdi-calendar-start
+                            </v-icon>
+                            {{ entity.fechaIngresoFormato }}
+                        </section>
+                    </template>
+                    <span>Fecha de ingreso</span>
+                </v-tooltip>
+                <v-divider></v-divider>
+            </v-col>
+
+            <v-col
+                cols="12"
+                md="6"
+                v-if="entity.antiguedad && entity.antiguedad != 'N/A'"
+            >
+                <v-tooltip left>
+                    <template v-slot:activator="{ on, attrs }">
+                        <section
+                            class="BUO-Label-XSmall pb-2"
+                            :class="[
+                                app ? 'blueProgress600--text' : 'black--text',
+                            ]"
+                            v-bind="attrs"
+                            v-on="on"
+                        >
+                            <v-icon small class="pr-1">
+                                mdi-account-clock
+                            </v-icon>
+                            {{ entity.antiguedad }}
+                        </section>
+                    </template>
+                    <span>Antigüedad</span>
+                </v-tooltip>
+                <v-divider></v-divider>
+            </v-col>
+
+            <v-col cols="12" md="6" v-if="entity.fechaTerminacionFormato">
+                <v-tooltip right>
+                    <template v-slot:activator="{ on, attrs }">
+                        <section
+                            class="BUO-Label-XSmall pb-2"
+                            :class="[
+                                app ? 'blueProgress600--text' : 'black--text',
+                            ]"
+                            v-bind="attrs"
+                            v-on="on"
+                        >
+                            <v-icon small class="pr-1">
+                                mdi-calendar-end
+                            </v-icon>
+                            {{ entity.fechaTerminacionFormato }}
+                        </section>
+                    </template>
+                    <span>Fecha de salida</span>
+                </v-tooltip>
+                <v-divider></v-divider>
+            </v-col>
+
+            <v-col cols="12" md="6" v-if="entity.esRenuncia">
+                <v-tooltip left>
+                    <template v-slot:activator="{ on, attrs }">
+                        <section
+                            class="BUO-Label-XSmall pb-2"
+                            :class="[
+                                app ? 'blueProgress600--text' : 'black--text',
+                            ]"
+                            v-bind="attrs"
+                            v-on="on"
+                        >
+                            <v-icon small class="pr-1">
+                                mdi-account-cancel
+                            </v-icon>
+                            Renuncio
+                        </section>
+                    </template>
+                    <span>Renuncia</span>
                 </v-tooltip>
                 <v-divider></v-divider>
             </v-col>
