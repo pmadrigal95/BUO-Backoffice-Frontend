@@ -34,6 +34,8 @@ import microAbilityRoutes from '@/views/microAbility/router';
 
 import setIndicatorRoutes from '@/views/setIndicator/router';
 
+import departureUsersRoutes from '@/views/departureUsers/router';
+
 import promotionalCodesRoutes from '@/views/promotionalCodes/router';
 
 const routes = [
@@ -59,6 +61,7 @@ const routes = [
             ...demographicsRoutes,
             ...microAbilityRoutes,
             ...setIndicatorRoutes,
+            ...departureUsersRoutes,
             ...promotionalCodesRoutes,
         ],
     },

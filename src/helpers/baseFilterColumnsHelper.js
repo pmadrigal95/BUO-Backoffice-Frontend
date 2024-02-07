@@ -667,6 +667,122 @@ const assessmentTypeColumns = (isBuoUser, isFilter) => {
     ];
 };
 
+/**
+ * Configuracion BaseServerDataTable
+ */
+const departureUsersColumns = (isBuoUser, isFilter) => {
+    return [
+        {
+            text: 'Empresa',
+            align: 'start',
+            value: 'nombreOrganizacion',
+            show: isBuoUser,
+        },
+        {
+            text: 'Departamento',
+            align: 'start',
+            value: 'nombreDepartamento',
+            show: false,
+        },
+        {
+            text: 'Nivel Superior',
+            align: 'start',
+            value: 'nombrePadre',
+            show: isFilter ? false : true,
+        },
+        {
+            text: 'Nombre',
+            align: 'start',
+            value: 'nombre',
+            show: true,
+        },
+        {
+            text: 'Descripción',
+            align: 'start',
+            value: 'descripcion',
+            show: false,
+        },
+        {
+            text: 'Interna',
+            type: 'bool',
+            align: 'center',
+            value: 'esInterna',
+            show: isBuoUser,
+        },
+        {
+            text: 'Estado',
+            align: 'center',
+            type: 'chip',
+            value: 'nombreEstado',
+            show: false,
+        },
+        {
+            text: 'Creado Por',
+            align: 'start',
+            value: 'nombreUsuarioCrea',
+            show: false,
+        },
+    ];
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const departureReasonTypeColumns = (isBuoUser, isFilter) => {
+    return [
+        {
+            text: 'Empresa',
+            align: 'start',
+            value: 'nombreOrganizacion',
+            show: isBuoUser,
+        },
+        {
+            text: 'Departamento',
+            align: 'start',
+            value: 'nombreDepartamento',
+            show: false,
+        },
+        {
+            text: 'Nivel Superior',
+            align: 'start',
+            value: 'nombrePadre',
+            show: isFilter ? false : true,
+        },
+        {
+            text: 'Nombre',
+            align: 'start',
+            value: 'nombre',
+            show: true,
+        },
+        {
+            text: 'Descripción',
+            align: 'start',
+            value: 'descripcion',
+            show: false,
+        },
+        {
+            text: 'Interna',
+            type: 'bool',
+            align: 'center',
+            value: 'esInterna',
+            show: isBuoUser,
+        },
+        {
+            text: 'Estado',
+            align: 'center',
+            type: 'chip',
+            value: 'nombreEstado',
+            show: false,
+        },
+        {
+            text: 'Creado Por',
+            align: 'start',
+            value: 'nombreUsuarioCrea',
+            show: false,
+        },
+    ];
+};
+
 const assessmentColumns = (isBuoUser) => {
     return [
         {
@@ -1133,6 +1249,24 @@ export const baseFilterColumnsHelper = {
      */
     $_setAssessmentTypeColumns({ isFilter, pageView, isBuoUser }) {
         const columns = assessmentTypeColumns(isBuoUser, isFilter);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDepartureUsersColumns({ isFilter, pageView, isBuoUser }) {
+        const columns = departureUsersColumns(isBuoUser, isFilter);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDepartureReasonTypeColumns({ isFilter, pageView, isBuoUser }) {
+        const columns = departureReasonTypeColumns(isBuoUser, isFilter);
         setUpCache({ pageView, columns, isFilter });
         return columns;
     },
