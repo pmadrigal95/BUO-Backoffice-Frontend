@@ -75,12 +75,18 @@ function createStoreDefault() {
         false,
         true
     );
+
+    buildStore(
+        baseConfigHelper.$_shortcutNotifier,
+        'shortcut/NOTIFIER',
+        'Boolean',
+        false,
+        true
+    );
 }
 
 export default {
     Initializer() {
-        //TODO: Limpiar en proximas versiones
-
         localStorage.removeItem('filtersBackOfficeV4');
 
         localStorage.removeItem('advfiltersBackOfficeV4');

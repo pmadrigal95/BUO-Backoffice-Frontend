@@ -14,6 +14,9 @@ import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
+const NotifierViewComponent = () =>
+    import('@/views/home/components/NotifierViewComponent');
+
 const BaseCardMenuViewComponent = () =>
     import('@/components/core/cards/BaseCardMenuViewComponent');
 
@@ -22,6 +25,7 @@ export default {
 
     components: {
         BaseCardViewComponent,
+        NotifierViewComponent,
         BaseCardMenuViewComponent,
     },
 
@@ -72,6 +76,7 @@ export default {
 <template>
     <BaseCardViewComponent>
         <div slot="card-text">
+            <NotifierViewComponent />
             <BaseSkeletonLoader v-if="loadingSecurity" type="list-item" />
             <v-card flat color="transparent" v-else>
                 <v-layout justify-end
