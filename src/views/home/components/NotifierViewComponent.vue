@@ -105,6 +105,11 @@ export default {
                         <ul class="mb-2 mt-n3">
                             <li class="my-1">
                                 <span class="BUO-Paragraph-Small-SemiBold"
+                                    >Ctrl + K: </span
+                                >Abrir el command palette
+                            </li>
+                            <li class="my-1">
+                                <span class="BUO-Paragraph-Small-SemiBold"
                                     >Ctrl + H: </span
                                 >ir al Inicio
                             </li>
@@ -117,7 +122,7 @@ export default {
                             <li class="my-1">
                                 Utiliza el
                                 <span class="BUO-Paragraph-Small-SemiBold"
-                                    >buscador
+                                    >buscador del command palette
                                 </span>
                                 para acceder al módulo deseado
                             </li>

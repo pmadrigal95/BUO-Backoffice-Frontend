@@ -40,6 +40,8 @@ export default {
 
         ...mapGetters('theme', ['app']),
 
+        ...mapGetters('shortcut', ['notifier']),
+
         menuList() {
             return baseSecurityHelper.$_setMenu();
         },
@@ -76,7 +78,7 @@ export default {
 <template>
     <BaseCardViewComponent>
         <div slot="card-text">
-            <NotifierViewComponent />
+            <NotifierViewComponent v-if="!notifier" />
             <BaseSkeletonLoader v-if="loadingSecurity" type="list-item" />
             <v-card flat color="transparent" v-else>
                 <v-layout justify-end
