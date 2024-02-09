@@ -14,6 +14,9 @@ import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
+const NotifierViewComponent = () =>
+    import('@/views/home/components/NotifierViewComponent');
+
 const BaseCardMenuViewComponent = () =>
     import('@/components/core/cards/BaseCardMenuViewComponent');
 
@@ -22,6 +25,7 @@ export default {
 
     components: {
         BaseCardViewComponent,
+        NotifierViewComponent,
         BaseCardMenuViewComponent,
     },
 
@@ -36,93 +40,10 @@ export default {
 
         ...mapGetters('theme', ['app']),
 
-        categoriesMenu() {
-            return [
-                {
-                    name: 'BUO Dashboard',
-                    list: ['BUODashboardViewComponent'],
-                },
-                {
-                    name: 'BUO Demographics',
-                    list: [
-                        'BuoPdaDemographicsViewComponent',
-                        'BuoAssessmentsDemographicsViewComponent',
-                    ],
-                },
-                {
-                    name: 'People Analytics',
-                    list: [
-                        'SearchPeopleByAbilityViewComponent',
-                        'SearchAbilitiesByDepartmentOrPersonViewComponent',
-                        'ProfileViewComponent',
-                        'AssignmentViewComponent',
-                        'EvaluationViewComponent',
-                        'ApprovalViewComponent',
-                    ],
-                },
-                {
-                    name: 'BUO Assessments',
-                    list: [
-                        'BUOPDAReportViewComponent',
-                        'AssessmentControlViewComponent',
-                    ],
-                },
-                {
-                    name: 'Administración',
-                    list: [
-                        'CompanyViewComponent',
-                        'UserViewComponent',
-                        'DepartmentViewComponent',
-                        'CategoryViewComponent',
-                        'AbilityViewComponent',
-                        'MicroAbilityViewComponent',
-                        'AssessmentTypeViewComponent',
-                        'AssessmentViewComponent',
-                        'SecurityViewComponent',
-                        'PromotionalCodesViewComponent',
-                    ],
-                },
-            ];
-        },
+        ...mapGetters('shortcut', ['notifier']),
 
         menuList() {
-            let result = [
-                {
-                    name: 'BUO Dashboard',
-                    list: [],
-                },
-                {
-                    name: 'BUO Demographics',
-                    list: [],
-                },
-                {
-                    name: 'People Analytics',
-                    list: [],
-                },
-                {
-                    name: 'BUO Assessments',
-                    list: [],
-                },
-                {
-                    name: 'Administración',
-                    list: [],
-                },
-            ];
-
-            this.categoriesMenu.forEach((x) => {
-                const index = result
-                    .map(function (e) {
-                        return e.name;
-                    })
-                    .indexOf(x.name);
-
-                x.list.forEach((view) => {
-                    const insert = baseSecurityHelper.$_getObjectById(view);
-                    insert && result[index].list.push(insert);
-                });
-            });
-
-            return result;
+            return baseSecurityHelper.$_setMenu();
         },
 
         componentProps() {
@@ -157,6 +78,7 @@ export default {
 <template>
     <BaseCardViewComponent>
         <div slot="card-text">
+            <NotifierViewComponent v-if="!notifier" />
             <BaseSkeletonLoader v-if="loadingSecurity" type="list-item" />
             <v-card flat color="transparent" v-else>
                 <v-layout justify-end

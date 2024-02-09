@@ -9,11 +9,14 @@ import baseLocalHelper from '@/helpers/baseLocalHelper';
 
 import { mapGetters, mapActions } from 'vuex';
 
+const TheFooter = () => import('@/layouts/app/TheFooter');
+
 const TheToolbar = () => import('@/layouts/app/TheToolbar');
 
 const TheMenu = () => import('@/components/core/drawers/TheMenu');
 
-const TheFooter = () => import('@/layouts/app/TheFooter');
+const BaseShortcutImpl = () =>
+    import('@/components/backoffice/Keyboard/BaseShortcutImpl');
 
 export default {
     name: 'TheLayout',
@@ -22,6 +25,7 @@ export default {
         TheToolbar,
         TheFooter,
         TheMenu,
+        BaseShortcutImpl,
     },
 
     data() {
@@ -79,6 +83,8 @@ export default {
 
 <template>
     <div id="app" v-resize="onResize">
+        <BaseShortcutImpl />
+
         <TheMenu />
 
         <TheToolbar :show="showItems" />
