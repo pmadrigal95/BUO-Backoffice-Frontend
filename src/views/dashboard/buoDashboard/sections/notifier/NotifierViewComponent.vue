@@ -57,55 +57,53 @@ export default {
                 <v-card-title
                     class="BUO-Heading-XSmall"
                     :class="[app ? 'blueProgress600--text' : 'blue900--text']"
-                    >Bienvenido a Buo Dashboard</v-card-title
+                    >Bienvenid@ a Buo Dashboard</v-card-title
                 >
                 <v-card-text
                     class="BUO-Paragraph-Small"
                     :class="[app ? 'white--text' : 'grey700--text']"
                 >
-                    <!--TODO: Poner bonito-->
                     <section class="pb-4">
                         <p>
                             Para garantizar una experiencia visual óptima en
-                            todos sus dispositivos, hemos diseñado
+                            todos tus dispositivos, hemos diseñado
                             cuidadosamente los gráficos de manera responsiva.
-                            Esto significa que los gráficos se adaptarán de
+                            Esto significa que la plataforma se adaptará de
                             forma inteligente a la resolución de la pantalla de
-                            su laptop, tablet y celular.
+                            tu laptop, tablet y celular.
                         </p>
 
                         <p>
-                            En su
+                            En tu
                             <span class="BUO-Paragraph-Small-SemiBold"
                                 >laptop</span
-                            >, disfrutará de una presentación detallada y
+                            >, disfruta de una presentación detallada y
                             expansiva, aprovechando al máximo el espacio
                             disponible.
                         </p>
 
                         <p>
-                            En una
+                            En tu
                             <span class="BUO-Paragraph-Small-SemiBold"
                                 >tablet</span
-                            >, la visualización se ajustará de manera fluida
-                            para ofrecer una experiencia táctil intuitiva y
-                            fácil de navegar.
+                            >, la presentación se ajustará de manera fluida para
+                            ofrecer una experiencia táctil intuitiva y fácil de
+                            navegar.
                         </p>
 
                         <p>
-                            Por último, en su
+                            En tu
                             <span class="BUO-Paragraph-Small-SemiBold"
                                 >celular</span
-                            >, los gráficos se optimizarán para una
-                            visualización clara y legible, asegurando que la
-                            información es fácilmente accesible incluso en
-                            pantallas más pequeñas.
+                            >, disfruta de una visualización clara y legible,
+                            asegurando que la información sea accesible incluso
+                            en pantallas más pequeñas.
                         </p>
 
                         <p>
-                            Este enfoque garantiza coherencia y calidad visual
-                            en todos sus dispositivos, proporcionando una
-                            experiencia de usuario consistente y atractiva.
+                            Este enfoque, garantiza la máxima calidad visual en
+                            todos tus dispositivos, proporcionando una
+                            experiencia totalmente consistente y atractiva.
                         </p>
                     </section>
                 </v-card-text>
@@ -116,7 +114,7 @@ export default {
                         color="primary"
                         block
                         @click="$_acceptTermsAndConditions"
-                        >Entendido
+                        >Estoy de Acuerdo
                     </v-btn>
                 </v-card-actions>
             </v-card>
