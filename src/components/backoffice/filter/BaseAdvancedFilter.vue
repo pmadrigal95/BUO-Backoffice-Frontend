@@ -383,149 +383,125 @@ export default {
 
 <template>
     <section>
-        <v-row dense v-show="show">
-            <v-col cols="12" md="6">
-                <BaseForm
-                    :block="$vuetify.breakpoint.mobile"
-                    labelBtn="Buscar"
-                    :method="$_setParams"
-                    actionsColor="background"
-                >
-                    <div slot="body">
-                        <v-row dense justify="start">
-                            <p
-                                v-if="title"
-                                class="BUO-Paragraph-Large-SemiBold mb-1"
-                                :class="[app ? 'white--text' : 'grey700--text']"
-                            >
-                                {{ title }}
-                            </p>
-                            <v-col cols="12" v-if="companySetting">
-                                <BaseInputDataTable
-                                    v-if="user.companyId === buoId"
-                                    :pageView="companyDialogView"
-                                    label="Empresa"
-                                    :setting="companySetting"
-                                    :editText="temp.companyName"
-                                    v-model.number="temp.companyId"
-                                    itemText="nombre"
-                                    :validate="['requiered']"
-                                    :key="companyKey"
-                                    :fnResetConfig="$_setCompanyFilter"
-                                />
-                            </v-col>
+        <BaseForm
+            :block="$vuetify.breakpoint.mobile"
+            labelBtn="Buscar"
+            :method="$_setParams"
+            actionsColor="background"
+        >
+            <div slot="containerBody">
+                <section class="d-flex flex-wrap">
+                    <section v-if="companySetting" class="mr-4">
+                        <BaseInputDataTable
+                            v-if="user.companyId === buoId"
+                            :pageView="companyDialogView"
+                            label="Empresa"
+                            :setting="companySetting"
+                            :editText="temp.companyName"
+                            v-model.number="temp.companyId"
+                            itemText="nombre"
+                            :validate="['requiered']"
+                            :key="companyKey"
+                            :fnResetConfig="$_setCompanyFilter"
+                        />
+                    </section>
 
-                            <v-col cols="12" v-if="isDepartment">
-                                <BaseInputTreeview
-                                    label="Área / Departamento"
-                                    v-model.number="temp.departmentId"
-                                    :readonly="!temp.companyId"
-                                    itemText="nombre"
-                                    itemChildren="subDepartamentos"
-                                    :endpoint="`departamento/findAllTree/${temp.companyId}`"
-                                />
-                            </v-col>
+                    <section v-if="isDepartment" class="mr-4 flex-grow-0">
+                        <BaseInputTreeview
+                            label="Área / Departamento"
+                            v-model.number="temp.departmentId"
+                            :readonly="!temp.companyId"
+                            itemText="nombre"
+                            itemChildren="subDepartamentos"
+                            :endpoint="`departamento/findAllTree/${temp.companyId}`"
+                        />
+                    </section>
 
-                            <v-col cols="12" v-if="isUser">
-                                <BaseInputDataTable
-                                    v-if="userSetting"
-                                    label="Colaboradores"
-                                    :pageView="userDialogView"
-                                    :setting="userSetting"
-                                    :extraParams="extraParams"
-                                    itemText="nombreCompleto"
-                                    :readonly="!temp.companyId"
-                                    :editText="temp.nombre"
-                                    v-model="temp.userId"
-                                    :key="filterKey"
-                                    :fnResetConfig="$_setUserFilter"
-                                />
-                            </v-col>
+                    <section v-if="isUser" class="mr-4">
+                        <BaseInputDataTable
+                            v-if="userSetting"
+                            label="Colaboradores"
+                            :pageView="userDialogView"
+                            :setting="userSetting"
+                            :extraParams="extraParams"
+                            itemText="nombreCompleto"
+                            :readonly="!temp.companyId"
+                            :editText="temp.nombre"
+                            v-model="temp.userId"
+                            :key="filterKey"
+                            :fnResetConfig="$_setUserFilter"
+                        />
+                    </section>
 
-                            <v-col cols="12" v-if="isIndicatorCategory">
-                                <BaseInputTreeview
-                                    label="Categoría"
-                                    v-model.number="temp.categoryId"
-                                    :readonly="!temp.companyId"
-                                    itemText="nombre"
-                                    itemChildren="subCategorias"
-                                    :endpoint="`categoria/findAllTree/${temp.companyId}`"
-                                />
-                            </v-col>
+                    <section v-if="isIndicatorCategory" class="mr-4">
+                        <BaseInputTreeview
+                            label="Categoría"
+                            v-model.number="temp.categoryId"
+                            :readonly="!temp.companyId"
+                            itemText="nombre"
+                            itemChildren="subCategorias"
+                            :endpoint="`categoria/findAllTree/${temp.companyId}`"
+                        />
+                    </section>
 
-                            <v-col cols="12" v-if="isIndicator">
-                                <BaseInputDataTable
-                                    v-if="abilitySetting"
-                                    label="¿Cuáles indicadores necesitas?"
-                                    :pageView="abilityDialogView"
-                                    :setting="abilitySetting"
-                                    :extraParams="extraParams"
-                                    :readonly="
-                                        extraParams == undefined ||
-                                        !temp.companyId
-                                    "
-                                    :editText="temp.definicion"
-                                    v-model="temp.indicatorId"
-                                    :key="filterKey"
-                                    :validate="['requiered']"
-                                    :fnResetConfig="$_setAbilityFilter"
-                                />
-                            </v-col>
+                    <section v-if="isIndicator" class="mr-4">
+                        <BaseInputDataTable
+                            v-if="abilitySetting"
+                            label="¿Cuáles indicadores necesitas?"
+                            :pageView="abilityDialogView"
+                            :setting="abilitySetting"
+                            :extraParams="extraParams"
+                            :readonly="
+                                extraParams == undefined || !temp.companyId
+                            "
+                            :editText="temp.definicion"
+                            v-model="temp.indicatorId"
+                            :key="filterKey"
+                            :validate="['requiered']"
+                            :fnResetConfig="$_setAbilityFilter"
+                        />
+                    </section>
 
-                            <v-col cols="12" v-if="isAssessmentType">
-                                <BaseInputTreeview
-                                    label="Tipo de assessment"
-                                    v-model.number="temp.assessmentTypeId"
-                                    :readonly="!temp.companyId"
-                                    itemText="nombre"
-                                    itemChildren="subTipos"
-                                    :endpoint="`tipoPrueba/${assessmentTypeEndpoint}/${temp.companyId}`"
-                                />
-                            </v-col>
+                    <section v-if="isAssessmentType" class="mr-4">
+                        <BaseInputTreeview
+                            label="Tipo de assessment"
+                            v-model.number="temp.assessmentTypeId"
+                            :readonly="!temp.companyId"
+                            itemText="nombre"
+                            itemChildren="subTipos"
+                            :endpoint="`tipoPrueba/${assessmentTypeEndpoint}/${temp.companyId}`"
+                        />
+                    </section>
 
-                            <v-col cols="12" v-if="isAssessment">
-                                <BaseInputDataTable
-                                    label="Assessment"
-                                    v-if="assessmentSetting"
-                                    :pageView="assessmentDialogView"
-                                    :setting="assessmentSetting"
-                                    :extraParams="extraParams"
-                                    itemText="nombre"
-                                    :readonly="!temp.assessmentTypeId"
-                                    v-model.number="temp.assessmentId"
-                                    :key="assessmentKey"
-                                    :fnResetConfig="$_setAssessmentFilter"
-                                />
-                            </v-col>
+                    <section v-if="isAssessment" class="mr-4">
+                        <BaseInputDataTable
+                            label="Assessment"
+                            v-if="assessmentSetting"
+                            :pageView="assessmentDialogView"
+                            :setting="assessmentSetting"
+                            :extraParams="extraParams"
+                            itemText="nombre"
+                            :readonly="!temp.assessmentTypeId"
+                            v-model.number="temp.assessmentId"
+                            :key="assessmentKey"
+                            :fnResetConfig="$_setAssessmentFilter"
+                        />
+                    </section>
 
-                            <v-col cols="12" v-if="isMonth">
-                                <BaseDatePicker
-                                    label="Período"
-                                    type="month"
-                                    appendIcon="mdi-calendar-month"
-                                    :max="currentMonth"
-                                    v-model="temp.month"
-                                    :validate="['text']"
-                                />
-                            </v-col>
-                        </v-row>
-                    </div>
-                    <div slot="Beforebtns">
-                        <v-btn
-                            class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                            elevation="0"
-                            large
-                            outlined
-                            @click="$_clean"
-                            :block="$vuetify.breakpoint.mobile"
-                            :color="app ? 'blueProgress600' : 'blue800'"
-                        >
-                            Limpiar
-                        </v-btn>
-                    </div>
-                </BaseForm>
-            </v-col>
-        </v-row>
+                    <section v-if="isMonth" class="flex-grow-0">
+                        <BaseDatePicker
+                            label="Período"
+                            type="month"
+                            appendIcon="mdi-calendar-month"
+                            :max="currentMonth"
+                            v-model="temp.month"
+                            :validate="['text']"
+                        />
+                    </section>
+                </section>
+            </div>
+        </BaseForm>
+
         <section :key="componentKey" class="pt-2">
             <!-- @slot Agregar Contenido del form -->
             <slot name="body"></slot>
