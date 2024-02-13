@@ -38,6 +38,7 @@ export default {
         return {
             entity: this.$_Object(),
             loading: false,
+            componentKey: 0,
         };
     },
 
@@ -50,6 +51,19 @@ export default {
             return this.dialogViewById('companyDialog');
         },
 
+        userDialogView() {
+            return this.dialogViewById('userDialog');
+        },
+
+        /**
+         * Extra Params
+         */
+        extraParams() {
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity.organizacionId,
+            });
+        },
+
         /**
          * Configuracion BaseInputDataTable
          */
@@ -59,6 +73,19 @@ export default {
                 singleSelect: true,
                 list: this.advfiltersBypageView(this.companyDialogView),
                 pageView: this.companyDialogView,
+            });
+        },
+
+        /**
+         * Configuracion BaseServerDataTable
+         */
+        userSetting() {
+            return baseFilterSettingsHelper.$_setUserSetting({
+                companyId: this.user.companyId,
+                isFilter: true,
+                singleSelect: false,
+                list: this.advfiltersBypageView(this.userDialogView),
+                pageView: this.userDialogView,
             });
         },
     },
@@ -92,6 +119,13 @@ export default {
             });
         },
 
+        $_setUserFilter() {
+            baseDataTableColumnsHelper.$_setUserColumns({
+                companyId: this.user.companyId,
+                isFilter: true,
+                pageView: this.userDialogView,
+            });
+        },
         /**
          * Entity Object
          */
@@ -104,6 +138,8 @@ export default {
                 estadoId: 2,
                 organizacionId: undefined,
                 nombreOrganizacion: undefined,
+                nombreUsuario: undefined,
+                usuarioId: undefined,
                 usuarioModificaId: undefined,
             };
         },
@@ -187,6 +223,21 @@ export default {
                                 itemText="nombre"
                                 :validate="['requiered']"
                                 :fnResetConfig="$_setCompanyFilter"
+                            />
+                        </v-col>
+                        <v-col cols="12">
+                            <BaseInputDataTable
+                                label="Usuario"
+                                v-if="userSetting"
+                                :pageView="userDialogView"
+                                :setting="userSetting"
+                                :extraParams="extraParams"
+                                itemText="nombreCompleto"
+                                :readonly="extraParams.length == 0"
+                                :editText="entity.nombreUsuario"
+                                v-model="entity.usuarioId"
+                                :key="componentKey"
+                                :fnResetConfig="$_setUserFilter"
                             />
                         </v-col>
                         <v-col cols="12">
