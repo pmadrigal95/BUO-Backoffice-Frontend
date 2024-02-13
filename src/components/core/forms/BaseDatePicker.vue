@@ -69,6 +69,11 @@ export default {
             default: false,
         },
 
+        dense: {
+            type: Boolean,
+            default: false,
+        },
+
         /**
          * Designates an elevation applied to the component between 0 and 24.
          */
@@ -454,6 +459,7 @@ export default {
                 :validateOnBlur="false"
                 v-bind="attrs"
                 v-on="on"
+                :dense="dense"
             ></BaseInput>
         </template>
         <v-date-picker

@@ -5,6 +5,8 @@
  * @displayName BaseAdvancedFilter
  */
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { mapGetters } from 'vuex';
 
 import {
@@ -26,6 +28,11 @@ export default {
     name: 'BaseAdvancedFilter',
 
     props: {
+        dense: {
+            type: Boolean,
+            default: false,
+        },
+
         show: {
             type: Boolean,
             default: true,
@@ -113,6 +120,8 @@ export default {
             filterKey: 0,
             companyKey: 0,
             assessmentKey: 0,
+            valid: true,
+            refForm: 'BaseAdvancedFilterForm_',
         };
     },
 
@@ -210,6 +219,13 @@ export default {
 
     created() {
         this.$_clean();
+
+        const randomID = uuidv4();
+
+        /**
+         * Config Inicial ID
+         */
+        this.refForm = this.refForm + randomID;
     },
 
     watch: {
@@ -377,134 +393,260 @@ export default {
         $_setCurrentMonth() {
             return this.requiredMonth ? this.currentMonth : undefined;
         },
+
+        /**
+         * Valida el form y ejecuta la función 'method'
+         */
+        $_submit() {
+            if (this.beforeClick != undefined) {
+                this.beforeClick();
+            }
+
+            if (this.$refs[this.refForm].validate()) {
+                this.$_setParams();
+                this.$nextTick(() => {
+                    if (this.$refs[this.refForm] != undefined) {
+                        this.$refs[this.refForm].resetValidation();
+                    }
+                });
+            }
+        },
     },
 };
 </script>
 
 <template>
     <section>
-        <BaseForm
-            :block="$vuetify.breakpoint.mobile"
-            labelBtn="Buscar"
-            :method="$_setParams"
-            actionsColor="background"
+        <v-form
+            :ref="refForm"
+            v-model="valid"
+            lazy-validation
+            @submit.prevent
+            @keyup.enter.native="$_submit"
+            class="d-flex flex-wrap"
+            v-if="show"
         >
-            <div slot="containerBody">
-                <section class="d-flex flex-wrap">
-                    <section v-if="companySetting" class="mr-4">
-                        <BaseInputDataTable
-                            v-if="user.companyId === buoId"
-                            :pageView="companyDialogView"
-                            label="Empresa"
-                            :setting="companySetting"
-                            :editText="temp.companyName"
-                            v-model.number="temp.companyId"
-                            itemText="nombre"
-                            :validate="['requiered']"
-                            :key="companyKey"
-                            :fnResetConfig="$_setCompanyFilter"
-                        />
-                    </section>
+            <section
+                v-if="companySetting && user.companyId == this.buoId"
+                :class="[
+                    $vuetify.breakpoint.smAndDown
+                        ? 'sizeMobileComponent'
+                        : 'sizeComponent mx-1',
+                ]"
+            >
+                <BaseInputDataTable
+                    v-if="user.companyId === buoId"
+                    :pageView="companyDialogView"
+                    label="Empresa"
+                    :setting="companySetting"
+                    :editText="temp.companyName"
+                    v-model.number="temp.companyId"
+                    itemText="nombre"
+                    :validate="['requiered']"
+                    :key="companyKey"
+                    :fnResetConfig="$_setCompanyFilter"
+                    :denseInput="dense"
+                />
+            </section>
 
-                    <section v-if="isDepartment" class="mr-4 flex-grow-0">
-                        <BaseInputTreeview
-                            label="Área / Departamento"
-                            v-model.number="temp.departmentId"
-                            :readonly="!temp.companyId"
-                            itemText="nombre"
-                            itemChildren="subDepartamentos"
-                            :endpoint="`departamento/findAllTree/${temp.companyId}`"
-                        />
-                    </section>
+            <section
+                v-if="isDepartment"
+                :class="[
+                    $vuetify.breakpoint.smAndDown
+                        ? 'sizeMobileComponent'
+                        : 'sizeComponent mx-1',
+                ]"
+            >
+                <BaseInputTreeview
+                    label="Área / Departamento"
+                    :denseInput="dense"
+                    v-model.number="temp.departmentId"
+                    :readonly="!temp.companyId"
+                    itemText="nombre"
+                    itemChildren="subDepartamentos"
+                    :endpoint="`departamento/findAllTree/${temp.companyId}`"
+                />
+            </section>
 
-                    <section v-if="isUser" class="mr-4">
-                        <BaseInputDataTable
-                            v-if="userSetting"
-                            label="Colaboradores"
-                            :pageView="userDialogView"
-                            :setting="userSetting"
-                            :extraParams="extraParams"
-                            itemText="nombreCompleto"
-                            :readonly="!temp.companyId"
-                            :editText="temp.nombre"
-                            v-model="temp.userId"
-                            :key="filterKey"
-                            :fnResetConfig="$_setUserFilter"
-                        />
-                    </section>
+            <section
+                v-if="isUser"
+                :class="[
+                    $vuetify.breakpoint.smAndDown
+                        ? 'sizeMobileComponent'
+                        : 'sizeComponent mx-1',
+                ]"
+            >
+                <BaseInputDataTable
+                    v-if="userSetting"
+                    label="Colaboradores"
+                    :pageView="userDialogView"
+                    :setting="userSetting"
+                    :extraParams="extraParams"
+                    itemText="nombreCompleto"
+                    :readonly="!temp.companyId"
+                    :editText="temp.nombre"
+                    v-model="temp.userId"
+                    :key="filterKey"
+                    :fnResetConfig="$_setUserFilter"
+                    :denseInput="dense"
+                />
+            </section>
 
-                    <section v-if="isIndicatorCategory" class="mr-4">
-                        <BaseInputTreeview
-                            label="Categoría"
-                            v-model.number="temp.categoryId"
-                            :readonly="!temp.companyId"
-                            itemText="nombre"
-                            itemChildren="subCategorias"
-                            :endpoint="`categoria/findAllTree/${temp.companyId}`"
-                        />
-                    </section>
+            <section
+                v-if="isIndicatorCategory"
+                :class="[
+                    $vuetify.breakpoint.smAndDown
+                        ? 'sizeMobileComponent'
+                        : 'sizeComponent mx-1',
+                ]"
+            >
+                <BaseInputTreeview
+                    label="Categoría"
+                    :denseInput="dense"
+                    v-model.number="temp.categoryId"
+                    :readonly="!temp.companyId"
+                    itemText="nombre"
+                    itemChildren="subCategorias"
+                    :endpoint="`categoria/findAllTree/${temp.companyId}`"
+                />
+            </section>
 
-                    <section v-if="isIndicator" class="mr-4">
-                        <BaseInputDataTable
-                            v-if="abilitySetting"
-                            label="¿Cuáles indicadores necesitas?"
-                            :pageView="abilityDialogView"
-                            :setting="abilitySetting"
-                            :extraParams="extraParams"
-                            :readonly="
-                                extraParams == undefined || !temp.companyId
-                            "
-                            :editText="temp.definicion"
-                            v-model="temp.indicatorId"
-                            :key="filterKey"
-                            :validate="['requiered']"
-                            :fnResetConfig="$_setAbilityFilter"
-                        />
-                    </section>
+            <section
+                v-if="isIndicator"
+                :class="[
+                    $vuetify.breakpoint.smAndDown
+                        ? 'sizeMobileComponent'
+                        : 'sizeComponent mx-1',
+                ]"
+            >
+                <BaseInputDataTable
+                    v-if="abilitySetting"
+                    :denseInput="dense"
+                    label="¿Cuáles indicadores necesitas?"
+                    :pageView="abilityDialogView"
+                    :setting="abilitySetting"
+                    :extraParams="extraParams"
+                    :readonly="extraParams == undefined || !temp.companyId"
+                    :editText="temp.definicion"
+                    v-model="temp.indicatorId"
+                    :key="filterKey"
+                    :validate="['requiered']"
+                    :fnResetConfig="$_setAbilityFilter"
+                />
+            </section>
 
-                    <section v-if="isAssessmentType" class="mr-4">
-                        <BaseInputTreeview
-                            label="Tipo de assessment"
-                            v-model.number="temp.assessmentTypeId"
-                            :readonly="!temp.companyId"
-                            itemText="nombre"
-                            itemChildren="subTipos"
-                            :endpoint="`tipoPrueba/${assessmentTypeEndpoint}/${temp.companyId}`"
-                        />
-                    </section>
+            <section
+                v-if="isAssessmentType"
+                :class="[
+                    $vuetify.breakpoint.smAndDown
+                        ? 'sizeMobileComponent'
+                        : 'sizeComponent mx-1',
+                ]"
+            >
+                <BaseInputTreeview
+                    label="Tipo de assessment"
+                    :denseInput="dense"
+                    v-model.number="temp.assessmentTypeId"
+                    :readonly="!temp.companyId"
+                    itemText="nombre"
+                    itemChildren="subTipos"
+                    :endpoint="`tipoPrueba/${assessmentTypeEndpoint}/${temp.companyId}`"
+                />
+            </section>
 
-                    <section v-if="isAssessment" class="mr-4">
-                        <BaseInputDataTable
-                            label="Assessment"
-                            v-if="assessmentSetting"
-                            :pageView="assessmentDialogView"
-                            :setting="assessmentSetting"
-                            :extraParams="extraParams"
-                            itemText="nombre"
-                            :readonly="!temp.assessmentTypeId"
-                            v-model.number="temp.assessmentId"
-                            :key="assessmentKey"
-                            :fnResetConfig="$_setAssessmentFilter"
-                        />
-                    </section>
+            <section
+                v-if="isAssessment"
+                :class="[
+                    $vuetify.breakpoint.smAndDown
+                        ? 'sizeMobileComponent'
+                        : 'sizeComponent mx-1',
+                ]"
+            >
+                <BaseInputDataTable
+                    label="Assessment"
+                    v-if="assessmentSetting"
+                    :pageView="assessmentDialogView"
+                    :setting="assessmentSetting"
+                    :extraParams="extraParams"
+                    itemText="nombre"
+                    :readonly="!temp.assessmentTypeId"
+                    v-model.number="temp.assessmentId"
+                    :key="assessmentKey"
+                    :fnResetConfig="$_setAssessmentFilter"
+                    :denseInput="dense"
+                />
+            </section>
 
-                    <section v-if="isMonth" class="flex-grow-0">
-                        <BaseDatePicker
-                            label="Período"
-                            type="month"
-                            appendIcon="mdi-calendar-month"
-                            :max="currentMonth"
-                            v-model="temp.month"
-                            :validate="['text']"
-                        />
-                    </section>
-                </section>
-            </div>
-        </BaseForm>
+            <section
+                v-if="isMonth"
+                :class="[
+                    $vuetify.breakpoint.smAndDown
+                        ? 'sizeMobileComponent'
+                        : 'sizeComponent mx-1',
+                ]"
+            >
+                <BaseDatePicker
+                    label="Período"
+                    type="month"
+                    :dense="dense"
+                    appendIcon="mdi-calendar-month"
+                    :max="currentMonth"
+                    v-model="temp.month"
+                    :validate="['text']"
+                />
+            </section>
 
-        <section :key="componentKey" class="pt-2">
+            <v-btn
+                class="no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                :class="[
+                    $vuetify.breakpoint.smAndDown
+                        ? 'sizeMobileComponent'
+                        : 'mx-1',
+                ]"
+                elevation="0"
+                color="primary"
+                large
+                outlined
+                :block="$vuetify.breakpoint.mobile"
+                @click="$_clean"
+                :height="dense ? 41 : 55"
+            >
+                Limpiar</v-btn
+            >
+
+            <v-btn
+                class="no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                :class="[
+                    $vuetify.breakpoint.smAndDown
+                        ? 'my-4 sizeMobileComponent'
+                        : 'mx-1',
+                ]"
+                elevation="0"
+                color="primary"
+                large
+                dark
+                :block="$vuetify.breakpoint.mobile"
+                depressed
+                @click="$_submit"
+                :height="dense ? 41 : 55"
+            >
+                Buscar
+            </v-btn>
+        </v-form>
+
+        <section :key="componentKey">
             <!-- @slot Agregar Contenido del form -->
             <slot name="body"></slot>
         </section>
     </section>
 </template>
+
+<style scoped>
+.sizeComponent {
+    width: 290px;
+}
+
+.sizeMobileComponent {
+    width: 100%;
+}
+</style>

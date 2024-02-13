@@ -313,7 +313,7 @@ export default {
     />
     <section v-else>
         <section v-if="hasData">
-            <section class="my-6">
+            <section class="mb-6">
                 <StatisticalRotationCardsViewComponent
                     v-if="entity.cardList && entity.cardList.length > 0"
                     :chartData="entity.cardList"

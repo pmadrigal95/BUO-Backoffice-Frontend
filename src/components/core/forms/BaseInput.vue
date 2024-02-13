@@ -185,6 +185,11 @@ export default {
             type: Boolean,
             default: true,
         },
+
+        dense: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
@@ -580,6 +585,7 @@ export default {
                 v-bind="$attrs"
                 v-on="listeners"
                 v-mask="mask"
+                :dense="dense"
                 masked="false"
                 :counter="counter"
                 @change="$_change"
@@ -593,6 +599,7 @@ export default {
         <div v-else>
             <v-text-field
                 :append-icon="appendIcon"
+                :dense="dense"
                 :disabled="disabled"
                 :error-messages="errors"
                 :label="label"

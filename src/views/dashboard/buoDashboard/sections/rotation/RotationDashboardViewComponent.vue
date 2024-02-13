@@ -48,6 +48,7 @@ export default {
 
 <template>
     <BaseAdvancedFilter
+        class="mt-6"
         isDepartment
         isMonth
         requiredMonth
