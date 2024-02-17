@@ -374,7 +374,6 @@ html {
 
 .theme--light.v-tabs .v-tab:hover > p{
     color: #585858 !important;
-    font-weight: 400 !important;
 }
 
 /*Theme dark*/
@@ -384,7 +383,6 @@ html {
 
 .theme--dark.v-tabs.v-tabs .v-tab:hover > p{
     color: #FFFFFF !important;
-    font-weight: 400 !important;
 }
 
 /*Active*/
@@ -394,15 +392,22 @@ html {
 
 .tab-active-blue > p {
     color: #FFFFFF !important;
-    font-weight: 600 !important;
 }
 
-.tab-active-white {
+.theme--light .tab-active-white {
     background-color: #FFFFFF !important;
     border: 1.5px solid #003F5E;
 }
 
-.tab-active-white > p {
+.theme--light .tab-active-white > p {
     color: #282828 !important;
-    font-weight: 600 !important;
+}
+
+.theme--dark .tab-active-white{
+    background-color: #B2C5CF !important;
+    border: 1.5px solid #585858 !important;
+}
+
+.theme--dark .tab-active-white > p {
+    color:white!important;
 }
