@@ -93,7 +93,7 @@ export default {
         <!-- @slot Use este slot para agregar botones -->
         <slot name="buttons"></slot>
 
-        <v-btn icon @click="$_changeTheme">
+        <v-btn icon @click="$_changeTheme" :color="app ? 'white' : 'black'">
             <v-icon>{{
                 app ? 'mdi-weather-sunny' : 'mdi-weather-night'
             }}</v-icon>

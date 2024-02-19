@@ -12,9 +12,6 @@ const NotifierViewComponent = () =>
         '@/views/dashboard/buoDashboard/sections/notifier/NotifierViewComponent'
     );
 
-const HeaderViewComponent = () =>
-    import('@/views/dashboard/components/shared/header/HeaderViewComponent');
-
 const RotationDashboardViewComponent = () =>
     import(
         '@/views/dashboard/buoDashboard/sections/rotation/RotationDashboardViewComponent'
@@ -24,7 +21,6 @@ export default {
     name: 'BUODashboardViewComponent',
 
     components: {
-        HeaderViewComponent,
         NotifierViewComponent,
         RotationDashboardViewComponent,
     },
@@ -98,8 +94,6 @@ export default {
 <template>
     <v-container fluid v-resize="onResize">
         <NotifierViewComponent v-if="!notifier" />
-
-        <HeaderViewComponent class="mb-8 mt-n6 ml-n4" />
 
         <v-tabs v-model="step" left show-arrows height="34">
             <v-tabs-slider color="transparent"></v-tabs-slider>
