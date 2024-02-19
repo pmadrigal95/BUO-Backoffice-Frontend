@@ -602,7 +602,7 @@ export default {
                     $vuetify.breakpoint.mobile ? 'sizeMobileComponent' : 'mx-1',
                 ]"
                 elevation="0"
-                color="primary"
+                :color="app ? 'white' : 'primary'"
                 large
                 outlined
                 :block="$vuetify.breakpoint.mobile"
