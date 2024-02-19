@@ -54,6 +54,41 @@ export default {
             @click="changeStatus"
         ></v-app-bar-nav-icon>
 
+        <v-toolbar-title>
+            <v-layout justify-start align-center>
+                <section>
+                    <v-img
+                        src="https://buo-resources.s3.us-east-2.amazonaws.com/landing/buo/buologoV2.png"
+                        lazy-src="https://buo-resources.s3.us-east-2.amazonaws.com/landing/buo/buologoV2.png"
+                        width="55"
+                        height="30"
+                    >
+                        <template v-slot:placeholder>
+                            <v-row
+                                class="fill-height ma-0"
+                                align="center"
+                                justify="center"
+                            >
+                                <v-progress-circular
+                                    indeterminate
+                                    color="grey lighten-5"
+                                ></v-progress-circular>
+                            </v-row>
+                        </template>
+                    </v-img>
+                </section>
+                <section>
+                    <div
+                        class="BUO-Paragraph-Large"
+                        :class="[app ? 'white--text' : 'blue900--text']"
+                    >
+                        <span class="BUO-Paragraph-Large-SemiBold">HR</span
+                        >Analytics
+                    </div>
+                </section>
+            </v-layout>
+        </v-toolbar-title>
+
         <v-spacer></v-spacer>
         <!-- @slot Use este slot para agregar botones -->
         <slot name="buttons"></slot>
