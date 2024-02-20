@@ -17,17 +17,11 @@ const RotationDashboardViewComponent = () =>
         '@/views/dashboard/buoDashboard/sections/rotation/RotationDashboardViewComponent'
     );
 
-const HomeDashboardViewComponent = () =>
-    import(
-        '@/views/dashboard/buoDashboard/sections/home/HomeDashboardViewComponent'
-    );
-
 export default {
     name: 'BUODashboardViewComponent',
 
     components: {
         NotifierViewComponent,
-        HomeDashboardViewComponent,
         RotationDashboardViewComponent,
     },
 
@@ -102,6 +96,7 @@ export default {
         <v-tabs v-model="step" left show-arrows height="34">
             <v-tabs-slider color="transparent"></v-tabs-slider>
             <v-tab
+                disabled
                 class="rounded-pill no-uppercase mr-3"
                 active-class="tab-active-blue"
                 ><p class="BUO-Label-Small pt-4">Inicio</p>
@@ -134,12 +129,13 @@ export default {
 
         <v-tabs-items v-model="step" class="mx-n2 transparent">
             <v-tab-item>
-                <HomeDashboardViewComponent
+                <!--<HomeDashboardViewComponent
                     :entity="entity"
                     :filter="$_filter"
                     :showFilter="showFilter"
                     :innerWidth="windowSize.x"
                 />
+                -->
             </v-tab-item>
 
             <v-tab-item>
