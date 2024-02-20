@@ -74,6 +74,12 @@ export default {
             type: String,
             default: 'justify-end',
         },
+
+        /*Type alert as: success, info, warning, error or default*/
+        type: {
+            type: String,
+            default: undefined,
+        },
     },
 
     components: {
@@ -82,6 +88,21 @@ export default {
 
     computed: {
         ...mapGetters('theme', ['app']),
+
+        getColorByType() {
+            switch (this.type) {
+                case 'sucess':
+                    return 'greenA900';
+                case 'info':
+                    return 'blueProgress900';
+                case 'warning':
+                    return 'yellowWarning900';
+                case 'error':
+                    return 'redError900';
+                default:
+                    return 'grey700';
+            }
+        },
     },
 
     methods: {
@@ -102,7 +123,9 @@ export default {
                 <section class="flex-grow-0 flex-shrink-0">
                     <strong
                         class="pr-4 BUO-Display-XSmall"
-                        :class="[app ? 'blue900--text' : 'grey700--text']"
+                        :class="[
+                            app ? 'cloud--text' : getColorByType + '--text',
+                        ]"
                         >{{ this.subtitle }}</strong
                     >
                 </section>
@@ -113,9 +136,7 @@ export default {
                     }}</v-icon>
                     <p
                         class="BUO-Label-XSmall"
-                        :class="[
-                            app ? 'blueProgress600--text' : 'grey700--text',
-                        ]"
+                        :class="[app ? 'white--text' : 'grey700--text']"
                     >
                         {{ this.description }}
                     </p>
