@@ -313,7 +313,7 @@ export default {
                     >
                     <v-btn
                         class="mt-3 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                        color="primary"
+                        :color="app ? 'white' : 'primary'"
                         elevation="0"
                         outlined
                         :large="isLarge"
@@ -370,6 +370,7 @@ export default {
                     class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                     elevation="0"
                     outlined
+                    :color="app ? 'white' : 'primary'"
                     :large="isLarge"
                     :small="isSmall"
                     @click="$_Cancel"

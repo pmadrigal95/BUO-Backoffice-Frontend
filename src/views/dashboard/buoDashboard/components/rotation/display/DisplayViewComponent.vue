@@ -13,6 +13,9 @@ import BaseArrayHelper from '@/helpers/baseArrayHelper';
 const BaseNotFoundContent = () =>
     import('@/components/core/cards/BaseNotFoundContent');
 
+const HeaderViewComponent = () =>
+    import('@/views/dashboard/components/shared/header/HeaderViewComponent');
+
 const ReasonProgressViewComponent = () =>
     import(
         '@/views/dashboard/buoDashboard/components/rotation/chart/wordsChart/ReasonProgressViewComponent'
@@ -80,6 +83,7 @@ export default {
 
     components: {
         BaseNotFoundContent,
+        HeaderViewComponent,
         BenefitViewComponent,
         RotationViewComponent,
         ReasonProgressViewComponent,
@@ -313,102 +317,107 @@ export default {
     />
     <section v-else>
         <section v-if="hasData">
-            <section class="mb-6">
-                <StatisticalRotationCardsViewComponent
-                    v-if="entity.cardList && entity.cardList.length > 0"
-                    :chartData="entity.cardList"
-                    height="auto"
-                    width="auto"
-                />
+            <section class="mx-4">
+                <HeaderViewComponent title="Rotación" />
+                <section class="mb-6">
+                    <StatisticalRotationCardsViewComponent
+                        v-if="entity.cardList && entity.cardList.length > 0"
+                        :chartData="entity.cardList"
+                        height="auto"
+                        width="auto"
+                    />
+                </section>
+                <v-row>
+                    <v-col cols="12" md="12" v-if="entity.historicUser">
+                        <HistoricalRotationChartComponent
+                            :chartData="entity.historicUser"
+                        />
+                    </v-col>
+
+                    <v-col
+                        cols="12"
+                        :md="departmentRotationSize"
+                        v-if="
+                            entity.departmentRotation &&
+                            entity.departmentRotation.length > 0
+                        "
+                    >
+                        <RotationViewComponent
+                            :chartData="entity.departmentRotation"
+                        />
+                    </v-col>
+
+                    <v-col
+                        cols="12"
+                        :md="quantityDispersionSize"
+                        v-if="entity.quantityDispersion"
+                    >
+                        <EmployeeDeparturesChartComponent
+                            :chartData="entity.quantityDispersion"
+                        />
+                    </v-col>
+
+                    <v-col
+                        cols="12"
+                        :md="reasonProgressSize"
+                        v-if="
+                            entity.reasonProgress &&
+                            entity.reasonProgress.length > 0
+                        "
+                    >
+                        <ReasonProgressViewComponent
+                            :chartData="entity.reasonProgress"
+                        />
+                    </v-col>
+
+                    <v-col
+                        cols="12"
+                        :md="managersPieSize"
+                        v-if="entity.managersPie"
+                    >
+                        <ManagersRotationChartComponent
+                            :chartData="entity.managersPie"
+                        />
+                    </v-col>
+
+                    <v-col cols="12" :md="exitPieSize" v-if="entity.exitPie">
+                        <ExitInterviewsChartComponent
+                            :chartData="entity.exitPie"
+                        />
+                    </v-col>
+
+                    <v-col
+                        cols="12"
+                        :md="perksSize"
+                        v-if="entity.perks && entity.perks.length > 0"
+                    >
+                        <BenefitViewComponent :chartData="entity.perks" />
+                    </v-col>
+
+                    <v-col
+                        cols="12"
+                        :md="tenureProgressSize"
+                        v-if="
+                            entity.tenureProgress &&
+                            entity.tenureProgress.length > 0
+                        "
+                    >
+                        <DesertionSeniorityViewComponent
+                            :chartData="entity.tenureProgress"
+                        />
+                    </v-col>
+
+                    <v-col
+                        cols="12"
+                        :md="personalitiesSize"
+                        v-if="entity.personalities"
+                    >
+                        <AscendingPersonalitiesChartComponent
+                            :chartData="entity.personalities"
+                        />
+                    </v-col>
+                </v-row>
             </section>
-            <v-row>
-                <v-col cols="12" md="12" v-if="entity.historicUser">
-                    <HistoricalRotationChartComponent
-                        :chartData="entity.historicUser"
-                    />
-                </v-col>
-
-                <v-col
-                    cols="12"
-                    :md="departmentRotationSize"
-                    v-if="
-                        entity.departmentRotation &&
-                        entity.departmentRotation.length > 0
-                    "
-                >
-                    <RotationViewComponent
-                        :chartData="entity.departmentRotation"
-                    />
-                </v-col>
-
-                <v-col
-                    cols="12"
-                    :md="quantityDispersionSize"
-                    v-if="entity.quantityDispersion"
-                >
-                    <EmployeeDeparturesChartComponent
-                        :chartData="entity.quantityDispersion"
-                    />
-                </v-col>
-
-                <v-col
-                    cols="12"
-                    :md="reasonProgressSize"
-                    v-if="
-                        entity.reasonProgress &&
-                        entity.reasonProgress.length > 0
-                    "
-                >
-                    <ReasonProgressViewComponent
-                        :chartData="entity.reasonProgress"
-                    />
-                </v-col>
-
-                <v-col
-                    cols="12"
-                    :md="managersPieSize"
-                    v-if="entity.managersPie"
-                >
-                    <ManagersRotationChartComponent
-                        :chartData="entity.managersPie"
-                    />
-                </v-col>
-
-                <v-col cols="12" :md="exitPieSize" v-if="entity.exitPie">
-                    <ExitInterviewsChartComponent :chartData="entity.exitPie" />
-                </v-col>
-
-                <v-col
-                    cols="12"
-                    :md="perksSize"
-                    v-if="entity.perks && entity.perks.length > 0"
-                >
-                    <BenefitViewComponent :chartData="entity.perks" />
-                </v-col>
-
-                <v-col
-                    cols="12"
-                    :md="tenureProgressSize"
-                    v-if="
-                        entity.tenureProgress &&
-                        entity.tenureProgress.length > 0
-                    "
-                >
-                    <DesertionSeniorityViewComponent
-                        :chartData="entity.tenureProgress"
-                    />
-                </v-col>
-
-                <v-col
-                    cols="12"
-                    :md="personalitiesSize"
-                    v-if="entity.personalities"
-                >
-                    <AscendingPersonalitiesChartComponent
-                        :chartData="entity.personalities"
-                    />
-                </v-col>
-            </v-row>
         </section>
         <BaseNotFoundContent
             v-else
