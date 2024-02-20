@@ -339,7 +339,7 @@ html {
 .theme--light.v-tabs .v-tab:not(.v-tab--active){
     opacity: 1 !important;
     background-color: #F8F8F8 !important;
-    border: none;
+    border: 0.5px solid #EEEEEE !important;
 }
 
 .theme--light.v-tabs .v-tab:not(.v-tab--active) > p ,.v-tab > p{
@@ -370,6 +370,7 @@ html {
 /*Theme light*/
 .theme--light.v-tabs .v-tab:hover{
     background-color: #FFFFFF !important; 
+    border: 0.5px solid #EEEEEE !important;
 }
 
 .theme--light.v-tabs .v-tab:hover > p{
@@ -409,5 +410,5 @@ html {
 }
 
 .theme--dark .tab-active-white > p {
-    color:white!important;
+    color:#282828 ! important;
 }
