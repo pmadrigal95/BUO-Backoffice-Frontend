@@ -79,6 +79,11 @@ export default {
             default: false,
         },
 
+        colorBotton: {
+            type: String,
+            default: 'blue900',
+        },
+
         position: {
             type: String,
             default: 'start',
@@ -204,7 +209,7 @@ export default {
                     <v-btn
                         class="no-uppercase rounded-lg BUO-Label-XSmall-SemiBold lighten-2"
                         text
-                        color="blue800"
+                        :color="colorBotton"
                         :to="to && { name: to }"
                     >
                         <div v-if="btnRequired">

@@ -599,12 +599,10 @@ export default {
             <v-btn
                 class="no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                 :class="[
-                    $vuetify.breakpoint.smAndDown
-                        ? 'sizeMobileComponent'
-                        : 'mx-1',
+                    $vuetify.breakpoint.mobile ? 'sizeMobileComponent' : 'mx-1',
                 ]"
                 elevation="0"
-                color="primary"
+                :color="app ? 'white' : 'primary'"
                 large
                 outlined
                 :block="$vuetify.breakpoint.mobile"
@@ -617,7 +615,7 @@ export default {
             <v-btn
                 class="no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
                 :class="[
-                    $vuetify.breakpoint.smAndDown
+                    $vuetify.breakpoint.mobile
                         ? 'my-4 sizeMobileComponent'
                         : 'mx-1',
                 ]"

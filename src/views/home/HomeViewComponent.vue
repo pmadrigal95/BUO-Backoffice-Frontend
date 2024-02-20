@@ -56,12 +56,14 @@ export default {
                     ? 'BUO-Paragraph-Small-SemiBold black--text'
                     : 'BUO-Paragraph-Medium-SemiBold black--text',
                 fontTypeDescription: this.app
-                    ? 'BUO-Paragraph-Small blueProgress600--text'
+                    ? 'BUO-Paragraph-Small white--text'
                     : 'BUO-Paragraph-Small grey600--text',
                 width: '325',
                 heigh: '200',
                 centerBotton: true,
                 centerIcon: true,
+                iconColor: this.app ? 'blue600' : 'blue900',
+                colorBotton: this.app ? 'blue600' : 'blue900',
                 large: true,
             };
         },
@@ -138,6 +140,12 @@ export default {
                                         <BaseCardMenuViewComponent
                                             class="ma-4"
                                             :icon="item.icono"
+                                            :iconColor="
+                                                componentProps.iconColor
+                                            "
+                                            :colorBotton="
+                                                componentProps.colorBotton
+                                            "
                                             :to="item.rutaURL"
                                             :subtitle="item.nombreUI"
                                             :positionSubtitle="
@@ -181,6 +189,10 @@ export default {
                                 >
                                     <BaseCardMenuViewComponent
                                         :icon="item.icono"
+                                        :iconColor="componentProps.iconColor"
+                                        :colorBotton="
+                                            componentProps.colorBotton
+                                        "
                                         :to="item.rutaURL"
                                         :subtitle="item.nombreUI"
                                         min-width="100%"

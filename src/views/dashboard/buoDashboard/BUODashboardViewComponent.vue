@@ -12,9 +12,6 @@ const NotifierViewComponent = () =>
         '@/views/dashboard/buoDashboard/sections/notifier/NotifierViewComponent'
     );
 
-const HeaderViewComponent = () =>
-    import('@/views/dashboard/components/shared/header/HeaderViewComponent');
-
 const RotationDashboardViewComponent = () =>
     import(
         '@/views/dashboard/buoDashboard/sections/rotation/RotationDashboardViewComponent'
@@ -24,7 +21,6 @@ export default {
     name: 'BUODashboardViewComponent',
 
     components: {
-        HeaderViewComponent,
         NotifierViewComponent,
         RotationDashboardViewComponent,
     },
@@ -41,8 +37,6 @@ export default {
     },
 
     computed: {
-        ...mapGetters('theme', ['app']),
-
         ...mapGetters('dashboard', ['notifier', 'filter', 'showFilter']),
 
         $_filter() {
@@ -99,62 +93,50 @@ export default {
     <v-container fluid v-resize="onResize">
         <NotifierViewComponent v-if="!notifier" />
 
-        <HeaderViewComponent class="mb-8 mt-n6 ml-n4" />
-
         <v-tabs v-model="step" left show-arrows height="34">
             <v-tabs-slider color="transparent"></v-tabs-slider>
             <v-tab
                 disabled
-                :class="`rounded-pill no-uppercase mr-3 ${
-                    app
-                        ? 'bg-tab-idle-dark black--text BUO-Display-Large'
-                        : 'bg-tab-idle-clear grey600--text'
-                }`"
-                active-class="bg-tab-active white--text"
+                class="rounded-pill no-uppercase mr-3"
+                active-class="tab-active-blue"
                 ><p class="BUO-Label-Small pt-4">Inicio</p>
             </v-tab>
             <v-tab
-                :class="`rounded-pill no-uppercase mr-3 ${
-                    app
-                        ? 'bg-tab-idle-dark black--text BUO-Display-Large'
-                        : 'bg-tab-idle-clear grey600--text'
-                }`"
-                active-class="bg-tab-active white--text"
+                class="rounded-pill no-uppercase mr-3"
+                active-class="tab-active-blue"
                 ><p class="BUO-Label-Small pt-4">Rotación</p>
             </v-tab>
             <v-tab
                 disabled
-                :class="`rounded-pill no-uppercase mr-3 ${
-                    app
-                        ? 'bg-tab-idle-dark black--text'
-                        : 'bg-tab-idle-clear grey600--text'
-                }`"
-                active-class="bg-tab-active white--text"
+                class="rounded-pill no-uppercase mr-3"
+                active-class="tab-active-blue"
                 ><p class="BUO-Label-Small pt-4">Desempeño</p>
             </v-tab>
             <v-tab
                 disabled
-                :class="`rounded-pill no-uppercase mr-3 ${
-                    app
-                        ? 'bg-tab-idle-dark black--text'
-                        : 'bg-tab-idle-clear grey600--text'
-                }`"
-                active-class="bg-tab-active white--text"
+                class="rounded-pill no-uppercase mr-3"
+                active-class="tab-active-blue"
                 ><p class="BUO-Label-Small pt-4">Crecimiento</p>
             </v-tab>
             <v-tab
                 disabled
-                :class="`rounded-pill no-uppercase mr-3 ${
-                    app ? 'bg-tab-idle-dark' : 'bg-tab-idle-clear'
-                }`"
-                active-class="bg-tab-active white--text"
+                class="rounded-pill no-uppercase mr-3"
+                active-class="tab-active-blue"
             >
                 <v-icon small> mdi mdi-plus </v-icon>
             </v-tab>
         </v-tabs>
 
         <v-tabs-items v-model="step" class="mx-n2 transparent">
-            <v-tab-item> </v-tab-item>
+            <v-tab-item>
+                <!--<HomeDashboardViewComponent
+                    :entity="entity"
+                    :filter="$_filter"
+                    :showFilter="showFilter"
+                    :innerWidth="windowSize.x"
+                />
+                -->
+            </v-tab-item>
 
             <v-tab-item>
                 <RotationDashboardViewComponent

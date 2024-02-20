@@ -74,6 +74,12 @@ export default {
             type: String,
             default: 'justify-end',
         },
+
+        /*Type alert as: success, info, warning, error or default*/
+        type: {
+            type: String,
+            default: undefined,
+        },
     },
 
     components: {
@@ -82,6 +88,45 @@ export default {
 
     computed: {
         ...mapGetters('theme', ['app']),
+
+        settingsByType() {
+            switch (this.type) {
+                case 'success':
+                    return {
+                        color: 'greenA900',
+                        borderStyle: 'border-success',
+                        icon: 'check-circle-outline',
+                        showIcon: true,
+                    };
+                case 'info':
+                    return {
+                        color: 'blueProgress900',
+                        borderStyle: 'border-info',
+                        icon: 'information-outline',
+                        showIcon: true,
+                    };
+                case 'warning':
+                    return {
+                        color: 'yellowWarning900',
+                        borderStyle: 'border-warning',
+                        icon: 'alert-outline',
+                        showIcon: true,
+                    };
+
+                case 'error':
+                    return {
+                        color: 'redError900',
+                        borderStyle: 'border-error',
+                        icon: 'alert-octagon-outline',
+                        showIcon: true,
+                    };
+                default:
+                    return {
+                        color: 'grey700',
+                        showIcon: false,
+                    };
+            }
+        },
     },
 
     methods: {
@@ -93,7 +138,14 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent :title="title" :fnCallback="fnCard">
+    <BaseCardViewComponent
+        :title="title"
+        :fnCallback="fnCard"
+        :class="settingsByType.borderStyle"
+        :icon="settingsByType.icon"
+        :iconColor="settingsByType.color"
+        :showIcon="settingsByType.showIcon"
+    >
         <div slot="card-text">
             <section
                 class="d-flex"
@@ -102,7 +154,11 @@ export default {
                 <section class="flex-grow-0 flex-shrink-0">
                     <strong
                         class="pr-4 BUO-Display-XSmall"
-                        :class="[app ? 'blue900--text' : 'grey700--text']"
+                        :class="[
+                            app
+                                ? 'cloud--text'
+                                : settingsByType.color + '--text',
+                        ]"
                         >{{ this.subtitle }}</strong
                     >
                 </section>
@@ -113,9 +169,7 @@ export default {
                     }}</v-icon>
                     <p
                         class="BUO-Label-XSmall"
-                        :class="[
-                            app ? 'blueProgress600--text' : 'grey700--text',
-                        ]"
+                        :class="[app ? 'white--text' : 'grey700--text']"
                     >
                         {{ this.description }}
                     </p>
@@ -135,3 +189,21 @@ export default {
         </div>
     </BaseCardViewComponent>
 </template>
+
+<style scoped>
+.border-success {
+    border: 1px solid #6dc629;
+}
+
+.border-info {
+    border: 1px solid #174b89;
+}
+
+.border-warning {
+    border: 1px solid #ffac00;
+}
+
+.border-error {
+    border: 1px solid #dc3127;
+}
+</style>

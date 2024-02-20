@@ -291,14 +291,6 @@ html {
 * Custom Vuetify Components
 */
 
-/*Event for active*/
-.v-tab--active {
-    border: 2px solid #003f5e;
-}
-
-.v-tabs-bar {
-    background-color: transparent !important;
-}
 
 /*
 * Progress Bar Request API
@@ -337,14 +329,86 @@ html {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
 
-/*Background tabs*/
-.bg-tab-idle-clear {
-    background-color: #ffffff;
+/*Setting tabs*/
+.v-tabs-bar {
+    background-color: transparent !important;
 }
-.bg-tab-active {
+
+/*Inactive or disabled*/
+/*Theme light*/
+.theme--light.v-tabs .v-tab:not(.v-tab--active){
+    opacity: 1 !important;
+    background-color: #F8F8F8 !important;
+    border: 0.5px solid #EEEEEE !important;
+}
+
+.theme--light.v-tabs .v-tab:not(.v-tab--active) > p ,.v-tab > p{
+    color: #585858 !important;
+}
+
+/*Theme dark*/
+.theme--dark.v-tabs .v-tab:not(.v-tab--active){
+    opacity: 1 !important;
+    background-color: #1e1e1e !important;
+    border: 1.5px solid #585858 !important;
+}
+
+.theme--dark.v-tabs .v-tab:not(.v-tab--active) > p ,.v-tab > p{
+    color: #FFFFFF !important;
+}
+
+/*Opacity hover and focus*/
+.v-tabs .v-tab:focus::before {
+    opacity: 0 !important;
+}
+
+.v-tabs .v-tab:hover::before, ::after
+{
+    opacity: 0 !important;
+}
+
+/*Theme light*/
+.theme--light.v-tabs .v-tab:hover{
+    background-color: #FFFFFF !important; 
+    border: 0.5px solid #EEEEEE !important;
+}
+
+.theme--light.v-tabs .v-tab:hover > p{
+    color: #585858 !important;
+}
+
+/*Theme dark*/
+.theme--dark.v-tabs .v-tab:hover{
+    background-color: #4C798E !important; 
+}
+
+.theme--dark.v-tabs.v-tabs .v-tab:hover > p{
+    color: #FFFFFF !important;
+}
+
+/*Active*/
+.tab-active-blue {
     background-color: #003f5e !important;
 }
 
-.bg-tab-idle-dark {
-    background-color: #b9c9dc;
+.tab-active-blue > p {
+    color: #FFFFFF !important;
+}
+
+.theme--light .tab-active-white {
+    background-color: #FFFFFF !important;
+    border: 1.5px solid #003F5E;
+}
+
+.theme--light .tab-active-white > p {
+    color: #282828 !important;
+}
+
+.theme--dark .tab-active-white{
+    background-color: #B2C5CF !important;
+    border: 1.5px solid #585858 !important;
+}
+
+.theme--dark .tab-active-white > p {
+    color:#282828 ! important;
 }
