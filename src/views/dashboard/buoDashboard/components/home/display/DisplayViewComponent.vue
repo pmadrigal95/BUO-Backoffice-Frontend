@@ -5,6 +5,8 @@
  * @displayName DisplayViewComponent
  *
  */
+const HeaderViewComponent = () =>
+    import('@/views/dashboard/components/shared/header/HeaderViewComponent');
 
 const StatisticalHomeCardsViewComponent = () =>
     import(
@@ -15,6 +17,7 @@ export default {
     name: 'DisplayViewComponent',
 
     components: {
+        HeaderViewComponent,
         StatisticalHomeCardsViewComponent,
     },
 
@@ -55,9 +58,12 @@ export default {
 </script>
 
 <template>
-    <StatisticalHomeCardsViewComponent
-        :chartData="cardList"
-        height="171"
-        width="297"
-    />
+    <section>
+        <HeaderViewComponent title="Home" />
+        <StatisticalHomeCardsViewComponent
+            :chartData="cardList"
+            height="171"
+            width="297"
+        />
+    </section>
 </template>
