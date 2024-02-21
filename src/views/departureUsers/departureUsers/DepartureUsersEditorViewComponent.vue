@@ -22,14 +22,10 @@ const BaseCardViewComponent = () =>
 const BaseInputDataTable = () =>
     import('@/components/core/forms/BaseInputDataTable');
 
-const BaseInputTreeview = () =>
-    import('@/components/core/treeview/BaseInputTreeview');
-
 export default {
     name: 'DepartureUsersEditorViewComponent',
 
     components: {
-        BaseInputTreeview,
         BaseInputDataTable,
         BaseCardViewComponent,
     },
@@ -45,7 +41,11 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
-        ...mapGetters('filters', ['advfiltersBypageView', 'dialogViewById']),
+        ...mapGetters('filters', [
+            'advfiltersBypageView',
+            'dialogViewById',
+            'pageViewById',
+        ]),
 
         companyDialogView() {
             return this.dialogViewById('companyDialog');
@@ -53,6 +53,10 @@ export default {
 
         userDialogView() {
             return this.dialogViewById('userDialog');
+        },
+
+        departureReasonTypeDialogView() {
+            return this.pageViewById('DepartureReasonTypeFilter');
         },
 
         /**
@@ -83,9 +87,23 @@ export default {
             return baseFilterSettingsHelper.$_setUserSetting({
                 companyId: this.user.companyId,
                 isFilter: true,
-                singleSelect: false,
+                singleSelect: true,
                 list: this.advfiltersBypageView(this.userDialogView),
                 pageView: this.userDialogView,
+            });
+        },
+
+        /**
+         * Configuracion BaseServerDataTable
+         */
+        departureReasonTypeSetting() {
+            return baseFilterSettingsHelper.$_setDepartureReasonTypeSetting({
+                isFilter: true,
+                singleSelect: true,
+                list: this.advfiltersBypageView(
+                    this.departureReasonTypeDialogView
+                ),
+                pageView: this.departureReasonTypeDialogView,
             });
         },
     },
@@ -119,6 +137,13 @@ export default {
             });
         },
 
+        $_setDepartureReasonTypeFilter() {
+            baseDataTableColumnsHelper.$_setDepartureReasonTypeColumns({
+                pageView: this.departureReasonTypeDialogView,
+                companyId: this.user.companyId,
+            });
+        },
+
         $_setUserFilter() {
             baseDataTableColumnsHelper.$_setUserColumns({
                 companyId: this.user.companyId,
@@ -134,13 +159,11 @@ export default {
                 id: undefined,
                 descripcion: undefined,
                 tipoRazonSalidaId: undefined,
-                nombreRazonSalida: undefined,
-                estadoId: 2,
+                nombreTipoRazonSalida: undefined,
                 organizacionId: undefined,
                 nombreOrganizacion: undefined,
                 nombreUsuario: undefined,
                 usuarioId: undefined,
-                usuarioModificaId: undefined,
             };
         },
 
@@ -156,7 +179,7 @@ export default {
             if (data) {
                 //HttpServices a la vista para obtener Vista
                 this.loading = true;
-                httpService.get(`prueba/${data}`).then((response) => {
+                httpService.get(`salidaUsuario/${data}`).then((response) => {
                     this.loading = false;
                     if (response != undefined) {
                         // Encontro la entidad
@@ -174,14 +197,16 @@ export default {
             this.$_setToUser();
             let object = BaseArrayHelper.SetObject({}, this.entity);
 
-            httpService.post('prueba/save', object).then((response) => {
-                this.loading = false;
+            httpService
+                .post('salidaUsuario/saveForm', object)
+                .then((response) => {
+                    this.loading = false;
 
-                if (response != undefined) {
-                    //Logica JS luego de la acción exitosa!!!
-                    this.$_returnToFilter();
-                }
-            });
+                    if (response != undefined) {
+                        //Logica JS luego de la acción exitosa!!!
+                        this.$_returnToFilter();
+                    }
+                });
         },
 
         /**
@@ -238,17 +263,22 @@ export default {
                                 v-model="entity.usuarioId"
                                 :key="componentKey"
                                 :fnResetConfig="$_setUserFilter"
+                                :validate="['requiered']"
                             />
                         </v-col>
                         <v-col cols="12">
-                            <BaseInputTreeview
+                            <BaseInputDataTable
                                 label="Tipo de razón de salida"
-                                v-model.number="entity.tipoRazonSalidaId"
+                                v-if="departureReasonTypeSetting"
+                                :pageView="departureReasonTypeDialogView"
+                                :setting="departureReasonTypeSetting"
+                                :extraParams="extraParams"
                                 itemText="nombre"
-                                itemChildren="subTipos"
-                                :editText="entity.nombreRazonSalida"
-                                :endpoint="`tipoPrueba/findAllTreeForm/${entity.organizacionId}`"
-                                :readonly="!entity.organizacionId"
+                                :readonly="extraParams.length == 0"
+                                :editText="entity.nombreTipoRazonSalida"
+                                v-model="entity.tipoRazonSalidaId"
+                                :key="componentKey"
+                                :fnResetConfig="$_setDepartureReasonTypeFilter"
                                 :validate="['requiered']"
                             />
                         </v-col>
@@ -256,9 +286,10 @@ export default {
                             <BaseTextArea
                                 label="Descripción"
                                 v-model.trim="entity.descripcion"
-                                :validate="['optionalText']"
-                                :max="200"
-                                counter="200"
+                                :validate="['text']"
+                                :max="2000"
+                                counter="2000"
+                                rows="6"
                             />
                         </v-col>
                     </v-row>

@@ -670,7 +670,7 @@ const assessmentTypeColumns = (isBuoUser, isFilter) => {
 /**
  * Configuracion BaseServerDataTable
  */
-const departureUsersColumns = (isBuoUser, isFilter) => {
+const departureUsersColumns = (isBuoUser) => {
     return [
         {
             text: 'Empresa',
@@ -679,21 +679,15 @@ const departureUsersColumns = (isBuoUser, isFilter) => {
             show: isBuoUser,
         },
         {
-            text: 'Departamento',
+            text: 'Colaborador',
             align: 'start',
-            value: 'nombreDepartamento',
-            show: false,
+            value: 'nombreUsuario',
+            show: true,
         },
         {
-            text: 'Nivel Superior',
+            text: 'Tipo de Salida',
             align: 'start',
-            value: 'nombrePadre',
-            show: isFilter ? false : true,
-        },
-        {
-            text: 'Nombre',
-            align: 'start',
-            value: 'nombre',
+            value: 'nombreTipoRazonSalida',
             show: true,
         },
         {
@@ -703,23 +697,9 @@ const departureUsersColumns = (isBuoUser, isFilter) => {
             show: false,
         },
         {
-            text: 'Interna',
-            type: 'bool',
-            align: 'center',
-            value: 'esInterna',
-            show: isBuoUser,
-        },
-        {
-            text: 'Estado',
-            align: 'center',
-            type: 'chip',
-            value: 'nombreEstado',
-            show: false,
-        },
-        {
-            text: 'Creado Por',
+            text: 'Fecha Creación',
             align: 'start',
-            value: 'nombreUsuarioCrea',
+            value: 'fechaCreacionFormato',
             show: false,
         },
     ];
@@ -728,7 +708,7 @@ const departureUsersColumns = (isBuoUser, isFilter) => {
 /**
  * Configuracion BaseServerDataTable
  */
-const departureReasonTypeColumns = (isBuoUser, isFilter) => {
+const departureReasonTypeColumns = (isBuoUser) => {
     return [
         {
             text: 'Empresa',
@@ -737,47 +717,22 @@ const departureReasonTypeColumns = (isBuoUser, isFilter) => {
             show: isBuoUser,
         },
         {
-            text: 'Departamento',
-            align: 'start',
-            value: 'nombreDepartamento',
-            show: false,
-        },
-        {
-            text: 'Nivel Superior',
-            align: 'start',
-            value: 'nombrePadre',
-            show: isFilter ? false : true,
-        },
-        {
             text: 'Nombre',
             align: 'start',
             value: 'nombre',
             show: true,
         },
         {
-            text: 'Descripción',
-            align: 'start',
-            value: 'descripcion',
-            show: false,
-        },
-        {
-            text: 'Interna',
-            type: 'bool',
-            align: 'center',
-            value: 'esInterna',
-            show: isBuoUser,
-        },
-        {
             text: 'Estado',
             align: 'center',
             type: 'chip',
             value: 'nombreEstado',
-            show: false,
+            show: true,
         },
         {
-            text: 'Creado Por',
+            text: 'Fecha Creación',
             align: 'start',
-            value: 'nombreUsuarioCrea',
+            value: 'fechaCreacionFormato',
             show: false,
         },
     ];
@@ -1257,7 +1212,7 @@ export const baseFilterColumnsHelper = {
      * Configuracion BaseServerDataTable
      */
     $_setDepartureUsersColumns({ isFilter, pageView, isBuoUser }) {
-        const columns = departureUsersColumns(isBuoUser, isFilter);
+        const columns = departureUsersColumns(isBuoUser);
         setUpCache({ pageView, columns, isFilter });
         return columns;
     },
@@ -1266,7 +1221,7 @@ export const baseFilterColumnsHelper = {
      * Configuracion BaseServerDataTable
      */
     $_setDepartureReasonTypeColumns({ isFilter, pageView, isBuoUser }) {
-        const columns = departureReasonTypeColumns(isBuoUser, isFilter);
+        const columns = departureReasonTypeColumns(isBuoUser);
         setUpCache({ pageView, columns, isFilter });
         return columns;
     },

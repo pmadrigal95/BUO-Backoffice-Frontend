@@ -113,7 +113,7 @@ export default {
             if (data) {
                 //HttpServices a la vista para obtener Vista
                 this.loading = true;
-                httpService.get(`tipoPrueba/${data}`).then((response) => {
+                httpService.get(`tipoRazonSalida/${data}`).then((response) => {
                     this.loading = false;
                     if (response != undefined) {
                         // Encontro la entidad
@@ -131,14 +131,16 @@ export default {
             this.$_setToUser();
             let object = BaseArrayHelper.SetObject({}, this.entity);
 
-            httpService.post('tipoPrueba/save', object).then((response) => {
-                this.loading = false;
+            httpService
+                .post('tipoRazonSalida/saveForm', object)
+                .then((response) => {
+                    this.loading = false;
 
-                if (response != undefined) {
-                    //Logica JS luego de la acción exitosa!!!
-                    this.$_returnToFilter();
-                }
-            });
+                    if (response != undefined) {
+                        //Logica JS luego de la acción exitosa!!!
+                        this.$_returnToFilter();
+                    }
+                });
         },
 
         /**

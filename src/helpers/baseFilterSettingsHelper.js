@@ -250,7 +250,7 @@ const assessmentTypeSetting = ({ key, singleSelect, columns }) => {
  */
 const departureUsersSetting = ({ key, singleSelect, columns }) => {
     return {
-        endpoint: 'tipoPrueba/findBy',
+        endpoint: 'salidaUsuario/findBy',
         columns: columns,
         key: key ? key : 'id',
         singleSelect: singleSelect,
@@ -263,7 +263,7 @@ const departureUsersSetting = ({ key, singleSelect, columns }) => {
  */
 const departureReasonTypeSetting = ({ key, singleSelect, columns }) => {
     return {
-        endpoint: 'tipoPrueba/findBy',
+        endpoint: 'tipoRazonSalida/findBy',
         columns: columns,
         key: key ? key : 'id',
         singleSelect: singleSelect,

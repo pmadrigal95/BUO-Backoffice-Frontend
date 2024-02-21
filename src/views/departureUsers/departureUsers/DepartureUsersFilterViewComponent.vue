@@ -84,23 +84,11 @@ export default {
         },
 
         /**
-         * Body Request
-         */
-        $_createBodyRequestDelete(row) {
-            return {
-                userId: this.user.userId,
-                id: row[0].id,
-            };
-        },
-        /**
          * Delete Function
          */
         $_fnDelete(row) {
             httpService
-                .post(
-                    '/tipoPrueba/deactivate',
-                    this.$_createBodyRequestDelete(row)
-                )
+                .delete(`/salidaUsuario/${row[0].id}`)
                 .then((response) => {
                     if (response != undefined) {
                         this.$refs[this.pageView].$_ParamsToAPI();

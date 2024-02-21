@@ -97,7 +97,7 @@ export default {
         $_fnDelete(row) {
             httpService
                 .post(
-                    '/tipoPrueba/deactivate',
+                    '/tipoRazonSalida/deactivate',
                     this.$_createBodyRequestDelete(row)
                 )
                 .then((response) => {
