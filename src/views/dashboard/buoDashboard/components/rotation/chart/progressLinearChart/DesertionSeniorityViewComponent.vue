@@ -29,5 +29,6 @@ export default {
     <ProgressLinearComponent
         title="Antigüedad de deserción (años)"
         :list="chartData"
+        color="darkGreen"
     />
 </template>

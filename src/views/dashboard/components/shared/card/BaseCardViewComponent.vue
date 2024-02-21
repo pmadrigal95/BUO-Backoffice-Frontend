@@ -34,7 +34,7 @@ export default {
 
         showIcon: {
             type: Boolean,
-            default: true,
+            default: false,
         },
 
         fnCallback: {
@@ -57,9 +57,10 @@ export default {
             v-if="title"
         >
             {{ title }}
-            <v-layout justify-end align-end v-if="showIcon">
+            <v-layout justify-end align-end>
                 <slot name="top-actions"></slot>
                 <v-btn
+                    v-if="showIcon"
                     icon
                     :color="app ? 'clouds' : iconColor"
                     @click="fnCallback"

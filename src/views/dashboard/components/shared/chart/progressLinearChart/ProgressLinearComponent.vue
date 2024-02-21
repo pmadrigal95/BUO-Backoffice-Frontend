@@ -9,9 +9,7 @@
 import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
 
 const BaseCardViewComponent = () =>
-    import(
-        '@/views/dashboard/components/shared/card/BaseCardViewComponent'
-    );
+    import('@/views/dashboard/components/shared/card/BaseCardViewComponent');
 
 export default {
     name: 'ProgressLinearComponent',
@@ -36,6 +34,26 @@ export default {
             type: Boolean,
             default: true,
         },
+
+        color: {
+            type: String,
+            default: 'lightBlue',
+        },
+
+        isOnlyChart: {
+            type: Boolean,
+            default: true,
+        },
+
+        chartColumns: {
+            type: [Number, String],
+            default: 12,
+        },
+
+        contentColumns: {
+            type: [Number, String],
+            default: 12,
+        },
     },
 
     components: { BaseCardViewComponent },
@@ -56,8 +74,9 @@ export default {
         },
 
         $_setColor(index) {
-            const color =
-                baseDataVisualizationColorsHelper.$_getColorByName('lightBlue');
+            const color = baseDataVisualizationColorsHelper.$_getColorByName(
+                this.color
+            );
 
             if (this.showValue) return color.main;
 
@@ -89,38 +108,50 @@ export default {
 <template>
     <BaseCardViewComponent :title="title" :subtitle="subtitle">
         <div slot="card-text">
-            <v-list dense v-if="maxValue">
-                <v-list-item v-for="(item, i) in list" :key="i">
-                    <v-list-item-content>
-                        <v-list-item-title>
-                            <section
-                                class="d-flex flex-no-wrap justify-space-between buo-word-break mb-2"
-                            >
-                                <span
-                                    class="BUO-Paragraph-Small buo-word-break buo-white-space grey600--text"
-                                >
-                                    {{ item.name }}
-                                </span>
-                                <span
-                                    class="BUO-Paragraph-Small buo-word-break buo-white-space grey600--text"
-                                    v-if="showValue"
-                                >
-                                    {{ item.value }}
-                                </span>
-                            </section>
-                            <v-progress-linear
-                                rounded
-                                height="9"
-                                :value="$_getPercentage(item.value)"
-                                :background-color="
-                                    showValue ? undefined : 'white'
-                                "
-                                :color="$_setColor(i)"
-                            />
-                        </v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
+            <v-row>
+                <v-col cols="12" :md="chartColumns" align-self="center">
+                    <v-list dense v-if="maxValue">
+                        <v-list-item v-for="(item, i) in list" :key="i">
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    <section
+                                        class="d-flex flex-no-wrap justify-space-between buo-word-break mb-2"
+                                    >
+                                        <span
+                                            class="BUO-Paragraph-Small buo-word-break buo-white-space grey600--text"
+                                        >
+                                            {{ item.name }}
+                                        </span>
+                                        <span
+                                            class="BUO-Paragraph-Small buo-word-break buo-white-space grey600--text"
+                                            v-if="showValue"
+                                        >
+                                            {{ item.value }}
+                                        </span>
+                                    </section>
+                                    <v-progress-linear
+                                        rounded
+                                        height="9"
+                                        :value="$_getPercentage(item.value)"
+                                        :background-color="
+                                            showValue ? undefined : 'white'
+                                        "
+                                        :color="$_setColor(i)"
+                                    />
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
+                </v-col>
+                <v-col
+                    cols="12"
+                    :md="contentColumns"
+                    align-self="center"
+                    v-if="!isOnlyChart"
+                >
+                    <slot name="content"></slot>
+                </v-col>
+            </v-row>
         </div>
     </BaseCardViewComponent>
 </template>

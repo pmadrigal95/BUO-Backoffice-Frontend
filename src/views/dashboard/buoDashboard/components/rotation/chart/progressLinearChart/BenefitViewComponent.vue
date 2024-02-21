@@ -26,5 +26,9 @@ export default {
 </script>
 
 <template>
-    <ProgressLinearComponent title="Beneficios" :list="chartData" />
+    <ProgressLinearComponent
+        title="Beneficios"
+        :list="chartData"
+        color="lightGreen"
+    />
 </template>

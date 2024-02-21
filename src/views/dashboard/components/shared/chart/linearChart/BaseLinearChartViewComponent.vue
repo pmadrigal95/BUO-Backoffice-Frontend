@@ -14,9 +14,7 @@ const BaseLinearChartImpl = () =>
     import('@/components/backoffice/chart/BaseLinearChartImpl');
 
 const BaseCardViewComponent = () =>
-    import(
-        '@/views/dashboard/components/shared/card/BaseCardViewComponent'
-    );
+    import('@/views/dashboard/components/shared/card/BaseCardViewComponent');
 
 export default {
     name: 'BaseLinearChartViewComponent',

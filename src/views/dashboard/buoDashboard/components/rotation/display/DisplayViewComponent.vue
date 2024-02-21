@@ -43,12 +43,12 @@ const RotationViewComponent = () =>
 
 const ExitInterviewsChartComponent = () =>
     import(
-        '@/views/dashboard/buoDashboard/components/rotation/chart/pie/ExitInterviewsChartComponent'
+        '@/views/dashboard/buoDashboard/components/rotation/chart/pieChart/ExitInterviewsChartComponent'
     );
 
 const ManagersRotationChartComponent = () =>
     import(
-        '@/views/dashboard/buoDashboard/components/rotation/chart/pie/ManagersRotationChartComponent'
+        '@/views/dashboard/buoDashboard/components/rotation/chart/pieChart/ManagersRotationChartComponent'
     );
 
 const EmployeeDeparturesChartComponent = () =>
