@@ -82,6 +82,10 @@ export default {
         },
     },
 
+    created() {
+        this.show = this.user.companyId === this.buoId;
+    },
+
     methods: {
         $_setFilter() {
             baseDataTableColumnsHelper.$_setDepartureUsersColumns({
@@ -149,6 +153,7 @@ export default {
                     >
                         <div slot="btns">
                             <BaseCustomsButtonsGrid
+                                v-if="show"
                                 label="Filtro Avanzado"
                                 :fnMethod="$_showAdvFilter"
                                 :outlined="!show"

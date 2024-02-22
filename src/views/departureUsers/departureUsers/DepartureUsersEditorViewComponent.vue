@@ -162,6 +162,7 @@ export default {
          * Force Update Component
          */
         $_forceUpdateComponente() {
+            this.tipoRazonSalidaId = undefined;
             this.componentKey = this.componentKey + 1;
         },
 
