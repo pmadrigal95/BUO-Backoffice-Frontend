@@ -8,6 +8,8 @@ import homeRoutes from '@/views/home/router';
 
 import userRoutes from '@/views/user/router';
 
+import sandboxRoutes from '@/views/sandbox/router';
+
 import abilityRoutes from '@/views/ability/router';
 
 import companyRoutes from '@/views/company/router';
@@ -46,6 +48,7 @@ const routes = [
             ...b2bRoutes,
             ...homeRoutes,
             ...userRoutes,
+            ...sandboxRoutes,
             ...companyRoutes,
             ...abilityRoutes,
             ...reportsRoutes,
