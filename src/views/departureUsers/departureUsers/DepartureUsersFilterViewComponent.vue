@@ -17,22 +17,32 @@ import {
     baseDataTableColumnsHelper,
 } from '@/helpers/baseFilterSettingsHelper';
 
+const BaseServerDataTable = () =>
+    import('@/components/core/grids/BaseServerDataTable');
+
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
-const BaseServerDataTable = () =>
-    import('@/components/core/grids/BaseServerDataTable');
+const BaseCustomsButtonsGrid = () =>
+    import('@/components/core/grids/BaseCustomsButtonsGrid');
+
+const BaseAdvancedFilter = () =>
+    import('@/components/backoffice/filter/BaseAdvancedFilter');
 
 export default {
     name: 'DepartureUsersFilterViewComponent',
 
     components: {
-        BaseCardViewComponent,
+        BaseAdvancedFilter,
         BaseServerDataTable,
+        BaseCardViewComponent,
+        BaseCustomsButtonsGrid,
     },
 
     data() {
         return {
+            entity: this.$_Object(),
+            show: true,
             key: 0,
         };
     },
@@ -58,11 +68,9 @@ export default {
         },
 
         extraParams() {
-            return this.user.companyId != this.buoId
-                ? baseFilterSettingsHelper.$_setExtraParams({
-                      companyId: this.user.companyId,
-                  })
-                : undefined;
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity.companyId,
+            });
         },
 
         setting() {
@@ -81,6 +89,15 @@ export default {
                 companyId: this.user.companyId,
             });
             this.key++;
+        },
+
+        /**
+         * Entity Object
+         */
+        $_Object() {
+            return {
+                companyId: undefined,
+            };
         },
 
         /**
@@ -104,6 +121,10 @@ export default {
                 params: params && { Id: params.selected[this.setting.key] },
             });
         },
+
+        $_showAdvFilter() {
+            this.show = !this.show;
+        },
     },
 };
 </script>
@@ -111,20 +132,32 @@ export default {
 <template>
     <BaseCardViewComponent title="Salida de colaboradores">
         <div slot="card-text">
-            <BaseServerDataTable
-                v-if="setting"
-                :key="key"
-                :ref="pageView"
-                :pageView="pageView"
-                :setting="setting"
-                :extraParams="extraParams"
-                :fnResetConfig="$_setFilter"
-                :fnNew="write ? $_Editor : undefined"
-                :fnEdit="write ? $_Editor : undefined"
-                :fnDelete="write ? $_fnDelete : undefined"
-                :needExportToExcel="false"
-            />
-            <BaseSkeletonLoader v-else type="table" />
+            <BaseAdvancedFilter :show="show" v-model="entity">
+                <div slot="body">
+                    <BaseServerDataTable
+                        v-if="setting"
+                        :key="key"
+                        :ref="pageView"
+                        :pageView="pageView"
+                        :setting="setting"
+                        :extraParams="extraParams"
+                        :fnResetConfig="$_setFilter"
+                        :fnNew="write ? $_Editor : undefined"
+                        :fnEdit="write ? $_Editor : undefined"
+                        :fnDelete="write ? $_fnDelete : undefined"
+                        :needExportToExcel="false"
+                    >
+                        <div slot="btns">
+                            <BaseCustomsButtonsGrid
+                                label="Filtro Avanzado"
+                                :fnMethod="$_showAdvFilter"
+                                :outlined="!show"
+                                icon="mdi-filter-cog-outline"
+                            /></div
+                    ></BaseServerDataTable>
+                    <BaseSkeletonLoader v-else type="table" />
+                </div>
+            </BaseAdvancedFilter>
         </div>
     </BaseCardViewComponent>
 </template>

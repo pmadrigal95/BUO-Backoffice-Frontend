@@ -129,6 +129,20 @@ export default {
             this.$vuetify.theme.themes.light.clouds;
     },
 
+    watch: {
+        /**
+         * Actualizar calendarios
+         */
+        'entity.organizacionId': {
+            handler(newValue, oldValue) {
+                if (oldValue) {
+                    this.$_forceUpdateComponente();
+                }
+            },
+            immediate: true,
+        },
+    },
+
     methods: {
         $_setCompanyFilter() {
             baseDataTableColumnsHelper.$_setCompanyColumns({
@@ -142,6 +156,13 @@ export default {
                 pageView: this.departureReasonTypeDialogView,
                 companyId: this.user.companyId,
             });
+        },
+
+        /**
+         * Force Update Component
+         */
+        $_forceUpdateComponente() {
+            this.componentKey = this.componentKey + 1;
         },
 
         $_setUserFilter() {
@@ -252,7 +273,7 @@ export default {
                         </v-col>
                         <v-col cols="12">
                             <BaseInputDataTable
-                                label="Usuario"
+                                label="Colaborador "
                                 v-if="userSetting"
                                 :pageView="userDialogView"
                                 :setting="userSetting"

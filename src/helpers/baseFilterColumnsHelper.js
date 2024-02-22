@@ -694,7 +694,7 @@ const departureUsersColumns = (isBuoUser) => {
             text: 'Descripción',
             align: 'start',
             value: 'descripcion',
-            show: false,
+            show: true,
         },
         {
             text: 'Fecha Creación',
