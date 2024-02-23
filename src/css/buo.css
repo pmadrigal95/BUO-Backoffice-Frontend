@@ -412,3 +412,9 @@ html {
 .theme--dark .tab-active-white > p {
     color:#282828 ! important;
 }
+
+
+/*Position absolute*/
+.absolute {
+    position: absolute;
+}
