@@ -667,6 +667,77 @@ const assessmentTypeColumns = (isBuoUser, isFilter) => {
     ];
 };
 
+/**
+ * Configuracion BaseServerDataTable
+ */
+const departureUsersColumns = (isBuoUser) => {
+    return [
+        {
+            text: 'Empresa',
+            align: 'start',
+            value: 'nombreOrganizacion',
+            show: isBuoUser,
+        },
+        {
+            text: 'Colaborador',
+            align: 'start',
+            value: 'nombreUsuario',
+            show: true,
+        },
+        {
+            text: 'Tipo de Salida',
+            align: 'start',
+            value: 'nombreTipoRazonSalida',
+            show: true,
+        },
+        {
+            text: 'Descripción',
+            align: 'start',
+            value: 'descripcion',
+            show: true,
+        },
+        {
+            text: 'Fecha Creación',
+            align: 'start',
+            value: 'fechaCreacionFormato',
+            show: false,
+        },
+    ];
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const departureReasonTypeColumns = (isBuoUser) => {
+    return [
+        {
+            text: 'Empresa',
+            align: 'start',
+            value: 'nombreOrganizacion',
+            show: isBuoUser,
+        },
+        {
+            text: 'Nombre',
+            align: 'start',
+            value: 'nombre',
+            show: true,
+        },
+        {
+            text: 'Estado',
+            align: 'center',
+            type: 'chip',
+            value: 'nombreEstado',
+            show: true,
+        },
+        {
+            text: 'Fecha Creación',
+            align: 'start',
+            value: 'fechaCreacionFormato',
+            show: false,
+        },
+    ];
+};
+
 const assessmentColumns = (isBuoUser) => {
     return [
         {
@@ -1133,6 +1204,24 @@ export const baseFilterColumnsHelper = {
      */
     $_setAssessmentTypeColumns({ isFilter, pageView, isBuoUser }) {
         const columns = assessmentTypeColumns(isBuoUser, isFilter);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDepartureUsersColumns({ isFilter, pageView, isBuoUser }) {
+        const columns = departureUsersColumns(isBuoUser);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDepartureReasonTypeColumns({ isFilter, pageView, isBuoUser }) {
+        const columns = departureReasonTypeColumns(isBuoUser);
         setUpCache({ pageView, columns, isFilter });
         return columns;
     },

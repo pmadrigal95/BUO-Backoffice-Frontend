@@ -25,9 +25,11 @@ const $_pageView = () => {
         setIndicadorFilter: 'SetIndicadorFilterViewComponent',
         securityUserFilter: 'securityUserFilterViewComponent',
         AssessmentTypeFilter: 'AssessmentTypeFilterViewComponent',
+        DepartureUsersFilter: 'DepartureUsersFilterViewComponent',
         securityActionsFilter: 'securityActionsFilterViewComponent',
         PromotionalCodesFilter: 'PromotionalCodesFilterViewComponent',
         setIndicadorUserFilter: 'SetIndicadorUserFilterViewComponent',
+        DepartureReasonTypeFilter: 'DepartureReasonTypeFilterViewComponent',
         securityUserPerRoleFilter: 'securityUserPerRoleFilterViewComponent',
         securityActionsPerRoleFilter:
             'securityActionsPerRoleFilterViewComponent',
@@ -42,6 +44,7 @@ const $_dialogView = () => {
         assessmentDialog: 'assessmentSetting',
         simpleAbilityDialog: 'simpleAbilitySetting',
         securityActionsDialog: 'securityActionsSetting',
+        DepartureReasonTypeDialog: 'DepartureReasonTypeSetting',
     };
 };
 

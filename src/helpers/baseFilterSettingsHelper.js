@@ -248,6 +248,32 @@ const assessmentTypeSetting = ({ key, singleSelect, columns }) => {
 /**
  * Configuracion BaseServerDataTable
  */
+const departureUsersSetting = ({ key, singleSelect, columns }) => {
+    return {
+        endpoint: 'salidaUsuario/findBy',
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const departureReasonTypeSetting = ({ key, singleSelect, columns }) => {
+    return {
+        endpoint: 'tipoRazonSalida/findBy',
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
 const assessmentSetting = ({
     apiEndpoint = 'findByDeep',
     key,
@@ -620,6 +646,54 @@ export const baseFilterSettingsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
+    $_setDepartureUsersSetting({
+        key,
+        companyId,
+        singleSelect,
+        isFilter,
+        list,
+        pageView,
+    }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setDepartureUsersColumns({
+                  isFilter,
+                  pageView,
+                  isBuoUser,
+              });
+
+        return departureUsersSetting({ key, singleSelect, columns });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDepartureReasonTypeSetting({
+        key,
+        companyId,
+        singleSelect,
+        isFilter,
+        list,
+        pageView,
+    }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setDepartureReasonTypeColumns({
+                  isFilter,
+                  pageView,
+                  isBuoUser,
+              });
+
+        return departureReasonTypeSetting({ key, singleSelect, columns });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
     $_setAssessmentSetting({
         apiEndpoint,
         key,
@@ -877,6 +951,30 @@ export const baseDataTableColumnsHelper = {
     $_setAssessmentTypeColumns({ isFilter, pageView, companyId }) {
         const isBuoUser = fnIsBuoUser(companyId);
         return baseFilterColumnsHelper.$_setAssessmentTypeColumns({
+            isFilter,
+            pageView,
+            isBuoUser,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDepartureUsersColumns({ isFilter, pageView, companyId }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+        return baseFilterColumnsHelper.$_setDepartureUsersColumns({
+            isFilter,
+            pageView,
+            isBuoUser,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDepartureReasonTypeColumns({ isFilter, pageView, companyId }) {
+        const isBuoUser = fnIsBuoUser(companyId);
+        return baseFilterColumnsHelper.$_setDepartureReasonTypeColumns({
             isFilter,
             pageView,
             isBuoUser,

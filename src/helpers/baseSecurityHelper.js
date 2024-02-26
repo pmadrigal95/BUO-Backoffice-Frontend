@@ -118,6 +118,8 @@ const categoriesMenu = () => {
                 'MicroAbilityViewComponent',
                 'AssessmentTypeViewComponent',
                 'AssessmentViewComponent',
+                'DepartureReasonTypeViewComponent',
+                'DepartureUsersViewComponent',
                 'SecurityViewComponent',
                 'PromotionalCodesViewComponent',
             ],
