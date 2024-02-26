@@ -44,6 +44,7 @@ const $_dialogView = () => {
         assessmentDialog: 'assessmentSetting',
         simpleAbilityDialog: 'simpleAbilitySetting',
         securityActionsDialog: 'securityActionsSetting',
+        DepartureReasonTypeDialog: 'DepartureReasonTypeSetting',
     };
 };
 

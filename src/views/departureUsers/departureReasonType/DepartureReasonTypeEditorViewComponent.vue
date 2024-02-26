@@ -129,10 +129,12 @@ export default {
         $_sendToApi() {
             this.loading = true;
             this.$_setToUser();
-            let object = BaseArrayHelper.SetObject({}, this.entity);
 
             httpService
-                .post('tipoRazonSalida/saveForm', object)
+                .post(
+                    'tipoRazonSalida/saveForm',
+                    BaseArrayHelper.SetObject({}, this.entity)
+                )
                 .then((response) => {
                     this.loading = false;
 
@@ -144,10 +146,12 @@ export default {
         },
 
         /**
-         * Function to return the AssessmentTypeFilterViewComponent
+         * Function to return the DepartureReasonTypeFilterViewComponent
          */
         $_returnToFilter() {
-            this.$router.back();
+            this.$router.push({
+                name: 'DepartureReasonTypeFilterViewComponent',
+            });
         },
     },
 };

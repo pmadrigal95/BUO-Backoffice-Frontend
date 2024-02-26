@@ -46,11 +46,10 @@ export default {
         },
 
         write() {
-            const result = baseSecurityHelper.$_ReadPermission(
+            return baseSecurityHelper.$_ReadPermission(
                 'DepartureReasonTypeViewComponent',
                 baseSecurityHelper.$_write
             );
-            return result;
         },
 
         extraParams() {

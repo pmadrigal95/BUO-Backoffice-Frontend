@@ -8,7 +8,7 @@ const routes = [
         component:
             'departureUsers/departureReasonType/DepartureReasonTypeFilterViewComponent',
         meta: {
-            module: 'AssessmentTypeViewComponent',
+            module: 'DepartureReasonTypeViewComponent',
         },
     },
 
@@ -18,7 +18,7 @@ const routes = [
         component:
             'departureUsers/departureReasonType/DepartureReasonTypeEditorViewComponent',
         meta: {
-            module: 'AssessmentTypeViewComponent',
+            module: 'DepartureReasonTypeViewComponent',
         },
     },
 ];

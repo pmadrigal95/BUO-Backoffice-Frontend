@@ -41,11 +41,7 @@ export default {
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
-        ...mapGetters('filters', [
-            'advfiltersBypageView',
-            'dialogViewById',
-            'pageViewById',
-        ]),
+        ...mapGetters('filters', ['advfiltersBypageView', 'dialogViewById']),
 
         companyDialogView() {
             return this.dialogViewById('companyDialog');
@@ -56,7 +52,7 @@ export default {
         },
 
         departureReasonTypeDialogView() {
-            return this.pageViewById('DepartureReasonTypeFilter');
+            return this.dialogViewById('DepartureReasonTypeDialog');
         },
 
         /**
@@ -153,6 +149,7 @@ export default {
 
         $_setDepartureReasonTypeFilter() {
             baseDataTableColumnsHelper.$_setDepartureReasonTypeColumns({
+                isFilter: true,
                 pageView: this.departureReasonTypeDialogView,
                 companyId: this.user.companyId,
             });
@@ -173,6 +170,7 @@ export default {
                 pageView: this.userDialogView,
             });
         },
+
         /**
          * Entity Object
          */
@@ -217,10 +215,12 @@ export default {
         $_sendToApi() {
             this.loading = true;
             this.$_setToUser();
-            let object = BaseArrayHelper.SetObject({}, this.entity);
 
             httpService
-                .post('salidaUsuario/saveForm', object)
+                .post(
+                    'salidaUsuario/saveForm',
+                    BaseArrayHelper.SetObject({}, this.entity)
+                )
                 .then((response) => {
                     this.loading = false;
 
@@ -232,10 +232,12 @@ export default {
         },
 
         /**
-         * Function to return the AssessmentFilterViewComponent
+         * Function to return the DepartureUsersFilterViewComponent
          */
         $_returnToFilter() {
-            this.$router.back();
+            this.$router.push({
+                name: 'DepartureUsersFilterViewComponent',
+            });
         },
     },
 };
