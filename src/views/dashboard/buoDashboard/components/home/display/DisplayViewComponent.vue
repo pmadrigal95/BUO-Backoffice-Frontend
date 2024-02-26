@@ -5,8 +5,10 @@
  * @displayName DisplayViewComponent
  *
  */
-const HeaderViewComponent = () =>
-    import('@/views/dashboard/components/shared/header/HeaderViewComponent');
+const BaseHeaderViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/header/BaseHeaderViewComponent'
+    );
 
 const StatisticalHomeCardsViewComponent = () =>
     import(
@@ -17,7 +19,7 @@ export default {
     name: 'DisplayViewComponent',
 
     components: {
-        HeaderViewComponent,
+        BaseHeaderViewComponent,
         StatisticalHomeCardsViewComponent,
     },
 
@@ -95,7 +97,7 @@ export default {
 
 <template>
     <section class="mx-4">
-        <HeaderViewComponent title="Home" />
+        <BaseHeaderViewComponent title="Home" />
         <section class="mb-3">
             <StatisticalHomeCardsViewComponent
                 :chartData="homeList"
@@ -115,8 +117,6 @@ export default {
         </section>
         <v-row>
             <v-col cols="12"> Hola</v-col>
-
-    
         </v-row>
     </section>
 </template>

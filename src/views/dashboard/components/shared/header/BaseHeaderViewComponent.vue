@@ -1,15 +1,15 @@
 <script>
 /**
- * Descripción: Pantalla  HeaderViewComponent
+ * Descripción: Pantalla  BaseHeaderViewComponent
  *
- * @displayName HeaderViewComponent
+ * @displayName BaseHeaderViewComponent
  *
  */
 
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
-    name: 'HeaderViewComponent',
+    name: 'BaseHeaderViewComponent',
 
     props: {
         title: {

@@ -17,12 +17,18 @@ const RotationDashboardViewComponent = () =>
         '@/views/dashboard/buoDashboard/sections/rotation/RotationDashboardViewComponent'
     );
 
+const GrowthDashboardViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/sections/growth/GrowthDashboardViewComponent'
+    );
+
 export default {
     name: 'BUODashboardViewComponent',
 
     components: {
         NotifierViewComponent,
         RotationDashboardViewComponent,
+        GrowthDashboardViewComponent,
     },
 
     data() {
@@ -113,7 +119,6 @@ export default {
                 ><p class="BUO-Label-Small pt-4">Desempeño</p>
             </v-tab>
             <v-tab
-                disabled
                 class="rounded-pill no-uppercase mr-3"
                 active-class="tab-active-blue"
                 ><p class="BUO-Label-Small pt-4">Crecimiento</p>
@@ -140,6 +145,7 @@ export default {
 
             <v-tab-item>
                 <RotationDashboardViewComponent
+                    v-if="step == 1"
                     :entity="entity"
                     :filter="$_filter"
                     :showFilter="showFilter"
@@ -149,7 +155,15 @@ export default {
 
             <v-tab-item> </v-tab-item>
 
-            <v-tab-item> </v-tab-item>
+            <v-tab-item>
+                <GrowthDashboardViewComponent
+                    v-if="step == 3"
+                    :entity="entity"
+                    :filter="$_filter"
+                    :showFilter="showFilter"
+                    :innerWidth="windowSize.x"
+                />
+            </v-tab-item>
 
             <v-tab-item> </v-tab-item>
         </v-tabs-items>

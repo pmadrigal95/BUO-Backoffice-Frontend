@@ -13,8 +13,10 @@ import BaseArrayHelper from '@/helpers/baseArrayHelper';
 const BaseNotFoundContent = () =>
     import('@/components/core/cards/BaseNotFoundContent');
 
-const HeaderViewComponent = () =>
-    import('@/views/dashboard/components/shared/header/HeaderViewComponent');
+const BaseHeaderViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/header/BaseHeaderViewComponent'
+    );
 
 const ReasonProgressViewComponent = () =>
     import(
@@ -83,7 +85,7 @@ export default {
 
     components: {
         BaseNotFoundContent,
-        HeaderViewComponent,
+        BaseHeaderViewComponent,
         BenefitViewComponent,
         RotationViewComponent,
         ReasonProgressViewComponent,
@@ -318,7 +320,7 @@ export default {
     <section v-else>
         <section v-if="hasData">
             <section class="mx-4">
-                <HeaderViewComponent title="Rotación" />
+                <BaseHeaderViewComponent title="Rotación" />
                 <section class="mb-6">
                     <StatisticalRotationCardsViewComponent
                         v-if="entity.cardList && entity.cardList.length > 0"
