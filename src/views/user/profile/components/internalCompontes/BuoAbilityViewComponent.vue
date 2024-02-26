@@ -188,30 +188,18 @@ export default {
         >
             <v-tabs-slider color="transparent"></v-tabs-slider>
             <v-tab
-                :class="`rounded-pill no-uppercase mr-3 ${
-                    app
-                        ? 'bg-tab-idle-dark black--text BUO-Display-Large'
-                        : 'bg-tab-idle-clear grey600--text'
-                }`"
-                active-class="bg-tab-active white--text"
+                class="rounded-pill no-uppercase mr-3"
+                active-class="tab-active-white"
                 ><p class="BUO-Label-Small pt-4">En Progreso</p>
             </v-tab>
             <v-tab
-                :class="`rounded-pill no-uppercase mr-3 ${
-                    app
-                        ? 'bg-tab-idle-dark black--text BUO-Display-Large'
-                        : 'bg-tab-idle-clear grey600--text'
-                }`"
-                active-class="bg-tab-active white--text"
+                class="rounded-pill no-uppercase mr-3"
+                active-class="tab-active-white"
                 ><p class="BUO-Label-Small pt-4">Validadas</p>
             </v-tab>
             <v-tab
-                :class="`rounded-pill no-uppercase mr-3 ${
-                    app
-                        ? 'bg-tab-idle-dark black--text BUO-Display-Large'
-                        : 'bg-tab-idle-clear grey600--text'
-                }`"
-                active-class="bg-tab-active white--text"
+                class="rounded-pill no-uppercase mr-3"
+                active-class="tab-active-white"
                 ><p class="BUO-Label-Small pt-4">Por Validar</p>
             </v-tab>
         </v-tabs>

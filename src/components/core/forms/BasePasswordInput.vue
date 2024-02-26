@@ -23,6 +23,11 @@ export default {
             type: String,
             default: 'Contraseña',
         },
+
+        dense: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
@@ -85,6 +90,7 @@ export default {
                             :validate="['password']"
                             @focus="showRules = true"
                             v-on:blur="showRules = false"
+                            :dense="dense"
                         />
                     </div>
                 </template>
@@ -103,6 +109,7 @@ export default {
                 :label="`Verificar ${title.toLowerCase()}`"
                 v-model.trim="confirmPwd"
                 :validate="[rules.required, passwordMatch]"
+                :dense="dense"
             />
         </v-col>
     </v-row>

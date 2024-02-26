@@ -76,6 +76,97 @@ const getFirstItem = (key = 'rutaURL') => {
     return result?.rutaURL;
 };
 
+const categoriesMenu = () => {
+    return [
+        {
+            name: 'BUO Dashboard',
+            list: ['BUODashboardViewComponent'],
+        },
+        {
+            name: 'BUO Demographics',
+            list: [
+                'BuoPdaDemographicsViewComponent',
+                'BuoAssessmentsDemographicsViewComponent',
+            ],
+        },
+        {
+            name: 'People Analytics',
+            list: [
+                'SearchPeopleByAbilityViewComponent',
+                'SearchAbilitiesByDepartmentOrPersonViewComponent',
+                'ProfileViewComponent',
+                'AssignmentViewComponent',
+                'EvaluationViewComponent',
+                'ApprovalViewComponent',
+            ],
+        },
+        {
+            name: 'BUO Assessments',
+            list: [
+                'BUOPDAReportViewComponent',
+                'AssessmentControlViewComponent',
+            ],
+        },
+        {
+            name: 'Administración',
+            list: [
+                'CompanyViewComponent',
+                'UserViewComponent',
+                'DepartmentViewComponent',
+                'CategoryViewComponent',
+                'AbilityViewComponent',
+                'MicroAbilityViewComponent',
+                'AssessmentTypeViewComponent',
+                'AssessmentViewComponent',
+                'DepartureReasonTypeViewComponent',
+                'DepartureUsersViewComponent',
+                'SecurityViewComponent',
+                'PromotionalCodesViewComponent',
+            ],
+        },
+    ];
+};
+
+const menuList = () => {
+    let result = [
+        {
+            name: 'BUO Dashboard',
+            list: [],
+        },
+        {
+            name: 'BUO Demographics',
+            list: [],
+        },
+        {
+            name: 'People Analytics',
+            list: [],
+        },
+        {
+            name: 'BUO Assessments',
+            list: [],
+        },
+        {
+            name: 'Administración',
+            list: [],
+        },
+    ];
+
+    categoriesMenu().forEach((x) => {
+        const index = result
+            .map(function (e) {
+                return e.name;
+            })
+            .indexOf(x.name);
+
+        x.list.forEach((view) => {
+            const insert = $_getObject(view);
+            insert && result[index].list.push(insert);
+        });
+    });
+
+    return result;
+};
+
 export default {
     $_read: read,
 
@@ -112,5 +203,9 @@ export default {
         }
 
         logout();
+    },
+
+    $_setMenu() {
+        return menuList();
     },
 };

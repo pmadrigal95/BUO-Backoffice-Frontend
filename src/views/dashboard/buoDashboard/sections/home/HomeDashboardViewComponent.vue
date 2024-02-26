@@ -1,8 +1,8 @@
 <script>
 /**
- * Descripción: Pantalla  RotationDashboardViewComponent
+ * Descripción: Pantalla  HomeDashboardViewComponent
  *
- * @displayName RotationDashboardViewComponent
+ * @displayName HomeDashboardViewComponent
  *
  */
 
@@ -11,11 +11,11 @@ const BaseAdvancedFilter = () =>
 
 const DisplayViewComponent = () =>
     import(
-        '@/views/dashboard/buoDashboard/components/rotation/display/DisplayViewComponent'
+        '@/views/dashboard/buoDashboard/components/home/display/DisplayViewComponent'
     );
 
 export default {
-    name: 'RotationDashboardViewComponent',
+    name: 'HomeDashboardViewComponent',
 
     props: {
         filter: {
@@ -56,11 +56,7 @@ export default {
         v-model="entity"
     >
         <div slot="body">
-            <DisplayViewComponent
-                :filter="filter"
-                :innerWidth="innerWidth"
-                v-if="filter.organizacionId"
-            />
+            <DisplayViewComponent />
         </div>
     </BaseAdvancedFilter>
 </template>

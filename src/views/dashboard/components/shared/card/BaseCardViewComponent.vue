@@ -22,6 +22,21 @@ export default {
             default: undefined,
         },
 
+        icon: {
+            type: String,
+            default: 'arrow-expand',
+        },
+
+        iconColor: {
+            type: String,
+            default: 'black',
+        },
+
+        showIcon: {
+            type: Boolean,
+            default: true,
+        },
+
         fnCallback: {
             type: Function,
             default: () => {},
@@ -42,14 +57,14 @@ export default {
             v-if="title"
         >
             {{ title }}
-            <v-layout justify-end align-end>
+            <v-layout justify-end align-end v-if="showIcon">
                 <slot name="top-actions"></slot>
                 <v-btn
                     icon
-                    :color="app ? 'clouds' : 'black'"
+                    :color="app ? 'clouds' : iconColor"
                     @click="fnCallback"
                 >
-                    <v-icon>mdi-arrow-expand</v-icon>
+                    <v-icon> mdi-{{ icon }}</v-icon>
                 </v-btn>
             </v-layout>
         </v-card-title>

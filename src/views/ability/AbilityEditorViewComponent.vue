@@ -128,22 +128,14 @@ export default {
         <v-tabs v-model="tab" right show-arrows height="34">
             <v-tabs-slider color="transparent"></v-tabs-slider>
             <v-tab
-                :class="`rounded-pill no-uppercase mr-3 ${
-                    app
-                        ? 'bg-tab-idle-dark black--text BUO-Display-Large'
-                        : 'bg-tab-idle-clear grey600--text'
-                }`"
-                active-class="bg-tab-active white--text"
+                class="rounded-pill no-uppercase mr-3"
+                active-class="tab-active-blue"
             >
                 <p class="BUO-Label-Small pt-4">Indicador</p>
             </v-tab>
             <v-tab
-                :class="`rounded-pill no-uppercase mr-3 ${
-                    app
-                        ? 'bg-tab-idle-dark black--text BUO-Display-Large'
-                        : 'bg-tab-idle-clear grey600--text'
-                }`"
-                active-class="bg-tab-active white--text"
+                class="rounded-pill no-uppercase mr-3"
+                active-class="tab-active-blue"
                 v-if="microabilityPermission"
             >
                 <p class="BUO-Label-Small pt-4">Micro-Indicadores</p>
