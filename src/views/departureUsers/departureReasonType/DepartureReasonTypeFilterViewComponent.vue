@@ -45,12 +45,9 @@ export default {
             return this.pageViewById('DepartureReasonTypeFilter');
         },
 
-        /**
-         * TODO : Cambiar permiso por el que corresponde
-         */
         write() {
             const result = baseSecurityHelper.$_ReadPermission(
-                'AssessmentTypeViewComponent',
+                'DepartureReasonTypeViewComponent',
                 baseSecurityHelper.$_write
             );
             return result;

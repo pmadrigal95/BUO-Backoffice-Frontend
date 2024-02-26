@@ -61,7 +61,7 @@ export default {
          */
         write() {
             const result = baseSecurityHelper.$_ReadPermission(
-                'AssessmentTypeViewComponent',
+                'DepartureUsersViewComponent',
                 baseSecurityHelper.$_write
             );
             return result;
