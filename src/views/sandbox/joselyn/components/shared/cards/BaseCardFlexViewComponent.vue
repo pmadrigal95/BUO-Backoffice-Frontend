@@ -31,7 +31,7 @@ export default {
 
         justifyContent: {
             type: String,
-            default: 'justify-start',
+            default: '',
         },
 
         alignContent: {
@@ -88,6 +88,16 @@ export default {
             type: String,
             default: undefined,
         },
+
+        title: {
+            type: String,
+            default: undefined,
+        },
+
+        styleTitle: {
+            type: String,
+            default: 'BUO-Label-Small  aidMint500--text pt-4',
+        },
     },
 };
 </script>
@@ -121,13 +131,16 @@ export default {
                     v-if="image"
                 >
                     <v-card-text>
-                        <v-img
-                            contain
-                            :width="widthImage"
-                            :height="heightImage"
-                            :src="image"
-                            :lazy-src="image"
-                        />
+                        <section class="d-flex flex-row align-center">
+                            <v-img
+                                contain
+                                :width="widthImage"
+                                :height="heightImage"
+                                :src="image"
+                                :lazy-src="image"
+                            />
+                            <p :class="styleTitle">{{ title }}</p>
+                        </section>
                     </v-card-text>
                 </v-card>
                 <v-icon

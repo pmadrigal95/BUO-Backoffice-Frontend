@@ -11,6 +11,12 @@ const InformativeCardViewComponent = () =>
         '@/views/sandbox/joselyn/components/growth/cards/InformativeCardViewComponent'
     );
 
+    const StatisticalInsightsViewComponent = () =>
+    import(
+        '@/views/sandbox/joselyn/components/growth/cards/StatisticalInsightsViewComponent'
+    );
+
+
 const BaseCardFlexViewComponent = () =>
     import(
         '@/views/sandbox/joselyn/components/shared/cards/BaseCardFlexViewComponent'
@@ -22,6 +28,7 @@ export default {
     components: {
         BaseCardFlexViewComponent,
         InformativeCardViewComponent,
+        StatisticalInsightsViewComponent
     },
 
     methods: {
@@ -89,11 +96,13 @@ export default {
                 </div>
             </BaseCardFlexViewComponent>
         </v-col>
+        <v-col cols="12">
+            <h2 class="mb-4">AI driven insights</h2>
+            <StatisticalInsightsViewComponent
+                width="100%"
+                height="475px"
+                image="https://buo-resources.s3.us-east-2.amazonaws.com/dashboard/ai-icon.svg"
+            />
+        </v-col>
     </v-row>
 </template>
-
-<style scoped>
-.w-50 {
-    width: 50%;
-}
-</style>
