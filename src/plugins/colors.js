@@ -98,6 +98,14 @@ export default {
         blueProgress600: '#B9C9DC',
     },
 
+    aid: {
+        aidBlue900: '#091623',
+        aidBlue500: '#49C1F5',
+        aidBlue400: '#C4EDFC',
+        aidMint500: '#79FFCC',
+        aidMint400: '#C4FFE8',
+    },
+
     /**
      * PDA SOLIDS COLOR GUIDE
      */

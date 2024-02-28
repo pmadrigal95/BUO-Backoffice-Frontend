@@ -22,6 +22,7 @@ export default new Vuetify({
                 ...colors.brand,
                 ...colors.neutrals,
                 ...colors.status,
+                ...colors.aid,
                 ...colors.pdaSolids,
             },
             dark: {
@@ -30,6 +31,7 @@ export default new Vuetify({
                 ...colors.brand,
                 ...colors.neutrals,
                 ...colors.status,
+                ...colors.aid,
                 ...colors.pdaSolids,
             },
         },
