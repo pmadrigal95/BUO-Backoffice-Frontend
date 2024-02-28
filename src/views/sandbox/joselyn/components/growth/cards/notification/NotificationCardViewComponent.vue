@@ -23,6 +23,16 @@ export default {
             default: undefined,
         },
 
+        icon: {
+            type: String,
+            default: undefined,
+        },
+
+        iconColor: {
+            type: String,
+            default: undefined,
+        },
+
         description: {
             type: String,
             default: undefined,
@@ -44,6 +54,8 @@ export default {
         :width="width"
         height="auto"
         :image="image"
+        :icon="icon"
+        :iconColor="iconColor"
         backgroundImage="aidBlue900"
     >
         <div slot="column">
