@@ -5,17 +5,17 @@
  * @displayName BUODashboardViewComponent
  */
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 const NotifierViewComponent = () =>
     import(
         '@/views/dashboard/buoDashboard/sections/notifier/NotifierViewComponent'
     );
 
-const RotationDashboardViewComponent = () =>
-    import(
-        '@/views/dashboard/buoDashboard/sections/rotation/RotationDashboardViewComponent'
-    );
+// const RotationDashboardViewComponent = () =>
+//     import(
+//         '@/views/dashboard/buoDashboard/sections/rotation/RotationDashboardViewComponent'
+//     );
 
 const GrowthDashboardViewComponent = () =>
     import(
@@ -27,69 +27,31 @@ export default {
 
     components: {
         NotifierViewComponent,
-        RotationDashboardViewComponent,
+        // RotationDashboardViewComponent,
         GrowthDashboardViewComponent,
     },
 
     data() {
         return {
-            step: 1,
+            step: 3,
             windowSize: {
                 x: 0,
                 y: 0,
             },
-            entity: undefined,
         };
     },
 
     computed: {
-        ...mapGetters('dashboard', ['notifier', 'filter', 'showFilter']),
-
-        $_filter() {
-            return {
-                organizacionId: this.entity?.companyId,
-                departamentoId: this.entity?.departmentId
-                    ? this.entity?.departmentId
-                    : 0,
-                fecha: this.entity?.month
-                    ? `${this.entity?.month}-01T00:00:00`
-                    : undefined,
-            };
-        },
-    },
-
-    created() {
-        this.$_setFilter();
+        ...mapGetters('dashboard', ['notifier']),
     },
 
     mounted() {
         this.onResize();
     },
 
-    watch: {
-        entity: {
-            handler(newFilter, oldFilter) {
-                if (JSON.stringify(newFilter) !== JSON.stringify(oldFilter)) {
-                    this.$_updateVuex(newFilter);
-                }
-            },
-            immediate: true,
-        },
-    },
-
     methods: {
-        ...mapActions('dashboard', ['filter_user']),
-
         onResize() {
             this.windowSize = { x: window.innerWidth, y: window.innerHeight };
-        },
-
-        $_setFilter() {
-            this.entity = this.filter;
-        },
-
-        $_updateVuex(filter) {
-            this.filter_user(filter);
         },
     },
 };
@@ -144,25 +106,19 @@ export default {
             </v-tab-item>
 
             <v-tab-item>
-                <RotationDashboardViewComponent
+                <!-- <RotationDashboardViewComponent
                     v-if="step == 1"
                     :entity="entity"
                     :filter="$_filter"
                     :showFilter="showFilter"
                     :innerWidth="windowSize.x"
-                />
+                /> -->
             </v-tab-item>
 
             <v-tab-item> </v-tab-item>
 
             <v-tab-item>
-                <GrowthDashboardViewComponent
-                    v-if="step == 3"
-                    :entity="entity"
-                    :filter="$_filter"
-                    :showFilter="showFilter"
-                    :innerWidth="windowSize.x"
-                />
+                <GrowthDashboardViewComponent :innerWidth="windowSize.x" />
             </v-tab-item>
 
             <v-tab-item> </v-tab-item>

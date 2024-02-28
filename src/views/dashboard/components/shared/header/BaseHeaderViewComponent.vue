@@ -31,7 +31,12 @@ export default {
 </script>
 
 <template>
-    <v-layout align-center justify-space-between class="mb-4">
+    <v-layout
+        align-center
+        :justify-space-between="title"
+        :justify-end="!title"
+        class="mb-4"
+    >
         <section v-if="title">
             <span class="BUO-Heading-Small">{{ title }}</span>
         </section>

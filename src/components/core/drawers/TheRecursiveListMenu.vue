@@ -68,7 +68,7 @@ export default {
                             v-bind="attrs"
                             v-on="on"
                         >
-                            <v-list-item-icon>
+                            <v-list-item-icon v-if="item?.icono">
                                 <v-icon>mdi-{{ item.icono }}</v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
