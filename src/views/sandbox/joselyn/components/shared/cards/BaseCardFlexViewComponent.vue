@@ -96,7 +96,7 @@ export default {
 
         styleTitle: {
             type: String,
-            default: 'BUO-Label-Small  aidMint500--text pt-4',
+            default: 'BUO-Label-Small aidMint500--text pt-4',
         },
     },
 };
@@ -106,17 +106,16 @@ export default {
     <v-sheet
         outlined
         :color="borderColor ? borderColor : color"
-        rounded="xl"
+        rounded="lg"
         :height="height"
         :width="width"
     >
         <v-card
-            outlined
             elevation="0"
             :color="color"
             :height="height"
             :width="width"
-            class="rounded-xl"
+            class="rounded-lg"
         >
             <v-card-text :class="paddingContent">
                 <v-card
