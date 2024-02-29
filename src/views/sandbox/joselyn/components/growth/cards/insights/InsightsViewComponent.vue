@@ -2,7 +2,7 @@
 /**
  * Descripción: Pantalla Insights Estadísticos
  *
- * @displayName StatisticalInsightsViewComponent
+ * @displayName InsightsViewComponent
  *
  */
 const BaseCardFlexViewComponent = () =>
@@ -10,14 +10,25 @@ const BaseCardFlexViewComponent = () =>
         '@/views/sandbox/joselyn/components/shared/cards/BaseCardFlexViewComponent'
     );
 
+const StatisticsCardViewComponent = () =>
+    import(
+        '@/views/sandbox/joselyn/components/growth/cards/insights/StatisticsCardViewComponent'
+    );
+
 export default {
-    name: 'StatisticalInsightsViewComponent',
+    name: 'InsightsViewComponent',
 
     components: {
         BaseCardFlexViewComponent,
+        StatisticsCardViewComponent,
     },
 
     props: {
+        data: {
+            type: Array,
+            required: true,
+        },
+
         image: {
             type: String,
             default: undefined,
@@ -50,7 +61,14 @@ export default {
             <strong class="BUO-Paragraph-Large-SemiBold aidBlue900--text"
                 >Insights estadísticos</strong
             >
+
+            <section v-for="(item, i) in data" :key="i" class="py-2">
+                <StatisticsCardViewComponent
+                    :title="item.title"
+                    :description="item.description"
+                    width="422px"
+                />
+            </section>
         </div>
-       
     </BaseCardFlexViewComponent>
 </template>

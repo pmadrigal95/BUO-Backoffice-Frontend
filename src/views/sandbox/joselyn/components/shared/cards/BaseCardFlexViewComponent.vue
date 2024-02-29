@@ -105,8 +105,8 @@ export default {
 <template>
     <v-sheet
         outlined
-        :color="borderColor"
-        rounded="lg"
+        :color="borderColor ? borderColor : color"
+        rounded="xl"
         :height="height"
         :width="width"
     >
@@ -116,6 +116,7 @@ export default {
             :color="color"
             :height="height"
             :width="width"
+            class="rounded-xl"
         >
             <v-card-text :class="paddingContent">
                 <v-card
@@ -164,13 +165,3 @@ export default {
         ></v-card>
     </v-sheet>
 </template>
-
-<style scoped>
-.bg-test {
-    border: 1px solid blue;
-}
-
-.opacity-30 {
-    opacity: 0.3;
-}
-</style>

@@ -1,8 +1,7 @@
 <script>
 /**
- * Descripción: Pantalla Card que maneja la cantidad de columnas que necesite
- *
- * @displayName BaseCardFlexViewComponent
+ * Descripción: Pantalla StatisticsInsightsCardViewComponent
+ * @displayName StatisticsInsightsCardViewComponent
  *
  */
 
@@ -10,8 +9,9 @@ const BaseCardFlexViewComponent = () =>
     import(
         '@/views/sandbox/joselyn/components/shared/cards/BaseCardFlexViewComponent'
     );
+
 export default {
-    name: 'BaseCardFlexViewComponent',
+    name: 'StatisticsInsightsCardViewComponent',
 
     components: {
         BaseCardFlexViewComponent,
@@ -28,21 +28,6 @@ export default {
             default: '100%',
         },
 
-        directionContent: {
-            type: String,
-            default: 'flex-row',
-        },
-
-        justifyContent: {
-            type: String,
-            default: '',
-        },
-
-        alignContent: {
-            type: String,
-            default: 'align-center',
-        },
-
         color: {
             type: String,
             default: 'aidBlue900',
@@ -55,7 +40,7 @@ export default {
 
         styleTitle: {
             type: String,
-            default: 'BUO-Paragraph-Large-SemiBold  white--text',
+            default: 'BUO-Paragraph-Large-SemiBold white--text',
         },
 
         description: {
@@ -65,7 +50,7 @@ export default {
 
         styleDescription: {
             type: String,
-            default: 'BUO-Label-XSmall  white--text pt-4',
+            default: 'BUO-Label-XSmall  white--text pt-2',
         },
     },
 };
@@ -76,14 +61,18 @@ export default {
         alignContent="align-center"
         :width="width"
         :height="height"
+        :color="color"
+        paddingContent="pa-0 px-4 pb-2 pt-0"
     >
-        <div slot="column" class="pl-4">
-            <strong class="BUO-Paragraph-Large-SemiBold aidBlue900--text">{{
-                title
-            }}</strong>
-            <p>
+        <div slot="column">
+            <strong :class="styleTitle">{{ title }}</strong>
+            <p :class="styleDescription">
                 {{ description }}
             </p>
+        </div>
+
+        <div slot="column">
+            <v-icon color="aidMint500"> mdi-chevron-right </v-icon>
         </div>
     </BaseCardFlexViewComponent>
 </template>
