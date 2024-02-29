@@ -49,7 +49,6 @@ export default {
                 contain
                 max-height="184px"
                 src="https://buo-resources.s3.us-east-2.amazonaws.com/dashboard/ai-insights.svg"
-                class="rounded-lg"
             >
             </v-img>
         </div>
