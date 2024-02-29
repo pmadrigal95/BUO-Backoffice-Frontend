@@ -52,7 +52,7 @@ export default {
         ...mapActions('dashboard', ['set_dashboard_by_id']),
 
         $_getToAPi() {
-            this.set_dashboard_by_id(this.type);
+            this.entity || this.set_dashboard_by_id(this.type);
         },
     },
 };

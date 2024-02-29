@@ -12,10 +12,10 @@ const NotifierViewComponent = () =>
         '@/views/dashboard/buoDashboard/sections/notifier/NotifierViewComponent'
     );
 
-// const RotationDashboardViewComponent = () =>
-//     import(
-//         '@/views/dashboard/buoDashboard/sections/rotation/RotationDashboardViewComponent'
-//     );
+const RotationDashboardViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/sections/rotation/RotationDashboardViewComponent'
+    );
 
 const GrowthDashboardViewComponent = () =>
     import(
@@ -27,13 +27,13 @@ export default {
 
     components: {
         NotifierViewComponent,
-        // RotationDashboardViewComponent,
+        RotationDashboardViewComponent,
         GrowthDashboardViewComponent,
     },
 
     data() {
         return {
-            step: 3,
+            step: 1,
             windowSize: {
                 x: 0,
                 y: 0,
@@ -89,6 +89,12 @@ export default {
                 disabled
                 class="rounded-pill no-uppercase mr-3"
                 active-class="tab-active-blue"
+                ><p class="BUO-Label-Small pt-4">Reclutamiento</p>
+            </v-tab>
+            <v-tab
+                disabled
+                class="rounded-pill no-uppercase mr-3"
+                active-class="tab-active-blue"
             >
                 <v-icon small> mdi mdi-plus </v-icon>
             </v-tab>
@@ -106,20 +112,22 @@ export default {
             </v-tab-item>
 
             <v-tab-item>
-                <!-- <RotationDashboardViewComponent
+                <RotationDashboardViewComponent
                     v-if="step == 1"
-                    :entity="entity"
-                    :filter="$_filter"
-                    :showFilter="showFilter"
                     :innerWidth="windowSize.x"
-                /> -->
+                />
             </v-tab-item>
 
             <v-tab-item> </v-tab-item>
 
             <v-tab-item>
-                <GrowthDashboardViewComponent :innerWidth="windowSize.x" />
+                <GrowthDashboardViewComponent
+                    v-if="step == 3"
+                    :innerWidth="windowSize.x"
+                />
             </v-tab-item>
+
+            <v-tab-item> </v-tab-item>
 
             <v-tab-item> </v-tab-item>
         </v-tabs-items>
