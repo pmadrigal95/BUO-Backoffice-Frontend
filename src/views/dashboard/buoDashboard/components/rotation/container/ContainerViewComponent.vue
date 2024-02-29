@@ -1,22 +1,12 @@
 <script>
 /**
- * Descripción: Pantalla  DisplayViewComponent
+ * Descripción: Pantalla  ContainerViewComponent
  *
- * @displayName DisplayViewComponent
+ * @displayName ContainerViewComponent
  *
  */
 
-import httpService from '@/services/axios/httpService';
-
-import BaseArrayHelper from '@/helpers/baseArrayHelper';
-
-const BaseNotFoundContent = () =>
-    import('@/components/core/cards/BaseNotFoundContent');
-
-const BaseHeaderViewComponent = () =>
-    import(
-        '@/views/dashboard/components/shared/header/BaseHeaderViewComponent'
-    );
+import { mapGetters } from 'vuex';
 
 const ReasonProgressViewComponent = () =>
     import(
@@ -69,23 +59,21 @@ const AscendingPersonalitiesChartComponent = () =>
     );
 
 export default {
-    name: 'DisplayViewComponent',
+    name: 'ContainerViewComponent',
 
     props: {
-        filter: {
-            type: Object,
-            required: true,
-        },
-
         innerWidth: {
             type: [Number, String],
             required: true,
         },
+
+        type: {
+            type: String,
+            default: 'rotation',
+        },
     },
 
     components: {
-        BaseNotFoundContent,
-        BaseHeaderViewComponent,
         BenefitViewComponent,
         RotationViewComponent,
         ReasonProgressViewComponent,
@@ -98,19 +86,11 @@ export default {
         AscendingPersonalitiesChartComponent,
     },
 
-    data: () => ({
-        loading: false,
-        entity: undefined,
-    }),
-
     computed: {
-        hasData() {
-            for (const [, value] of Object.entries(this.entity)) {
-                if (value) {
-                    return true;
-                }
-            }
-            return false;
+        ...mapGetters('dashboard', ['dashboardById']),
+
+        entity() {
+            return this.dashboardById(this.type);
         },
 
         departmentRotationSize() {
@@ -240,29 +220,7 @@ export default {
         },
     },
 
-    created() {
-        this.$_getToAPi();
-    },
-
     methods: {
-        $_getToAPi() {
-            this.loading = true;
-
-            httpService
-                .post('dashboard/rotacion/detalles', this.filter)
-                .then((response) => {
-                    this.loading = false;
-
-                    if (response != undefined) {
-                        //Logica JS luego de la acción exitosa!!!
-                        this.entity = BaseArrayHelper.SetObject(
-                            {},
-                            response.data
-                        );
-                    }
-                });
-        },
-
         $_counter(row) {
             let counter = 0;
 
@@ -313,118 +271,90 @@ export default {
 </script>
 
 <template>
-    <BaseSkeletonLoader
-        v-if="loading"
-        type="image, date-picker-days, date-picker-days, image"
-    />
-    <section v-else>
-        <section v-if="hasData">
-            <section class="mx-4">
-                <BaseHeaderViewComponent title="Rotación" />
-                <section class="mb-6">
-                    <StatisticalRotationCardsViewComponent
-                        v-if="entity.cardList && entity.cardList.length > 0"
-                        :chartData="entity.cardList"
-                        height="auto"
-                        width="auto"
-                    />
-                </section>
-                <v-row>
-                    <v-col cols="12" md="12" v-if="entity.historicUser">
-                        <HistoricalRotationChartComponent
-                            :chartData="entity.historicUser"
-                        />
-                    </v-col>
-
-                    <v-col
-                        cols="12"
-                        :md="departmentRotationSize"
-                        v-if="
-                            entity.departmentRotation &&
-                            entity.departmentRotation.length > 0
-                        "
-                    >
-                        <RotationViewComponent
-                            :chartData="entity.departmentRotation"
-                        />
-                    </v-col>
-
-                    <v-col
-                        cols="12"
-                        :md="quantityDispersionSize"
-                        v-if="entity.quantityDispersion"
-                    >
-                        <EmployeeDeparturesChartComponent
-                            :chartData="entity.quantityDispersion"
-                        />
-                    </v-col>
-
-                    <v-col
-                        cols="12"
-                        :md="reasonProgressSize"
-                        v-if="
-                            entity.reasonProgress &&
-                            entity.reasonProgress.length > 0
-                        "
-                    >
-                        <ReasonProgressViewComponent
-                            :chartData="entity.reasonProgress"
-                        />
-                    </v-col>
-
-                    <v-col
-                        cols="12"
-                        :md="managersPieSize"
-                        v-if="entity.managersPie"
-                    >
-                        <ManagersRotationChartComponent
-                            :chartData="entity.managersPie"
-                        />
-                    </v-col>
-
-                    <v-col cols="12" :md="exitPieSize" v-if="entity.exitPie">
-                        <ExitInterviewsChartComponent
-                            :chartData="entity.exitPie"
-                        />
-                    </v-col>
-
-                    <v-col
-                        cols="12"
-                        :md="perksSize"
-                        v-if="entity.perks && entity.perks.length > 0"
-                    >
-                        <BenefitViewComponent :chartData="entity.perks" />
-                    </v-col>
-
-                    <v-col
-                        cols="12"
-                        :md="tenureProgressSize"
-                        v-if="
-                            entity.tenureProgress &&
-                            entity.tenureProgress.length > 0
-                        "
-                    >
-                        <DesertionSeniorityViewComponent
-                            :chartData="entity.tenureProgress"
-                        />
-                    </v-col>
-
-                    <v-col
-                        cols="12"
-                        :md="personalitiesSize"
-                        v-if="entity.personalities"
-                    >
-                        <AscendingPersonalitiesChartComponent
-                            :chartData="entity.personalities"
-                        />
-                    </v-col>
-                </v-row>
-            </section>
+    <section>
+        <section class="mb-6">
+            <StatisticalRotationCardsViewComponent
+                v-if="entity.cardList && entity.cardList.length > 0"
+                :chartData="entity.cardList"
+                height="auto"
+                width="auto"
+            />
         </section>
-        <BaseNotFoundContent
-            v-else
-            class="py-16 mt-4"
-            msg="Lamentablemente, no se han encontrado datos al aplicar el filtro seleccionado."
-        />
+        <v-row>
+            <v-col cols="12" md="12" v-if="entity.historicUser">
+                <HistoricalRotationChartComponent
+                    :chartData="entity.historicUser"
+                />
+            </v-col>
+
+            <v-col
+                cols="12"
+                :md="departmentRotationSize"
+                v-if="
+                    entity.departmentRotation &&
+                    entity.departmentRotation.length > 0
+                "
+            >
+                <RotationViewComponent :chartData="entity.departmentRotation" />
+            </v-col>
+
+            <v-col
+                cols="12"
+                :md="quantityDispersionSize"
+                v-if="entity.quantityDispersion"
+            >
+                <EmployeeDeparturesChartComponent
+                    :chartData="entity.quantityDispersion"
+                />
+            </v-col>
+
+            <v-col
+                cols="12"
+                :md="reasonProgressSize"
+                v-if="entity.reasonProgress && entity.reasonProgress.length > 0"
+            >
+                <ReasonProgressViewComponent
+                    :chartData="entity.reasonProgress"
+                />
+            </v-col>
+
+            <v-col cols="12" :md="managersPieSize" v-if="entity.managersPie">
+                <ManagersRotationChartComponent
+                    :chartData="entity.managersPie"
+                />
+            </v-col>
+
+            <v-col cols="12" :md="exitPieSize" v-if="entity.exitPie">
+                <ExitInterviewsChartComponent :chartData="entity.exitPie" />
+            </v-col>
+
+            <v-col
+                cols="12"
+                :md="perksSize"
+                v-if="entity.perks && entity.perks.length > 0"
+            >
+                <BenefitViewComponent :chartData="entity.perks" />
+            </v-col>
+
+            <v-col
+                cols="12"
+                :md="tenureProgressSize"
+                v-if="entity.tenureProgress && entity.tenureProgress.length > 0"
+            >
+                <DesertionSeniorityViewComponent
+                    :chartData="entity.tenureProgress"
+                />
+            </v-col>
+
+            <v-col
+                cols="12"
+                :md="personalitiesSize"
+                v-if="entity.personalities"
+            >
+                <AscendingPersonalitiesChartComponent
+                    :chartData="entity.personalities"
+                />
+            </v-col>
+        </v-row>
     </section>
 </template>

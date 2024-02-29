@@ -104,6 +104,16 @@ export const mutations = {
     DASHBOARDBYID(state, id) {
         setDashboardById(state, id);
     },
+
+    CLEANDASHBOARD(state) {
+        state.dashboard = {
+            home: undefined,
+            rotation: undefined,
+            performance: undefined,
+            growth: undefined,
+            recruitment: undefined,
+        };
+    },
 };
 
 export const actions = {
@@ -121,5 +131,9 @@ export const actions = {
 
     set_dashboard_by_id({ commit }, id) {
         commit('DASHBOARDBYID', id);
+    },
+
+    clean_dashboard({ commit }) {
+        commit('CLEANDASHBOARD');
     },
 };

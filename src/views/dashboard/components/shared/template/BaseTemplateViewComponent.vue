@@ -8,6 +8,8 @@
 
 import { mapGetters, mapActions } from 'vuex';
 
+import BaseSharedFnHelper from '@/helpers/baseSharedFnHelper';
+
 const BaseAdvancedFilter = () =>
     import('@/components/backoffice/filter/BaseAdvancedFilter');
 
@@ -55,10 +57,12 @@ export default {
     watch: {
         advFilter: {
             handler(newFilter, oldFilter) {
-                if (JSON.stringify(newFilter) !== JSON.stringify(oldFilter)) {
+                if (BaseSharedFnHelper.$_isEqualObj(newFilter, oldFilter)) {
+                    this.clean_dashboard();
                     this.$_updateVuex(newFilter);
                 }
             },
+            deep: true,
             immediate: true,
         },
     },
@@ -68,7 +72,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('dashboard', ['filter_user']),
+        ...mapActions('dashboard', ['filter_user', 'clean_dashboard']),
 
         $_setFilter() {
             this.advFilter = this.filter;
@@ -92,7 +96,7 @@ export default {
     >
         <section slot="body">
             <section class="mx-4" v-if="filter.companyId">
-                <BaseHeaderViewComponent :title="title" />
+                <BaseHeaderViewComponent :title="title" :type="type" />
 
                 <BaseContainerTemplateViewComponent :type="type">
                     <section slot="container">

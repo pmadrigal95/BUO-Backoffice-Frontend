@@ -6,61 +6,43 @@
  *
  */
 
-const BaseAdvancedFilter = () =>
-    import('@/components/backoffice/filter/BaseAdvancedFilter');
-
-const DisplayViewComponent = () =>
+const BaseTemplateViewComponent = () =>
     import(
-        '@/views/dashboard/buoDashboard/components/rotation/display/DisplayViewComponent'
+        '@/views/dashboard/components/shared/template/BaseTemplateViewComponent'
+    );
+
+const ContainerViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/rotation/container/ContainerViewComponent'
     );
 
 export default {
     name: 'RotationDashboardViewComponent',
 
     props: {
-        filter: {
-            type: Object,
-            required: true,
-        },
-
-        entity: {
-            type: Object,
-            required: true,
-        },
-
         innerWidth: {
             type: [Number, String],
             required: true,
         },
-
-        showFilter: {
-            type: Boolean,
-            default: true,
-        },
     },
 
     components: {
-        BaseAdvancedFilter,
-        DisplayViewComponent,
+        BaseTemplateViewComponent,
+        ContainerViewComponent,
+    },
+
+    computed: {
+        type() {
+            return 'rotation';
+        },
     },
 };
 </script>
 
 <template>
-    <BaseAdvancedFilter
-        class="mt-6"
-        isDepartment
-        isMonth
-        requiredMonth
-        :show="showFilter"
-        v-model="entity"
-    >
-        <div slot="body">
-            <DisplayViewComponent
-                :filter="filter"
-                :innerWidth="innerWidth"
-                v-if="filter.organizacionId"
-            />
-        </div>
-    </BaseAdvancedFilter>
+    <BaseTemplateViewComponent title="Rotación" :type="type">
+        <section slot="body">
+            <ContainerViewComponent :innerWidth="innerWidth" :type="type" />
+        </section>
+    </BaseTemplateViewComponent>
 </template>

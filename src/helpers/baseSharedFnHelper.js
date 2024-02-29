@@ -153,6 +153,35 @@ const getAge = (date) => {
     return Math.floor((new Date() - date.getTime()) / 3.15576e10);
 };
 
+const isObject = (object) => {
+    return object != null && typeof object === 'object';
+};
+
+const isEqualObj = (object1, object2) => {
+    if (!object1 || !object2) return false;
+
+    const keys1 = Object.keys(object1);
+    const keys2 = Object.keys(object2);
+
+    if (keys1.length !== keys2.length) {
+        return false;
+    }
+
+    for (const key of keys1) {
+        const val1 = object1[key];
+        const val2 = object2[key];
+        const areObjects = isObject(val1) && isObject(val2);
+        if (
+            (areObjects && !isEqualObj(val1, val2)) ||
+            (!areObjects && val1 !== val2)
+        ) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
 export default {
     $_getInitialDay() {
         const fechaInicio = new Date();
@@ -347,5 +376,9 @@ export default {
 
     $_getAge(date) {
         return getAge(date);
+    },
+
+    $_isEqualObj(object1, object2) {
+        return isEqualObj(object1, object2);
     },
 };

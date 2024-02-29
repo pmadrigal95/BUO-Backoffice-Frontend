@@ -16,6 +16,11 @@ export default {
             type: String,
             required: true,
         },
+
+        type: {
+            type: String,
+            requiered: true,
+        },
     },
 
     computed: {
@@ -25,7 +30,11 @@ export default {
     },
 
     methods: {
-        ...mapActions('dashboard', ['show_filter_user']),
+        ...mapActions('dashboard', ['show_filter_user', 'set_dashboard_by_id']),
+
+        $_getToAPi() {
+            this.set_dashboard_by_id(this.type);
+        },
     },
 };
 </script>
@@ -41,15 +50,25 @@ export default {
             <span class="BUO-Heading-Small">{{ title }}</span>
         </section>
         <section>
-            <v-btn
-                icon
-                :color="app ? 'white' : 'black'"
-                @click="show_filter_user"
-            >
-                <v-icon>{{
-                    `mdi-filter${showFilter ? '' : '-off'}-outline`
-                }}</v-icon>
-            </v-btn>
+            <section>
+                <v-btn
+                    icon
+                    :color="app ? 'white' : 'black'"
+                    @click="$_getToAPi"
+                >
+                    <v-icon> mdi-sync </v-icon>
+                </v-btn>
+
+                <v-btn
+                    icon
+                    :color="app ? 'white' : 'black'"
+                    @click="show_filter_user"
+                >
+                    <v-icon>{{
+                        `mdi-filter${showFilter ? '' : '-off'}-outline`
+                    }}</v-icon>
+                </v-btn>
+            </section>
         </section>
     </v-layout>
 </template>
