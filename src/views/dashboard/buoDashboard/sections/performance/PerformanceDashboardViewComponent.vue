@@ -1,8 +1,8 @@
 <script>
 /**
- * Descripción: Pantalla  HomeDashboardViewComponent
+ * Descripción: Pantalla  PerformanceDashboardViewComponent
  *
- * @displayName HomeDashboardViewComponent
+ * @displayName PerformanceDashboardViewComponent
  *
  */
 
@@ -13,11 +13,11 @@ const BaseTemplateViewComponent = () =>
 
 const ContainerViewComponent = () =>
     import(
-        '@/views/dashboard/buoDashboard/components/home/container/ContainerViewComponent'
+        '@/views/dashboard/buoDashboard/components/performance/container/ContainerViewComponent'
     );
 
 export default {
-    name: 'HomeDashboardViewComponent',
+    name: 'PerformanceDashboardViewComponent',
 
     props: {
         innerWidth: {
@@ -33,14 +33,14 @@ export default {
 
     computed: {
         type() {
-            return 'home';
+            return 'performance';
         },
     },
 };
 </script>
 
 <template>
-    <BaseTemplateViewComponent title="Home" :type="type">
+    <BaseTemplateViewComponent title="Desempeño" :type="type">
         <section slot="body">
             <ContainerViewComponent :innerWidth="innerWidth" :type="type" />
         </section>

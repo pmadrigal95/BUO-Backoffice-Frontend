@@ -19,7 +19,7 @@ export default {
 
         type: {
             type: String,
-            default: 'growth',
+            default: 'recruitment',
         },
     },
 
@@ -31,6 +31,6 @@ export default {
 
 <template>
     <section>
-        <span>growth</span>
+        <span>recruitment</span>
     </section>
 </template>

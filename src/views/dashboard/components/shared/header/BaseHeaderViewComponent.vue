@@ -51,23 +51,26 @@ export default {
         </section>
         <section>
             <section>
-                <v-btn
-                    icon
-                    :color="app ? 'white' : 'black'"
-                    @click="$_getToAPi"
-                >
-                    <v-icon> mdi-sync </v-icon>
-                </v-btn>
+                <v-row dense>
+                    <slot name="btns" />
+                    <v-btn
+                        icon
+                        :color="app ? 'white' : 'black'"
+                        @click="$_getToAPi"
+                    >
+                        <v-icon> mdi-sync </v-icon>
+                    </v-btn>
 
-                <v-btn
-                    icon
-                    :color="app ? 'white' : 'black'"
-                    @click="show_filter_user"
-                >
-                    <v-icon>{{
-                        `mdi-filter${showFilter ? '' : '-off'}-outline`
-                    }}</v-icon>
-                </v-btn>
+                    <v-btn
+                        icon
+                        :color="app ? 'white' : 'black'"
+                        @click="show_filter_user"
+                    >
+                        <v-icon>{{
+                            `mdi-filter${showFilter ? '' : '-off'}-outline`
+                        }}</v-icon>
+                    </v-btn>
+                </v-row>
             </section>
         </section>
     </v-layout>

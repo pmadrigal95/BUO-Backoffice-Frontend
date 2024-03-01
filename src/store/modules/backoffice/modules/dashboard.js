@@ -9,11 +9,11 @@ import httpService from '@/services/axios/httpService';
 import BaseArrayHelper from '@/helpers/baseArrayHelper';
 
 const endpoint = {
-    home: undefined,
+    home: 'dashboard/rotacion/detalles',
     rotation: 'dashboard/rotacion/detalles',
-    performance: undefined,
-    growth: undefined,
-    recruitment: undefined,
+    performance: 'dashboard/rotacion/detalles',
+    growth: 'dashboard/rotacion/detalles',
+    recruitment: 'dashboard/rotacion/detalles',
 };
 
 /**

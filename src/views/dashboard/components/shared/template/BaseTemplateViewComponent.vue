@@ -96,7 +96,11 @@ export default {
     >
         <section slot="body">
             <section class="mx-4" v-if="filter.companyId">
-                <BaseHeaderViewComponent :title="title" :type="type" />
+                <BaseHeaderViewComponent :title="title" :type="type">
+                    <section slot="btns">
+                        <slot name="custom-btns" />
+                    </section>
+                </BaseHeaderViewComponent>
 
                 <BaseContainerTemplateViewComponent :type="type">
                     <section slot="container">

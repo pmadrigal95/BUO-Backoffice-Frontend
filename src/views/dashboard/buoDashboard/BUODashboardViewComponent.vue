@@ -5,11 +5,16 @@
  * @displayName BUODashboardViewComponent
  */
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 const NotifierViewComponent = () =>
     import(
         '@/views/dashboard/buoDashboard/sections/notifier/NotifierViewComponent'
+    );
+
+const HomeDashboardViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/sections/home/HomeDashboardViewComponent'
     );
 
 const RotationDashboardViewComponent = () =>
@@ -17,9 +22,19 @@ const RotationDashboardViewComponent = () =>
         '@/views/dashboard/buoDashboard/sections/rotation/RotationDashboardViewComponent'
     );
 
+const PerformanceDashboardViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/sections/performance/PerformanceDashboardViewComponent'
+    );
+
 const GrowthDashboardViewComponent = () =>
     import(
         '@/views/dashboard/buoDashboard/sections/growth/GrowthDashboardViewComponent'
+    );
+
+const RecruitmentDashboardViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/sections/recruitment/RecruitmentDashboardViewComponent'
     );
 
 export default {
@@ -27,13 +42,16 @@ export default {
 
     components: {
         NotifierViewComponent,
+        HomeDashboardViewComponent,
         RotationDashboardViewComponent,
+        PerformanceDashboardViewComponent,
         GrowthDashboardViewComponent,
+        RecruitmentDashboardViewComponent,
     },
 
     data() {
         return {
-            step: 1,
+            step: 0,
             windowSize: {
                 x: 0,
                 y: 0,
@@ -46,12 +64,19 @@ export default {
     },
 
     mounted() {
-        this.onResize();
+        this.onMounted();
     },
 
     methods: {
+        ...mapActions('dashboard', ['clean_dashboard']),
+
         onResize() {
             this.windowSize = { x: window.innerWidth, y: window.innerHeight };
+        },
+
+        onMounted() {
+            this.onResize();
+            this.clean_dashboard();
         },
     },
 };
@@ -64,10 +89,9 @@ export default {
         <v-tabs v-model="step" left show-arrows height="34">
             <v-tabs-slider color="transparent"></v-tabs-slider>
             <v-tab
-                disabled
                 class="rounded-pill no-uppercase mr-3"
                 active-class="tab-active-blue"
-                ><p class="BUO-Label-Small pt-4">Inicio</p>
+                ><p class="BUO-Label-Small pt-4">Home</p>
             </v-tab>
             <v-tab
                 class="rounded-pill no-uppercase mr-3"
@@ -75,7 +99,6 @@ export default {
                 ><p class="BUO-Label-Small pt-4">Rotación</p>
             </v-tab>
             <v-tab
-                disabled
                 class="rounded-pill no-uppercase mr-3"
                 active-class="tab-active-blue"
                 ><p class="BUO-Label-Small pt-4">Desempeño</p>
@@ -86,29 +109,18 @@ export default {
                 ><p class="BUO-Label-Small pt-4">Crecimiento</p>
             </v-tab>
             <v-tab
-                disabled
                 class="rounded-pill no-uppercase mr-3"
                 active-class="tab-active-blue"
                 ><p class="BUO-Label-Small pt-4">Reclutamiento</p>
-            </v-tab>
-            <v-tab
-                disabled
-                class="rounded-pill no-uppercase mr-3"
-                active-class="tab-active-blue"
-            >
-                <v-icon small> mdi mdi-plus </v-icon>
             </v-tab>
         </v-tabs>
 
         <v-tabs-items v-model="step" class="mx-n2 transparent">
             <v-tab-item>
-                <!--<HomeDashboardViewComponent
-                    :entity="entity"
-                    :filter="$_filter"
-                    :showFilter="showFilter"
+                <HomeDashboardViewComponent
+                    v-if="step == 0"
                     :innerWidth="windowSize.x"
                 />
-                -->
             </v-tab-item>
 
             <v-tab-item>
@@ -118,7 +130,12 @@ export default {
                 />
             </v-tab-item>
 
-            <v-tab-item> </v-tab-item>
+            <v-tab-item>
+                <PerformanceDashboardViewComponent
+                    v-if="step == 2"
+                    :innerWidth="windowSize.x"
+                />
+            </v-tab-item>
 
             <v-tab-item>
                 <GrowthDashboardViewComponent
@@ -127,9 +144,12 @@ export default {
                 />
             </v-tab-item>
 
-            <v-tab-item> </v-tab-item>
-
-            <v-tab-item> </v-tab-item>
+            <v-tab-item>
+                <RecruitmentDashboardViewComponent
+                    v-if="step == 4"
+                    :innerWidth="windowSize.x"
+                />
+            </v-tab-item>
         </v-tabs-items>
     </v-container>
 </template>
