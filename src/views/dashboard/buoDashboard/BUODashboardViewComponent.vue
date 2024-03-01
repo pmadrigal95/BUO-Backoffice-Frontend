@@ -63,8 +63,12 @@ export default {
         ...mapGetters('dashboard', ['notifier']),
     },
 
+    created() {
+        this.clean_dashboard();
+    },
+
     mounted() {
-        this.onMounted();
+        this.onResize();
     },
 
     methods: {
@@ -72,11 +76,6 @@ export default {
 
         onResize() {
             this.windowSize = { x: window.innerWidth, y: window.innerHeight };
-        },
-
-        onMounted() {
-            this.onResize();
-            this.clean_dashboard();
         },
     },
 };
