@@ -11,15 +11,14 @@ const NotificationCardViewComponent = () =>
         '@/views/sandbox/joselyn/components/growth/cards/notification/NotificationCardViewComponent'
     );
 
-/*  
-const BaseCardFlexViewComponent = () =>
-    import(
-        '@/views/sandbox/joselyn/components/shared/cards/BaseCardFlexViewComponent'
-    );
-*/
 const InsightsViewComponent = () =>
     import(
         '@/views/sandbox/joselyn/components/growth/cards/insights/InsightsViewComponent'
+    );
+
+const MoreInsightsCardViewComponent = () =>
+    import(
+        '@/views/sandbox/joselyn/components/growth/cards/insights/MoreInsightsCardViewComponent'
     );
 
 const StatisticalCardsViewComponent = () =>
@@ -27,15 +26,26 @@ const StatisticalCardsViewComponent = () =>
         '@/views/sandbox/joselyn/components/growth/cards/statistical/StatisticalCardsViewComponent'
     );
 
+const InsightsHomeCardViewComponent = () =>
+    import(
+        '@/views/sandbox/joselyn/components/home/cards/InsightsViewComponent'
+    );
+
+const MoreInsightsHomeCardViewComponent = () =>
+    import(
+        '@/views/sandbox/joselyn/components/home/cards/MoreInsightsCardViewComponent'
+    );
+
 export default {
     name: 'Sandbox2ViewComponent',
 
     components: {
-        /*BaseCardFlexViewComponent,
-       ,*/
         InsightsViewComponent,
+        InsightsHomeCardViewComponent,
         StatisticalCardsViewComponent,
         NotificationCardViewComponent,
+        MoreInsightsCardViewComponent,
+        MoreInsightsHomeCardViewComponent,
     },
 
     computed: {
@@ -88,6 +98,40 @@ export default {
                     title: '2,3 personas',
                     description:
                         'Cada año fiscal, entre 2 y 3 personas crecen a posiciones horizontales',
+                },
+            ];
+        },
+
+        stadisticData() {
+            return [
+                {
+                    color: 'redError900',
+                    percentage: '350',
+                    title: 'Empleados',
+                },
+                {
+                    percentage: '50%',
+                    description: '+5 vs el mes anterior',
+                    title: 'Paridad de género',
+                    direction: 'up',
+                    color: 'redError900',
+                    type: 'error',
+                },
+                {
+                    percentage: '40 años',
+                    description: '+3.5 vs el mes anterior',
+                    title: 'Edad promedio',
+                    direction: 'up',
+                    color: 'greenB900',
+                    type: 'success',
+                },
+                {
+                    percentage: '3 años',
+                    description: '+5 vs el mes anterior',
+                    title: 'Antiguedad promedio',
+                    direction: 'up',
+                    color: 'greenB900',
+                    type: 'warning',
                 },
             ];
         },
@@ -145,6 +189,26 @@ export default {
                 iconColor="aidBlue900"
                 description="prueba con icono"
             />
+        </v-col>
+
+        <v-col cols="12">
+            <StatisticalCardsViewComponent
+                :chartData="stadisticData"
+                height="171"
+                width="278"
+            />
+        </v-col>
+
+        <v-col cols="12">
+            <MoreInsightsCardViewComponent />
+        </v-col>
+
+        <v-col cols="12">
+            <InsightsHomeCardViewComponent />
+        </v-col>
+
+        <v-col cols="12">
+            <MoreInsightsHomeCardViewComponent />
         </v-col>
     </v-row>
 </template>
