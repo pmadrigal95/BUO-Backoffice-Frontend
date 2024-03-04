@@ -6,9 +6,9 @@
  *
  */
 
-const BaseStadisticCardViewComponent = () =>
+const BaseSlideCardViewComponent = () =>
     import(
-        '@/views/dashboard/components/shared/card/BaseStadisticCardViewComponent'
+        '@/views/dashboard/components/shared/slider/BaseSlideCardViewComponent'
     );
 
 export default {
@@ -19,40 +19,17 @@ export default {
             type: Array,
             required: true,
         },
-
-        width: {
-            type: String,
-            default: '288px',
-        },
-
-        height: {
-            type: String,
-            default: '177px',
-        },
     },
 
-    components: { BaseStadisticCardViewComponent },
+    components: { BaseSlideCardViewComponent },
 };
 </script>
 
 <template>
-    <v-slide-group>
-        <v-slide-item v-for="(item, i) in chartData" :key="i">
-            <v-card
-                class="transparent pt-4 mx-2"
-                elevation="0"
-                flat
-                :height="height"
-                :width="width"
-            >
-                <BaseStadisticCardViewComponent
-                    :title="item.title"
-                    :subtitle="item.percentage"
-                    :colorIcon="item.color"
-                    :directionIcon="item.direction"
-                    :description="item.description"
-                />
-            </v-card>
-        </v-slide-item>
-    </v-slide-group>
+    <BaseSlideCardViewComponent
+        class="mb-2 ml-n2"
+        width="auto"
+        height="auto"
+        :chartData="chartData"
+    />
 </template>
