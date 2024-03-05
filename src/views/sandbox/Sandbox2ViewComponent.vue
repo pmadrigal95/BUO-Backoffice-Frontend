@@ -193,14 +193,14 @@ export default {
                 height="auto"
                 icon="alert-circle"
                 iconColor="aidBlue900"
-                description="prueba con icono"
+                description="<p>De acuerdo a tu histórico de crecimiento y a tu data de entrenamientos, desde que implementaste el <strong class='grey700--text text-decoration-underline'>Entrenamiento 01</strong> en Abril, tu crecimiento aumentó en un 15% por lo que recomendamos implementar más entrenamientos relacionados a capacidades de liderazgo</p>"
             />
         </v-col>
 
         <v-col cols="12">
             <StatisticalCardsViewComponent
                 :chartData="stadisticData"
-                height="171"
+                height="220px"
                 width="278"
             />
         </v-col>
@@ -208,7 +208,7 @@ export default {
         <v-col cols="12">
             <MoreInsightsCardViewComponent
                 title="¿Quieres obtener más insights?"
-                sutbtitle="Necesitamos más datos para ofrecerte mejores sugerencias."
+                subtitle="Necesitamos más datos para ofrecerte mejores sugerencias."
                 nameButton="Empezar proceso"
             />
         </v-col>

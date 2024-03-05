@@ -59,9 +59,10 @@ export default {
         backgroundImage="aidBlue900"
     >
         <div slot="column">
-            <p class="BUO-Label-XSmall grey600--text px-4 pb-2">
-                {{ description }}
-            </p>
+            <div
+                class="BUO-Label-XSmall grey600--text px-4 pb-2"
+                v-html="description"
+            ></div>
         </div>
     </BaseCardFlexViewComponent>
 </template>
