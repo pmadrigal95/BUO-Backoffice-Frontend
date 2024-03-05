@@ -14,6 +14,23 @@ const BaseCardFlexViewComponent = () =>
 export default {
     name: 'MoreInsightsCardViewComponent',
 
+    props: {
+        title: {
+            type: String,
+            required: true,
+        },
+
+        subtitle: {
+            type: String,
+            required: true,
+        },
+
+        nameButton: {
+            type: String,
+            required: true,
+        },
+    },
+
     components: {
         BaseCardFlexViewComponent,
     },
@@ -27,15 +44,16 @@ export default {
         color="aidMint500"
         paddingContent="pa-0"
         width="278px"
-        height="200px"
+        height="195px"
+        class="mt-4"
     >
         <div slot="column" class="text-start px-4" style="max-width: 70%">
             <section>
                 <strong class="BUO-Label-Small-SemiBold aidBlue900--text"
-                    >¿Quieres obtener más insights?
+                    >{{ title }}
                 </strong>
                 <p class="BUO-Label-Small aidBlue900--text pt-3">
-                    Necesitamos más datos para ofrecerte mejores sugerencias.
+                    {{ subtitle }}
                 </p>
                 <v-btn
                     small
@@ -44,7 +62,7 @@ export default {
                     outlined
                     class="BUO-Paragraph-Small-SemiBold no-uppercase blue800--text"
                     style="background: white"
-                    >Empezar proceso</v-btn
+                    >{{ nameButton }}</v-btn
                 >
             </section>
         </div>

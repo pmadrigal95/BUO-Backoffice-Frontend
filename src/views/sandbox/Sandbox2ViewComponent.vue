@@ -48,6 +48,12 @@ export default {
         MoreInsightsHomeCardViewComponent,
     },
 
+    data() {
+        return {
+            innerWidth: 0,
+        };
+    },
+
     computed: {
         cardData() {
             return [
@@ -160,7 +166,7 @@ export default {
             <InsightsViewComponent
                 :data="insightsData"
                 width="100%"
-                height="475px"
+                height="auto"
                 image="https://buo-resources.s3.us-east-2.amazonaws.com/dashboard/ai-icon.svg"
             />
         </v-col>
@@ -200,15 +206,30 @@ export default {
         </v-col>
 
         <v-col cols="12">
-            <MoreInsightsCardViewComponent />
+            <MoreInsightsCardViewComponent
+                title="¿Quieres obtener más insights?"
+                sutbtitle="Necesitamos más datos para ofrecerte mejores sugerencias."
+                nameButton="Empezar proceso"
+            />
         </v-col>
 
         <v-col cols="12">
-            <InsightsHomeCardViewComponent />
+            <InsightsHomeCardViewComponent
+                title="AI driven insights"
+                subtitle="En BUO, nuestra tecnología AI provee indicadores cruciales
+            para decisiones más informadas."
+                description="Proporcionanos más datos y personalizaremos esta sección
+            para ti."
+                nameButton="Empezar proceso"
+            />
         </v-col>
 
         <v-col cols="12">
-            <MoreInsightsHomeCardViewComponent />
+            <MoreInsightsHomeCardViewComponent
+                title="¿Quieres obtener más insights?"
+                subtitle=" Necesitamos más datos para ofrecerte mejores sugerencias."
+                nameButton="Empezar proceso"
+            />
         </v-col>
     </v-row>
 </template>
