@@ -1,8 +1,8 @@
 <script>
 /**
- * Descripción: Pantalla  StatisticalRotationCardsViewComponent
+ * Descripción: Pantalla  StatisticalGrowthCardsViewComponent
  *
- * @displayName StatisticalRotationCardsViewComponent
+ * @displayName StatisticalGrowthCardsViewComponent
  *
  */
 
@@ -12,7 +12,7 @@ const BaseSlideCardViewComponent = () =>
     );
 
 export default {
-    name: 'StatisticalRotationCardsViewComponent',
+    name: 'StatisticalGrowthCardsViewComponent',
 
     props: {
         chartData: {

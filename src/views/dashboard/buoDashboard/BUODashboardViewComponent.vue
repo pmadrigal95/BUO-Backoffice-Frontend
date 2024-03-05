@@ -51,6 +51,7 @@ export default {
 
     data() {
         return {
+            key: 0,
             step: 0,
             windowSize: {
                 x: 0,
@@ -76,6 +77,7 @@ export default {
 
         onResize() {
             this.windowSize = { x: window.innerWidth, y: window.innerHeight };
+            this.key++;
         },
     },
 };
@@ -85,70 +87,72 @@ export default {
     <v-container fluid v-resize="onResize">
         <NotifierViewComponent v-if="!notifier" />
 
-        <v-tabs v-model="step" left show-arrows height="34">
-            <v-tabs-slider color="transparent"></v-tabs-slider>
-            <v-tab
-                class="rounded-pill no-uppercase mr-3"
-                active-class="tab-active-blue"
-                ><p class="BUO-Label-Small pt-4">Home</p>
-            </v-tab>
-            <v-tab
-                class="rounded-pill no-uppercase mr-3"
-                active-class="tab-active-blue"
-                ><p class="BUO-Label-Small pt-4">Rotación</p>
-            </v-tab>
-            <v-tab
-                class="rounded-pill no-uppercase mr-3"
-                active-class="tab-active-blue"
-                ><p class="BUO-Label-Small pt-4">Desempeño</p>
-            </v-tab>
-            <v-tab
-                class="rounded-pill no-uppercase mr-3"
-                active-class="tab-active-blue"
-                ><p class="BUO-Label-Small pt-4">Crecimiento</p>
-            </v-tab>
-            <v-tab
-                class="rounded-pill no-uppercase mr-3"
-                active-class="tab-active-blue"
-                ><p class="BUO-Label-Small pt-4">Reclutamiento</p>
-            </v-tab>
-        </v-tabs>
+        <section :key="key">
+            <v-tabs v-model="step" left show-arrows height="34">
+                <v-tabs-slider color="transparent"></v-tabs-slider>
+                <v-tab
+                    class="rounded-pill no-uppercase mr-3"
+                    active-class="tab-active-blue"
+                    ><p class="BUO-Label-Small pt-4">Home</p>
+                </v-tab>
+                <v-tab
+                    class="rounded-pill no-uppercase mr-3"
+                    active-class="tab-active-blue"
+                    ><p class="BUO-Label-Small pt-4">Rotación</p>
+                </v-tab>
+                <v-tab
+                    class="rounded-pill no-uppercase mr-3"
+                    active-class="tab-active-blue"
+                    ><p class="BUO-Label-Small pt-4">Desempeño</p>
+                </v-tab>
+                <v-tab
+                    class="rounded-pill no-uppercase mr-3"
+                    active-class="tab-active-blue"
+                    ><p class="BUO-Label-Small pt-4">Crecimiento</p>
+                </v-tab>
+                <v-tab
+                    class="rounded-pill no-uppercase mr-3"
+                    active-class="tab-active-blue"
+                    ><p class="BUO-Label-Small pt-4">Reclutamiento</p>
+                </v-tab>
+            </v-tabs>
 
-        <v-tabs-items v-model="step" class="mx-n2 transparent">
-            <v-tab-item>
-                <HomeDashboardViewComponent
-                    v-if="step == 0"
-                    :innerWidth="windowSize.x"
-                />
-            </v-tab-item>
+            <v-tabs-items v-model="step" class="mx-n2 transparent">
+                <v-tab-item>
+                    <HomeDashboardViewComponent
+                        v-if="step == 0"
+                        :innerWidth="windowSize.x"
+                    />
+                </v-tab-item>
 
-            <v-tab-item>
-                <RotationDashboardViewComponent
-                    v-if="step == 1"
-                    :innerWidth="windowSize.x"
-                />
-            </v-tab-item>
+                <v-tab-item>
+                    <RotationDashboardViewComponent
+                        v-if="step == 1"
+                        :innerWidth="windowSize.x"
+                    />
+                </v-tab-item>
 
-            <v-tab-item>
-                <PerformanceDashboardViewComponent
-                    v-if="step == 2"
-                    :innerWidth="windowSize.x"
-                />
-            </v-tab-item>
+                <v-tab-item>
+                    <PerformanceDashboardViewComponent
+                        v-if="step == 2"
+                        :innerWidth="windowSize.x"
+                    />
+                </v-tab-item>
 
-            <v-tab-item>
-                <GrowthDashboardViewComponent
-                    v-if="step == 3"
-                    :innerWidth="windowSize.x"
-                />
-            </v-tab-item>
+                <v-tab-item>
+                    <GrowthDashboardViewComponent
+                        v-if="step == 3"
+                        :innerWidth="windowSize.x"
+                    />
+                </v-tab-item>
 
-            <v-tab-item>
-                <RecruitmentDashboardViewComponent
-                    v-if="step == 4"
-                    :innerWidth="windowSize.x"
-                />
-            </v-tab-item>
-        </v-tabs-items>
+                <v-tab-item>
+                    <RecruitmentDashboardViewComponent
+                        v-if="step == 4"
+                        :innerWidth="windowSize.x"
+                    />
+                </v-tab-item>
+            </v-tabs-items>
+        </section>
     </v-container>
 </template>
