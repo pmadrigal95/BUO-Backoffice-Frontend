@@ -65,6 +65,9 @@ export default {
         backgroundImage="aidBlue900"
         title="AI driven insights"
         widthBackgroundImage="185px"
+        :directionContent="
+            $vuetify.breakpoint.mobile ? 'flex-column-reverse' : 'flex-row'
+        "
     >
         <div slot="column" class="pl-4">
             <strong class="BUO-Paragraph-Large-SemiBold aidBlue900--text"
@@ -74,14 +77,14 @@ export default {
                 <StatisticsCardViewComponent
                     :title="item.title"
                     :description="item.description"
-                    width="422px"
+                    :width="$vuetify.breakpoint.mobile ? '95%' : '422px'"
                 />
             </section>
         </div>
         <div slot="column" class="pl-4">
             <v-img
                 contain
-                :max-height="height"
+                :max-height="$vuetify.breakpoint.mobile ? '250px' : height"
                 src="https://buo-resources.s3.us-east-2.amazonaws.com/dashboard/BodyAIInsights.svg"
             >
             </v-img>

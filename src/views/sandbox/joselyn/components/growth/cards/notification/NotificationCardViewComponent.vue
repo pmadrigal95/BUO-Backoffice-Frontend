@@ -51,7 +51,7 @@ export default {
         alignContent="align-center"
         color="aidMint400"
         borderColor="aidMint500"
-        :width="width"
+        :width="$vuetify.breakpoint.mobile ? 'auto' : width"
         height="auto"
         :image="image"
         :icon="icon"
@@ -59,9 +59,10 @@ export default {
         backgroundImage="aidBlue900"
     >
         <div slot="column">
-            <p class="BUO-Label-XSmall grey600--text px-4 pb-2">
-                {{ description }}
-            </p>
+            <div
+                class="BUO-Label-XSmall grey600--text px-4 pb-2"
+                v-html="description"
+            ></div>
         </div>
     </BaseCardFlexViewComponent>
 </template>

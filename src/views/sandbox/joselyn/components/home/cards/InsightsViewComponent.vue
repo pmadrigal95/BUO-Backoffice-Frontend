@@ -14,6 +14,28 @@ const BaseCardFlexViewComponent = () =>
 export default {
     name: 'InsightsViewComponent',
 
+    props: {
+        title: {
+            type: String,
+            required: true,
+        },
+
+        subtitle: {
+            type: String,
+            required: true,
+        },
+
+        description: {
+            type: String,
+            required: true,
+        },
+
+        nameButton: {
+            type: String,
+            required: true,
+        },
+    },
+
     components: {
         BaseCardFlexViewComponent,
     },
@@ -26,12 +48,16 @@ export default {
         alignContent="align-center"
         color="aidMint500"
         paddingContent="pa-0"
-        height="200px"
+        height="auto"
     >
-        <div slot="column" class="text-center pt-4 pb-8 px-12">
+        <div
+            slot="column"
+            class="text-center pt-4 pb-8"
+            :class="$vuetify.breakpoint.mobile ? 'px-4' : 'px-12'"
+        >
             <v-card
                 color="aidBlue900"
-                width="245px"
+                :width="$vuetify.breakpoint.mobile ? '150px' : '245px'"
                 height="55px"
                 class="d-flex justify-start align-center rounded-xxl"
             >
@@ -47,9 +73,14 @@ export default {
                             lazy-src="https://buo-resources.s3.us-east-2.amazonaws.com/dashboard/ai-icon.svg"
                         />
                         <p
-                            class="BUO-Paragraph-Large-SemiBold aidMint500--text pt-4 pr-1"
+                            class="aidMint500--text pt-4 pr-1"
+                            :class="
+                                $vuetify.breakpoint.mobile
+                                    ? 'BUO-Paragraph-Medium-SemiBold'
+                                    : 'BUO-Paragraph-Large-SemiBold'
+                            "
                         >
-                            AI driven insights
+                            {{ title }}
                         </p>
                     </section>
                 </v-card-text>
@@ -57,25 +88,46 @@ export default {
         </div>
         <div slot="column" class="text-start pt-4 pb-8">
             <section style="max-width: 80%">
-                <strong class="BUO-Paragraph-Large-SemiBold aidBlue900--text"
-                    >En BUO, nuestra tecnología AI provee indicadores cruciales
-                    para decisiones más informadas.
+                <strong
+                    class="aidBlue900--text"
+                    :class="
+                        $vuetify.breakpoint.mobile
+                            ? 'BUO-Paragraph-Small-SemiBold'
+                            : 'BUO-Paragraph-Large-SemiBold '
+                    "
+                >
+                    {{ subtitle }}
                 </strong>
-                <p class="BUO-Paragraph-Large aidBlue900--text pt-3">
-                    Proporcionanos más datos y personalizaremos esta sección
-                    para ti.
+                <p
+                    class="aidBlue900--text pt-3"
+                    :class="
+                        $vuetify.breakpoint.mobile
+                            ? 'BUO-Paragraph-Small'
+                            : 'BUO-Paragraph-Large'
+                    "
+                >
+                    {{ description }}
                 </p>
                 <v-btn
                     dark
                     color="blue800"
                     outlined
-                    class="BUO-Paragraph-Small-SemiBold no-uppercase blue800--text"
+                    class="no-uppercase blue800--text"
+                    :class="
+                        $vuetify.breakpoint.mobile
+                            ? 'BUO-Paragraph-XSmall-SemiBold'
+                            : 'BUO-Paragraph-Small-SemiBold'
+                    "
                     style="background: white"
-                    >Empezar proceso</v-btn
+                    >{{ nameButton }}</v-btn
                 >
             </section>
         </div>
-        <div slot="column" style="position: absolute; right: 0; top: 0">
+        <div
+            slot="column"
+            style="position: absolute; right: 0; top: 0"
+            v-if="!$vuetify.breakpoint.mobile"
+        >
             <v-img
                 contain
                 max-height="200px"

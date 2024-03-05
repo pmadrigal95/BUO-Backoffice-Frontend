@@ -75,6 +75,11 @@ export default {
             default: 'justify-end',
         },
 
+        alignButton: {
+            type: String,
+            default: 'align-end',
+        },
+
         /*Type alert as: success, info, warning, error or default*/
         type: {
             type: String,
@@ -175,8 +180,10 @@ export default {
                     </p>
                 </section>
             </section>
+        </div>
+        <div slot="card-actions">
             <section v-if="titleButton">
-                <section class="d-flex flex-row" :class="directionButton">
+                <v-layout justify-end class="pb-4">
                     <v-btn
                         text
                         color="blue900"
@@ -184,7 +191,7 @@ export default {
                         class="BUO-Label-XSmall no-uppercase"
                         >{{ titleButton }}</v-btn
                     >
-                </section>
+                </v-layout>
             </section>
         </div>
     </BaseCardViewComponent>

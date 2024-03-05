@@ -48,6 +48,12 @@ export default {
         MoreInsightsHomeCardViewComponent,
     },
 
+    data() {
+        return {
+            innerWidth: 0,
+        };
+    },
+
     computed: {
         cardData() {
             return [
@@ -160,7 +166,7 @@ export default {
             <InsightsViewComponent
                 :data="insightsData"
                 width="100%"
-                height="475px"
+                height="auto"
                 image="https://buo-resources.s3.us-east-2.amazonaws.com/dashboard/ai-icon.svg"
             />
         </v-col>
@@ -187,28 +193,43 @@ export default {
                 height="auto"
                 icon="alert-circle"
                 iconColor="aidBlue900"
-                description="prueba con icono"
+                description="<p>De acuerdo a tu histórico de crecimiento y a tu data de entrenamientos, desde que implementaste el <strong class='grey700--text text-decoration-underline'>Entrenamiento 01</strong> en Abril, tu crecimiento aumentó en un 15% por lo que recomendamos implementar más entrenamientos relacionados a capacidades de liderazgo</p>"
             />
         </v-col>
 
         <v-col cols="12">
             <StatisticalCardsViewComponent
                 :chartData="stadisticData"
-                height="171"
+                height="220px"
                 width="278"
             />
         </v-col>
 
         <v-col cols="12">
-            <MoreInsightsCardViewComponent />
+            <MoreInsightsCardViewComponent
+                title="¿Quieres obtener más insights?"
+                subtitle="Necesitamos más datos para ofrecerte mejores sugerencias."
+                nameButton="Empezar proceso"
+            />
         </v-col>
 
         <v-col cols="12">
-            <InsightsHomeCardViewComponent />
+            <InsightsHomeCardViewComponent
+                title="AI driven insights"
+                subtitle="En BUO, nuestra tecnología AI provee indicadores cruciales
+            para decisiones más informadas."
+                description="Proporcionanos más datos y personalizaremos esta sección
+            para ti."
+                nameButton="Empezar proceso"
+            />
         </v-col>
 
         <v-col cols="12">
-            <MoreInsightsHomeCardViewComponent />
+            <MoreInsightsHomeCardViewComponent
+                title="¿Quieres obtener más insights?"
+                subtitle=" Necesitamos más datos para ofrecerte mejores sugerencias."
+                nameButton="Empezar proceso"
+            />
         </v-col>
     </v-row>
 </template>

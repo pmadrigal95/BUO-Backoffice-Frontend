@@ -14,6 +14,23 @@ const BaseCardFlexViewComponent = () =>
 export default {
     name: 'MoreInsightsCardViewComponent',
 
+    props: {
+        title: {
+            type: String,
+            required: true,
+        },
+
+        subtitle: {
+            type: String,
+            required: true,
+        },
+
+        nameButton: {
+            type: String,
+            required: true,
+        },
+    },
+
     components: {
         BaseCardFlexViewComponent,
     },
@@ -29,11 +46,11 @@ export default {
         height="184px"
     >
         <div slot="column" class="text-center pt-4 pb-8">
-            <strong class="BUO-Heading-XSmall aidMint500--text"
-                >¿Quieres obtener más insights?</strong
-            >
+            <strong class="BUO-Heading-XSmall aidMint500--text">
+                {{ title }}
+            </strong>
             <p class="BUO-Label-XSmall white--text pt-3">
-                Necesitamos más datos para ofrecerte mejores sugerencias.
+                {{ subtitle }}
             </p>
             <v-btn
                 dark
@@ -41,10 +58,14 @@ export default {
                 outlined
                 class="BUO-Paragraph-Small-SemiBold no-uppercase blue800--text"
                 style="background: white"
-                >Empezar proceso</v-btn
+                >{{ nameButton }}</v-btn
             >
         </div>
-        <div slot="column" style="position: absolute; right: 0; top: 0">
+        <div
+            slot="column"
+            style="position: absolute; right: 0; top: 0"
+            v-if="!$vuetify.breakpoint.mobile"
+        >
             <v-img
                 contain
                 max-height="184px"
