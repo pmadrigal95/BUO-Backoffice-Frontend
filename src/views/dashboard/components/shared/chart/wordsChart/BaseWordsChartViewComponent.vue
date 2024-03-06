@@ -143,8 +143,8 @@ export default {
                     <v-container class="mx-auto">
                         <masonry
                             class="mt-4"
-                            :cols="{ default: 4, 1000: 3, 700: 2, 430: 1 }"
-                            :gutter="{ default: '30px', 700: '15px' }"
+                            :cols="{ default: 3, 1000: 3, 700: 2, 430: 1 }"
+                            :gutter="{ default: '25px', 700: '15px' }"
                             style="justify-content: center !important"
                         >
                             <div
@@ -163,10 +163,13 @@ export default {
                                                 :class="{ 'on-hover': hover }"
                                                 outlined
                                                 flat
-                                                class="d-flex align-center justify-center rounded-lg my-3"
+                                                class="d-flex align-center justify-center rounded-lg my-3 mx-1"
                                                 :min-height="
-                                                    item.bold ? 100 : 50
+                                                    item.bold
+                                                        ? 60
+                                                        : 'max-content'
                                                 "
+                                                min-width="max-content"
                                                 :color="
                                                     hover
                                                         ? app
@@ -176,7 +179,7 @@ export default {
                                                 "
                                             >
                                                 <v-card-text
-                                                    class="buo-word-break text-center"
+                                                    class="buo-word-break text-center pa-2"
                                                     :class="[
                                                         app
                                                             ? item.bold
