@@ -49,6 +49,21 @@ export default {
             type: Boolean,
             default: false,
         },
+
+        isOnlyChart: {
+            type: Boolean,
+            default: true,
+        },
+
+        chartColumns: {
+            type: [Number, String],
+            default: 12,
+        },
+
+        contentColumns: {
+            type: [Number, String],
+            default: 12,
+        },
     },
 
     components: {
@@ -60,11 +75,16 @@ export default {
     data() {
         return {
             isBubbleChart: true,
+            showContent: !this.isOnlyChart,
         };
     },
 
     computed: {
         ...mapGetters('theme', ['app']),
+
+        md() {
+            return this.showContent ? this.chartColumns : 12;
+        },
 
         chartConfig() {
             return {
@@ -144,7 +164,7 @@ export default {
 
 <template>
     <BaseCardViewComponent :title="title">
-        <div slot="top-actions">
+        <section slot="top-actions">
             <v-btn
                 icon
                 :color="app ? 'clouds' : 'black'"
@@ -154,23 +174,48 @@ export default {
                     `mdi-${isBubbleChart ? 'chart-pie' : 'chart-bubble'}`
                 }}</v-icon>
             </v-btn>
-        </div>
-        <div slot="card-text">
-            <BaseCustomBubbleChartImpl
-                v-if="isBubbleChart"
-                :chartData="chartConfig"
-                positionLegend="right"
-                :dark="app"
-                :showLegend="showLegend && !$vuetify.breakpoint.mobile"
-            />
-            <BasePieChartImpl
-                v-else
-                :chartData="chartConfig"
-                positionLegend="right"
-                :dark="app"
-                :showLegend="showLegend && !$vuetify.breakpoint.mobile"
-                :isPie="isPie"
-            />
-        </div>
+
+            <v-btn
+                v-if="!isOnlyChart"
+                icon
+                :color="app ? 'clouds' : 'black'"
+                @click="showContent = !showContent"
+            >
+                <v-icon>{{
+                    `mdi-${
+                        showContent ? 'information' : 'information-off-outline'
+                    }`
+                }}</v-icon>
+            </v-btn>
+        </section>
+        <section slot="card-text">
+            <v-row>
+                <v-col cols="12" :md="md" align-self="center">
+                    <BaseCustomBubbleChartImpl
+                        v-if="isBubbleChart"
+                        :chartData="chartConfig"
+                        positionLegend="right"
+                        :dark="app"
+                        :showLegend="showLegend && !$vuetify.breakpoint.mobile"
+                    />
+                    <BasePieChartImpl
+                        v-else
+                        :chartData="chartConfig"
+                        positionLegend="right"
+                        :dark="app"
+                        :showLegend="showLegend && !$vuetify.breakpoint.mobile"
+                        :isPie="isPie"
+                    />
+                </v-col>
+                <v-col
+                    cols="12"
+                    :md="contentColumns"
+                    align-self="center"
+                    v-if="showContent"
+                >
+                    <slot name="content"></slot>
+                </v-col>
+            </v-row>
+        </section>
     </BaseCardViewComponent>
 </template>

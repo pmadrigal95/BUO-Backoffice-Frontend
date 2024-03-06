@@ -6,6 +6,8 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
 import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
 
 const BaseCardViewComponent = () =>
@@ -58,11 +60,23 @@ export default {
 
     components: { BaseCardViewComponent },
 
+    data() {
+        return {
+            showContent: !this.isOnlyChart,
+        };
+    },
+
     computed: {
+        ...mapGetters('theme', ['app']),
+
         maxValue() {
             const result = Math.max(...this.list.map((o) => o.value));
 
             return result > 100 ? result : 100;
+        },
+
+        md() {
+            return this.showContent ? this.chartColumns : 12;
         },
     },
 
@@ -107,9 +121,23 @@ export default {
 
 <template>
     <BaseCardViewComponent :title="title" :subtitle="subtitle">
-        <div slot="card-text">
+        <section slot="top-actions">
+            <v-btn
+                v-if="!isOnlyChart"
+                icon
+                :color="app ? 'clouds' : 'black'"
+                @click="showContent = !showContent"
+            >
+                <v-icon>{{
+                    `mdi-${
+                        showContent ? 'information' : 'information-off-outline'
+                    }`
+                }}</v-icon>
+            </v-btn>
+        </section>
+        <section slot="card-text">
             <v-row>
-                <v-col cols="12" :md="chartColumns" align-self="center">
+                <v-col cols="12" :md="md" align-self="center">
                     <v-list dense v-if="maxValue">
                         <v-list-item v-for="(item, i) in list" :key="i">
                             <v-list-item-content>
@@ -147,11 +175,11 @@ export default {
                     cols="12"
                     :md="contentColumns"
                     align-self="center"
-                    v-if="!isOnlyChart"
+                    v-if="showContent"
                 >
                     <slot name="content"></slot>
                 </v-col>
             </v-row>
-        </div>
+        </section>
     </BaseCardViewComponent>
 </template>
