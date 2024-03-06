@@ -54,6 +54,21 @@ export default {
             type: Number,
             default: 6,
         },
+
+        isOnlyChart: {
+            type: Boolean,
+            default: true,
+        },
+
+        chartColumns: {
+            type: [Number, String],
+            default: 12,
+        },
+
+        contentColumns: {
+            type: [Number, String],
+            default: 12,
+        },
     },
 
     components: {
@@ -61,8 +76,18 @@ export default {
         BaseCardViewComponent,
     },
 
+    data() {
+        return {
+            showContent: !this.isOnlyChart,
+        };
+    },
+
     computed: {
         ...mapGetters('theme', ['app']),
+
+        md() {
+            return this.showContent ? this.chartColumns : 12;
+        },
     },
 
     created() {
@@ -88,15 +113,41 @@ export default {
 
 <template>
     <BaseCardViewComponent :title="title">
-        <div slot="card-text">
-            <BaseLinearChartImpl
-                :chartData="chartData"
-                :dark="app"
-                :showLegend="showLegend && !$vuetify.breakpoint.mobile"
-                :isRound="isRound"
-                :aspectRatio="aspectRatio"
-                :point="point"
-            />
-        </div>
+        <section slot="top-actions">
+            <v-btn
+                v-if="!isOnlyChart"
+                icon
+                :color="app ? 'clouds' : 'black'"
+                @click="showContent = !showContent"
+            >
+                <v-icon>{{
+                    `mdi-${
+                        showContent ? 'information' : 'information-off-outline'
+                    }`
+                }}</v-icon>
+            </v-btn>
+        </section>
+        <section slot="card-text">
+            <v-row>
+                <v-col cols="12" :md="md" align-self="center">
+                    <BaseLinearChartImpl
+                        :chartData="chartData"
+                        :dark="app"
+                        :showLegend="showLegend && !$vuetify.breakpoint.mobile"
+                        :isRound="isRound"
+                        :aspectRatio="aspectRatio"
+                        :point="point"
+                    />
+                </v-col>
+                <v-col
+                    cols="12"
+                    :md="contentColumns"
+                    align-self="center"
+                    v-if="showContent"
+                >
+                    <slot name="content"></slot>
+                </v-col>
+            </v-row>
+        </section>
     </BaseCardViewComponent>
 </template>
