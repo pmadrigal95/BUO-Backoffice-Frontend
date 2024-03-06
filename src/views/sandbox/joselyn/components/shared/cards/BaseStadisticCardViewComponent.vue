@@ -180,19 +180,15 @@ export default {
                     </p>
                 </section>
             </section>
-        </div>
-        <div slot="card-actions">
-            <section v-if="titleButton">
-                <v-layout justify-end class="pb-4">
-                    <v-btn
-                        text
-                        color="blue900"
-                        @click="$_fnButton()"
-                        class="BUO-Label-XSmall no-uppercase"
-                        >{{ titleButton }}</v-btn
-                    >
-                </v-layout>
-            </section>
+            <v-layout justify-end align-end v-if="titleButton">
+                <v-btn
+                    text
+                    color="blue900"
+                    @click="$_fnButton()"
+                    class="BUO-Label-XSmall no-uppercase"
+                    >{{ titleButton }}</v-btn
+                >
+            </v-layout>
         </div>
     </BaseCardViewComponent>
 </template>

@@ -79,8 +79,5 @@ export default {
         <v-card-text>
             <slot name="card-text"></slot>
         </v-card-text>
-        <v-card-actions>
-            <slot name="card-actions"></slot>
-        </v-card-actions>
     </v-card>
 </template>

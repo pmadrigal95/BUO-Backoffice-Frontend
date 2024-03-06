@@ -48,12 +48,6 @@ export default {
         MoreInsightsHomeCardViewComponent,
     },
 
-    data() {
-        return {
-            innerWidth: 0,
-        };
-    },
-
     computed: {
         cardData() {
             return [
@@ -140,12 +134,6 @@ export default {
                     type: 'warning',
                 },
             ];
-        },
-    },
-
-    methods: {
-        test() {
-            alert('hola');
         },
     },
 };
