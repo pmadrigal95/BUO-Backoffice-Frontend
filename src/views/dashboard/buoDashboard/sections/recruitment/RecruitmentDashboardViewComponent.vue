@@ -24,13 +24,6 @@ const ContainerViewComponent = () =>
 export default {
     name: 'RecruitmentDashboardViewComponent',
 
-    props: {
-        innerWidth: {
-            type: [Number, String],
-            required: true,
-        },
-    },
-
     components: {
         BaseCustomsButtonsGrid,
         BaseTemplateViewComponent,
@@ -66,7 +59,7 @@ export default {
             />
         </section>
         <section slot="body">
-            <ContainerViewComponent :innerWidth="innerWidth" :type="type" />
+            <ContainerViewComponent />
         </section>
     </BaseTemplateViewComponent>
 </template>

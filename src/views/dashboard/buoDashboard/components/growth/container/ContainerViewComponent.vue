@@ -49,11 +49,6 @@ export default {
     name: 'ContainerViewComponent',
 
     props: {
-        innerWidth: {
-            type: [Number, String],
-            required: true,
-        },
-
         type: {
             type: String,
             default: 'growth',
@@ -80,7 +75,7 @@ export default {
 
     methods: {
         md(nextColumn) {
-            return baseDisplay.$_setLayout({ nextColumn, innerWidth });
+            return baseDisplay.$_setLayout(nextColumn);
         },
     },
 };
@@ -98,7 +93,7 @@ export default {
 
         <v-col
             cols="12"
-            :md="md(entity.reasonProgress)"
+            :md="$vuetify.breakpoint.mobile ? 12 : md(entity.reasonProgress)"
             v-if="
                 entity.departmentRotation &&
                 entity.departmentRotation.length > 0
@@ -109,7 +104,9 @@ export default {
 
         <v-col
             cols="12"
-            :md="md(entity.departmentRotation)"
+            :md="
+                $vuetify.breakpoint.mobile ? 12 : md(entity.departmentRotation)
+            "
             v-if="entity.reasonProgress && entity.reasonProgress.length > 0"
         >
             <ReasonsGrowthViewComponent :chartData="entity.reasonProgress" />
@@ -121,7 +118,7 @@ export default {
 
         <v-col
             cols="12"
-            :md="md(entity.personalities)"
+            :md="$vuetify.breakpoint.mobile ? 12 : md(entity.personalities)"
             v-if="entity.managersPie"
         >
             <ManagersGrowthChartComponent :chartData="entity.managersPie" />
@@ -129,7 +126,7 @@ export default {
 
         <v-col
             cols="12"
-            :md="md(entity.managersPie)"
+            :md="$vuetify.breakpoint.mobile ? 12 : md(entity.managersPie)"
             v-if="entity.personalities"
         >
             <GrowingPersonalitiesChartComponent

@@ -12,11 +12,6 @@ export default {
     name: 'ContainerViewComponent',
 
     props: {
-        innerWidth: {
-            type: [Number, String],
-            required: true,
-        },
-
         type: {
             type: String,
             default: 'recruitment',

@@ -19,13 +19,6 @@ const ContainerViewComponent = () =>
 export default {
     name: 'PerformanceDashboardViewComponent',
 
-    props: {
-        innerWidth: {
-            type: [Number, String],
-            required: true,
-        },
-    },
-
     components: {
         BaseTemplateViewComponent,
         ContainerViewComponent,
@@ -42,7 +35,7 @@ export default {
 <template>
     <BaseTemplateViewComponent title="Desempeño" :type="type">
         <section slot="body">
-            <ContainerViewComponent :innerWidth="innerWidth" :type="type" />
+            <ContainerViewComponent />
         </section>
     </BaseTemplateViewComponent>
 </template>

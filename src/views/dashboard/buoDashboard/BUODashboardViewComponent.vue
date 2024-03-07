@@ -51,7 +51,6 @@ export default {
 
     data() {
         return {
-            key: 0,
             step: 0,
             windowSize: {
                 x: 0,
@@ -77,7 +76,6 @@ export default {
 
         onResize() {
             this.windowSize = { x: window.innerWidth, y: window.innerHeight };
-            this.key++;
         },
     },
 };
@@ -87,7 +85,7 @@ export default {
     <v-container fluid v-resize="onResize">
         <NotifierViewComponent v-if="!notifier" />
 
-        <section :key="key">
+        <section>
             <v-tabs v-model="step" left show-arrows height="34">
                 <v-tabs-slider color="transparent"></v-tabs-slider>
                 <v-tab
@@ -119,10 +117,7 @@ export default {
 
             <v-tabs-items v-model="step" class="mx-n2 transparent">
                 <v-tab-item>
-                    <HomeDashboardViewComponent
-                        v-if="step == 0"
-                        :innerWidth="windowSize.x"
-                    />
+                    <HomeDashboardViewComponent v-if="step == 0" />
                 </v-tab-item>
 
                 <v-tab-item>
@@ -133,24 +128,15 @@ export default {
                 </v-tab-item>
 
                 <v-tab-item>
-                    <PerformanceDashboardViewComponent
-                        v-if="step == 2"
-                        :innerWidth="windowSize.x"
-                    />
+                    <PerformanceDashboardViewComponent v-if="step == 2" />
                 </v-tab-item>
 
                 <v-tab-item>
-                    <GrowthDashboardViewComponent
-                        v-if="step == 3"
-                        :innerWidth="windowSize.x"
-                    />
+                    <GrowthDashboardViewComponent v-if="step == 3" />
                 </v-tab-item>
 
                 <v-tab-item>
-                    <RecruitmentDashboardViewComponent
-                        v-if="step == 4"
-                        :innerWidth="windowSize.x"
-                    />
+                    <RecruitmentDashboardViewComponent v-if="step == 4" />
                 </v-tab-item>
             </v-tabs-items>
         </section>
