@@ -65,7 +65,57 @@ export default {
         },
 
         $_shuffleChartData() {
-            return baseArrayHelper.ShuffleArray(this.chartData);
+            return baseArrayHelper.ShuffleArray(this.fakeData);
+        },
+
+        fakeData() {
+            return [
+                {
+                    name: 'Salarios',
+                    bold: true,
+                    value: 1,
+                },
+                {
+                    name: 'Días de vacaciones',
+                    bold: false,
+                    value: 1,
+                },
+                {
+                    name: 'WFH',
+                    bold: false,
+                    value: 1,
+                },
+                {
+                    name: 'Beneficios',
+                    bold: true,
+                    value: 1,
+                },
+                {
+                    name: 'Ambiente laboral',
+                    bold: false,
+                    value: 1,
+                },
+                {
+                    name: 'Poca motivación',
+                    bold: false,
+                    value: 1,
+                },
+                {
+                    name: 'WFH',
+                    bold: false,
+                    value: 1,
+                },
+                {
+                    name: 'Falta de crecimiento',
+                    bold: false,
+                    value: 1,
+                },
+                {
+                    name: 'Poca motivación',
+                    bold: false,
+                    value: 1,
+                },
+            ];
         },
     },
 };
@@ -93,8 +143,8 @@ export default {
                     <v-container class="mx-auto">
                         <masonry
                             class="mt-4"
-                            :cols="{ default: 4, 1000: 3, 700: 2, 430: 1 }"
-                            :gutter="{ default: '30px', 700: '15px' }"
+                            :cols="{ default: 3, 1000: 3, 700: 2, 430: 1 }"
+                            :gutter="{ default: '25px', 700: '15px' }"
                             style="justify-content: center !important"
                         >
                             <div
@@ -113,10 +163,13 @@ export default {
                                                 :class="{ 'on-hover': hover }"
                                                 outlined
                                                 flat
-                                                class="d-flex align-center justify-center rounded-lg my-3"
+                                                class="d-flex align-center justify-center rounded-lg my-3 mx-1"
                                                 :min-height="
-                                                    item.bold ? 100 : 50
+                                                    item.bold
+                                                        ? 60
+                                                        : 'max-content'
                                                 "
+                                                min-width="max-content"
                                                 :color="
                                                     hover
                                                         ? app
@@ -126,7 +179,7 @@ export default {
                                                 "
                                             >
                                                 <v-card-text
-                                                    class="buo-word-break text-center"
+                                                    class="buo-word-break text-center pa-2"
                                                     :class="[
                                                         app
                                                             ? item.bold

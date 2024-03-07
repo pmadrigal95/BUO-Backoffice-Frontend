@@ -37,12 +37,6 @@ export default {
     },
 
     components: { BaseStadisticCardViewComponent },
-
-    methods: {
-        $_test() {
-            alert('hola');
-        },
-    },
 };
 </script>
 
@@ -64,8 +58,6 @@ export default {
                         :directionIcon="item.direction"
                         :description="item.description"
                         :type="item.type"
-                        :fnButton="$_test"
-                        titleButton="Ver más"
                     />
                 </v-card>
             </v-slide-item>
