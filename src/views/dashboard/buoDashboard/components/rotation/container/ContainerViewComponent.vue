@@ -346,7 +346,6 @@ export default {
         <v-col cols="12" :md="personalitiesSize" v-if="entity.personalities">
             <AscendingPersonalitiesChartComponent
                 :chartData="entity.personalities"
-                :innerWidth="innerWidth"
             />
         </v-col>
     </v-row>

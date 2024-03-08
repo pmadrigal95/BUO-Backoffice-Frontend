@@ -33,6 +33,7 @@ export default {
 
     data() {
         return {
+            innerWidth: 0,
             componentKey: 0,
             refBubble: 'BaseCustomBubbleChart_',
         };
@@ -102,10 +103,6 @@ export default {
             };
         },
 
-        innerWidth() {
-            return this.chartOptions?.plugins?.legend?.innerWidth;
-        },
-
         styleTooltip() {
             return {
                 name: this.chartOptions?.plugins?.legend?.tooltip?.font?.name
@@ -115,6 +112,14 @@ export default {
                     ? this.chartOptions?.plugins?.legend?.tooltip?.font?.value
                     : 'BUO-Paragraph-Medium',
             };
+        },
+
+        componentClassSize() {
+            if (this.$vuetify.breakpoint.mobile) return 'graphic-sm-container';
+
+            return this.innerWidth <= 1450
+                ? 'graphic-sm-container'
+                : 'graphic-container w-70';
         },
     },
 
@@ -127,6 +132,10 @@ export default {
         this.refBubble = this.refBubble + randomID;
 
         this.$_configDatasets();
+    },
+
+    mounted() {
+        this.onResize();
     },
 
     methods: {
@@ -151,22 +160,23 @@ export default {
 
             this.$_shuffleChartData();
         },
+
+        onResize() {
+            this.innerWidth = window.innerWidth;
+        },
     },
 };
 </script>
 
 <template>
-    <section class="d-flex" :class="alignLegend" :key="componentKey">
+    <section
+        class="d-flex"
+        :class="alignLegend"
+        :key="componentKey"
+        v-resize="onResize"
+    >
         <!--Bubbles-->
-        <section
-            :class="`${
-                innerWidth < 1450 ||
-                innerWidth < 1300 ||
-                $vuetify.breakpoint.mobile
-                    ? 'graphic-sm-container'
-                    : 'graphic-container w-70'
-            }`"
-        >
+        <section :class="componentClassSize">
             <section v-for="(item, index) in datasets" :key="index">
                 <BaseTooltipViewComponent>
                     <div slot="activator">

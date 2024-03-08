@@ -64,11 +64,6 @@ export default {
             type: [Number, String],
             default: 12,
         },
-
-        innerWidth: {
-            type: [Number, String],
-            required: false,
-        },
     },
 
     components: {
@@ -202,7 +197,6 @@ export default {
                         positionLegend="right"
                         :dark="app"
                         :showLegend="showLegend && !$vuetify.breakpoint.mobile"
-                        :innerWidth="innerWidth"
                     />
                     <BasePieChartImpl
                         v-else
