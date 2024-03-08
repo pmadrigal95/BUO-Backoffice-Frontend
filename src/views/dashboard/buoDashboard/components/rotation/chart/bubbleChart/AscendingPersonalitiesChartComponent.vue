@@ -19,6 +19,11 @@ export default {
             type: Object,
             required: true,
         },
+
+        innerWidth: {
+            type: [Number, String],
+            required: true,
+        },
     },
 
     components: {
@@ -33,5 +38,6 @@ export default {
         :chartData="chartData"
         isPDA
         isPie
+        :innerWidth="innerWidth"
     />
 </template>

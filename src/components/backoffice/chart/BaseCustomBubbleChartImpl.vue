@@ -38,6 +38,11 @@ export default {
             type: String,
             default: 'circle-medium',
         },
+
+        innerWidth: {
+            type: [Number, String],
+            required: false,
+        },
     },
 
     components: {
@@ -84,6 +89,7 @@ export default {
             return {
                 plugins: {
                     legend: {
+                        innerWidth: this.innerWidth,
                         icon: this.iconLegend,
                         display: this.showLegend,
                         position: this.positionLegend,

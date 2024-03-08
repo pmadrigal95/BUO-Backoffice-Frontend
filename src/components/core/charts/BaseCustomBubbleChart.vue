@@ -102,6 +102,10 @@ export default {
             };
         },
 
+        innerWidth() {
+            return this.chartOptions?.plugins?.legend?.innerWidth;
+        },
+
         styleTooltip() {
             return {
                 name: this.chartOptions?.plugins?.legend?.tooltip?.font?.name
@@ -156,6 +160,8 @@ export default {
         <!--Bubbles-->
         <section
             :class="`${
+                innerWidth < 1450 ||
+                innerWidth < 1300 ||
                 $vuetify.breakpoint.mobile
                     ? 'graphic-sm-container'
                     : 'graphic-container w-70'
