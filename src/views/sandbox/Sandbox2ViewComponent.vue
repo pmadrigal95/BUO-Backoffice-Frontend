@@ -178,7 +178,6 @@ export default {
         <v-col cols="12">
             <NotificationCardViewComponent
                 width="357px"
-                height="auto"
                 icon="alert-circle"
                 iconColor="aidBlue900"
                 description="<p>De acuerdo a tu histórico de crecimiento y a tu data de entrenamientos, desde que implementaste el <strong class='grey700--text text-decoration-underline'>Entrenamiento 01</strong> en Abril, tu crecimiento aumentó en un 15% por lo que recomendamos implementar más entrenamientos relacionados a capacidades de liderazgo</p>"

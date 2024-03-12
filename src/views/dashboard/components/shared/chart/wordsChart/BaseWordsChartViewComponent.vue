@@ -65,57 +65,7 @@ export default {
         },
 
         $_shuffleChartData() {
-            return baseArrayHelper.ShuffleArray(this.fakeData);
-        },
-
-        fakeData() {
-            return [
-                {
-                    name: 'Salarios',
-                    bold: true,
-                    value: 1,
-                },
-                {
-                    name: 'Días de vacaciones',
-                    bold: false,
-                    value: 1,
-                },
-                {
-                    name: 'WFH',
-                    bold: false,
-                    value: 1,
-                },
-                {
-                    name: 'Beneficios',
-                    bold: true,
-                    value: 1,
-                },
-                {
-                    name: 'Ambiente laboral',
-                    bold: false,
-                    value: 1,
-                },
-                {
-                    name: 'Poca motivación',
-                    bold: false,
-                    value: 1,
-                },
-                {
-                    name: 'WFH',
-                    bold: false,
-                    value: 1,
-                },
-                {
-                    name: 'Falta de crecimiento',
-                    bold: false,
-                    value: 1,
-                },
-                {
-                    name: 'Poca motivación',
-                    bold: false,
-                    value: 1,
-                },
-            ];
+            return baseArrayHelper.ShuffleArray(this.chartData);
         },
     },
 };
@@ -169,7 +119,7 @@ export default {
                                                         ? 60
                                                         : 'max-content'
                                                 "
-                                                min-width="max-content"
+                                                min-width="100%"
                                                 :color="
                                                     hover
                                                         ? app
