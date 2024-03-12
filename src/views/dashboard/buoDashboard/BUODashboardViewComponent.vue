@@ -12,6 +12,11 @@ const NotifierViewComponent = () =>
         '@/views/dashboard/buoDashboard/sections/notifier/NotifierViewComponent'
     );
 
+const BaseAdvFilterTemplateViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/template/BaseAdvFilterTemplateViewComponent'
+    );
+
 const HomeDashboardViewComponent = () =>
     import(
         '@/views/dashboard/buoDashboard/sections/home/HomeDashboardViewComponent'
@@ -47,6 +52,7 @@ export default {
         PerformanceDashboardViewComponent,
         GrowthDashboardViewComponent,
         RecruitmentDashboardViewComponent,
+        BaseAdvFilterTemplateViewComponent,
     },
 
     data() {
@@ -115,30 +121,34 @@ export default {
                 </v-tab>
             </v-tabs>
 
-            <v-tabs-items v-model="step" class="mx-n2 transparent">
-                <v-tab-item>
-                    <HomeDashboardViewComponent v-if="step == 0" />
-                </v-tab-item>
+            <BaseAdvFilterTemplateViewComponent>
+                <section slot="template">
+                    <v-tabs-items v-model="step" class="mx-n2 transparent">
+                        <v-tab-item>
+                            <HomeDashboardViewComponent />
+                        </v-tab-item>
 
-                <v-tab-item>
-                    <RotationDashboardViewComponent
-                        v-if="step == 1"
-                        :innerWidth="windowSize.x"
-                    />
-                </v-tab-item>
+                        <v-tab-item>
+                            <RotationDashboardViewComponent
+                                v-if="step == 1"
+                                :innerWidth="windowSize.x"
+                            />
+                        </v-tab-item>
 
-                <v-tab-item>
-                    <PerformanceDashboardViewComponent v-if="step == 2" />
-                </v-tab-item>
+                        <v-tab-item>
+                            <PerformanceDashboardViewComponent />
+                        </v-tab-item>
 
-                <v-tab-item>
-                    <GrowthDashboardViewComponent v-if="step == 3" />
-                </v-tab-item>
+                        <v-tab-item>
+                            <GrowthDashboardViewComponent />
+                        </v-tab-item>
 
-                <v-tab-item>
-                    <RecruitmentDashboardViewComponent v-if="step == 4" />
-                </v-tab-item>
-            </v-tabs-items>
+                        <v-tab-item>
+                            <RecruitmentDashboardViewComponent />
+                        </v-tab-item>
+                    </v-tabs-items>
+                </section>
+            </BaseAdvFilterTemplateViewComponent>
         </section>
     </v-container>
 </template>
