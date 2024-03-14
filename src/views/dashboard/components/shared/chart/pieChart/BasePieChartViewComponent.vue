@@ -15,8 +15,10 @@ import baseDataVisualizationColorsHelperPDA from '@/views/demographics/pda/compo
 const BasePieChartImpl = () =>
     import('@/components/backoffice/chart/BasePieChartImpl');
 
-const BaseCardViewComponent = () =>
-    import('@/views/dashboard/components/shared/card/BaseCardViewComponent');
+const BaseBasicCardViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/card/BaseBasicCardViewComponent'
+    );
 
 export default {
     name: 'BasePieChartViewComponent',
@@ -65,7 +67,7 @@ export default {
 
     components: {
         BasePieChartImpl,
-        BaseCardViewComponent,
+        BaseBasicCardViewComponent,
     },
 
     data() {
@@ -158,7 +160,7 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent :title="title">
+    <BaseBasicCardViewComponent :title="title">
         <section slot="top-actions">
             <v-btn
                 v-if="!isOnlyChart"
@@ -194,5 +196,5 @@ export default {
                 </v-col>
             </v-row>
         </section>
-    </BaseCardViewComponent>
+    </BaseBasicCardViewComponent>
 </template>

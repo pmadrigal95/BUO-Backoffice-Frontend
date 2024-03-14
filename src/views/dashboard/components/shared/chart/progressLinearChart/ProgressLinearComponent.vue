@@ -10,8 +10,10 @@ import { mapGetters } from 'vuex';
 
 import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
 
-const BaseCardViewComponent = () =>
-    import('@/views/dashboard/components/shared/card/BaseCardViewComponent');
+const BaseBasicCardViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/card/BaseBasicCardViewComponent'
+    );
 
 export default {
     name: 'ProgressLinearComponent',
@@ -58,7 +60,7 @@ export default {
         },
     },
 
-    components: { BaseCardViewComponent },
+    components: { BaseBasicCardViewComponent },
 
     data() {
         return {
@@ -120,7 +122,7 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent :title="title" :subtitle="subtitle">
+    <BaseBasicCardViewComponent :title="title" :subtitle="subtitle">
         <section slot="top-actions">
             <v-btn
                 v-if="!isOnlyChart"
@@ -146,12 +148,22 @@ export default {
                                         class="d-flex flex-no-wrap justify-space-between buo-word-break mb-2"
                                     >
                                         <span
-                                            class="BUO-Paragraph-Small buo-word-break buo-white-space grey600--text"
+                                            class="BUO-Paragraph-Small buo-word-break buo-white-space"
+                                            :class="
+                                                app
+                                                    ? 'white--text'
+                                                    : 'grey600--text'
+                                            "
                                         >
                                             {{ item.name }}
                                         </span>
                                         <span
-                                            class="BUO-Paragraph-Small buo-word-break buo-white-space grey600--text"
+                                            class="BUO-Paragraph-Small buo-word-break buo-white-space"
+                                            :class="
+                                                app
+                                                    ? 'white--text'
+                                                    : 'grey600--text'
+                                            "
                                             v-if="showValue"
                                         >
                                             {{ item.value }}
@@ -181,5 +193,5 @@ export default {
                 </v-col>
             </v-row>
         </section>
-    </BaseCardViewComponent>
+    </BaseBasicCardViewComponent>
 </template>

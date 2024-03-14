@@ -8,8 +8,10 @@
 
 import { mapGetters } from 'vuex';
 
-const BaseCardViewComponent = () =>
-    import('@/views/dashboard/components/shared/card/BaseCardViewComponent');
+const BaseBasicCardViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/card/BaseBasicCardViewComponent'
+    );
 
 export default {
     name: 'BaseStadisticCardViewComponent',
@@ -88,7 +90,7 @@ export default {
     },
 
     components: {
-        BaseCardViewComponent,
+        BaseBasicCardViewComponent,
     },
 
     computed: {
@@ -143,7 +145,7 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent
+    <BaseBasicCardViewComponent
         :title="title"
         :fnCallback="fnCard"
         :class="settingsByType.borderStyle"
@@ -190,7 +192,7 @@ export default {
                 >
             </v-layout>
         </div>
-    </BaseCardViewComponent>
+    </BaseBasicCardViewComponent>
 </template>
 
 <style scoped>

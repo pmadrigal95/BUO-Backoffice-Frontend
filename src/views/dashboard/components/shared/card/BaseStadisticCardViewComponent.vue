@@ -8,8 +8,10 @@
 
 import { mapGetters } from 'vuex';
 
-const BaseCardViewComponent = () =>
-    import('@/views/dashboard/components/shared/card/BaseCardViewComponent');
+const BaseBasicCardViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/card/BaseBasicCardViewComponent'
+    );
 
 export default {
     name: 'BaseStadisticCardViewComponent',
@@ -75,6 +77,11 @@ export default {
             default: 'justify-end',
         },
 
+        alignButton: {
+            type: String,
+            default: 'align-end',
+        },
+
         /*Type alert as: success, info, warning, error or default*/
         type: {
             type: String,
@@ -83,7 +90,7 @@ export default {
     },
 
     components: {
-        BaseCardViewComponent,
+        BaseBasicCardViewComponent,
     },
 
     computed: {
@@ -138,7 +145,7 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent
+    <BaseBasicCardViewComponent
         :title="title"
         :fnCallback="fnCard"
         :class="settingsByType.borderStyle"
@@ -175,19 +182,17 @@ export default {
                     </p>
                 </section>
             </section>
-            <section v-if="titleButton">
-                <section class="d-flex flex-row" :class="directionButton">
-                    <v-btn
-                        text
-                        color="blue900"
-                        @click="$_fnButton()"
-                        class="BUO-Label-XSmall no-uppercase"
-                        >{{ titleButton }}</v-btn
-                    >
-                </section>
-            </section>
+            <v-layout justify-end align-end v-if="titleButton">
+                <v-btn
+                    text
+                    color="blue900"
+                    @click="$_fnButton()"
+                    class="BUO-Label-XSmall no-uppercase"
+                    >{{ titleButton }}</v-btn
+                >
+            </v-layout>
         </div>
-    </BaseCardViewComponent>
+    </BaseBasicCardViewComponent>
 </template>
 
 <style scoped>

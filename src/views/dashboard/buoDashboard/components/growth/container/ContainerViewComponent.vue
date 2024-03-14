@@ -8,7 +8,7 @@
 
 import { mapGetters } from 'vuex';
 
-import baseDisplay from '@/views/dashboard/components/shared/businessLogic/container-display';
+import baseDisplay from '@/views/dashboard/components/shared/row-display/container-display';
 
 const StatisticalGrowthCardsViewComponent = () =>
     import(

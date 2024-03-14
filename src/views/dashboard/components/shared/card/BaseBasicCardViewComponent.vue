@@ -1,15 +1,15 @@
 <script>
 /**
- * Descripción: Pantalla  BaseCardViewComponent
+ * Descripción: Pantalla  BaseBasicCardViewComponent
  *
- * @displayName BaseCardViewComponent
+ * @displayName BaseBasicCardViewComponent
  *
  */
 
 import { mapGetters } from 'vuex';
 
 export default {
-    name: 'BaseCardViewComponent',
+    name: 'BaseBasicCardViewComponent',
 
     props: {
         title: {

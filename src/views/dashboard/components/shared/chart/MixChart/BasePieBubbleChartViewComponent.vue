@@ -18,8 +18,10 @@ const BasePieChartImpl = () =>
 const BaseCustomBubbleChartImpl = () =>
     import('@/components/backoffice/chart/BaseCustomBubbleChartImpl');
 
-const BaseCardViewComponent = () =>
-    import('@/views/dashboard/components/shared/card/BaseCardViewComponent');
+const BaseBasicCardViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/card/BaseBasicCardViewComponent'
+    );
 
 export default {
     name: 'BasePieBubbleChartViewComponent',
@@ -68,8 +70,8 @@ export default {
 
     components: {
         BasePieChartImpl,
-        BaseCardViewComponent,
         BaseCustomBubbleChartImpl,
+        BaseBasicCardViewComponent,
     },
 
     data() {
@@ -163,7 +165,7 @@ export default {
 </script>
 
 <template>
-    <BaseCardViewComponent :title="title">
+    <BaseBasicCardViewComponent :title="title">
         <section slot="top-actions">
             <v-btn
                 icon
@@ -217,5 +219,5 @@ export default {
                 </v-col>
             </v-row>
         </section>
-    </BaseCardViewComponent>
+    </BaseBasicCardViewComponent>
 </template>
