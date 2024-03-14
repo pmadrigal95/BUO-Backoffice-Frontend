@@ -366,16 +366,6 @@ export default {
                             />
                         </v-col>
 
-                        <v-col cols="12">
-                            <BaseDatePicker
-                                label="Fecha de ingreso"
-                                appendIcon="mdi-calendar-month"
-                                v-model.trim="entity.fechaIngreso"
-                                :max="entity.fechaTerminacion"
-                                reqCurrentMaxDate
-                            />
-                        </v-col>
-
                         <v-col cols="12" v-if="user.companyId === buoId">
                             <BaseInputDataTable
                                 v-if="
@@ -424,6 +414,16 @@ export default {
                                 label="Tipo de usuario"
                                 v-model="entity.tipoUsuarioId"
                                 :endpoint="userTypeList"
+                            />
+                        </v-col>
+
+                        <v-col cols="12">
+                            <BaseDatePicker
+                                label="Fecha de ingreso"
+                                appendIcon="mdi-calendar-month"
+                                v-model.trim="entity.fechaIngreso"
+                                :max="entity.fechaTerminacion"
+                                reqCurrentMaxDate
                             />
                         </v-col>
 
