@@ -16,12 +16,18 @@ const BaseAIDrivenInsightsCardViewComponent = () =>
         '@/views/dashboard/components/shared/info/BaseAIDrivenInsightsCardViewComponent'
     );
 
+    const BaseInsightSmallCardViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/info/BaseInsightSmallCardViewComponent'
+    );
+
 export default {
     name: 'Sandbox1ViewComponent',
 
     components: {
         BaseInsightsCardViewComponent,
         BaseAIDrivenInsightsCardViewComponent,
+        BaseInsightSmallCardViewComponent,
     },
 };
 </script>
@@ -35,5 +41,9 @@ export default {
         <br />
 
         <BaseAIDrivenInsightsCardViewComponent />
+
+        <br />
+
+        <BaseInsightSmallCardViewComponent />
     </section>
 </template>
