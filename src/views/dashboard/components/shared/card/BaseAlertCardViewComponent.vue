@@ -6,6 +6,8 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
 const BaseCustomCardViewComponent = () =>
     import(
         '@/views/dashboard/components/shared/card/BaseCustomCardViewComponent'
@@ -45,16 +47,18 @@ export default {
     components: { BaseCustomCardViewComponent },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         cardSetUp() {
             return {
                 width: this.$vuetify.breakpoint.mobile
                     ? 'auto'
                     : this.card?.width,
                 height: 'auto',
-                color: this.card?.color,
-                borderColor: this.card?.borderColor,
+                color: this.card?.color || 'aidMint400',
+                borderColor: this.card?.borderColor || 'aidMint500',
                 display: {
-                    justify: this.card?.display?.justify,
+                    justify: this.card?.display?.justify || 'justify-center',
                 },
             };
         },
@@ -62,8 +66,11 @@ export default {
         iconSetUp() {
             return {
                 src: this.icon?.src,
-                color: this.icon?.color || 'white',
-                backgroundColor: this.icon?.backgroundColor || 'aidBlue900',
+                color: this.icon?.color || this.app ? 'black' : 'white',
+                backgroundColor:
+                    this.icon?.backgroundColor || this.app
+                        ? 'clouds'
+                        : 'aidBlue900',
             };
         },
     },

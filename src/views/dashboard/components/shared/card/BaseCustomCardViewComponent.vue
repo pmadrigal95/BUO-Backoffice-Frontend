@@ -74,7 +74,7 @@ export default {
 
         cardDisplaySetUp() {
             return {
-                ...this.this.cardSetUp?.display,
+                ...this.cardSetUp?.display,
             };
         },
 
@@ -122,10 +122,6 @@ export default {
         isvalidIcon() {
             return this.iconSetUp?.src.includes('mdi-');
         },
-
-        isValidUrl() {
-            return true;
-        },
     },
 };
 </script>
@@ -155,24 +151,20 @@ export default {
                     >
                         <v-card-text>
                             <section class="d-flex flex-row align-center">
-                                <section v-if="isvalidIcon">
-                                    <v-icon
-                                        class="icon-position"
-                                        :color="iconSetUp.color"
-                                        large
-                                    >
-                                        {{ iconSetUp.src }}
-                                    </v-icon>
-                                </section>
-                                <section v-else-if="isValidUrl">
-                                    <v-img
-                                        contain
-                                        :width="iconSizeSetUp.width"
-                                        :height="iconSizeSetUp.height"
-                                        :src="iconSetUp.src"
-                                        :lazy-src="iconSetUp.src"
-                                    />
-                                </section>
+                                <v-icon
+                                    v-if="isvalidIcon"
+                                    :color="iconSetUp.color"
+                                >
+                                    {{ iconSetUp.src }}
+                                </v-icon>
+                                <v-img
+                                    contain
+                                    v-else
+                                    :width="iconSizeSetUp.width"
+                                    :height="iconSizeSetUp.height"
+                                    :src="iconSetUp.src"
+                                    :lazy-src="iconSetUp.src"
+                                />
                                 <p
                                     v-if="headerSetUp.title"
                                     :class="headerStyleSetUp"
@@ -199,12 +191,6 @@ export default {
 .img-position {
     top: -20px;
     left: 15px;
-    position: relative !important;
-}
-
-.icon-position {
-    top: -20px;
-    left: 10px;
     position: relative !important;
 }
 </style>
