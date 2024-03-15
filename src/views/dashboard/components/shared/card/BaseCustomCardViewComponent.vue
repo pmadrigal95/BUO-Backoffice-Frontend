@@ -20,6 +20,7 @@ export default {
                 content: 'pa-0',
                 elevation: 0,
                 display: {
+                    rounded: 'lg',
                     flex: 'flex-row',
                     justify: undefined,
                     align: 'align-center',
@@ -65,6 +66,7 @@ export default {
                 borderColor: this.card?.borderColor || this.card?.color,
                 content: this.card?.content || 'pa-0',
                 display: {
+                    rounded: this.card?.display?.rounded || 'lg',
                     flex: this.card?.display?.flex || 'flex-row',
                     justify: this.card?.display?.justify,
                     align: this.card?.display?.align || 'align-center',
@@ -129,13 +131,13 @@ export default {
 <template>
     <v-sheet
         outlined
-        rounded="lg"
-        :color="cardSetUp.color"
-        :width="cardSetUp.width"
-        :height="cardSetUp.height"
+        :rounded="cardDisplaySetUp.rounded"
+        :color="cardSetUp.borderColor"
+        width="100%"
+        height="100%"
     >
         <v-card
-            class="rounded-lg"
+            :class="`rounded-${cardDisplaySetUp.rounded}`"
             :color="cardSetUp.color"
             :width="cardSetUp.width"
             :height="cardSetUp.height"
@@ -177,7 +179,7 @@ export default {
                 </section>
 
                 <section
-                    class="d-flex"
+                    class="d-flex mb-4"
                     :class="`${cardDisplaySetUp.flex} ${cardDisplaySetUp.justify} ${cardDisplaySetUp.align}`"
                 >
                     <slot name="column"></slot>

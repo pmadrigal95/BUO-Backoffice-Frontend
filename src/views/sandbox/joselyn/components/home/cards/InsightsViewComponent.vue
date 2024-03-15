@@ -48,7 +48,6 @@ export default {
         alignContent="align-center"
         color="aidMint500"
         paddingContent="pa-0"
-        height="auto"
     >
         <div
             slot="column"

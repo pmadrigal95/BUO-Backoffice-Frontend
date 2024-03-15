@@ -43,8 +43,6 @@ export default {
         alignContent="align-center"
         color="aidMint500"
         paddingContent="pa-0"
-        width="278px"
-        height="195px"
         class="mt-4"
     >
         <div slot="column" class="text-start px-4" style="max-width: 70%">

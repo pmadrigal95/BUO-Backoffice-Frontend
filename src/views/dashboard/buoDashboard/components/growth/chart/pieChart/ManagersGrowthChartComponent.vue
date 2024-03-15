@@ -6,6 +6,11 @@
  *
  */
 
+const BaseDashboardAlertCardViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/info/BaseDashboardAlertCardViewComponent'
+    );
+
 const BasePieChartViewComponent = () =>
     import(
         '@/views/dashboard/components/shared/chart/pieChart/BasePieChartViewComponent'
@@ -21,7 +26,10 @@ export default {
         },
     },
 
-    components: { BasePieChartViewComponent },
+    components: {
+        BasePieChartViewComponent,
+        BaseDashboardAlertCardViewComponent,
+    },
 };
 </script>
 
@@ -32,17 +40,10 @@ export default {
         :isOnlyChart="false"
     >
         <section slot="content">
-            <v-card dark flat>
-                <v-card-title></v-card-title>
-                <v-card-subtitle></v-card-subtitle>
-                <v-card-text>
-                    De acuerdo a insights de rotación, el Beneficio 3 es un gran
-                    motivador para tus colaboradores por lo que te recomendamos
-                    aumentar esfuerzos relacionados con este beneficio
-                </v-card-text>
-
-                <v-card-actions></v-card-actions>
-            </v-card>
+            <BaseDashboardAlertCardViewComponent
+                label="De acuerdo a insights de rotación, el 
+    Beneficio 3 es un gran motivador para tus colaboradores por lo que te recomendamos aumentar esfuerzos relacionados con este beneficio"
+            />
         </section>
     </BasePieChartViewComponent>
 </template>

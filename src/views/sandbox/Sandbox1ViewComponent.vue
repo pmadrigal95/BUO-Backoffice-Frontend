@@ -6,28 +6,22 @@
  *
  */
 
-const BaseAlertCardViewComponent = () =>
+const BaseInsightsCardViewComponent = () =>
     import(
-        '@/views/dashboard/components/shared/card/BaseAlertCardViewComponent'
+        '@/views/dashboard/components/shared/info/BaseInsightsCardViewComponent'
+    );
+
+const BaseAIDrivenInsightsCardViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/info/BaseAIDrivenInsightsCardViewComponent'
     );
 
 export default {
     name: 'Sandbox1ViewComponent',
 
-    components: { BaseAlertCardViewComponent },
-
-    computed: {
-        icon1() {
-            return {
-                src: 'https://buo-resources.s3.us-east-2.amazonaws.com/dashboard/ai-icon.svg',
-            };
-        },
-
-        icon2() {
-            return {
-                src: 'mdi-domain',
-            };
-        },
+    components: {
+        BaseInsightsCardViewComponent,
+        BaseAIDrivenInsightsCardViewComponent,
     },
 };
 </script>
@@ -36,22 +30,10 @@ export default {
     <section>
         <h1>Sandbox 1</h1>
 
-        <v-row class="mt-4">
-            <v-col cols="4">
-                <BaseAlertCardViewComponent
-                    :icon="icon1"
-                    label="De acuerdo a insights de rotación, el 
-    Beneficio 3 es un gran motivador para tus colaboradores por lo que te recomendamos aumentar esfuerzos relacionados con este beneficio"
-                />
-            </v-col>
+        <BaseInsightsCardViewComponent />
 
-            <v-col cols="4">
-                <BaseAlertCardViewComponent
-                    :icon="icon2"
-                    label="De acuerdo a insights de rotación, el 
-    Beneficio 3 es un gran motivador para tus colaboradores por lo que te recomendamos aumentar esfuerzos relacionados con este beneficio"
-                />
-            </v-col>
-        </v-row>
+        <br />
+
+        <BaseAIDrivenInsightsCardViewComponent />
     </section>
 </template>

@@ -21,6 +21,7 @@ export default {
             type: Object,
             default: () => ({
                 color: 'aidMint400',
+                content: 'pa-2',
                 borderColor: 'aidMint500',
                 display: {
                     justify: 'justify-center',
@@ -51,6 +52,7 @@ export default {
 
         cardSetUp() {
             return {
+                content: this.card?.content || 'pa-2',
                 width: this.$vuetify.breakpoint.mobile
                     ? 'auto'
                     : this.card?.width,
@@ -69,7 +71,7 @@ export default {
                 color: this.icon?.color || this.app ? 'black' : 'white',
                 backgroundColor:
                     this.icon?.backgroundColor || this.app
-                        ? 'clouds'
+                        ? 'blue-grey darken-2'
                         : 'aidBlue900',
             };
         },
@@ -83,7 +85,7 @@ export default {
             <div
                 class="BUO-Label-XSmall grey600--text px-4 pb-2"
                 v-html="label"
-            ></div>
+            />
         </div>
     </BaseCustomCardViewComponent>
 </template>
