@@ -31,7 +31,7 @@ export default {
 
         list: {
             type: Array,
-            requiered: true,
+            required: true,
         },
 
         showValue: {

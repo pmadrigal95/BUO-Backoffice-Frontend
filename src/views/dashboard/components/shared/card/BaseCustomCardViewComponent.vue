@@ -54,6 +54,15 @@ export default {
                 content: 'pt-4',
             }),
         },
+
+        tooltip: {
+            type: Object,
+            default: () => ({
+                title: undefined,
+                text: undefined,
+                color: 'grey700',
+            }),
+        },
     },
 
     computed: {
@@ -77,6 +86,14 @@ export default {
         cardDisplaySetUp() {
             return {
                 ...this.cardSetUp?.display,
+            };
+        },
+
+        tooltipSetUp() {
+            return {
+                title: this.tooltip?.title,
+                text: this.tooltip?.text,
+                color: this.tooltip?.color,
             };
         },
 
@@ -144,7 +161,66 @@ export default {
             :elevation="cardSetUp.elevation"
         >
             <v-card-text :class="cardSetUp.content">
-                <section v-if="icon.src">
+                <v-tooltip
+                    top
+                    :color="tooltipSetUp.color"
+                    v-if="iconSetUp.src && tooltipSetUp.title"
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                        <section
+                            v-if="iconSetUp.src && tooltipSetUp.title"
+                            v-bind="attrs"
+                            v-on="on"
+                        >
+                            <v-card
+                                :width="iconContainerSetUp.width"
+                                :height="iconContainerSetUp.height"
+                                :color="iconSetUp.backgroundColor"
+                                class="d-flex justify-start align-center rounded-xxl img-position"
+                            >
+                                <v-card-text class="cursor-pointer">
+                                    <section
+                                        class="d-flex flex-row align-center"
+                                    >
+                                        <v-icon
+                                            v-if="isvalidIcon"
+                                            :color="iconSetUp.color"
+                                        >
+                                            {{ iconSetUp.src }}
+                                        </v-icon>
+                                        <v-img
+                                            contain
+                                            v-else
+                                            :width="iconSizeSetUp.width"
+                                            :height="iconSizeSetUp.height"
+                                            :src="iconSetUp.src"
+                                            :lazy-src="iconSetUp.src"
+                                        />
+                                        <p
+                                            v-if="headerSetUp.title"
+                                            :class="headerStyleSetUp"
+                                        >
+                                            {{ headerSetUp.title }}
+                                        </p>
+                                    </section>
+                                </v-card-text>
+                            </v-card>
+                        </section>
+                    </template>
+                    <v-card flat dark color="transparent" class="rounded-xl">
+                        <v-card-title class="BUO-Label-XSmall-SemiBold">
+                            {{ tooltipSetUp.title }}
+                        </v-card-title>
+                        <v-card-text
+                            v-if="tooltipSetUp.text"
+                            class="BUO-Label-XSmall"
+                        >
+                            {{ tooltipSetUp.text }}
+                        </v-card-text>
+                    </v-card>
+                </v-tooltip>
+
+                <section v-else-if="iconSetUp.src">
                     <v-card
                         :width="iconContainerSetUp.width"
                         :height="iconContainerSetUp.height"
@@ -177,6 +253,8 @@ export default {
                         </v-card-text>
                     </v-card>
                 </section>
+
+                <slot name="container"></slot>
 
                 <section
                     class="d-flex mb-4"
