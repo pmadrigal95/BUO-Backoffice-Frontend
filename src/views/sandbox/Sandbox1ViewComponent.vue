@@ -41,6 +41,103 @@ export default {
         BaseAIDrivenInsightViewComponent,
         BaseInsightViewComponent,
     },
+
+    computed: {
+        data1() {
+            return [
+                {
+                    title: 'Capacitación 1',
+                    description:
+                        'Los colaboradores que tienen la capacitación 1 completada han tenido el mayor crecimiento',
+                },
+                {
+                    title: '4,6 personas',
+                    description:
+                        'Cada año fiscal, entre 4 y 6 personas crecen a posiciones verticales',
+                },
+                {
+                    title: '2,3 personas',
+                    description:
+                        'Cada año fiscal, entre 2 y 3 personas crecen a posiciones horizontales',
+                },
+            ];
+        },
+
+        data2() {
+            return [
+                {
+                    title: 'Capacitación 1',
+                    description:
+                        'Los colaboradores que tienen la capacitación 1 completada han tenido el mayor crecimiento',
+                },
+                {
+                    title: '4,6 personas',
+                    description:
+                        'Cada año fiscal, entre 4 y 6 personas crecen a posiciones verticales',
+                },
+                {
+                    title: '2,3 personas',
+                    description:
+                        'Cada año fiscal, entre 2 y 3 personas crecen a posiciones horizontales',
+                },
+                {
+                    title: 'Capacitación 1',
+                    description:
+                        'Los colaboradores que tienen la capacitación 1 completada han tenido el mayor crecimiento',
+                },
+                {
+                    title: '4,6 personas',
+                    description:
+                        'Cada año fiscal, entre 4 y 6 personas crecen a posiciones verticales',
+                },
+                {
+                    title: '2,3 personas',
+                    description:
+                        'Cada año fiscal, entre 2 y 3 personas crecen a posiciones horizontales',
+                },
+            ];
+        },
+
+        data3() {
+            return [
+                {
+                    title: 'Capacitación 1',
+                    description:
+                        'Los colaboradores que tienen la capacitación 1 completada han tenido el mayor crecimiento',
+                },
+                {
+                    title: '4,6 personas',
+                    description:
+                        'Cada año fiscal, entre 4 y 6 personas crecen a posiciones verticales',
+                },
+            ];
+        },
+
+        data4() {
+            return [
+                {
+                    title: 'Capacitación 1',
+                    description:
+                        'Los colaboradores que tienen la capacitación 1 completada han tenido el mayor crecimiento',
+                },
+                {
+                    title: '4,6 personas',
+                    description:
+                        'Cada año fiscal, entre 4 y 6 personas crecen a posiciones verticales',
+                },
+                {
+                    title: '4,6 personas',
+                    description:
+                        'Cada año fiscal, entre 4 y 6 personas crecen a posiciones verticales',
+                },
+                {
+                    title: '2,3 personas',
+                    description:
+                        'Cada año fiscal, entre 2 y 3 personas crecen a posiciones horizontales',
+                },
+            ];
+        },
+    },
 };
 </script>
 
@@ -60,11 +157,21 @@ export default {
 
         <BaseInsightSmallCardViewComponent /> -->
 
-        <BaseAIDrivenInsightViewComponent :list="[]" />
+        <BaseAIDrivenInsightViewComponent :list="data1" />
 
         <br />
         <br />
 
-        <BaseInsightViewComponent :list="[]" />
+        <BaseInsightViewComponent :list="data2" />
+
+        <br />
+        <br />
+
+        <BaseAIDrivenInsightViewComponent :list="data3" />
+
+        <br />
+        <br />
+
+        <BaseInsightViewComponent :list="data4" />
     </section>
 </template>

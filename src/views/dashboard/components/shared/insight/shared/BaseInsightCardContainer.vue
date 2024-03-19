@@ -11,6 +11,11 @@ const BaseCustomCardViewComponent = () =>
         '@/views/dashboard/components/shared/card/BaseCustomCardViewComponent'
     );
 
+const BaseInsightCardInfo = () =>
+    import(
+        '@/views/dashboard/components/shared/insight/shared/BaseInsightCardInfo'
+    );
+
 export default {
     name: 'BaseInsightCardContainer',
 
@@ -27,7 +32,7 @@ export default {
                 display: {
                     rounded: 'xl',
                     flex: 'flex-row',
-                    justify: undefined,
+                    justify: 'justify-space-between',
                     align: 'align-center',
                 },
             }),
@@ -79,7 +84,7 @@ export default {
         },
     },
 
-    components: { BaseCustomCardViewComponent },
+    components: { BaseCustomCardViewComponent, BaseInsightCardInfo },
 
     computed: {
         cardSetUp() {
@@ -92,7 +97,9 @@ export default {
                 content: this.card?.content || 'pa-0',
                 display: {
                     rounded: this.card?.display?.rounded || 'xl',
-                    flex: this.card?.display?.flex || 'flex-row',
+                    flex: this.$vuetify.breakpoint.mobile
+                        ? 'flex-column'
+                        : this.card?.display?.flex || 'flex-row',
                     justify: this.card?.display?.justify,
                     align: this.card?.display?.align || 'align-center',
                 },
@@ -139,6 +146,33 @@ export default {
                 color: this.tooltip?.color,
             };
         },
+
+        listSetUp() {
+            return this.$_setList(this.list);
+        },
+    },
+
+    methods: {
+        $_setSimpleList(array) {
+            return { firstPart: array };
+        },
+
+        $_setComplexList(array) {
+            const midIndex = Math.floor(array.length / 2);
+            const firstPart = array.slice(0, midIndex);
+            const secondPart = array.slice(midIndex);
+
+            return {
+                firstPart,
+                secondPart,
+            };
+        },
+
+        $_setList(array) {
+            if (array.length <= 3) return this.$_setSimpleList(array);
+
+            return this.$_setComplexList(array);
+        },
     },
 };
 </script>
@@ -151,19 +185,46 @@ export default {
         :tooltip="tooltipSetUp"
     >
         <section slot="container">
-            <v-container fluid>
-                <span class="BUO-Paragraph-Large-SemiBold aidBlue900--text">{{
-                    this.bodySetUp?.title
-                }}</span>
-            </v-container>
+            <span class="BUO-Paragraph-Large-SemiBold aidBlue900--text ml-6">{{
+                this.bodySetUp?.title
+            }}</span>
         </section>
 
         <section slot="column">
-            <span>Hola</span>
+            <v-row class="ma-auto" v-if="listSetUp?.firstPart">
+                <v-col
+                    cols="12"
+                    v-for="(item, i) in listSetUp?.firstPart"
+                    :key="i"
+                >
+                    <BaseInsightCardInfo :body="item" />
+                </v-col>
+            </v-row>
         </section>
 
-        <section slot="column" class="pl-4" v-if="!$vuetify.breakpoint.mobile">
-            <v-img contain height="100%" :src="bodySetUp.image" />
+        <section
+            slot="column"
+            class="ma-auto"
+            v-if="!$vuetify.breakpoint.mobile"
+        >
+            <v-img
+                contain
+                height="100%"
+                :src="bodySetUp.image"
+                :lazy-src="bodySetUp.image"
+            />
+        </section>
+
+        <section slot="column">
+            <v-row class="ma-auto" v-if="listSetUp?.secondPart">
+                <v-col
+                    cols="12"
+                    v-for="(item, i) in listSetUp?.secondPart"
+                    :key="i"
+                >
+                    <BaseInsightCardInfo :body="item" />
+                </v-col>
+            </v-row>
         </section>
     </BaseCustomCardViewComponent>
 </template>

@@ -29,7 +29,7 @@ export default {
 
 <template>
     <BasePieBubbleChartViewComponent
-        title="Personalidades con más ascensos"
+        title="Personalidades con más rotación"
         :chartData="chartData"
         isPDA
         isPie
