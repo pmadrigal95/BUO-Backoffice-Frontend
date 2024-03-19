@@ -161,22 +161,20 @@ export default {
             :elevation="cardSetUp.elevation"
         >
             <v-card-text :class="cardSetUp.content">
-                <v-tooltip
-                    top
-                    :color="tooltipSetUp.color"
-                    v-if="iconSetUp.src && tooltipSetUp.title"
-                >
-                    <template v-slot:activator="{ on, attrs }">
-                        <section
-                            v-if="iconSetUp.src && tooltipSetUp.title"
-                            v-bind="attrs"
-                            v-on="on"
-                        >
+                <section v-if="iconSetUp.src && tooltipSetUp.title">
+                    <v-tooltip
+                        top
+                        :color="tooltipSetUp.color"
+                        v-if="iconSetUp.src && tooltipSetUp.title"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
                             <v-card
                                 :width="iconContainerSetUp.width"
                                 :height="iconContainerSetUp.height"
                                 :color="iconSetUp.backgroundColor"
                                 class="d-flex justify-start align-center rounded-xxl img-position"
+                                v-bind="attrs"
+                                v-on="on"
                             >
                                 <v-card-text class="cursor-pointer">
                                     <section
@@ -205,20 +203,26 @@ export default {
                                     </section>
                                 </v-card-text>
                             </v-card>
-                        </section>
-                    </template>
-                    <v-card flat dark color="transparent" class="rounded-xl">
-                        <v-card-title class="BUO-Label-XSmall-SemiBold">
-                            {{ tooltipSetUp.title }}
-                        </v-card-title>
-                        <v-card-text
-                            v-if="tooltipSetUp.text"
-                            class="BUO-Label-XSmall"
+                        </template>
+                        <v-card
+                            flat
+                            dark
+                            color="transparent"
+                            class="rounded-xl"
+                            width="300"
                         >
-                            {{ tooltipSetUp.text }}
-                        </v-card-text>
-                    </v-card>
-                </v-tooltip>
+                            <v-card-title class="BUO-Label-XSmall-SemiBold">
+                                {{ tooltipSetUp.title }}
+                            </v-card-title>
+                            <v-card-text
+                                v-if="tooltipSetUp.text"
+                                class="BUO-Label-XSmall"
+                            >
+                                {{ tooltipSetUp.text }}
+                            </v-card-text>
+                        </v-card>
+                    </v-tooltip>
+                </section>
 
                 <section v-else-if="iconSetUp.src">
                     <v-card
