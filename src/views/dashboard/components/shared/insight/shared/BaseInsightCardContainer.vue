@@ -202,11 +202,7 @@ export default {
             </v-row>
         </section>
 
-        <section
-            slot="column"
-            class="ma-auto"
-            v-if="!$vuetify.breakpoint.mobile"
-        >
+        <section slot="column" class="mx-10" v-if="!$vuetify.breakpoint.mobile">
             <v-img
                 contain
                 height="100%"
