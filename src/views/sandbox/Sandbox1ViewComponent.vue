@@ -21,14 +21,19 @@
 //         '@/views/dashboard/components/shared/info/BaseInsightSmallCardViewComponent'
 //     );
 
-const BaseAIDrivenInsightViewComponent = () =>
-    import(
-        '@/views/dashboard/components/shared/insight/aiDrivenInsight/BaseAIDrivenInsightViewComponent'
-    );
+// const BaseAIDrivenInsightViewComponent = () =>
+//     import(
+//         '@/views/dashboard/components/shared/insight/aiDrivenInsight/BaseAIDrivenInsightViewComponent'
+//     );
 
-const BaseInsightViewComponent = () =>
+// const BaseInsightViewComponent = () =>
+//     import(
+//         '@/views/dashboard/components/shared/insight/insight/BaseInsightViewComponent'
+//     );
+
+const BaseMixAiInsightViewComponent = () =>
     import(
-        '@/views/dashboard/components/shared/insight/insight/BaseInsightViewComponent'
+        '@/views/dashboard/components/shared/insight/mixaiInsight/BaseMixAiInsightViewComponent'
     );
 
 export default {
@@ -38,8 +43,9 @@ export default {
         // BaseInsightsCardViewComponent,
         // BaseAIDrivenInsightsCardViewComponent,
         // BaseInsightSmallCardViewComponent,
-        BaseAIDrivenInsightViewComponent,
-        BaseInsightViewComponent,
+        // BaseAIDrivenInsightViewComponent,
+        // BaseInsightViewComponent,
+        BaseMixAiInsightViewComponent,
     },
 
     computed: {
@@ -137,6 +143,22 @@ export default {
                 },
             ];
         },
+
+        insight1() {
+            return { list: this.data1 };
+        },
+
+        insight2() {
+            return { list: this.data3 };
+        },
+
+        aiDrivenInsight1() {
+            return { list: this.data4 };
+        },
+
+        aiDrivenInsight2() {
+            return { list: this.data2 };
+        },
     },
 };
 </script>
@@ -157,7 +179,7 @@ export default {
 
         <BaseInsightSmallCardViewComponent /> -->
 
-        <BaseAIDrivenInsightViewComponent :list="data1" />
+        <!-- <BaseAIDrivenInsightViewComponent :list="data1" />
 
         <br />
         <br />
@@ -172,6 +194,20 @@ export default {
         <br />
         <br />
 
-        <BaseInsightViewComponent :list="data4" />
+        <BaseInsightViewComponent :list="data4" /> -->
+
+        <BaseMixAiInsightViewComponent
+            :insight="insight1"
+            :aiDrivenInsight="aiDrivenInsight1"
+        />
+
+        <BaseMixAiInsightViewComponent
+            :insight="insight2"
+            :aiDrivenInsight="aiDrivenInsight2"
+        />
+
+        <BaseMixAiInsightViewComponent :aiDrivenInsight="aiDrivenInsight2" />
+
+        <BaseMixAiInsightViewComponent :insight="insight2" />
     </section>
 </template>

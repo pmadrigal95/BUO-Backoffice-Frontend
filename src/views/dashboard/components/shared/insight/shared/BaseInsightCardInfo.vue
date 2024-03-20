@@ -19,7 +19,7 @@ export default {
             type: Object,
             default: () => ({
                 width: '100%',
-                height: '110',
+                height: 'max-content',
                 color: 'aidBlue900',
                 display: {
                     rounded: 'xl',
@@ -55,7 +55,7 @@ export default {
             return {
                 width: this.card?.width || '100%',
                 height: this.$vuetify.breakpoint.mobile
-                    ? '100%'
+                    ? 'auto'
                     : this.card?.height || '100%',
                 color: this.card?.color || 'aidBlue900',
                 display: {
@@ -107,7 +107,7 @@ export default {
         :card="cardSetUp"
         v-if="bodySetUp?.title && bodySetUp?.description"
     >
-        <section slot="container" class="mt-6">
+        <section slot="container" class="pt-6">
             <strong
                 :class="`${titleStyleSetUp?.style} ${titleStyleSetUp?.color}--text ma-3`"
                 >{{ this.bodySetUp?.title }}</strong
