@@ -8,6 +8,16 @@
 
 import { mapGetters } from 'vuex';
 
+const BaseInsightsCardViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/info/BaseInsightsCardViewComponent'
+    );
+
+const BaseAIDrivenInsightsCardViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/info/BaseAIDrivenInsightsCardViewComponent'
+    );
+
 const BaseInsightViewComponent = () =>
     import(
         '@/views/dashboard/components/shared/insight/insight/BaseInsightViewComponent'
@@ -28,6 +38,7 @@ export default {
                 title: 'Insights estadísticos',
                 header: 'Tendencias',
                 list: [],
+                requiredInfo: true,
             }),
         },
 
@@ -37,13 +48,16 @@ export default {
                 title: 'Insights estadísticos',
                 header: 'AI driven insights',
                 list: [],
+                requiredInfo: true,
             }),
         },
     },
 
     components: {
         BaseInsightViewComponent,
+        BaseInsightsCardViewComponent,
         BaseAIDrivenInsightViewComponent,
+        BaseAIDrivenInsightsCardViewComponent,
     },
 
     data() {
@@ -60,6 +74,8 @@ export default {
                 title: this.insight?.title || 'Insights estadísticos',
                 header: this.insight?.header || 'Tendencias',
                 list: this.insight?.list || [],
+                requiredInfo:
+                    this.insight?.requiredInfo === undefined ? true : false,
             };
         },
 
@@ -68,7 +84,25 @@ export default {
                 title: this.aiDrivenInsight?.title || 'Insights estadísticos',
                 header: this.aiDrivenInsight?.header || 'AI driven insights',
                 list: this.aiDrivenInsight?.list || [],
+                requiredInfo:
+                    this.aiDrivenInsight?.requiredInfo === undefined
+                        ? true
+                        : false,
             };
+        },
+
+        showInfoInsightSetUp() {
+            return (
+                this.insightSetUp?.requiredInfo &&
+                this.aiDrivenInsightSetUp?.list.length == 0
+            );
+        },
+
+        showInfoAiDrivenInsightSetUp() {
+            return (
+                this.aiDrivenInsightSetUp.requiredInfo &&
+                this.insightSetUp.list.length == 0
+            );
         },
     },
 };
@@ -108,6 +142,9 @@ export default {
                     :title="insightSetUp?.title"
                     :header="insightSetUp?.header"
                 />
+                <section v-if="showInfoInsightSetUp" class="mt-6">
+                    <BaseAIDrivenInsightsCardViewComponent />
+                </section>
             </v-tab-item>
 
             <v-tab-item>
@@ -116,6 +153,10 @@ export default {
                     :title="aiDrivenInsightSetUp?.title"
                     :header="aiDrivenInsightSetUp?.header"
                 />
+
+                <section v-if="showInfoAiDrivenInsightSetUp" class="mt-6">
+                    <BaseInsightsCardViewComponent />
+                </section>
             </v-tab-item>
         </v-tabs-items>
     </section>

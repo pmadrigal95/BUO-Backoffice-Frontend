@@ -153,7 +153,7 @@ export default {
         },
 
         aiDrivenInsight1() {
-            return { list: this.data4 };
+            return { list: this.data4, requiredInfo: false };
         },
 
         aiDrivenInsight2() {
@@ -209,5 +209,7 @@ export default {
         <BaseMixAiInsightViewComponent :aiDrivenInsight="aiDrivenInsight2" />
 
         <BaseMixAiInsightViewComponent :insight="insight2" />
+
+        <BaseMixAiInsightViewComponent :aiDrivenInsight="aiDrivenInsight1" />
     </section>
 </template>
