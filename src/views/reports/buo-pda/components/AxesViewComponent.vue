@@ -41,7 +41,10 @@ export default {
                             class="buo-word-break BUO-Label-Small-SemiBold"
                             :class="[app ? 'white--text' : 'black--text']"
                         >
-                            {{ item.nombreUI }}
+                            <span>{{ `${item.nombreUI}` }}</span>
+                            <span class="BUO-Label-XSmall pl-2">
+                                {{ `${item.valorEjeFormato}%` }}</span
+                            >
                         </v-card-title>
                         <v-card-subtitle
                             class="buo-word-break BUO-Label-Small pt-3"

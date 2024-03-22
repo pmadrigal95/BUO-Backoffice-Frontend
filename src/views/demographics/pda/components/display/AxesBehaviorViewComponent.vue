@@ -55,7 +55,10 @@ export default {
                             class="buo-word-break BUO-Paragraph-Small-SemiBold pb-5"
                             :class="[app ? 'white--text' : 'black--text']"
                         >
-                            {{ item.name }}
+                            <span>{{ `${item.name}` }}</span>
+                            <span class="BUO-Label-XSmall pl-2">
+                                {{ `${item.formattedValue}%` }}</span
+                            >
                         </v-card-title>
                         <v-card-text>
                             <BasePdaSlider
