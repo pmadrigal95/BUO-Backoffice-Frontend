@@ -30,6 +30,13 @@ export default {
         BaseLinearChartViewComponent,
         BaseDashboardAlertCardViewComponent,
     },
+
+    computed: {
+        isOnlyChart() {
+            //TODO: AI Missing
+            return true;
+        },
+    },
 };
 </script>
 
@@ -39,11 +46,12 @@ export default {
         :chartData="chartData"
         :isRound="false"
         :showLegend="false"
-        :isOnlyChart="false"
+        :isOnlyChart="isOnlyChart"
         :chartColumns="$vuetify.breakpoint.mobile ? 12 : 8"
         :contentColumns="$vuetify.breakpoint.mobile ? 12 : 4"
     >
         <section slot="content">
+            <!--TODO: AI Missing-->
             <BaseDashboardAlertCardViewComponent
                 label="De acuerdo a insights de rotación, el 
     Beneficio 3 es un gran motivador para tus colaboradores por lo que te recomendamos aumentar esfuerzos relacionados con este beneficio"

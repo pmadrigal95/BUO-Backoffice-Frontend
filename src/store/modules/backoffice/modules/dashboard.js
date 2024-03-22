@@ -12,7 +12,7 @@ const endpoint = {
     home: 'http://localhost:3000/dashboard/home/detalles',
     rotation: 'dashboard/rotacion/detalles',
     performance: 'http://localhost:3000/dashboard/rendimiento/detalles',
-    growth: 'http://localhost:3000/dashboard/crecimiento/detalles',
+    growth: 'dashboard/crecimiento/detalles',
     recruitment: 'http://localhost:3000/dashboard/reclutamiento/detalles',
 };
 

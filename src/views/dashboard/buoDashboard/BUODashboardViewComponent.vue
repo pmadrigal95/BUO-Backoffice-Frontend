@@ -57,7 +57,7 @@ export default {
 
     data() {
         return {
-            step: 0,
+            step: undefined,
             windowSize: {
                 x: 0,
                 y: 0,
@@ -95,6 +95,7 @@ export default {
             <v-tabs v-model="step" left show-arrows height="34">
                 <v-tabs-slider color="transparent"></v-tabs-slider>
                 <v-tab
+                    disabled
                     class="rounded-pill no-uppercase mr-3"
                     active-class="tab-active-blue"
                     ><p class="BUO-Label-Small pt-4">Home</p>
@@ -105,6 +106,7 @@ export default {
                     ><p class="BUO-Label-Small pt-4">Rotación</p>
                 </v-tab>
                 <v-tab
+                    disabled
                     class="rounded-pill no-uppercase mr-3"
                     active-class="tab-active-blue"
                     ><p class="BUO-Label-Small pt-4">Desempeño</p>
@@ -115,6 +117,7 @@ export default {
                     ><p class="BUO-Label-Small pt-4">Crecimiento</p>
                 </v-tab>
                 <v-tab
+                    disabled
                     class="rounded-pill no-uppercase mr-3"
                     active-class="tab-active-blue"
                     ><p class="BUO-Label-Small pt-4">Reclutamiento</p>

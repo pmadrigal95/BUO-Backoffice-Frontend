@@ -35,6 +35,11 @@ const BenefitViewComponent = () =>
         '@/views/dashboard/buoDashboard/components/growth/chart/progressLinearChart/BenefitViewComponent'
     );
 
+const TenureGrowthViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/growth/chart/progressLinearChart/TenureGrowthViewComponent'
+    );
+
 const ManagersGrowthChartComponent = () =>
     import(
         '@/views/dashboard/buoDashboard/components/growth/chart/pieChart/ManagersGrowthChartComponent'
@@ -61,6 +66,7 @@ export default {
         GrowthViewComponent,
         ReasonsGrowthViewComponent,
         BenefitViewComponent,
+        TenureGrowthViewComponent,
         ManagersGrowthChartComponent,
         GrowingPersonalitiesChartComponent,
     },
@@ -94,19 +100,14 @@ export default {
         <v-col
             cols="12"
             :md="$vuetify.breakpoint.mobile ? 12 : md(entity.reasonProgress)"
-            v-if="
-                entity.departmentRotation &&
-                entity.departmentRotation.length > 0
-            "
+            v-if="entity.departmentGrowth && entity.departmentGrowth.length > 0"
         >
-            <GrowthViewComponent :chartData="entity.departmentRotation" />
+            <GrowthViewComponent :chartData="entity.departmentGrowth" />
         </v-col>
 
         <v-col
             cols="12"
-            :md="
-                $vuetify.breakpoint.mobile ? 12 : md(entity.departmentRotation)
-            "
+            :md="$vuetify.breakpoint.mobile ? 12 : md(entity.departmentGrowth)"
             v-if="entity.reasonProgress && entity.reasonProgress.length > 0"
         >
             <ReasonsGrowthViewComponent :chartData="entity.reasonProgress" />
@@ -114,6 +115,13 @@ export default {
 
         <v-col cols="12" v-if="entity.perks && entity.perks.length > 0">
             <BenefitViewComponent :chartData="entity.perks" />
+        </v-col>
+
+        <v-col
+            cols="12"
+            v-if="entity.tenureGrowth && entity.tenureGrowth.length > 0"
+        >
+            <TenureGrowthViewComponent :chartData="entity.tenureGrowth" />
         </v-col>
 
         <v-col

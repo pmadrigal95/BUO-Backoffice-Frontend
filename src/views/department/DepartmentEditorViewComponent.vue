@@ -26,6 +26,9 @@ const BaseInputDataTable = () =>
 const BaseInputTreeview = () =>
     import('@/components/core/treeview/BaseInputTreeview');
 
+const BaseSliderViewComponent = () =>
+    import('@/components/core/sliders/BaseSliderViewComponent');
+
 export default {
     name: 'DepartmentEditorViewComponent',
 
@@ -33,6 +36,7 @@ export default {
         BaseInputTreeview,
         BaseInputDataTable,
         BaseCardViewComponent,
+        BaseSliderViewComponent,
     },
 
     data() {
@@ -170,6 +174,7 @@ export default {
                 organizacionId: undefined,
                 descripcion: undefined,
                 etiquetaNivel: undefined,
+                nivel: undefined,
                 estadoId: 2,
                 usuarioAdminIds: undefined,
                 usuarioModificaId: undefined,
@@ -271,7 +276,7 @@ export default {
                         </v-col>
                         <v-col cols="12">
                             <BaseInput
-                                label="Nivel"
+                                label="Etiqueta"
                                 :max="50"
                                 v-model.number="entity.etiquetaNivel"
                                 :validate="['optionalText']"
@@ -317,6 +322,14 @@ export default {
                                 :validate="['optionalText']"
                                 :max="250"
                                 counter="250"
+                            />
+                        </v-col>
+
+                        <v-col cols="12">
+                            <BaseSliderViewComponent
+                                icon="stairs"
+                                label="Nivel"
+                                v-model="entity.nivel"
                             />
                         </v-col>
                         <v-col cols="12">

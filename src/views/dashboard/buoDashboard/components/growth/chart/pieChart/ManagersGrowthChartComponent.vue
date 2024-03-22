@@ -30,6 +30,13 @@ export default {
         BasePieChartViewComponent,
         BaseDashboardAlertCardViewComponent,
     },
+
+    computed: {
+        isOnlyChart() {
+            //TODO: AI Missing
+            return true;
+        },
+    },
 };
 </script>
 
@@ -37,9 +44,10 @@ export default {
     <BasePieChartViewComponent
         title="Managers y su porcentaje de crecimiento"
         :chartData="chartData"
-        :isOnlyChart="false"
+        :isOnlyChart="isOnlyChart"
     >
         <section slot="content">
+            <!--TODO: AI Missing-->
             <BaseDashboardAlertCardViewComponent
                 label="De acuerdo a insights de rotación, el 
     Beneficio 3 es un gran motivador para tus colaboradores por lo que te recomendamos aumentar esfuerzos relacionados con este beneficio"
