@@ -26,17 +26,16 @@ const BaseInputDataTable = () =>
 const BaseInputTreeview = () =>
     import('@/components/core/treeview/BaseInputTreeview');
 
-const BaseSliderViewComponent = () =>
-    import('@/components/core/sliders/BaseSliderViewComponent');
+const BaseSlider = () => import('@/components/core/sliders/BaseSlider');
 
 export default {
     name: 'DepartmentEditorViewComponent',
 
     components: {
+        BaseSlider,
         BaseInputTreeview,
         BaseInputDataTable,
         BaseCardViewComponent,
-        BaseSliderViewComponent,
     },
 
     data() {
@@ -326,7 +325,7 @@ export default {
                         </v-col>
 
                         <v-col cols="12">
-                            <BaseSliderViewComponent
+                            <BaseSlider
                                 icon="stairs"
                                 label="Nivel"
                                 v-model="entity.nivel"

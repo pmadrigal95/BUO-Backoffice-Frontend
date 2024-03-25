@@ -87,9 +87,9 @@ function createStoreDefault() {
 
 export default {
     Initializer() {
-        localStorage.removeItem('filtersBackOfficeV4');
+        localStorage.removeItem('filtersBackOfficeV5');
 
-        localStorage.removeItem('advfiltersBackOfficeV4');
+        localStorage.removeItem('advfiltersBackOfficeV5');
 
         createStoreDefault();
 

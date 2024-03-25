@@ -534,15 +534,21 @@ const categoryColumns = (isBuoUser, isFilter) => {
 const departmentColumns = (isBuoUser, isFilter) => {
     return [
         {
-            text: 'Nivel Superior',
+            text: 'Etiqueta Superior',
             align: 'start',
             value: 'etiquetaNivelPadre',
             show: false,
         },
         {
-            text: 'Nivel',
+            text: 'Etiqueta',
             align: 'start',
             value: 'etiquetaNivel',
+            show: false,
+        },
+        {
+            text: 'Nivel',
+            align: 'start',
+            value: 'nivel',
             show: false,
         },
         {

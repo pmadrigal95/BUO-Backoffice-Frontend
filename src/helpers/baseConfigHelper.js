@@ -79,9 +79,9 @@ export default {
 
     $_security: 1,
 
-    $_filter: 'filtersBackOfficeV5',
+    $_filter: 'filtersBackOfficeV6',
 
-    $_advfilter: 'advfiltersBackOfficeV5',
+    $_advfilter: 'advfiltersBackOfficeV6',
 
     $_buoDashboardNotifier: 'buoDashboardNotifierBackOffice',
 

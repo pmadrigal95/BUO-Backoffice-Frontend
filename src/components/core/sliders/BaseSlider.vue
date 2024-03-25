@@ -2,13 +2,13 @@
 /**
  * Descripción: Slider reutilizable
  *
- * @displayName BaseSliderViewComponent
+ * @displayName BaseSlider
  */
 
 import { mapGetters } from 'vuex';
 
 export default {
-    name: 'BaseSliderViewComponent',
+    name: 'BaseSlider',
 
     inheritAttrs: false,
 
@@ -74,10 +74,10 @@ export default {
         },
 
         color() {
-            if (this.counter < 20) return 'blue700';
-            if (this.counter < 30) return 'blue900';
-            if (this.counter < 60) return 'greenC900';
-            if (this.counter < 80) return 'greenB900';
+            if (this.counter < 10) return 'blue700';
+            if (this.counter < 20) return 'blue900';
+            if (this.counter < 30) return 'greenC900';
+            if (this.counter < 60) return 'greenB900';
             return 'greenA800';
         },
     },
@@ -92,10 +92,16 @@ export default {
 
         decrement() {
             this.counter--;
+            this.$_updateValue(this.counter);
         },
 
         increment() {
             this.counter++;
+            this.$_updateValue(this.counter);
+        },
+
+        change() {
+            this.$_updateValue(this.counter);
         },
     },
 };
@@ -144,6 +150,7 @@ export default {
                     :min="min"
                     :max="max"
                     class="slider"
+                    @change="change"
                 >
                     <template v-slot:prepend>
                         <v-icon :color="color" @click="decrement">
@@ -178,5 +185,21 @@ export default {
     height: 26px !important;
     border-radius: 100% !important;
     cursor: pointer !important;
+}
+
+.slider >>> .v-slider__thumb::before {
+    transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+    content: '';
+    color: inherit;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.3;
+    position: absolute;
+    left: -6px;
+    top: -8px;
+    transform: scale(0.1);
+    pointer-events: none;
 }
 </style>
