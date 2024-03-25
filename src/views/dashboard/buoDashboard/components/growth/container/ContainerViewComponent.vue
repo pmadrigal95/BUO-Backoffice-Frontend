@@ -15,6 +15,11 @@ const StatisticalGrowthCardsViewComponent = () =>
         '@/views/dashboard/buoDashboard/components/growth/card/StatisticalGrowthCardsViewComponent'
     );
 
+const MixAiInsightGrowthViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/growth/insight/MixAiInsightGrowthViewComponent'
+    );
+
 const HistoricalGrowthChartComponent = () =>
     import(
         '@/views/dashboard/buoDashboard/components/growth/chart/linealChart/HistoricalGrowthChartComponent'
@@ -25,15 +30,15 @@ const GrowthViewComponent = () =>
         '@/views/dashboard/buoDashboard/components/growth/chart/progressLinearChart/GrowthViewComponent'
     );
 
-const ReasonsGrowthViewComponent = () =>
-    import(
-        '@/views/dashboard/buoDashboard/components/growth/chart/wordsChart/ReasonsGrowthViewComponent'
-    );
+// const ReasonsGrowthViewComponent = () =>
+//     import(
+//         '@/views/dashboard/buoDashboard/components/growth/chart/wordsChart/ReasonsGrowthViewComponent'
+//     );
 
-const BenefitViewComponent = () =>
-    import(
-        '@/views/dashboard/buoDashboard/components/growth/chart/progressLinearChart/BenefitViewComponent'
-    );
+// const BenefitViewComponent = () =>
+//     import(
+//         '@/views/dashboard/buoDashboard/components/growth/chart/progressLinearChart/BenefitViewComponent'
+//     );
 
 const TenureGrowthViewComponent = () =>
     import(
@@ -62,10 +67,11 @@ export default {
 
     components: {
         StatisticalGrowthCardsViewComponent,
+        MixAiInsightGrowthViewComponent,
         HistoricalGrowthChartComponent,
         GrowthViewComponent,
-        ReasonsGrowthViewComponent,
-        BenefitViewComponent,
+        // ReasonsGrowthViewComponent,
+        // BenefitViewComponent,
         TenureGrowthViewComponent,
         ManagersGrowthChartComponent,
         GrowingPersonalitiesChartComponent,
@@ -93,13 +99,28 @@ export default {
             <StatisticalGrowthCardsViewComponent :chartData="entity.cardList" />
         </v-col>
 
+        <v-col cols="12" v-if="entity?.insights || entity?.aiDrivenInsights">
+            <MixAiInsightGrowthViewComponent
+                :insights="entity.insights"
+                :aiDrivenInsights="entity.aiDrivenInsights"
+            />
+        </v-col>
+
         <v-col cols="12" v-if="entity.historicUser">
             <HistoricalGrowthChartComponent :chartData="entity.historicUser" />
         </v-col>
 
-        <v-col
+        <!-- <v-col
             cols="12"
             :md="$vuetify.breakpoint.mobile ? 12 : md(entity.reasonProgress)"
+            v-if="entity.departmentGrowth && entity.departmentGrowth.length > 0"
+        >
+            <GrowthViewComponent :chartData="entity.departmentGrowth" />
+        </v-col> -->
+
+        <v-col
+            cols="12"
+            :md="$vuetify.breakpoint.mobile ? 12 : md(entity.tenureGrowth)"
             v-if="entity.departmentGrowth && entity.departmentGrowth.length > 0"
         >
             <GrowthViewComponent :chartData="entity.departmentGrowth" />
@@ -108,21 +129,29 @@ export default {
         <v-col
             cols="12"
             :md="$vuetify.breakpoint.mobile ? 12 : md(entity.departmentGrowth)"
-            v-if="entity.reasonProgress && entity.reasonProgress.length > 0"
-        >
-            <ReasonsGrowthViewComponent :chartData="entity.reasonProgress" />
-        </v-col>
-
-        <v-col cols="12" v-if="entity.perks && entity.perks.length > 0">
-            <BenefitViewComponent :chartData="entity.perks" />
-        </v-col>
-
-        <v-col
-            cols="12"
             v-if="entity.tenureGrowth && entity.tenureGrowth.length > 0"
         >
             <TenureGrowthViewComponent :chartData="entity.tenureGrowth" />
         </v-col>
+
+        <!-- <v-col
+            cols="12"
+            :md="$vuetify.breakpoint.mobile ? 12 : md(entity.departmentGrowth)"
+            v-if="entity.reasonProgress && entity.reasonProgress.length > 0"
+        >
+            <ReasonsGrowthViewComponent :chartData="entity.reasonProgress" />
+        </v-col> -->
+
+        <!-- <v-col cols="12" v-if="entity.perks && entity.perks.length > 0">
+            <BenefitViewComponent :chartData="entity.perks" />
+        </v-col> -->
+
+        <!-- <v-col
+            cols="12"
+            v-if="entity.tenureGrowth && entity.tenureGrowth.length > 0"
+        >
+            <TenureGrowthViewComponent :chartData="entity.tenureGrowth" />
+        </v-col> -->
 
         <v-col
             cols="12"

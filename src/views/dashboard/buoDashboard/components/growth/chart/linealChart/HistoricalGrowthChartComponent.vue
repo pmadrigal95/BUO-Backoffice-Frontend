@@ -36,6 +36,30 @@ export default {
             //TODO: AI Missing
             return true;
         },
+
+        chartDataSetUp() {
+            return this.setUp();
+        },
+    },
+
+    methods: {
+        setUp() {
+            if (this.chartData?.datasets[0]) {
+                this.chartData.datasets[0].label = this.chartData.datasets[0]
+                    ?.label
+                    ? this.chartData.datasets[0]?.label
+                    : 'Crecimiento Horizontal';
+            }
+
+            if (this.chartData?.datasets[1]) {
+                this.chartData.datasets[1].label = this.chartData.datasets[1]
+                    ?.label
+                    ? this.chartData.datasets[1]?.label
+                    : 'Crecimiento Vertical';
+            }
+
+            return this.chartData;
+        },
     },
 };
 </script>
@@ -43,9 +67,9 @@ export default {
 <template>
     <BaseLinearChartViewComponent
         title="Histórico de crecimiento"
-        :chartData="chartData"
+        :chartData="chartDataSetUp"
         :isRound="false"
-        :showLegend="false"
+        :showLegend="true"
         :isOnlyChart="isOnlyChart"
         :chartColumns="$vuetify.breakpoint.mobile ? 12 : 8"
         :contentColumns="$vuetify.breakpoint.mobile ? 12 : 4"

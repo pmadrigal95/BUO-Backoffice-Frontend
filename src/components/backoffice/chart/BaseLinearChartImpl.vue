@@ -32,7 +32,7 @@ export default {
 
         alignLegend: {
             type: String,
-            default: 'center',
+            default: 'end',
         },
 
         showLegend: {
@@ -137,7 +137,7 @@ export default {
                         align: this.alignLegend,
                         padding: 40,
                         labels: {
-                            padding: 20,
+                            padding: 25,
                             color: this.dark ? lightTheme : darkTheme,
                             font: {
                                 size: 14,
