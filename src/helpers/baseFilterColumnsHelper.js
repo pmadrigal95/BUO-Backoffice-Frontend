@@ -145,6 +145,12 @@ const userColumns = (departmentId, isBuoUser, isFilter) => {
             show: isFilter ? false : true,
         },
         {
+            text: 'Fecha Ingreso Departamento',
+            align: 'start',
+            value: 'fechaIngresoDepartamentoFormato',
+            show: false,
+        },
+        {
             text: 'Fecha Salida',
             align: 'start',
             value: 'fechaTerminacionFormato',

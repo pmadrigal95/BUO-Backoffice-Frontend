@@ -174,6 +174,7 @@ export default {
                 usuarioModificaId: undefined,
                 perfilIds: undefined,
                 fechaIngreso: undefined,
+                fechaIngresoDepartamento: undefined,
                 fechaTerminacion: undefined,
                 esRenuncia: false,
             };
@@ -422,6 +423,16 @@ export default {
                                 label="Fecha de ingreso"
                                 appendIcon="mdi-calendar-month"
                                 v-model.trim="entity.fechaIngreso"
+                                :max="entity.fechaTerminacion"
+                                reqCurrentMaxDate
+                            />
+                        </v-col>
+
+                        <v-col cols="12">
+                            <BaseDatePicker
+                                label="Fecha Ingreso Departamento"
+                                appendIcon="mdi-calendar-month"
+                                v-model.trim="entity.fechaIngresoDepartamento"
                                 :max="entity.fechaTerminacion"
                                 reqCurrentMaxDate
                             />
