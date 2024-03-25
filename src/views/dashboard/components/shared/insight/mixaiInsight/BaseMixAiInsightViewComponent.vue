@@ -109,7 +109,7 @@ export default {
 </script>
 
 <template>
-    <section>
+    <section v-if="insightSetUp?.list && aiDrivenInsightSetUp?.list">
         <v-tabs
             v-model="tab"
             right
@@ -138,6 +138,7 @@ export default {
         <v-tabs-items v-model="tab" class="pt-5 container-tab">
             <v-tab-item>
                 <BaseInsightViewComponent
+                    v-if="insightSetUp?.list.length > 0"
                     :list="insightSetUp?.list"
                     :title="insightSetUp?.title"
                     :header="insightSetUp?.header"
@@ -149,6 +150,7 @@ export default {
 
             <v-tab-item>
                 <BaseAIDrivenInsightViewComponent
+                    v-if="aiDrivenInsightSetUp?.list.length > 0"
                     :list="aiDrivenInsightSetUp?.list"
                     :title="aiDrivenInsightSetUp?.title"
                     :header="aiDrivenInsightSetUp?.header"
