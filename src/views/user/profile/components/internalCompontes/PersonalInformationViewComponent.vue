@@ -278,6 +278,32 @@ export default {
                 <v-divider></v-divider>
             </v-col>
 
+            <v-col
+                cols="12"
+                md="6"
+                v-if="entity.fechaIngresoDepartamentoFormato"
+            >
+                <v-tooltip right>
+                    <template v-slot:activator="{ on, attrs }">
+                        <section
+                            class="BUO-Label-XSmall pb-2"
+                            :class="[
+                                app ? 'blueProgress600--text' : 'black--text',
+                            ]"
+                            v-bind="attrs"
+                            v-on="on"
+                        >
+                            <v-icon small class="pr-1">
+                                mdi-calendar-start
+                            </v-icon>
+                            {{ entity.fechaIngresoDepartamentoFormato }}
+                        </section>
+                    </template>
+                    <span>Fecha de ingreso al departamento</span>
+                </v-tooltip>
+                <v-divider></v-divider>
+            </v-col>
+
             <v-col cols="12" md="6" v-if="entity.fechaTerminacionFormato">
                 <v-tooltip right>
                     <template v-slot:activator="{ on, attrs }">

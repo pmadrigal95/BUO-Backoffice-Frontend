@@ -230,6 +230,11 @@ export default {
                                 this.entity.fechaIngreso
                             );
 
+                        this.entity.fechaIngresoDepartamento =
+                            baseSharedFnHelper.$_parseArrayToDateISOString(
+                                this.entity.fechaIngresoDepartamento
+                            );
+
                         this.entity.fechaTerminacion =
                             baseSharedFnHelper.$_parseArrayToDateISOString(
                                 this.entity.fechaTerminacion
@@ -430,7 +435,7 @@ export default {
 
                         <v-col cols="12">
                             <BaseDatePicker
-                                label="Fecha Ingreso Departamento"
+                                label="Fecha de ingreso al departamento"
                                 appendIcon="mdi-calendar-month"
                                 v-model.trim="entity.fechaIngresoDepartamento"
                                 :max="entity.fechaTerminacion"
