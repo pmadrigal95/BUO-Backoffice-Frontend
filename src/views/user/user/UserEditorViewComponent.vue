@@ -45,6 +45,7 @@ export default {
             entity: this.$_Object(),
             loading: false,
             componentKey: 0,
+            componentDateKey: 0,
         };
     },
 
@@ -107,6 +108,10 @@ export default {
                 { name: 'Administrador de empresa', id: 2 },
             ];
         },
+
+        validateDepartmentDate() {
+            return this.entity.departamentoId ? ['text'] : undefined;
+        },
     },
 
     created() {
@@ -137,6 +142,19 @@ export default {
                     this.entity.departamentoId = undefined;
                     this.entity.perfilIds = undefined;
                     this.componentKey++;
+                }
+            },
+            immediate: true,
+        },
+
+        /**
+         * Actualizar calendarios
+         */
+        'entity.departamentoId': {
+            handler(newValue) {
+                if (newValue) {
+                    console.log('hola');
+                    this.componentDateKey++;
                 }
             },
             immediate: true,
@@ -430,21 +448,30 @@ export default {
                                 v-model.trim="entity.fechaIngreso"
                                 :max="entity.fechaTerminacion"
                                 reqCurrentMaxDate
+                                :validate="['text']"
                             />
                         </v-col>
 
                         <v-col cols="12">
                             <BaseDatePicker
+                                :disabled="
+                                    !entity.fechaIngreso ||
+                                    !entity.departamentoId
+                                "
                                 label="Fecha de ingreso al departamento"
                                 appendIcon="mdi-calendar-month"
                                 v-model.trim="entity.fechaIngresoDepartamento"
+                                :min="entity.fechaIngreso"
                                 :max="entity.fechaTerminacion"
                                 reqCurrentMaxDate
+                                :validate="validateDepartmentDate"
+                                :key="componentDateKey"
                             />
                         </v-col>
 
                         <v-col cols="12">
                             <BaseDatePicker
+                                :disabled="!entity.fechaIngreso"
                                 label="Fecha de salida"
                                 appendIcon="mdi-calendar-month"
                                 v-model.trim="entity.fechaTerminacion"
@@ -454,6 +481,7 @@ export default {
 
                         <v-col cols="12">
                             <BaseSwitch
+                                :disabled="!entity.fechaTerminacion"
                                 label="Renuncia"
                                 v-model="entity.esRenuncia"
                             />
