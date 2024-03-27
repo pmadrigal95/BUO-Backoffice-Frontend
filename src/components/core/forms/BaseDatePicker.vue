@@ -419,9 +419,16 @@ export default {
         },
 
         $_reqCurrentMaxDate() {
-            return this.reqCurrentMaxDate
+            const result = this.max
+                ? this.max
+                : this.reqCurrentMaxDate
                 ? baseSharedFnHelper.$_getCurrentDateISOString()
-                : this.max;
+                : undefined;
+            // return this.reqCurrentMaxDate
+            //     ? baseSharedFnHelper.$_getCurrentDateISOString()
+            //     : this.max;
+
+            return result;
         },
 
         $_reqCurrentMinDate() {
