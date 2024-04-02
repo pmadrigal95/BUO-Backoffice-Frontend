@@ -173,7 +173,7 @@ export default {
                 organizacionId: undefined,
                 descripcion: undefined,
                 etiquetaNivel: undefined,
-                nivel: undefined,
+                nivel: 1,
                 estadoId: 2,
                 usuarioAdminIds: undefined,
                 usuarioModificaId: undefined,
@@ -326,6 +326,7 @@ export default {
 
                         <v-col cols="12">
                             <BaseSlider
+                                :min="1"
                                 icon="stairs"
                                 label="Nivel"
                                 v-model="entity.nivel"
