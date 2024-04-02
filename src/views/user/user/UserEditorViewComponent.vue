@@ -165,7 +165,7 @@ export default {
          */
         'entity.departamentoId': {
             handler(newValue, oldValue) {
-                if (newValue != oldValue) {
+                if (oldValue) {
                     this.$_updateDepartmentDate(newValue);
                     this.componentDateKey++;
                 }
@@ -191,7 +191,7 @@ export default {
          */
         'entity.fechaTerminacion': {
             handler(newValue, oldValue) {
-                if (newValue != oldValue) {
+                if (oldValue) {
                     this.$_updateEndDate(newValue);
                     this.componentDateKey++;
                 }
