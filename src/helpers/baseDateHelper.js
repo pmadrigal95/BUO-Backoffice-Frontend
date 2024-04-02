@@ -7,9 +7,11 @@
 const currentDate = () => {
     const date = new Date();
 
-    let day = date.getDate();
+    let day = date.getDate().toString();
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
+
+    day = day.padStart(2, '0');
 
     // This arrangement can be altered based on how we want the date's format to appear.
     let currentDate = `${year}-${month > 9 ? month : '0' + month}-${day}`;
