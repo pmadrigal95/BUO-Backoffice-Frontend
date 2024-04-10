@@ -1,15 +1,10 @@
 <script>
 /**
- * Descripción: Pantalla  HistoricalGrowthChartComponent
+ * Descripción: Pantalla  HistoricalRecruitmentChartComponent
  *
- * @displayName HistoricalGrowthChartComponent
+ * @displayName HistoricalRecruitmentChartComponent
  *
  */
-
-const BaseDashboardAlertCardViewComponent = () =>
-    import(
-        '@/views/dashboard/components/shared/info/BaseDashboardAlertCardViewComponent'
-    );
 
 const BaseLinearChartViewComponent = () =>
     import(
@@ -17,7 +12,7 @@ const BaseLinearChartViewComponent = () =>
     );
 
 export default {
-    name: 'HistoricalGrowthChartComponent',
+    name: 'HistoricalRecruitmentChartComponent',
 
     props: {
         chartData: {
@@ -28,15 +23,9 @@ export default {
 
     components: {
         BaseLinearChartViewComponent,
-        BaseDashboardAlertCardViewComponent,
     },
 
     computed: {
-        isOnlyChart() {
-            //TODO: AI Missing
-            return true;
-        },
-
         chartDataSetUp() {
             return this.setUp();
         },
@@ -48,14 +37,14 @@ export default {
                 this.chartData.datasets[0].label = this.chartData.datasets[0]
                     ?.label
                     ? this.chartData.datasets[0]?.label
-                    : 'Crecimiento Horizontal';
+                    : 'Seleccionados';
             }
 
             if (this.chartData?.datasets[1]) {
                 this.chartData.datasets[1].label = this.chartData.datasets[1]
                     ?.label
                     ? this.chartData.datasets[1]?.label
-                    : 'Crecimiento Vertical';
+                    : 'Candidatos';
             }
 
             return this.chartData;
@@ -69,18 +58,7 @@ export default {
         :isRound="false"
         :showLegend="true"
         :chartData="chartDataSetUp"
-        :isOnlyChart="isOnlyChart"
         :requiredLinearGradient="chartData.datasets.length > 1 ? false : true"
-        title="Histórico de crecimiento"
-        :chartColumns="$vuetify.breakpoint.mobile ? 12 : 8"
-        :contentColumns="$vuetify.breakpoint.mobile ? 12 : 4"
-    >
-        <section slot="content">
-            <!--TODO: AI Missing-->
-            <BaseDashboardAlertCardViewComponent
-                label="De acuerdo a insights de rotación, el 
-    Beneficio 3 es un gran motivador para tus colaboradores por lo que te recomendamos aumentar esfuerzos relacionados con este beneficio"
-            />
-        </section>
-    </BaseLinearChartViewComponent>
+        title="Histórico de selección"
+    />
 </template>

@@ -137,7 +137,7 @@ export default {
                         align: this.alignLegend,
                         padding: 40,
                         labels: {
-                            padding: 25,
+                            padding: 30,
                             color: this.dark ? lightTheme : darkTheme,
                             font: {
                                 size: 14,

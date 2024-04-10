@@ -117,7 +117,6 @@ export default {
                     ><p class="BUO-Label-Small pt-4">Crecimiento</p>
                 </v-tab>
                 <v-tab
-                    disabled
                     class="rounded-pill no-uppercase mr-3"
                     active-class="tab-active-blue"
                     ><p class="BUO-Label-Small pt-4">Reclutamiento</p>
