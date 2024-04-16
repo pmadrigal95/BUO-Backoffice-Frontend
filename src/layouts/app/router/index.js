@@ -28,6 +28,8 @@ import assessmentRoutes from '@/views/assessment/router';
 
 import departmentRoutes from '@/views/department/router';
 
+import recruitmentRoutes from '@/views/recruitment/router';
+
 import demographicsRoutes from '@/views/demographics/router';
 
 import microAbilityRoutes from '@/views/microAbility/router';
@@ -58,6 +60,7 @@ const routes = [
             ...analyticsRoutes,
             ...assessmentRoutes,
             ...departmentRoutes,
+            ...recruitmentRoutes,
             ...demographicsRoutes,
             ...microAbilityRoutes,
             ...setIndicatorRoutes,
