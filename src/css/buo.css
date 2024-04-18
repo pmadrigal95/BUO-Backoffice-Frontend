@@ -418,3 +418,48 @@ html {
 .absolute {
     position: absolute;
 }
+
+/*
+    CSS V-Slider
+*/
+
+.v-slider__track-container {
+    -webkit-appearance: none !important;
+    width: 100% !important;
+    height: 10px !important;
+    outline: none !important;
+    opacity: 0.8 !important;
+}
+
+.v-slider__track-fill {
+    border-radius: 10px 0px 0px 10px !important;
+}
+
+.v-slider__track-background {
+    border-radius: 10px 10px 10px 10px !important;
+}
+
+.v-slider__thumb {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    width: 26px !important;
+    height: 26px !important;
+    border-radius: 100% !important;
+    cursor: pointer !important;
+}
+
+.v-slider__thumb::before {
+    transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+    content: '';
+    color: inherit;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.3;
+    position: absolute;
+    left: -5px !important;
+    top: -5px !important;
+    transform: scale(0.1);
+    pointer-events: none;
+}

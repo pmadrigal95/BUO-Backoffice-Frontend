@@ -201,58 +201,9 @@ export default {
                                     class="slider"
                             /></v-list-item-subtitle>
                         </v-list-item-content>
-                        <!-- <v-list-item-action>
-                            <span
-                                class="BUO-Paragraph-Medium-SemiBold grey700--text"
-                                >60%</span
-                            >
-                        </v-list-item-action> -->
                     </v-list-item>
                 </v-card-text>
             </v-card>
         </v-col>
     </v-row>
 </template>
-
-<style scoped>
-.slider >>> .v-slider__track-container {
-    -webkit-appearance: none !important;
-    width: 100% !important;
-    height: 10px !important;
-    outline: none !important;
-    opacity: 0.8 !important;
-}
-
-.slider >>> .v-slider__track-fill {
-    border-radius: 10px 0px 0px 10px !important;
-}
-
-.slider >>> .v-slider__track-background {
-    border-radius: 10px 10px 10px 10px !important;
-}
-
-.slider >>> .v-slider__thumb {
-    -webkit-appearance: none !important;
-    appearance: none !important;
-    width: 26px !important;
-    height: 26px !important;
-    border-radius: 100% !important;
-    cursor: pointer !important;
-}
-
-.slider >>> .v-slider__thumb::before {
-    transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-    content: '';
-    color: inherit;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: currentColor;
-    opacity: 0.3;
-    position: absolute;
-    left: -6px;
-    top: -8px;
-    transform: scale(0.1);
-    pointer-events: none;
-}
-</style>
