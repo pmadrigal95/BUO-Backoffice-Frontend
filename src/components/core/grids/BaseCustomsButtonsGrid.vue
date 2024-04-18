@@ -50,6 +50,11 @@ export default {
             default: true,
         },
 
+        dark: {
+            type: Boolean,
+            default: undefined,
+        },
+
         block: {
             type: Boolean,
             default: false,
@@ -58,6 +63,16 @@ export default {
         loading: {
             type: Boolean,
             default: false,
+        },
+    },
+
+    computed: {
+        isDark() {
+            return this.dark != undefined
+                ? this.dark
+                : this.outlined
+                ? false
+                : true;
         },
     },
 
@@ -78,7 +93,7 @@ export default {
         elevation="0"
         class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
         :outlined="outlined"
-        :dark="outlined ? false : true"
+        :dark="isDark"
         :loading="loading"
         small
         :block="block"

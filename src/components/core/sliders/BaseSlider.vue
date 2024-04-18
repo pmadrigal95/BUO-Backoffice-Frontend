@@ -178,6 +178,14 @@ export default {
     opacity: 0.8 !important;
 }
 
+.slider >>> .v-slider__track-fill {
+    border-radius: 10px 0px 0px 10px !important;
+}
+
+.slider >>> .v-slider__track-background {
+    border-radius: 10px 10px 10px 10px !important;
+}
+
 .slider >>> .v-slider__thumb {
     -webkit-appearance: none !important;
     appearance: none !important;
