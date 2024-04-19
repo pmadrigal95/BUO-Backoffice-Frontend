@@ -183,14 +183,18 @@ export default {
             <v-card flat color="grey200" class="rounded-xxl">
                 <v-card-text>
                     <v-list-item two-line>
-                        <v-list-item-icon class="ma-auto">
+                        <v-list-item-icon class="mx-auto">
                             <BaseSwitch />
                         </v-list-item-icon>
-                        <v-list-item-content>
+                        <v-list-item-content class="mb-n10">
                             <v-list-item-title
                                 class="BUO-Paragraph-Medium-SemiBold grey700--text ml-2"
-                                >Riesgo</v-list-item-title
                             >
+                                <v-layout justify-space-between>
+                                    <div>Riesgo</div>
+                                    <div class="mr-3">60%</div>
+                                </v-layout>
+                            </v-list-item-title>
                             <v-list-item-subtitle
                                 class="BUO-Label-Small grey600--text"
                                 ><v-slider
@@ -204,6 +208,36 @@ export default {
                     </v-list-item>
                 </v-card-text>
             </v-card>
+        </v-col>
+
+        <v-col cols="12">
+            <section>
+                <v-list dense color="transparent">
+                    <v-list-item>
+                        <v-list-item-icon class="mr-3">
+                            <v-icon color="greenA800"
+                                >mdi-checkbox-marked-circle</v-icon
+                            >
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title
+                                class="BUO-Label-XSmall grey700--text"
+                                >Título Universitario</v-list-item-title
+                            >
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-layout justify-space-between align-start>
+                        <v-slider
+                            :value="60"
+                            color="primary"
+                            track-color="grey"
+                            always-dirty
+                            class="slider"
+                        />
+                        <span class="BUO-Label-XSmall grey700--text pt-2">34%</span>
+                    </v-layout>
+                </v-list>
+            </section>
         </v-col>
     </v-row>
 </template>
