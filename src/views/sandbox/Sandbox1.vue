@@ -12,10 +12,13 @@ const BaseBasicCardViewComponent = () =>
         '@/views/dashboard/components/shared/card/BaseBasicCardViewComponent'
     );
 
+const BaseHeaderMenu = () => import('@/components/core/drawers/BaseHeaderMenu');
+
 export default {
     name: 'sandbox',
 
     components: {
+        BaseHeaderMenu,
         BaseCustomsButtonsGrid,
         BaseBasicCardViewComponent,
     },
@@ -234,10 +237,20 @@ export default {
                             always-dirty
                             class="slider"
                         />
-                        <span class="BUO-Label-XSmall grey700--text pt-2">34%</span>
+                        <span class="BUO-Label-XSmall grey700--text pt-2"
+                            >34%</span
+                        >
                     </v-layout>
                 </v-list>
             </section>
+        </v-col>
+
+        <v-col cols="12">
+            <BaseHeaderMenu
+                title="Pablo Madrigal"
+                subtitle="pablomadrigal@getbuo.com"
+                userAvatar="PM"
+            />
         </v-col>
     </v-row>
 </template>

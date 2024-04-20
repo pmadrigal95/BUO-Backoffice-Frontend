@@ -9,8 +9,12 @@ import { mapGetters, mapActions } from 'vuex';
 
 import baseConfigHelper from '@/helpers/baseConfigHelper';
 
+const BaseHeaderMenu = () => import('@/components/core/drawers/BaseHeaderMenu');
+
 export default {
     name: 'BaseDrawer',
+
+    components: { BaseHeaderMenu },
 
     data() {
         return {
@@ -91,59 +95,22 @@ export default {
         style="max-height: auto !important"
         :temporary="$vuetify.breakpoint.smAndDown"
     >
-        <v-list-item two-line class="px-2" v-if="user">
-            <v-list-item-avatar>
-                <BaseSkeletonLoader v-if="!userAvatar" type="avatar" />
-                <v-avatar :color="user.colorAvatar" v-else-if="userAvatar">
-                    <span
-                        class="white--text BUO-Paragraph-Medium-SemiBold"
-                        v-if="userAvatar.length <= 2"
-                        >{{ userAvatar }}</span
-                    >
-
-                    <v-img
-                        v-else
-                        contain
-                        :src="`data:image/jpeg;base64,${userAvatar}`"
-                        :lazy-src="`data:image/jpeg;base64,${userAvatar}`"
-                        alt="photoUrl"
-                    >
-                        <template v-slot:placeholder>
-                            <v-row
-                                class="fill-height ma-0"
-                                align="center"
-                                justify="center"
-                            >
-                                <v-progress-circular
-                                    indeterminate
-                                    color="grey lighten-5"
-                                ></v-progress-circular>
-                            </v-row>
-                        </template>
-                    </v-img>
-                </v-avatar>
-            </v-list-item-avatar>
-
-            <v-list-item-content>
-                <v-list-item-title
-                    class="BUO-Paragraph-Medium-SemiBold"
-                    :class="[app ? 'white--text' : 'grey700--text']"
-                    >{{ usernameDisplay }}</v-list-item-title
+        <BaseHeaderMenu
+            v-if="user && userAvatar"
+            :title="usernameDisplay"
+            :subtitle="user.email"
+            :userAvatar="userAvatar"
+        >
+            <div slot="btn">
+                <v-btn
+                    icon
+                    @click.stop="mini = !mini"
+                    v-if="$vuetify.breakpoint.mdAndUp"
                 >
-                <v-list-item-subtitle
-                    class="BUO-Label-XSmall"
-                    :class="[app ? 'blueProgress600--text' : 'grey600--text']"
-                    >{{ user.email }}</v-list-item-subtitle
-                >
-            </v-list-item-content>
-            <v-btn
-                icon
-                @click.stop="mini = !mini"
-                v-if="$vuetify.breakpoint.mdAndUp"
-            >
-                <v-icon>mdi-chevron-left</v-icon>
-            </v-btn>
-        </v-list-item>
+                    <v-icon>mdi-chevron-left</v-icon>
+                </v-btn>
+            </div>
+        </BaseHeaderMenu>
 
         <v-divider></v-divider>
 

@@ -182,6 +182,36 @@ const isEqualObj = (object1, object2) => {
     return true;
 };
 
+const set_initials = (name) => {
+    const usernameSplit = name ? name.split(' ') : undefined;
+
+    let username;
+
+    if (usernameSplit && usernameSplit.length > 0) {
+        username =
+            usernameSplit.length === 1
+                ? usernameSplit[0].charAt(0)
+                : `${usernameSplit[0].charAt(0)}${usernameSplit[1].charAt(0)}`;
+    }
+
+    return username;
+};
+
+const set_usernameDisplay = (name) => {
+    const usernameSplit = name ? name.split(' ') : undefined;
+
+    let username;
+
+    if (usernameSplit && usernameSplit.length > 0) {
+        username =
+            usernameSplit.length === 1
+                ? usernameSplit[0]
+                : `${usernameSplit[0]} ${usernameSplit[1].charAt(0)}.`;
+    }
+
+    return username;
+};
+
 export default {
     $_getInitialDay() {
         const fechaInicio = new Date();
@@ -380,5 +410,13 @@ export default {
 
     $_isEqualObj(object1, object2) {
         return isEqualObj(object1, object2);
+    },
+
+    $_set_initials(name) {
+        return set_initials(name);
+    },
+
+    $_set_usernameDisplay(name) {
+        return set_usernameDisplay(name);
     },
 };

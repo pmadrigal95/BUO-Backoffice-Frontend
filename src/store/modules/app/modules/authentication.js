@@ -14,11 +14,11 @@ import httpService from '@/services/axios/httpService';
 
 import baseConfigHelper from '@/helpers/baseConfigHelper';
 
+import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
+
 import baseSecurityHelper from '@/helpers/baseSecurityHelper';
 
 import facebookSDK from '@/services/socialMedia/facebook-SDK.js';
-
-import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationColorsHelper';
 
 const $_redirect = (module) => {
     if (router.currentRoute.name === 'LoginViewComponent') {
@@ -43,7 +43,6 @@ const $_setStateValue = (state, decoded, data) => {
         userId: decoded?.userId,
         name: decoded?.name,
         avatar: undefined, //decoded?.photoUrl,
-        colorAvatar: baseDataVisualizationColorsHelper.$_randomColor().main,
         companyId: decoded?.companyId,
         companyName: decoded?.companyName,
         companyLogo: decoded?.companyLogo,
@@ -53,33 +52,11 @@ const $_setStateValue = (state, decoded, data) => {
 };
 
 const $_set_initials = (name) => {
-    const usernameSplit = name ? name.split(' ') : undefined;
-
-    let username;
-
-    if (usernameSplit && usernameSplit.length > 0) {
-        username =
-            usernameSplit.length === 1
-                ? usernameSplit[0].charAt(0)
-                : `${usernameSplit[0].charAt(0)}${usernameSplit[1].charAt(0)}`;
-    }
-
-    return username;
+    return baseSharedFnHelper.$_set_initials(name);
 };
 
 const $_set_usernameDisplay = (name) => {
-    const usernameSplit = name ? name.split(' ') : undefined;
-
-    let username;
-
-    if (usernameSplit && usernameSplit.length > 0) {
-        username =
-            usernameSplit.length === 1
-                ? usernameSplit[0]
-                : `${usernameSplit[0]} ${usernameSplit[1].charAt(0)}.`;
-    }
-
-    return username;
+    return baseSharedFnHelper.$_set_usernameDisplay(name);
 };
 
 export const namespaced = true;
