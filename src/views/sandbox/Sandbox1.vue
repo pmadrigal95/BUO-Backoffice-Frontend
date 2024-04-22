@@ -29,6 +29,11 @@ const BaseListStatusHeaderViewComponent = () =>
         '@/views/dashboard/components/shared/header/BaseListStatusHeaderViewComponent'
     );
 
+const BaseNotFoundCardViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/card/BaseNotFoundCardViewComponent'
+    );
+
 export default {
     name: 'sandbox',
 
@@ -39,6 +44,7 @@ export default {
         ProgressCircularComponent,
         BaseStatusHeaderViewComponent,
         BaseListStatusHeaderViewComponent,
+        BaseNotFoundCardViewComponent,
     },
 
     computed: {
@@ -308,6 +314,12 @@ export default {
 
         <v-col cols="12">
             <BaseListStatusHeaderViewComponent :list="list" />
+        </v-col>
+
+        <v-col cols="12">
+            <BaseNotFoundCardViewComponent
+                description="Una vez que los candidatos completen el proceso los resultados aparecerán aca."
+            />
         </v-col>
     </v-row>
 </template>
