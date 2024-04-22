@@ -7,7 +7,7 @@
  */
 
 const ContainerViewComponent = () =>
-    import('@/views/user/user/components/ContainerViewComponent');
+    import('@/views/user/user/components/filter/ContainerViewComponent');
 
 export default {
     name: 'UserFilterViewComponent',

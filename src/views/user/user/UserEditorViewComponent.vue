@@ -26,21 +26,21 @@ import {
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
-const BaseInputDataTable = () =>
+/*const BaseInputDataTable = () =>
     import('@/components/core/forms/BaseInputDataTable.vue');
 
 const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
 
 const BaseInputTreeview = () =>
-    import('@/components/core/treeview/BaseInputTreeview');
+    import('@/components/core/treeview/BaseInputTreeview');*/
 
 export default {
     name: 'UserEditorViewComponent',
 
     components: {
-        BaseDatePicker,
+        /*BaseDatePicker,
         BaseInputTreeview,
-        BaseInputDataTable,
+        BaseInputDataTable,*/
         BaseCardViewComponent,
     },
 
@@ -413,7 +413,8 @@ export default {
         offset="3"
     >
         <div slot="card-text">
-            <BaseSkeletonLoader v-if="loading" type="article, actions" />
+            <h1>hola</h1>
+            <!-- <BaseSkeletonLoader v-if="loading" type="article, actions" />
             <BaseForm :method="$_sendToApi" :cancel="$_returnToFilter" v-else>
                 <div slot="body">
                     <v-row dense>
@@ -615,7 +616,7 @@ export default {
                         </v-col>
                     </v-row>
                 </div>
-            </BaseForm>
+            </BaseForm>-->
         </div>
     </BaseCardViewComponent>
 </template>

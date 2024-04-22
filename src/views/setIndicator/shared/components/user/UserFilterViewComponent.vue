@@ -19,7 +19,7 @@ import {
     baseDataTableColumnsHelper,
 } from '@/helpers/baseFilterSettingsHelper';
 
-import { baseAssessmentHelper } from '@/views/user/user/components/assessment/baseAssessmentHelper';
+import { baseAssessmentHelper } from '@/views/user/user/components/shared/assessment/baseAssessmentHelper';
 
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
@@ -28,7 +28,9 @@ const StepViewComponent = () =>
     import('@/views/user/bulkLoad/components/StepViewComponent');
 
 const AssessmentViewComponent = () =>
-    import('@/views/user/user/components/assessment/AssessmentViewComponent');
+    import(
+        '@/views/user/user/components/shared/assessment/AssessmentViewComponent'
+    );
 
 const CreateAndSetIndicatorViewComponent = () =>
     import(

@@ -9,7 +9,7 @@ const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
 const FilterViewComponent = () =>
-    import('@/views/user/user/components/FilterViewComponent');
+    import('@/views/user/user/components/filter/FilterViewComponent');
 
 export default {
     name: 'ContainerViewComponent',
