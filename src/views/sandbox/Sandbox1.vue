@@ -14,6 +14,11 @@ const BaseBasicCardViewComponent = () =>
 
 const BaseHeaderMenu = () => import('@/components/core/drawers/BaseHeaderMenu');
 
+const ProgressCircularComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/chart/progressCircularChart/ProgressCircularComponent'
+    );
+
 export default {
     name: 'sandbox',
 
@@ -21,6 +26,7 @@ export default {
         BaseHeaderMenu,
         BaseCustomsButtonsGrid,
         BaseBasicCardViewComponent,
+        ProgressCircularComponent,
     },
 };
 </script>
@@ -250,6 +256,21 @@ export default {
                 title="Pablo Madrigal"
                 subtitle="pablomadrigal@getbuo.com"
                 userAvatar="PM"
+            />
+        </v-col>
+        <v-col cols="12">
+            <ProgressCircularComponent
+                title="Seleccionados"
+                :value="300"
+                :maxValue="500"
+            />
+        </v-col>
+        <v-col cols="12">
+            <ProgressCircularComponent
+                title="Coincidencia"
+                :value="93"
+                isLandscape
+                isPercentage
             />
         </v-col>
     </v-row>
