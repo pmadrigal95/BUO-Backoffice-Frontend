@@ -34,6 +34,11 @@ const BaseNotFoundCardViewComponent = () =>
         '@/views/dashboard/components/shared/card/BaseNotFoundCardViewComponent'
     );
 
+const ActionCardViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/recruitment/card/ActionCardViewComponent'
+    );
+
 export default {
     name: 'sandbox',
 
@@ -45,6 +50,7 @@ export default {
         BaseStatusHeaderViewComponent,
         BaseListStatusHeaderViewComponent,
         BaseNotFoundCardViewComponent,
+        ActionCardViewComponent,
     },
 
     computed: {
@@ -318,6 +324,12 @@ export default {
 
         <v-col cols="12">
             <BaseNotFoundCardViewComponent
+                description="Una vez que los candidatos completen el proceso los resultados aparecerán aca."
+            />
+        </v-col>
+
+        <v-col cols="12">
+            <ActionCardViewComponent
                 description="Una vez que los candidatos completen el proceso los resultados aparecerán aca."
             />
         </v-col>
