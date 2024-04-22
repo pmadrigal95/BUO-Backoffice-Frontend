@@ -19,6 +19,16 @@ const ProgressCircularComponent = () =>
         '@/views/dashboard/components/shared/chart/progressCircularChart/ProgressCircularComponent'
     );
 
+const BaseStatusHeaderViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/header/BaseStatusHeaderViewComponent'
+    );
+
+const BaseListStatusHeaderViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/header/BaseListStatusHeaderViewComponent'
+    );
+
 export default {
     name: 'sandbox',
 
@@ -27,6 +37,18 @@ export default {
         BaseCustomsButtonsGrid,
         BaseBasicCardViewComponent,
         ProgressCircularComponent,
+        BaseStatusHeaderViewComponent,
+        BaseListStatusHeaderViewComponent,
+    },
+
+    computed: {
+        list() {
+            return [
+                { title: 'Título Universitario', type: 'Success' },
+                { title: 'Título Universitario', type: 'Success' },
+                { title: 'Título Universitario', type: 'Error' },
+            ];
+        },
     },
 };
 </script>
@@ -272,6 +294,20 @@ export default {
                 isLandscape
                 isPercentage
             />
+        </v-col>
+
+        <v-col cols="12">
+            <v-list dense color="transparent">
+                <BaseStatusHeaderViewComponent title="Coincidencia" />
+                <BaseStatusHeaderViewComponent
+                    title="Coincidencia 2"
+                    type="error"
+                />
+            </v-list>
+        </v-col>
+
+        <v-col cols="12">
+            <BaseListStatusHeaderViewComponent :list="list" />
         </v-col>
     </v-row>
 </template>
