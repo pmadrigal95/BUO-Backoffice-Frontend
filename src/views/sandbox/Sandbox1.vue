@@ -245,7 +245,6 @@ export default {
                                     color="primary"
                                     track-color="grey"
                                     always-dirty
-                                    class="slider"
                             /></v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
@@ -275,7 +274,6 @@ export default {
                             color="primary"
                             track-color="grey"
                             always-dirty
-                            class="slider"
                         />
                         <span class="BUO-Label-XSmall grey700--text pt-2"
                             >34%</span
