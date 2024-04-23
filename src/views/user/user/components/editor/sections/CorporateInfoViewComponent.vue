@@ -6,7 +6,12 @@
  *
  */
 
- 
+import baseDateHelper from '@/helpers/baseDateHelper';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
+
+const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
+
 export default {
     name: 'CorporateInfoViewComponent',
 
@@ -17,6 +22,10 @@ export default {
         },
     },
 
+    components: {
+        BaseDatePicker,
+    },
+
     data() {
         return {
             componentDateKey: 0,
@@ -24,12 +33,149 @@ export default {
     },
 
     computed: {
+        msg() {
+            return 'Hemos realizado una actualización en los campos de fechas del colaborador. Por favor, tómate un momento para revisar y asegurarte de que tus fechas estén actualizadas correctamente.';
+        },
+
         validateInitialDate() {
             return this.entity.organizacionId ? ['text'] : undefined;
         },
 
         validateDepartmentDate() {
             return this.entity.departamentoId ? ['text'] : undefined;
+        },
+    },
+
+    watch: {
+        /**
+         * Actualizar calendarios
+         */
+        'entity.organizacionId': {
+            handler(newValue, oldValue) {
+                this.componentDateKey++;
+                if (oldValue) {
+                    this.entity.departamentoId = undefined;
+                    this.entity.perfilIds = undefined;
+                    this.componentKey++;
+                }
+            },
+            immediate: true,
+        },
+
+        /**
+         * Actualizar calendarios
+         */
+        'entity.departamentoId': {
+            handler(newValue, oldValue) {
+                if (oldValue) {
+                    this.$_updateDepartmentDate(newValue);
+                    this.componentDateKey++;
+                }
+            },
+            immediate: true,
+        },
+
+        /**
+         * Actualizar calendarios
+         */
+        'entity.fechaIngreso': {
+            handler(newValue, oldValue) {
+                if (oldValue) {
+                    this.$_updateInitDate(newValue);
+                    this.componentDateKey++;
+                }
+            },
+            immediate: true,
+        },
+
+        /**
+         * Actualizar calendarios
+         */
+        'entity.fechaTerminacion': {
+            handler(newValue, oldValue) {
+                if (oldValue) {
+                    this.$_updateEndDate(newValue);
+                    this.componentDateKey++;
+                }
+            },
+            immediate: true,
+        },
+    },
+
+    methods: {
+        $_updateDepartmentDate(departamentoId) {
+            if (!departamentoId) {
+                this.entity.fechaIngresoDepartamento = undefined;
+                return;
+            }
+
+            const today = baseDateHelper.$_setCurrentDate();
+
+            if (!this.entity.fechaIngreso) {
+                this.entity.fechaIngreso = today;
+                this.entity.fechaIngresoDepartamento = today;
+            } else {
+                this.entity.fechaIngresoDepartamento =
+                    baseDateHelper.$_compareDates({
+                        firstDate: this.entity.fechaIngreso,
+                        secondDate: today,
+                    }) &&
+                    (!this.entity.fechaTerminacion ||
+                        baseDateHelper.$_compareDates({
+                            firstDate: this.entity.fechaTerminacion,
+                            secondDate: today,
+                            operator: '>=',
+                        }))
+                        ? today
+                        : undefined;
+            }
+
+            baseNotificationsHelper.Message(false, this.msg);
+        },
+
+        $_updateInitDate(fechaIngreso) {
+            if (!fechaIngreso) {
+                this.entity.fechaIngresoDepartamento = undefined;
+                this.entity.fechaTerminacion = undefined;
+            } else {
+                this.entity.fechaIngresoDepartamento =
+                    this.entity.fechaIngresoDepartamento &&
+                    baseDateHelper.$_compareDates({
+                        firstDate: this.entity.fechaIngreso,
+                        secondDate: this.entity.fechaIngresoDepartamento,
+                    })
+                        ? this.entity.fechaIngresoDepartamento
+                        : undefined;
+
+                this.entity.fechaTerminacion =
+                    this.entity.fechaTerminacion &&
+                    baseDateHelper.$_compareDates({
+                        firstDate: this.entity.fechaIngreso,
+                        secondDate: this.entity.fechaTerminacion,
+                    })
+                        ? this.entity.fechaTerminacion
+                        : undefined;
+            }
+
+            baseNotificationsHelper.Message(false, this.msg);
+        },
+
+        $_updateEndDate(fechaTerminacion) {
+            if (!fechaTerminacion) {
+                this.entity.esRenuncia = false;
+            } else {
+                this.entity.fechaIngresoDepartamento =
+                    this.entity.fechaIngresoDepartamento &&
+                    baseDateHelper.$_compareDates({
+                        firstDate: this.entity.fechaTerminacion,
+                        secondDate: this.entity.fechaIngresoDepartamento,
+                        operator: '>=',
+                    })
+                        ? this.entity.fechaIngresoDepartamento
+                        : undefined;
+            }
+
+            baseNotificationsHelper.Message(false, this.msg);
         },
     },
 };

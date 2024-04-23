@@ -5,6 +5,8 @@
  * @displayName ContainerViewComponent
  *
  */
+import { mapGetters } from 'vuex';
+
 import baseDateHelper from '@/helpers/baseDateHelper';
 
 import httpService from '@/services/axios/httpService';
@@ -53,8 +55,11 @@ export default {
             entity: this.$_Object(),
             loading: false,
             componentKey: 0,
-            componentDateKey: 0,
         };
+    },
+
+    computed: {
+        ...mapGetters('authentication', ['user', 'buoId']),
     },
 
     created() {
@@ -110,6 +115,14 @@ export default {
             };
         },
 
+        $_setRoleListToEditor() {
+            this.entity.roleNames =
+                this.entity?.perfilList &&
+                this.entity?.perfilList.map((x) => {
+                    return { id: x.id, nombre: x.nombre };
+                });
+        },
+
         /**
          * Determinar si Es nuevo / editor
          */
@@ -147,7 +160,7 @@ export default {
                                 this.entity.fechaTerminacion
                             );
 
-                        //this.$_setRoleListToEditor();
+                        this.$_setRoleListToEditor();
                     }
                 });
             } else {
@@ -155,8 +168,22 @@ export default {
             }
         },
 
+        $_setToUser() {
+            this.entity.usuarioModificaId = this.user.userId;
+        },
+
         $_sendToApi() {
-            alert('hola');
+            this.loading = true;
+            this.$_setToUser();
+            let object = BaseArrayHelper.SetObject({}, this.entity);
+            httpService.post('user/saveUserForm', object).then((response) => {
+                this.loading = false;
+
+                if (response != undefined) {
+                    //Logica JS luego de la acción exitosa!!!
+                    this.$_returnToFilter();
+                }
+            });
         },
     },
 };

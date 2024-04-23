@@ -5,6 +5,7 @@
  * @displayName PersonalInfoViewComponent
  *
  */
+const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
 
 export default {
     name: 'PersonalInfoViewComponent',
@@ -14,6 +15,10 @@ export default {
             type: Object,
             required: true,
         },
+    },
+
+    components: {
+        BaseDatePicker,
     },
 };
 </script>

@@ -26,6 +26,16 @@ export default {
             required: true,
         },
     },
+
+    computed: {
+        userTypeList() {
+            return [
+                { name: 'Normal', id: 0 },
+                { name: 'Super administrador', id: 1 },
+                { name: 'Administrador de empresa', id: 2 },
+            ];
+        },
+    },
 };
 </script>
 
@@ -71,6 +81,14 @@ export default {
                 :editText="entity.roleNames"
                 v-model="entity.perfilIds"
                 :key="componentKey"
+            />
+        </v-col>
+
+        <v-col cols="12" v-if="user.companyId === buoId">
+            <BaseRadioGroup
+                label="Tipo de usuario"
+                v-model="entity.tipoUsuarioId"
+                :endpoint="userTypeList"
             />
         </v-col>
 
