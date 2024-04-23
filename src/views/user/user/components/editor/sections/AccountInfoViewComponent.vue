@@ -8,9 +8,32 @@
 
 export default {
     name: 'AccountInfoViewComponent',
+
+    props: {
+        entity: {
+            type: Object,
+            required: true,
+        },
+    },
 };
 </script>
 
 <template>
-    <h1>hola</h1>
+    <v-row dense>
+        <v-col cols="12">
+            <BaseInput
+                label="Correo electrónico"
+                v-model.trim="entity.correo"
+                :validate="['email']"
+            />
+        </v-col>
+
+        <v-col cols="12">
+            <BaseInput
+                label="Username"
+                v-model.trim="entity.username"
+                :validate="['email']"
+            />
+        </v-col>
+    </v-row>
 </template>
