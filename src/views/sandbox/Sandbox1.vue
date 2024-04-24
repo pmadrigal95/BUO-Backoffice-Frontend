@@ -39,6 +39,11 @@ const ActionCardViewComponent = () =>
         '@/views/dashboard/buoDashboard/components/recruitment/card/ActionCardViewComponent'
     );
 
+const BaseRowDisplayViewComponent = () =>
+    import(
+        '@/views/dashboard/components/shared/row-display/BaseRowDisplayViewComponent'
+    );
+
 export default {
     name: 'sandbox',
 
@@ -51,6 +56,7 @@ export default {
         BaseListStatusHeaderViewComponent,
         BaseNotFoundCardViewComponent,
         ActionCardViewComponent,
+        BaseRowDisplayViewComponent,
     },
 
     computed: {
@@ -330,6 +336,10 @@ export default {
             <ActionCardViewComponent
                 description="Una vez que los candidatos completen el proceso los resultados aparecerán aca."
             />
+        </v-col>
+        <v-col cols="6">
+            <BaseRowDisplayViewComponent title="Candidatos" />
+            <BaseRowDisplayViewComponent title="Candidatos" value="40" />
         </v-col>
     </v-row>
 </template>

@@ -10,20 +10,20 @@ import { mapGetters } from 'vuex';
 
 import baseDisplay from '@/views/dashboard/components/shared/row-display/container-display';
 
-const StatisticalRecruitmentCardsViewComponent = () =>
-    import(
-        '@/views/dashboard/buoDashboard/components/recruitment/card/StatisticalRecruitmentCardsViewComponent'
-    );
+// const StatisticalRecruitmentCardsViewComponent = () =>
+//     import(
+//         '@/views/dashboard/buoDashboard/components/recruitment/card/StatisticalRecruitmentCardsViewComponent'
+//     );
 
-const HistoricalRecruitmentChartComponent = () =>
-    import(
-        '@/views/dashboard/buoDashboard/components/recruitment/chart/linealChart/HistoricalRecruitmentChartComponent'
-    );
+// const HistoricalRecruitmentChartComponent = () =>
+//     import(
+//         '@/views/dashboard/buoDashboard/components/recruitment/chart/linealChart/HistoricalRecruitmentChartComponent'
+//     );
 
-const RecruitmentProgressLinearViewComponent = () =>
-    import(
-        '@/views/dashboard/buoDashboard/components/recruitment/chart/progressLinearChart/RecruitmentProgressLinearViewComponent'
-    );
+// const RecruitmentProgressLinearViewComponent = () =>
+//     import(
+//         '@/views/dashboard/buoDashboard/components/recruitment/chart/progressLinearChart/RecruitmentProgressLinearViewComponent'
+//     );
 
 export default {
     name: 'ContainerViewComponent',
@@ -36,9 +36,9 @@ export default {
     },
 
     components: {
-        StatisticalRecruitmentCardsViewComponent,
-        HistoricalRecruitmentChartComponent,
-        RecruitmentProgressLinearViewComponent,
+        // StatisticalRecruitmentCardsViewComponent,
+        // HistoricalRecruitmentChartComponent,
+        // RecruitmentProgressLinearViewComponent,
     },
 
     computed: {
@@ -59,7 +59,7 @@ export default {
 
 <template>
     <v-row>
-        <v-col cols="12" v-if="entity.cardList && entity.cardList.length > 0">
+        <!-- <v-col cols="12" v-if="entity.cardList && entity.cardList.length > 0">
             <StatisticalRecruitmentCardsViewComponent
                 :chartData="entity.cardList"
             />
@@ -91,6 +91,6 @@ export default {
                 title="Departamentos con mayor índice de rotación"
                 :chartData="entity.perks"
             />
-        </v-col>
+        </v-col> -->
     </v-row>
 </template>
