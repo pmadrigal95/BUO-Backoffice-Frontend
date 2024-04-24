@@ -11,6 +11,11 @@ const BaseStadisticCardViewComponent = () =>
         '@/views/dashboard/components/shared/card/BaseStadisticCardViewComponent'
     );
 
+const OpenVacantViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/recruitment/card/OpenVacantViewComponent'
+    );
+
 export default {
     name: 'BaseSlideCardViewComponent',
 
@@ -36,7 +41,7 @@ export default {
         },
     },
 
-    components: { BaseStadisticCardViewComponent },
+    components: { BaseStadisticCardViewComponent, OpenVacantViewComponent },
 };
 </script>
 
@@ -57,6 +62,12 @@ export default {
                     :directionIcon="item?.direction"
                     :description="item?.description"
                     v-if="type === 'BaseStadisticCardViewComponent'"
+                />
+
+                <OpenVacantViewComponent
+                    :chartData="item"
+                    class="mx-2"
+                    v-else-if="type === 'OpenVacantViewComponent'"
                 />
             </v-card>
         </v-slide-item>

@@ -47,7 +47,7 @@ export default {
 </script>
 
 <template>
-    <v-list-item :two-line="subtitle" class="px-2">
+    <v-list-item :two-line="subtitle != undefined" class="px-2">
         <v-list-item-avatar>
             <BaseSkeletonLoader v-if="!userAvatar" type="avatar" />
             <v-avatar :color="$_color" v-else-if="userAvatar">

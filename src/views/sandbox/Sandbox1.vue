@@ -4,59 +4,71 @@
  *
  */
 
-const BaseCustomsButtonsGrid = () =>
-    import('@/components/core/grids/BaseCustomsButtonsGrid');
+// const BaseCustomsButtonsGrid = () =>
+//     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
-const BaseBasicCardViewComponent = () =>
+// const BaseBasicCardViewComponent = () =>
+//     import(
+//         '@/views/dashboard/components/shared/card/BaseBasicCardViewComponent'
+//     );
+
+// const BaseHeaderMenu = () => import('@/components/core/drawers/BaseHeaderMenu');
+
+// const ProgressCircularComponent = () =>
+//     import(
+//         '@/views/dashboard/components/shared/chart/progressCircularChart/ProgressCircularComponent'
+//     );
+
+// const BaseStatusHeaderViewComponent = () =>
+//     import(
+//         '@/views/dashboard/components/shared/header/BaseStatusHeaderViewComponent'
+//     );
+
+// const BaseListStatusHeaderViewComponent = () =>
+//     import(
+//         '@/views/dashboard/components/shared/header/BaseListStatusHeaderViewComponent'
+//     );
+
+// const BaseNotFoundCardViewComponent = () =>
+//     import(
+//         '@/views/dashboard/components/shared/card/BaseNotFoundCardViewComponent'
+//     );
+
+// const ActionCardViewComponent = () =>
+//     import(
+//         '@/views/dashboard/buoDashboard/components/recruitment/card/ActionCardViewComponent'
+//     );
+
+// const BaseRowDisplayViewComponent = () =>
+//     import(
+//         '@/views/dashboard/components/shared/row-display/BaseRowDisplayViewComponent'
+//     );
+
+// const OpenVacantViewComponent = () =>
+//     import(
+//         '@/views/dashboard/buoDashboard/components/recruitment/card/OpenVacantViewComponent'
+//     );
+
+const OpenVacantListViewComponent = () =>
     import(
-        '@/views/dashboard/components/shared/card/BaseBasicCardViewComponent'
-    );
-
-const BaseHeaderMenu = () => import('@/components/core/drawers/BaseHeaderMenu');
-
-const ProgressCircularComponent = () =>
-    import(
-        '@/views/dashboard/components/shared/chart/progressCircularChart/ProgressCircularComponent'
-    );
-
-const BaseStatusHeaderViewComponent = () =>
-    import(
-        '@/views/dashboard/components/shared/header/BaseStatusHeaderViewComponent'
-    );
-
-const BaseListStatusHeaderViewComponent = () =>
-    import(
-        '@/views/dashboard/components/shared/header/BaseListStatusHeaderViewComponent'
-    );
-
-const BaseNotFoundCardViewComponent = () =>
-    import(
-        '@/views/dashboard/components/shared/card/BaseNotFoundCardViewComponent'
-    );
-
-const ActionCardViewComponent = () =>
-    import(
-        '@/views/dashboard/buoDashboard/components/recruitment/card/ActionCardViewComponent'
-    );
-
-const BaseRowDisplayViewComponent = () =>
-    import(
-        '@/views/dashboard/components/shared/row-display/BaseRowDisplayViewComponent'
+        '@/views/dashboard/buoDashboard/components/recruitment/card/OpenVacantListViewComponent'
     );
 
 export default {
     name: 'sandbox',
 
     components: {
-        BaseHeaderMenu,
-        BaseCustomsButtonsGrid,
-        BaseBasicCardViewComponent,
-        ProgressCircularComponent,
-        BaseStatusHeaderViewComponent,
-        BaseListStatusHeaderViewComponent,
-        BaseNotFoundCardViewComponent,
-        ActionCardViewComponent,
-        BaseRowDisplayViewComponent,
+        // BaseHeaderMenu,
+        // BaseCustomsButtonsGrid,
+        // BaseBasicCardViewComponent,
+        // ProgressCircularComponent,
+        // BaseStatusHeaderViewComponent,
+        // BaseListStatusHeaderViewComponent,
+        // BaseNotFoundCardViewComponent,
+        // ActionCardViewComponent,
+        // BaseRowDisplayViewComponent,
+        // OpenVacantViewComponent,
+        OpenVacantListViewComponent,
     },
 
     computed: {
@@ -67,13 +79,206 @@ export default {
                 { title: 'Título Universitario', type: 'Error' },
             ];
         },
+
+        chartData() {
+            return {
+                title: 'Agente de Servicio al cliente',
+                maxNumber: 1000,
+                list: [
+                    {
+                        name: 'Seleccionados',
+                        value: 300,
+                        isPercentage: false,
+                        isChart: true,
+                    },
+                    {
+                        name: 'Coincidencia',
+                        value: 86,
+                        isPercentage: true,
+                        isChart: true,
+                    },
+                    {
+                        name: 'Candidatos',
+                        value: 2400,
+                        isPercentage: false,
+                        isChart: false,
+                    },
+                    {
+                        name: 'Posiciones',
+                        value: 1000,
+                        isPercentage: false,
+                        isChart: false,
+                    },
+                    {
+                        name: 'Días abierto',
+                        value: null,
+                        isPercentage: false,
+                        isChart: false,
+                    },
+                ],
+            };
+        },
+
+        cardList() {
+            return [
+                {
+                    title: 'Agente de Servicio al cliente',
+                    maxNumber: 1000,
+                    list: [
+                        {
+                            name: 'Seleccionados',
+                            value: 300,
+                            isPercentage: false,
+                            isChart: true,
+                        },
+                        {
+                            name: 'Coincidencia',
+                            value: 86,
+                            isPercentage: true,
+                            isChart: true,
+                        },
+                        {
+                            name: 'Candidatos',
+                            value: 2400,
+                            isPercentage: false,
+                            isChart: false,
+                        },
+                        {
+                            name: 'Posiciones',
+                            value: 1000,
+                            isPercentage: false,
+                            isChart: false,
+                        },
+                        {
+                            name: 'Días abierto',
+                            value: null,
+                            isPercentage: false,
+                            isChart: false,
+                        },
+                    ],
+                },
+                {
+                    title: 'Agente de Servicio al cliente',
+                    maxNumber: 1000,
+                    list: [
+                        {
+                            name: 'Seleccionados',
+                            value: 300,
+                            isPercentage: false,
+                            isChart: true,
+                        },
+                        {
+                            name: 'Coincidencia',
+                            value: 86,
+                            isPercentage: true,
+                            isChart: true,
+                        },
+                        {
+                            name: 'Candidatos',
+                            value: 2400,
+                            isPercentage: false,
+                            isChart: false,
+                        },
+                        {
+                            name: 'Posiciones',
+                            value: 1000,
+                            isPercentage: false,
+                            isChart: false,
+                        },
+                        {
+                            name: 'Días abierto',
+                            value: null,
+                            isPercentage: false,
+                            isChart: false,
+                        },
+                    ],
+                },
+                {
+                    title: 'Agente de Servicio al cliente',
+                    maxNumber: 1000,
+                    list: [
+                        {
+                            name: 'Seleccionados',
+                            value: 300,
+                            isPercentage: false,
+                            isChart: true,
+                        },
+                        {
+                            name: 'Coincidencia',
+                            value: 86,
+                            isPercentage: true,
+                            isChart: true,
+                        },
+                        {
+                            name: 'Candidatos',
+                            value: 2400,
+                            isPercentage: false,
+                            isChart: false,
+                        },
+                        {
+                            name: 'Posiciones',
+                            value: 1000,
+                            isPercentage: false,
+                            isChart: false,
+                        },
+                        {
+                            name: 'Días abierto',
+                            value: null,
+                            isPercentage: false,
+                            isChart: false,
+                        },
+                    ],
+                },
+                {
+                    title: 'Agente de Servicio al cliente',
+                    maxNumber: 1000,
+                    list: [
+                        {
+                            name: 'Seleccionados',
+                            value: 300,
+                            isPercentage: false,
+                            isChart: true,
+                        },
+                        {
+                            name: 'Coincidencia',
+                            value: 86,
+                            isPercentage: true,
+                            isChart: true,
+                        },
+                        {
+                            name: 'Candidatos',
+                            value: 2400,
+                            isPercentage: false,
+                            isChart: false,
+                        },
+                        {
+                            name: 'Posiciones',
+                            value: 1000,
+                            isPercentage: false,
+                            isChart: false,
+                        },
+                        {
+                            name: 'Días abierto',
+                            value: null,
+                            isPercentage: false,
+                            isChart: false,
+                        },
+                    ],
+                },
+            ];
+        },
     },
 };
 </script>
 
 <template>
-    <v-row>
-        <v-col cols="12">
+    <div>
+        <v-row>
+            <v-col cols="12">
+                <OpenVacantListViewComponent :cardList="cardList" />
+            </v-col>
+
+            <!-- <v-col cols="12">
             <BaseBasicCardViewComponent title="Vacantes abiertas">
                 <section slot="top-actions">
                     <BaseCustomsButtonsGrid
@@ -337,9 +542,10 @@ export default {
                 description="Una vez que los candidatos completen el proceso los resultados aparecerán aca."
             />
         </v-col>
-        <v-col cols="6">
+        <v-col cols="12">
             <BaseRowDisplayViewComponent title="Candidatos" />
             <BaseRowDisplayViewComponent title="Candidatos" value="40" />
-        </v-col>
-    </v-row>
+        </v-col> -->
+        </v-row>
+    </div>
 </template>
