@@ -61,7 +61,12 @@ export default {
         $_color() {
             return this.color
                 ? this.color
-                : baseDataVisualizationColorsHelper.$_randomColor().main;
+                : this.isPercentage
+                ? baseDataVisualizationColorsHelper.$_getColorByName(
+                      'lightGreen'
+                  ).main
+                : baseDataVisualizationColorsHelper.$_getColorByName('yellow')
+                      .main;
         },
 
         $_orientation() {
