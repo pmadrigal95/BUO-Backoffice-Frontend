@@ -18,6 +18,11 @@ import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
+/*const NotifierViewComponent = () =>
+    import(
+        '@/views/user/user/components/editor/sections/NotifierViewComponent.vue'
+    );*/
+
 const PersonalInfoViewComponent = () =>
     import(
         '@/views/user/user/components/editor/sections/PersonalInfoViewComponent'
@@ -42,6 +47,7 @@ export default {
     name: 'ContainerViewComponent',
 
     components: {
+        //NotifierViewComponent,
         BaseCardViewComponent,
         AccountInfoViewComponent,
         PersonalInfoViewComponent,
@@ -54,11 +60,45 @@ export default {
             tab: null,
             entity: this.$_Object(),
             loading: false,
+            tabSettings: [
+                {
+                    id: 0,
+                    name: 'Información personal',
+                    component: 'PersonalInfoViewComponent',
+                    disabled: false,
+                },
+                {
+                    id: 1,
+                    name: 'Información de la cuenta',
+                    component: 'AccountInfoViewComponent',
+                    disabled: true,
+                },
+                {
+                    id: 2,
+                    name: 'Configuración de acceso',
+                    component: 'AccessSettingsViewComponent',
+                    disabled: true,
+                },
+                {
+                    id: 3,
+                    name: 'Información Corporativa',
+                    component: 'CorporateInfoViewComponent',
+                    disabled: true,
+                },
+            ],
         };
     },
 
     computed: {
-        ...mapGetters(['user']),
+        ...mapGetters('authentication', ['user', 'buoId']),
+
+        isLastTab() {
+            return this.tab === 3;
+        },
+
+        isNewUser() {
+            return !this.$router.currentRoute.params.Id;
+        },
     },
 
     created() {
@@ -80,6 +120,16 @@ export default {
     },
 
     methods: {
+        activeTab() {
+            this.tabSettings[this.tab].disabled =
+                !this.tabSettings[this.tab].disabled;
+        },
+
+        prevTab() {
+            this.tab = this.tab + 1;
+            this.activeTab();
+        },
+
         /**
          * Function to return the UserFilterViewComponent
          */
@@ -185,7 +235,8 @@ export default {
         },
 
         $_sendToApi() {
-            this.loading = true;
+            alert('sent to api');
+            /*this.loading = true;
             this.$_setToUser();
             let object = BaseArrayHelper.SetObject({}, this.entity);
             httpService.post('user/saveUserForm', object).then((response) => {
@@ -195,75 +246,122 @@ export default {
                     //Logica JS luego de la acción exitosa!!!
                     this.$_returnToFilter();
                 }
-            });
+            });*/
         },
     },
 };
 </script>
 
 <template>
-    <BaseCardViewComponent
-        title="Colaborador"
-        :btnAction="$_returnToFilter"
-        class="mx-auto"
-        md="8"
-        offset="2"
-    >
-        <div slot="card-text">
-            <BaseSkeletonLoader v-if="loading" type="article, actions" />
-            <BaseForm :method="$_sendToApi" :cancel="$_returnToFilter" v-else>
-                <div slot="body">
-                    <v-tabs v-model="tab" left show-arrows height="34">
-                        <v-tabs-slider color="transparent"></v-tabs-slider>
-                        <v-tab
-                            class="rounded-pill no-uppercase mr-3"
-                            active-class="tab-active-blue"
-                            ><p class="BUO-Label-Small pt-4">
-                                Información personal
-                            </p>
-                        </v-tab>
+    <section>
+        <!--<NotifierViewComponent v-if="!notifier" />-->
+        <BaseCardViewComponent
+            title="Colaborador"
+            :btnAction="$_returnToFilter"
+            class="mx-auto"
+            md="8"
+            offset="2"
+        >
+            <div slot="card-text">
+                <BaseSkeletonLoader v-if="loading" type="article, actions" />
+                <BaseForm
+                    :method="
+                        isNewUser
+                            ? isLastTab
+                                ? $_sendToApi
+                                : prevTab
+                            : $_sendToApi
+                    "
+                    :labelBtn="
+                        isNewUser
+                            ? isLastTab
+                                ? 'Guardar'
+                                : 'Siguiente'
+                            : 'Guardar'
+                    "
+                    :cancel="$_returnToFilter"
+                    v-else
+                >
+                    <div slot="body">
+                        <v-tabs v-model="tab" left show-arrows height="34">
+                            <v-tabs-slider color="transparent"></v-tabs-slider>
+                            <v-tab
+                                v-for="(tabItem, index) in tabSettings"
+                                :key="index"
+                                :disabled="tabItem.disabled"
+                                class="rounded-pill no-uppercase mr-3"
+                                active-class="tab-active-blue"
+                            >
+                                <p class="BUO-Label-Small pt-4">
+                                    {{ tabItem.name }}
+                                </p>
+                            </v-tab>
+                        </v-tabs>
 
-                        <v-tab
-                            class="rounded-pill no-uppercase mr-3"
-                            active-class="tab-active-blue"
-                            ><p class="BUO-Label-Small pt-4">
-                                Información de la cuenta
-                            </p>
-                        </v-tab>
+                        <v-tabs-items v-model="tab" class="mt-4 mb-2 pt-4">
+                            <v-tab-item
+                                v-for="(tabItem, index) in tabSettings"
+                                :key="index"
+                            >
+                                <component
+                                    :is="tabItem.component"
+                                    :entity="entity"
+                                />
+                            </v-tab-item>
+                        </v-tabs-items>
 
-                        <v-tab
-                            class="rounded-pill no-uppercase mr-3"
-                            active-class="tab-active-blue"
-                            ><p class="BUO-Label-Small pt-4">
-                                Configuración de acceso
-                            </p>
-                        </v-tab>
+                        <!--   <v-tabs v-model="tab" left show-arrows height="34">
+                            <v-tabs-slider color="transparent"></v-tabs-slider>
+                            <v-tab
+                                class="rounded-pill no-uppercase mr-3"
+                                active-class="tab-active-blue"
+                                ><p class="BUO-Label-Small pt-4">
+                                    Información personal
+                                </p>
+                            </v-tab>
 
-                        <v-tab
-                            class="rounded-pill no-uppercase mr-3"
-                            active-class="tab-active-blue"
-                            ><p class="BUO-Label-Small pt-4">
-                                Información corporativa
-                            </p>
-                        </v-tab>
-                    </v-tabs>
+                            <v-tab
+                                class="rounded-pill no-uppercase mr-3"
+                                active-class="tab-active-blue"
+                                ><p class="BUO-Label-Small pt-4">
+                                    Información de la cuenta
+                                </p>
+                            </v-tab>
 
-                    <v-tabs-items v-model="tab" class="mt-4 mb-2 pt-4">
-                        <v-tab-item>
-                            <PersonalInfoViewComponent :entity="entity" />
-                        </v-tab-item>
-                        <v-tab-item>
-                            <AccountInfoViewComponent :entity="entity" />
-                        </v-tab-item>
-                        <v-tab-item>
-                            <AccessSettingsViewComponent :entity="entity" />
-                        </v-tab-item>
-                        <v-tab-item>
-                            <CorporateInfoViewComponent :entity="entity" />
-                        </v-tab-item>
-                    </v-tabs-items>
-                </div>
-            </BaseForm>
-        </div>
-    </BaseCardViewComponent>
+                            <v-tab
+                                class="rounded-pill no-uppercase mr-3"
+                                active-class="tab-active-blue"
+                                ><p class="BUO-Label-Small pt-4">
+                                    Configuración de acceso
+                                </p>
+                            </v-tab>
+
+                            <v-tab
+                                class="rounded-pill no-uppercase mr-3"
+                                active-class="tab-active-blue"
+                                ><p class="BUO-Label-Small pt-4">
+                                    Información corporativa
+                                </p>
+                            </v-tab>
+                        </v-tabs>
+
+                        <v-tabs-items v-model="tab" class="mt-4 mb-2 pt-4">
+                            <v-tab-item>
+                                <PersonalInfoViewComponent :entity="entity" />
+                            </v-tab-item>
+                            <v-tab-item>
+                                <AccountInfoViewComponent :entity="entity" />
+                            </v-tab-item>
+                            <v-tab-item>
+                                <AccessSettingsViewComponent :entity="entity" />
+                            </v-tab-item>
+                            <v-tab-item>
+                                <CorporateInfoViewComponent :entity="entity" />
+                            </v-tab-item>
+                        </v-tabs-items>-->
+                    </div>
+                </BaseForm>
+            </div>
+        </BaseCardViewComponent>
+    </section>
 </template>
