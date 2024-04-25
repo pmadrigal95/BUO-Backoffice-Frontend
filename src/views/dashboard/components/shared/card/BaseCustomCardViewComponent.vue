@@ -150,8 +150,8 @@ export default {
         outlined
         :rounded="cardDisplaySetUp.rounded"
         :color="cardSetUp.borderColor"
-        :width="cardSetUp.width"
-        :height="cardSetUp.height"
+        width="auto"
+        height="auto"
         class="px-2"
     >
         <v-card

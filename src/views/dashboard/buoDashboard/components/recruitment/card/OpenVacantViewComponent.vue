@@ -31,6 +31,11 @@ export default {
             type: Object,
             requiered: true,
         },
+
+        fn: {
+            type: Function,
+            default: undefined,
+        },
     },
 
     components: {
@@ -57,6 +62,20 @@ export default {
 
         rowList() {
             return this.chartData?.list.filter((x) => !x.isChart);
+        },
+    },
+
+    methods: {
+        $_returnToView() {
+            alert('Hola');
+        },
+
+        $_callToAction() {
+            if (this.fn) {
+                this.fn();
+                return;
+            }
+            this.$_returnToView();
         },
     },
 };
@@ -92,6 +111,17 @@ export default {
                         :value="item.value"
                     />
                 </div>
+            </section>
+
+            <section class="mt-3">
+                <v-layout justify-end align-end>
+                    <a
+                        @click="$_callToAction"
+                        class="mr-2 no-uppercase rounded-lg BUO-Paragraph-Small"
+                    >
+                        Ver más
+                    </a>
+                </v-layout>
             </section>
         </section>
     </BaseCustomCardViewComponent>
