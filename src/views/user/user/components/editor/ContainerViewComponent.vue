@@ -54,12 +54,11 @@ export default {
             tab: null,
             entity: this.$_Object(),
             loading: false,
-            componentKey: 0,
         };
     },
 
     computed: {
-        ...mapGetters('authentication', ['user', 'buoId']),
+        ...mapGetters(['user']),
     },
 
     created() {
@@ -67,6 +66,8 @@ export default {
          * Determinar si Es nuevo / editor
          */
         this.$_getObject();
+
+        this.$_reviewQueryParams();
 
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
@@ -113,6 +114,17 @@ export default {
                 fechaTerminacion: undefined,
                 esRenuncia: false,
             };
+        },
+
+        $_reviewQueryParams() {
+            if (this.$router.currentRoute.query.organizacionId) {
+                this.entity.organizacionId =
+                    this.$router.currentRoute.query.organizacionId;
+            }
+
+            if (this.user.companyId != this.buoId) {
+                this.entity.organizacionId = this.user.companyId;
+            }
         },
 
         $_setRoleListToEditor() {

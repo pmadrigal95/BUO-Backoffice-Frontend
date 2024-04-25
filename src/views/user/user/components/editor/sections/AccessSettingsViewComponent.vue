@@ -5,6 +5,12 @@
  * @displayName AccessSettingsViewComponent
  *
  */
+import { mapGetters } from 'vuex';
+
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
 
 const BaseInputDataTable = () =>
     import('@/components/core/forms/BaseInputDataTable.vue');
@@ -27,13 +33,79 @@ export default {
         },
     },
 
+    data() {
+        return {
+            componentKey: 0,
+        };
+    },
+
     computed: {
+        ...mapGetters('authentication', ['user', 'buoId']),
+
+        ...mapGetters('filters', [
+            'advfiltersBypageView',
+            'dialogViewById',
+            'filtersBypageView',
+            'pageViewById',
+        ]),
+
+        companyDialogView() {
+            return this.dialogViewById('companyDialog');
+        },
+
+        securityDialogView() {
+            return this.pageViewById('securityFilter');
+        },
+
         userTypeList() {
             return [
                 { name: 'Normal', id: 0 },
                 { name: 'Super administrador', id: 1 },
                 { name: 'Administrador de empresa', id: 2 },
             ];
+        },
+
+        /**
+         * Configuracion BaseInputDataTable
+
+         */
+        settingOrganization() {
+            return baseFilterSettingsHelper.$_setCompanySetting({
+                isFilter: true,
+                singleSelect: true,
+                list: this.advfiltersBypageView(this.companyDialogView),
+                pageView: this.companyDialogView,
+            });
+        },
+
+        /**
+         * Configuracion BaseServerDataTable
+         */
+        settingRole() {
+            return baseFilterSettingsHelper.$_setSecuritySetting({
+                isFilter: true,
+                singleSelect: false,
+                list: this.filtersBypageView(this.securityDialogView),
+                pageView: this.securityDialogView,
+            });
+        },
+
+        /**
+         * Extra Params
+         */
+        extraParams() {
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity.organizacionId,
+            });
+        },
+    },
+
+    methods: {
+        $_setCompanyFilter() {
+            baseDataTableColumnsHelper.$_setCompanyColumns({
+                isFilter: true,
+                pageView: this.companyDialogView,
+            });
         },
     },
 };

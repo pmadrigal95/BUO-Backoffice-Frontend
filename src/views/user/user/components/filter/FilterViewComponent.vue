@@ -33,7 +33,7 @@ const AssessmentViewComponent = () =>
 
 const UserPasswordViewComponent = () =>
     import(
-        '@/views/user/user/components/filter/sections/password/UserPasswordViewComponent'
+        '@/views/user/user/components/filter/sections/UserPasswordViewComponent'
     );
 
 export default {
