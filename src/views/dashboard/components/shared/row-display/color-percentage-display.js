@@ -10,9 +10,9 @@ const setColor = (percentage) => {
     switch (true) {
         case percentage === 100:
             return 'greenB900';
-        case percentage > 80 && percentage < 100:
+        case percentage >= 80 && percentage < 100:
             return 'greenA900';
-        case percentage > 50 && percentage < 80:
+        case percentage >= 50 && percentage < 80:
             return baseDataVisualizationColorsHelper.$_getColorByName('yellow')
                 .main;
         case percentage < 50 && percentage > 0:

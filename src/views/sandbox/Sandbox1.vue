@@ -60,9 +60,9 @@ const NotFoundCardViewComponent = () =>
 const ActionCardViewComponent = () =>
     import('@/views/recruitment/components/card/ActionCardViewComponent');
 
-const CandidateInfoCardViewComponent = () =>
+const CandidateInfoListCardViewComponent = () =>
     import(
-        '@/views/recruitment/components/card/CandidateInfoCardViewComponent'
+        '@/views/recruitment/components/card/CandidateInfoListCardViewComponent'
     );
 
 export default {
@@ -82,7 +82,7 @@ export default {
         OpenVacantListViewComponent,
         NotFoundCardViewComponent,
         ActionCardViewComponent,
-        CandidateInfoCardViewComponent,
+        CandidateInfoListCardViewComponent,
     },
 
     computed: {
@@ -95,11 +95,28 @@ export default {
         },
 
         chartData() {
-            return {
-                name: 'Laura Vargas',
-                email: 'l.vargas@gmail.com',
-                value: 40,
-            };
+            return [
+                {
+                    name: 'Laura Vargas',
+                    email: 'l.vargas@gmail.com',
+                    value: 50,
+                },
+                {
+                    name: 'Laura Vargas',
+                    email: 'l.vargas@gmail.com',
+                    value: 80,
+                },
+                {
+                    name: 'Laura Vargas',
+                    email: 'l.vargas@gmail.com',
+                    value: 100,
+                },
+                {
+                    name: 'Laura Vargas',
+                    email: 'l.vargas@gmail.com',
+                    value: 10,
+                },
+            ];
         },
 
         cardList() {
@@ -266,11 +283,9 @@ export default {
             <v-col cols="12">
                 <ActionCardViewComponent />
             </v-col>
-            <v-col cols="12"> </v-col>
-            <CandidateInfoCardViewComponent
-                :chartData="chartData"
-                class="ml-4"
-            />
+            <v-col cols="12">
+                <CandidateInfoListCardViewComponent :cardList="chartData" />
+            </v-col>
             <!-- <v-col cols="12">
             <BaseBasicCardViewComponent title="Vacantes abiertas">
                 <section slot="top-actions">
