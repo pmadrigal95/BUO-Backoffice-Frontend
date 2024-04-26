@@ -55,6 +55,7 @@ export default {
                 this.componentDateKey++;
                 if (oldValue) {
                     this.entity.departamentoId = undefined;
+                    this.entity.perfilIds = undefined;
                 }
             },
             immediate: true,

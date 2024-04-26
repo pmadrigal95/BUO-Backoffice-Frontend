@@ -60,32 +60,6 @@ export default {
             tab: null,
             entity: this.$_Object(),
             loading: false,
-            tabSettings: [
-                {
-                    id: 0,
-                    name: 'Información personal',
-                    component: 'PersonalInfoViewComponent',
-                    disabled: false,
-                },
-                {
-                    id: 1,
-                    name: 'Información de la cuenta',
-                    component: 'AccountInfoViewComponent',
-                    disabled: true,
-                },
-                {
-                    id: 2,
-                    name: 'Configuración de acceso',
-                    component: 'AccessSettingsViewComponent',
-                    disabled: true,
-                },
-                {
-                    id: 3,
-                    name: 'Información Corporativa',
-                    component: 'CorporateInfoViewComponent',
-                    disabled: true,
-                },
-            ],
         };
     },
 
@@ -99,6 +73,47 @@ export default {
         isNewUser() {
             return !this.$router.currentRoute.params.Id;
         },
+
+        tabSettings() {
+            return [
+                {
+                    name: 'Información personal',
+                    component: 'PersonalInfoViewComponent',
+                    disabled: false,
+                },
+                {
+                    name: 'Información de la cuenta',
+                    component: 'AccountInfoViewComponent',
+                    disabled: true,
+                },
+                {
+                    name: 'Configuración de acceso',
+                    component: 'AccessSettingsViewComponent',
+                    disabled: true,
+                },
+                {
+                    name: 'Información Corporativa',
+                    component: 'CorporateInfoViewComponent',
+                    disabled: true,
+                },
+            ];
+        },
+
+        getLabelBtn() {
+            return this.isNewUser
+                ? this.isLastTab
+                    ? 'Guardar'
+                    : 'Siguiente'
+                : 'Guardar';
+        },
+
+        getMethodBtn() {
+            return this.isNewUser
+                ? this.isLastTab
+                    ? this.$_sendToApi
+                    : this.configureTabs
+                : this.$_sendToApi;
+        },
     },
 
     created() {
@@ -108,6 +123,8 @@ export default {
         this.$_getObject();
 
         this.$_reviewQueryParams();
+
+        !this.isNewUser && this.activeAllTabs();
 
         //TODO: How to implement on vue router the background config
         this.$vuetify.theme.themes.light.background =
@@ -120,14 +137,33 @@ export default {
     },
 
     methods: {
-        activeTab() {
+        /*TO DO: comentarle a Pablo para ver si la quito*/
+        disablePrevTab() {
+            this.tabSettings[this.tab - 1].disabled =
+                !this.tabSettings[this.tab - 1].disabled;
+        },
+
+        activeAllTabs() {
+            this.tabSettings
+                .filter((element) => element.disabled === true)
+                .map((element) => {
+                    element.disabled = false;
+                });
+        },
+
+        activeCurrentTab() {
             this.tabSettings[this.tab].disabled =
                 !this.tabSettings[this.tab].disabled;
         },
 
-        prevTab() {
+        nextTab() {
             this.tab = this.tab + 1;
-            this.activeTab();
+        },
+
+        configureTabs() {
+            this.nextTab();
+            this.activeCurrentTab();
+            //this.disablePrevTab();
         },
 
         /**
@@ -235,7 +271,8 @@ export default {
         },
 
         $_sendToApi() {
-            alert('sent to api');
+            let object = BaseArrayHelper.SetObject({}, this.entity);
+            console.log(object);
             /*this.loading = true;
             this.$_setToUser();
             let object = BaseArrayHelper.SetObject({}, this.entity);
@@ -265,20 +302,8 @@ export default {
             <div slot="card-text">
                 <BaseSkeletonLoader v-if="loading" type="article, actions" />
                 <BaseForm
-                    :method="
-                        isNewUser
-                            ? isLastTab
-                                ? $_sendToApi
-                                : prevTab
-                            : $_sendToApi
-                    "
-                    :labelBtn="
-                        isNewUser
-                            ? isLastTab
-                                ? 'Guardar'
-                                : 'Siguiente'
-                            : 'Guardar'
-                    "
+                    :method="getMethodBtn"
+                    :labelBtn="getLabelBtn"
                     :cancel="$_returnToFilter"
                     v-else
                 >
@@ -286,79 +311,29 @@ export default {
                         <v-tabs v-model="tab" left show-arrows height="34">
                             <v-tabs-slider color="transparent"></v-tabs-slider>
                             <v-tab
-                                v-for="(tabItem, index) in tabSettings"
+                                v-for="(element, index) in tabSettings"
                                 :key="index"
-                                :disabled="tabItem.disabled"
+                                :disabled="element.disabled"
                                 class="rounded-pill no-uppercase mr-3"
                                 active-class="tab-active-blue"
                             >
                                 <p class="BUO-Label-Small pt-4">
-                                    {{ tabItem.name }}
+                                    {{ element.name }}
                                 </p>
                             </v-tab>
                         </v-tabs>
 
                         <v-tabs-items v-model="tab" class="mt-4 mb-2 pt-4">
                             <v-tab-item
-                                v-for="(tabItem, index) in tabSettings"
+                                v-for="(element, index) in tabSettings"
                                 :key="index"
                             >
                                 <component
-                                    :is="tabItem.component"
+                                    :is="element.component"
                                     :entity="entity"
                                 />
                             </v-tab-item>
                         </v-tabs-items>
-
-                        <!--   <v-tabs v-model="tab" left show-arrows height="34">
-                            <v-tabs-slider color="transparent"></v-tabs-slider>
-                            <v-tab
-                                class="rounded-pill no-uppercase mr-3"
-                                active-class="tab-active-blue"
-                                ><p class="BUO-Label-Small pt-4">
-                                    Información personal
-                                </p>
-                            </v-tab>
-
-                            <v-tab
-                                class="rounded-pill no-uppercase mr-3"
-                                active-class="tab-active-blue"
-                                ><p class="BUO-Label-Small pt-4">
-                                    Información de la cuenta
-                                </p>
-                            </v-tab>
-
-                            <v-tab
-                                class="rounded-pill no-uppercase mr-3"
-                                active-class="tab-active-blue"
-                                ><p class="BUO-Label-Small pt-4">
-                                    Configuración de acceso
-                                </p>
-                            </v-tab>
-
-                            <v-tab
-                                class="rounded-pill no-uppercase mr-3"
-                                active-class="tab-active-blue"
-                                ><p class="BUO-Label-Small pt-4">
-                                    Información corporativa
-                                </p>
-                            </v-tab>
-                        </v-tabs>
-
-                        <v-tabs-items v-model="tab" class="mt-4 mb-2 pt-4">
-                            <v-tab-item>
-                                <PersonalInfoViewComponent :entity="entity" />
-                            </v-tab-item>
-                            <v-tab-item>
-                                <AccountInfoViewComponent :entity="entity" />
-                            </v-tab-item>
-                            <v-tab-item>
-                                <AccessSettingsViewComponent :entity="entity" />
-                            </v-tab-item>
-                            <v-tab-item>
-                                <CorporateInfoViewComponent :entity="entity" />
-                            </v-tab-item>
-                        </v-tabs-items>-->
                     </div>
                 </BaseForm>
             </div>

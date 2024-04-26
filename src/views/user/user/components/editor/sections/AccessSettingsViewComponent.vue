@@ -57,14 +57,6 @@ export default {
             return this.pageViewById('securityFilter');
         },
 
-        userTypeList() {
-            return [
-                { name: 'Normal', id: 0 },
-                { name: 'Super administrador', id: 1 },
-                { name: 'Administrador de empresa', id: 2 },
-            ];
-        },
-
         /**
          * Configuracion BaseInputDataTable
 
@@ -97,6 +89,14 @@ export default {
             return baseFilterSettingsHelper.$_setExtraParams({
                 companyId: this.entity.organizacionId,
             });
+        },
+
+        userTypeList() {
+            return [
+                { name: 'Normal', id: 0 },
+                { name: 'Super administrador', id: 1 },
+                { name: 'Administrador de empresa', id: 2 },
+            ];
         },
     },
 
