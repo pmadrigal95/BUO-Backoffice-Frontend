@@ -54,6 +54,9 @@ const OpenVacantListViewComponent = () =>
         '@/views/dashboard/buoDashboard/components/recruitment/card/OpenVacantListViewComponent'
     );
 
+const NotFoundCardViewComponent = () =>
+    import('@/views/recruitment/components/card/NotFoundCardViewComponent');
+
 export default {
     name: 'sandbox',
 
@@ -69,6 +72,7 @@ export default {
         // BaseRowDisplayViewComponent,
         // OpenVacantViewComponent,
         OpenVacantListViewComponent,
+        NotFoundCardViewComponent,
     },
 
     computed: {
@@ -276,6 +280,9 @@ export default {
         <v-row>
             <v-col cols="12">
                 <OpenVacantListViewComponent :cardList="cardList" />
+            </v-col>
+            <v-col cols="12">
+                <NotFoundCardViewComponent />
             </v-col>
 
             <!-- <v-col cols="12">
