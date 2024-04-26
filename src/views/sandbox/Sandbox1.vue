@@ -57,6 +57,14 @@ const OpenVacantListViewComponent = () =>
 const NotFoundCardViewComponent = () =>
     import('@/views/recruitment/components/card/NotFoundCardViewComponent');
 
+const ActionCardViewComponent = () =>
+    import('@/views/recruitment/components/card/ActionCardViewComponent');
+
+const CandidateInfoCardViewComponent = () =>
+    import(
+        '@/views/recruitment/components/card/CandidateInfoCardViewComponent'
+    );
+
 export default {
     name: 'sandbox',
 
@@ -73,6 +81,8 @@ export default {
         // OpenVacantViewComponent,
         OpenVacantListViewComponent,
         NotFoundCardViewComponent,
+        ActionCardViewComponent,
+        CandidateInfoCardViewComponent,
     },
 
     computed: {
@@ -86,40 +96,9 @@ export default {
 
         chartData() {
             return {
-                title: 'Agente de Servicio al cliente',
-                maxNumber: 1000,
-                list: [
-                    {
-                        name: 'Seleccionados',
-                        value: 300,
-                        isPercentage: false,
-                        isChart: true,
-                    },
-                    {
-                        name: 'Coincidencia',
-                        value: 86,
-                        isPercentage: true,
-                        isChart: true,
-                    },
-                    {
-                        name: 'Candidatos',
-                        value: 2400,
-                        isPercentage: false,
-                        isChart: false,
-                    },
-                    {
-                        name: 'Posiciones',
-                        value: 1000,
-                        isPercentage: false,
-                        isChart: false,
-                    },
-                    {
-                        name: 'Días abierto',
-                        value: null,
-                        isPercentage: false,
-                        isChart: false,
-                    },
-                ],
+                name: 'Laura Vargas',
+                email: 'l.vargas@gmail.com',
+                value: 40,
             };
         },
 
@@ -284,7 +263,14 @@ export default {
             <v-col cols="12">
                 <NotFoundCardViewComponent />
             </v-col>
-
+            <v-col cols="12">
+                <ActionCardViewComponent />
+            </v-col>
+            <v-col cols="12"> </v-col>
+            <CandidateInfoCardViewComponent
+                :chartData="chartData"
+                class="ml-4"
+            />
             <!-- <v-col cols="12">
             <BaseBasicCardViewComponent title="Vacantes abiertas">
                 <section slot="top-actions">

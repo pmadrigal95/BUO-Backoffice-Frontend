@@ -7,7 +7,7 @@ const routes = [
         name: 'Sandbox1',
         component: 'sandbox/Sandbox1',
         meta: {
-            module: 'PromotionalCodesViewComponent',
+            module: 'CompanyViewComponent',
         },
     },
 
@@ -16,7 +16,7 @@ const routes = [
         name: 'Sandbox2',
         component: 'sandbox/Sandbox2',
         meta: {
-            module: 'PromotionalCodesViewComponent',
+            module: 'CompanyViewComponent',
         },
     },
 ];

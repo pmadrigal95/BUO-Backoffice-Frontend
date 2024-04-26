@@ -95,11 +95,7 @@ export default {
 </script>
 
 <template>
-    <v-layout
-        align-center
-        justify-center
-        :class="`d-flex flex-${$_orientation}`"
-    >
+    <v-layout align-center :class="`d-flex flex-${$_orientation}`">
         <v-progress-circular
             :width="$_width"
             :size="$_size"

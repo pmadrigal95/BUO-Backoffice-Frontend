@@ -7,7 +7,7 @@ const routes = [
         name: 'RecruitmentFilterViewComponent',
         component: 'recruitment/RecruitmentFilterViewComponent',
         meta: {
-            module: 'PromotionalCodesViewComponent',
+            module: 'BUODashboardViewComponent',
         },
     },
 
@@ -16,7 +16,7 @@ const routes = [
         name: 'RecruitmentEditorViewComponent',
         component: 'recruitment/RecruitmentEditorViewComponent',
         meta: {
-            module: 'PromotionalCodesViewComponent',
+            module: 'BUODashboardViewComponent',
         },
     },
 
@@ -25,7 +25,7 @@ const routes = [
         name: 'RecruitmentDashboardViewComponent',
         component: 'recruitment/RecruitmentDashboardViewComponent',
         meta: {
-            module: 'PromotionalCodesViewComponent',
+            module: 'BUODashboardViewComponent',
         },
     },
 ];

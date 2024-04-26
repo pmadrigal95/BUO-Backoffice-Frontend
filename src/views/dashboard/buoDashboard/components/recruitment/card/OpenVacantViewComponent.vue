@@ -117,7 +117,8 @@ export default {
                 <v-layout justify-end align-end>
                     <a
                         @click="$_callToAction"
-                        class="mr-2 no-uppercase rounded-lg BUO-Paragraph-Small"
+                        :class="[app ? 'blue600--text' : 'blue900--text']"
+                        class="no-uppercase rounded-lg BUO-Paragraph-Small"
                     >
                         Ver más
                     </a>

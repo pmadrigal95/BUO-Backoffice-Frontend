@@ -7,7 +7,7 @@ const routes = [
         name: 'BUODashboardViewComponent',
         component: 'dashboard/buoDashboard/BUODashboardViewComponent',
         meta: {
-            module: 'CompanyViewComponent',
+            module: 'BUODashboardViewComponent',
         },
     },
 ];
