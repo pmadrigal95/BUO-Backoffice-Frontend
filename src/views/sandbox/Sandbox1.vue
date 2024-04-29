@@ -76,6 +76,11 @@ const CoincidenceCardViewComponent = () =>
 const StatusCardViewComponent = () =>
     import('@/views/recruitment/components/card/StatusCardViewComponent');
 
+const CandidateInfoModalViewComponent = () =>
+    import(
+        '@/views/recruitment/components/modal/CandidateInfoModalViewComponent'
+    );
+
 export default {
     name: 'sandbox',
 
@@ -97,6 +102,7 @@ export default {
         HeaderVacantDetailsViewComponent,
         CoincidenceCardViewComponent,
         StatusCardViewComponent,
+        CandidateInfoModalViewComponent,
     },
 
     computed: {
@@ -383,6 +389,53 @@ export default {
                 },
             ];
         },
+
+        modal1() {
+            return [
+                {
+                    id: 1,
+                    name: 'Laura Vargas',
+                    email: 'l.vargas@gmail.com',
+                    coincidence: this.coincidenceList,
+                    education: this.statusList1,
+                    workExp: this.statusList2,
+                    psychometric: this.statusList3,
+                },
+            ];
+        },
+
+        modal2() {
+            return [
+                {
+                    id: 1,
+                    name: 'Laura Vargas',
+                    email: 'l.vargas@gmail.com',
+                    coincidence: this.coincidenceList,
+                    education: this.statusList1,
+                    workExp: this.statusList2,
+                    psychometric: this.statusList3,
+                },
+                {
+                    id: 2,
+                    name: 'Alfonso Velazques',
+                    email: 'ave234@hotmail.com',
+                    coincidence: this.coincidenceList,
+                    education: this.statusList1,
+                    workExp: this.statusList2,
+                    psychometric: this.statusList3,
+                },
+            ];
+        },
+    },
+
+    methods: {
+        open1() {
+            this.$refs['open1'].$_openModal();
+        },
+
+        open2() {
+            this.$refs['open2'].$_openModal();
+        },
     },
 };
 </script>
@@ -429,6 +482,21 @@ export default {
                     title="Psicométricos"
                     :chartData="statusList3"
                 />
+            </v-col>
+
+            <v-col cols="12">
+                <CandidateInfoModalViewComponent
+                    :chartData="modal1"
+                    ref="open1"
+                />
+                <CandidateInfoModalViewComponent
+                    :chartData="modal2"
+                    ref="open2"
+                />
+                <v-layout justify-center justify-space-around>
+                    <v-btn depressed @click="open1"> Single </v-btn>
+                    <v-btn depressed @click="open2"> Multiple </v-btn>
+                </v-layout>
             </v-col>
 
             <v-col cols="12">
