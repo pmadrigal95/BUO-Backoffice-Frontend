@@ -65,6 +65,17 @@ const CandidateInfoListCardViewComponent = () =>
         '@/views/recruitment/components/card/CandidateInfoListCardViewComponent'
     );
 
+const HeaderVacantDetailsViewComponent = () =>
+    import(
+        '@/views/recruitment/components/header/HeaderVacantDetailsViewComponent'
+    );
+
+const CoincidenceCardViewComponent = () =>
+    import('@/views/recruitment/components/card/CoincidenceCardViewComponent');
+
+const StatusCardViewComponent = () =>
+    import('@/views/recruitment/components/card/StatusCardViewComponent');
+
 export default {
     name: 'sandbox',
 
@@ -83,6 +94,9 @@ export default {
         NotFoundCardViewComponent,
         ActionCardViewComponent,
         CandidateInfoListCardViewComponent,
+        HeaderVacantDetailsViewComponent,
+        CoincidenceCardViewComponent,
+        StatusCardViewComponent,
     },
 
     computed: {
@@ -267,6 +281,108 @@ export default {
                 },
             ];
         },
+
+        headerEntity() {
+            return {
+                status: 2,
+                openDate: '21/05/2024',
+                endDate: 'ilimitado',
+                missingDates: null,
+                coincidence: 90,
+            };
+        },
+
+        coincidenceList() {
+            return [
+                {
+                    title: 'total',
+                    value: 90,
+                },
+                {
+                    title: 'Educación',
+                    value: 55,
+                },
+                {
+                    title: 'Exp. Laboral',
+                    value: 10,
+                },
+            ];
+        },
+
+        statusList1() {
+            return [
+                {
+                    title: 'Título Universitario',
+                    type: 'Success',
+                    value: null,
+                },
+                {
+                    title: 'Certificación ISO 9001',
+                    type: 'Success',
+                    value: null,
+                },
+                {
+                    title: 'Certificación de Manejo de Dataview Software, nivel 4',
+                    type: 'Success',
+                    value: null,
+                },
+                {
+                    title: 'CCNA Routing & Switching',
+                    type: 'Error',
+                    value: null,
+                },
+            ];
+        },
+
+        statusList2() {
+            return [
+                {
+                    title: '3 Exp Laborales',
+                    type: 'Success',
+                    value: null,
+                },
+            ];
+        },
+
+        statusList3() {
+            return [
+                {
+                    title: 'Personalidad: Tenaz',
+                    type: 'Success',
+                    value: null,
+                },
+                {
+                    title: 'Orientado a servicios',
+                    type: 'Success',
+                    value: 34,
+                },
+                {
+                    title: 'Riesgo',
+                    type: 'Error',
+                    value: 34,
+                },
+                {
+                    title: 'Extroversión',
+                    type: 'Success',
+                    value: 34,
+                },
+                {
+                    title: 'Paciencia',
+                    type: 'Success',
+                    value: 34,
+                },
+                {
+                    title: 'Normas',
+                    type: 'Success',
+                    value: 34,
+                },
+                {
+                    title: 'Autocontrol',
+                    type: 'Success',
+                    value: 34,
+                },
+            ];
+        },
     },
 };
 </script>
@@ -275,17 +391,54 @@ export default {
     <div>
         <v-row>
             <v-col cols="12">
+                <HeaderVacantDetailsViewComponent :entity="headerEntity" />
+            </v-col>
+
+            <v-col cols="12">
                 <OpenVacantListViewComponent :cardList="cardList" />
             </v-col>
-            <v-col cols="12">
-                <NotFoundCardViewComponent />
-            </v-col>
-            <v-col cols="12">
-                <ActionCardViewComponent />
-            </v-col>
+
             <v-col cols="12">
                 <CandidateInfoListCardViewComponent :cardList="chartData" />
             </v-col>
+
+            <v-col cols="12">
+                <v-card flat color="transparent" width="500px">
+                    <CoincidenceCardViewComponent
+                        :chartData="coincidenceList"
+                    />
+                </v-card>
+            </v-col>
+
+            <v-col cols="12">
+                <StatusCardViewComponent
+                    title="Educación"
+                    :chartData="statusList1"
+                />
+            </v-col>
+
+            <v-col cols="12">
+                <StatusCardViewComponent
+                    title="Exp. Laboral"
+                    :chartData="statusList2"
+                />
+            </v-col>
+
+            <v-col cols="12">
+                <StatusCardViewComponent
+                    title="Psicométricos"
+                    :chartData="statusList3"
+                />
+            </v-col>
+
+            <v-col cols="12">
+                <NotFoundCardViewComponent />
+            </v-col>
+
+            <v-col cols="12">
+                <ActionCardViewComponent />
+            </v-col>
+
             <!-- <v-col cols="12">
             <BaseBasicCardViewComponent title="Vacantes abiertas">
                 <section slot="top-actions">
