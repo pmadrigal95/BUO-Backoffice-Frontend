@@ -18,11 +18,6 @@ import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
-/*const NotifierViewComponent = () =>
-    import(
-        '@/views/user/user/components/editor/sections/NotifierViewComponent.vue'
-    );*/
-
 const PersonalInfoViewComponent = () =>
     import(
         '@/views/user/user/components/editor/sections/PersonalInfoViewComponent'
@@ -47,7 +42,6 @@ export default {
     name: 'ContainerViewComponent',
 
     components: {
-        //NotifierViewComponent,
         BaseCardViewComponent,
         AccountInfoViewComponent,
         PersonalInfoViewComponent,
@@ -60,19 +54,12 @@ export default {
             tab: null,
             entity: this.$_Object(),
             loading: false,
+            componentKey: 0,
         };
     },
 
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
-
-        isLastTab() {
-            return this.tab === 3;
-        },
-
-        isNewUser() {
-            return !this.$router.currentRoute.params.Id;
-        },
 
         tabSettings() {
             return [
@@ -92,11 +79,19 @@ export default {
                     disabled: true,
                 },
                 {
-                    name: 'Información Corporativa',
+                    name: 'Información corporativa',
                     component: 'CorporateInfoViewComponent',
                     disabled: true,
                 },
             ];
+        },
+
+        isLastTab() {
+            return this.tab === this.tabSettings.length - 1;
+        },
+
+        isNewUser() {
+            return !this.$router.currentRoute.params.Id;
         },
 
         getLabelBtn() {
@@ -113,6 +108,20 @@ export default {
                     ? this.$_sendToApi
                     : this.configureTabs
                 : this.$_sendToApi;
+        },
+    },
+
+    watch: {
+        /**
+         * Actualizar componente BaseForm
+         */
+        tab: {
+            handler() {
+                if (this.isLastTab) {
+                    this.componentKey++;
+                }
+            },
+            immediate: true,
         },
     },
 
@@ -137,12 +146,6 @@ export default {
     },
 
     methods: {
-        /*TO DO: comentarle a Pablo para ver si la quito*/
-        disablePrevTab() {
-            this.tabSettings[this.tab - 1].disabled =
-                !this.tabSettings[this.tab - 1].disabled;
-        },
-
         activeAllTabs() {
             this.tabSettings
                 .filter((element) => element.disabled === true)
@@ -163,7 +166,6 @@ export default {
         configureTabs() {
             this.nextTab();
             this.activeCurrentTab();
-            //this.disablePrevTab();
         },
 
         /**
@@ -291,7 +293,6 @@ export default {
 
 <template>
     <section>
-        <!--<NotifierViewComponent v-if="!notifier" />-->
         <BaseCardViewComponent
             title="Colaborador"
             :btnAction="$_returnToFilter"
@@ -302,9 +303,10 @@ export default {
             <div slot="card-text">
                 <BaseSkeletonLoader v-if="loading" type="article, actions" />
                 <BaseForm
+                    :key="componentKey"
                     :method="getMethodBtn"
                     :labelBtn="getLabelBtn"
-                    :cancel="$_returnToFilter"
+                    :cancel="isLastTab ? $_returnToFilter : undefined"
                     v-else
                 >
                     <div slot="body">
@@ -323,7 +325,7 @@ export default {
                             </v-tab>
                         </v-tabs>
 
-                        <v-tabs-items v-model="tab" class="mt-4 mb-2 pt-4">
+                        <v-tabs-items v-model="tab" class="mt-4 mb-2 pt-4 px-4">
                             <v-tab-item
                                 v-for="(element, index) in tabSettings"
                                 :key="index"
