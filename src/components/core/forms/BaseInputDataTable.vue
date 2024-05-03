@@ -149,6 +149,8 @@ export default {
         return {
             text: Array.isArray(this.editText) ? undefined : this.editText,
 
+            local: undefined,
+
             /**
              * Densidad de las filas Grid
              */
@@ -317,10 +319,7 @@ export default {
         $_openModalGrid() {
             if (!this.readonly) {
                 this.$_openModal();
-                if (
-                    typeof this.setting?.controller === 'string' ||
-                    typeof this.setting?.endpoint === 'string'
-                ) {
+                if (typeof this.setting?.endpoint === 'string') {
                     this.show = 'Server';
                 } else {
                     this.show = 'Local';
