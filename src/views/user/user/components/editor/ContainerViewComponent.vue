@@ -102,12 +102,20 @@ export default {
                 : 'Guardar';
         },
 
-        getMethodBtn() {
+        getFunctionSave() {
             return this.isNewUser
                 ? this.isLastTab
                     ? this.$_sendToApi
                     : this.configureTabs
                 : this.$_sendToApi;
+        },
+
+        getFunctionCancel() {
+            return this.isNewUser
+                ? this.isLastTab
+                    ? this.$_returnToFilter
+                    : undefined
+                : this.$_returnToFilter;
         },
     },
 
@@ -172,6 +180,10 @@ export default {
          * Function to return the UserFilterViewComponent
          */
         $_returnToFilter() {
+            this.entity.organizacionId = null;
+            this.entity.departamentoId = null;
+            this.entity.fechaIngreso = null;
+            this.entity.fechaTerminacion = null;
             this.$router.back();
         },
 
@@ -304,9 +316,9 @@ export default {
                 <BaseSkeletonLoader v-if="loading" type="article, actions" />
                 <BaseForm
                     :key="componentKey"
-                    :method="getMethodBtn"
+                    :method="getFunctionSave"
                     :labelBtn="getLabelBtn"
-                    :cancel="isLastTab ? $_returnToFilter : undefined"
+                    :cancel="getFunctionCancel"
                     v-else
                 >
                     <div slot="body">
@@ -325,7 +337,7 @@ export default {
                             </v-tab>
                         </v-tabs>
 
-                        <v-tabs-items v-model="tab" class="mt-4 mb-2 pt-4 px-4">
+                        <v-tabs-items v-model="tab" class="mt-4 mb-2 pt-4 pl-2">
                             <v-tab-item
                                 v-for="(element, index) in tabSettings"
                                 :key="index"
