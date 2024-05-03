@@ -29,6 +29,42 @@ export default {
             type: Object,
             required: true,
         },
+
+        /**
+         * Enviar información adicional al servidor
+         */
+        extraParams: {
+            type: Array,
+            default: undefined,
+        },
+
+        /**
+         * Identificador unico para
+         * almacenar config en cache
+         */
+        pageView: {
+            type: String,
+            default: undefined,
+        },
+
+        ispageView: {
+            type: Boolean,
+            default: false,
+        },
+
+        /**
+         * Función Reset Config cache
+         * Default undefined
+         */
+        fnResetConfig: {
+            type: Function,
+            default: undefined,
+        },
+
+        callback: {
+            type: Function,
+            require: true,
+        },
     },
 
     components: {
@@ -189,7 +225,7 @@ export default {
                 v-if="show === 'Local'"
                 v-model="local"
                 :cancel="$_openModal"
-                :footerMethod="$_getData"
+                :footerMethod="callback"
             />
 
             <!-- @BaseServerDataTable -->
@@ -200,7 +236,7 @@ export default {
                 :setting="setting"
                 :dense="dense"
                 :rowsPerPage="rowsPerPage"
-                :footerMethod="$_getData"
+                :footerMethod="callback"
                 :cancel="$_openModal"
                 v-if="show === 'Server'"
                 :extraParams="extraParams"

@@ -285,6 +285,24 @@ export default {
                         },
                     ],
                 },
+                {
+                    title: 'Agente de Servicio al cliente',
+                    maxNumber: 1000,
+                    list: [
+                        {
+                            name: '30% Finalizado',
+                            value: 300,
+                            isPercentage: false,
+                            isChart: true,
+                        },
+                        {
+                            name: 'Cierre',
+                            value: 86,
+                            isPercentage: true,
+                            isChart: true,
+                        },
+                    ],
+                },
             ];
         },
 
