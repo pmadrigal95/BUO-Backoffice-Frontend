@@ -4,6 +4,13 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
+import {
+    baseFilterSettingsHelper,
+    baseDataTableColumnsHelper,
+} from '@/helpers/baseFilterSettingsHelper';
+
 // const BaseCustomsButtonsGrid = () =>
 //     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
@@ -70,15 +77,20 @@ const HeaderVacantDetailsViewComponent = () =>
         '@/views/recruitment/components/header/HeaderVacantDetailsViewComponent'
     );
 
-const CoincidenceCardViewComponent = () =>
-    import('@/views/recruitment/components/card/CoincidenceCardViewComponent');
+// const CoincidenceCardViewComponent = () =>
+//     import('@/views/recruitment/components/card/CoincidenceCardViewComponent');
 
-const StatusCardViewComponent = () =>
-    import('@/views/recruitment/components/card/StatusCardViewComponent');
+// const StatusCardViewComponent = () =>
+//     import('@/views/recruitment/components/card/StatusCardViewComponent');
 
 const CandidateInfoModalViewComponent = () =>
     import(
         '@/views/recruitment/components/modal/CandidateInfoModalViewComponent'
+    );
+
+const BaseSelectModalServerDataTable = () =>
+    import(
+        '@/views/recruitment/components/grid/BaseSelectModalServerDataTable'
     );
 
 export default {
@@ -100,9 +112,10 @@ export default {
         ActionCardViewComponent,
         CandidateInfoListCardViewComponent,
         HeaderVacantDetailsViewComponent,
-        CoincidenceCardViewComponent,
-        StatusCardViewComponent,
+        // CoincidenceCardViewComponent,
+        // StatusCardViewComponent,
         CandidateInfoModalViewComponent,
+        BaseSelectModalServerDataTable,
     },
 
     computed: {
@@ -444,6 +457,30 @@ export default {
                 },
             ];
         },
+
+        ...mapGetters('authentication', ['user', 'buoId']),
+
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
+        pageView() {
+            return this.pageViewById('DepartureReasonTypeFilter');
+        },
+
+        extraParams() {
+            return this.user.companyId != this.buoId
+                ? baseFilterSettingsHelper.$_setExtraParams({
+                      companyId: this.user.companyId,
+                  })
+                : undefined;
+        },
+
+        setting() {
+            return baseFilterSettingsHelper.$_setDepartureReasonTypeSetting({
+                companyId: this.user.companyId,
+                list: this.filtersBypageView(this.pageView),
+                pageView: this.pageView,
+            });
+        },
     },
 
     methods: {
@@ -453,6 +490,14 @@ export default {
 
         open2() {
             this.$refs['open2'].$_openModal();
+        },
+
+        $_setFilter() {
+            baseDataTableColumnsHelper.$_setDepartureReasonTypeColumns({
+                pageView: this.pageView,
+                companyId: this.user.companyId,
+            });
+            this.key++;
         },
     },
 };
@@ -473,7 +518,7 @@ export default {
                 <CandidateInfoListCardViewComponent :cardList="chartData" />
             </v-col>
 
-            <v-col cols="12">
+            <!-- <v-col cols="12">
                 <v-card flat color="transparent" width="500px">
                     <CoincidenceCardViewComponent
                         :chartData="coincidenceList"
@@ -500,7 +545,7 @@ export default {
                     title="Psicométricos"
                     :chartData="statusList3"
                 />
-            </v-col>
+            </v-col>-->
 
             <v-col cols="12">
                 <CandidateInfoModalViewComponent
@@ -515,6 +560,15 @@ export default {
                     <v-btn depressed @click="open1"> Single </v-btn>
                     <v-btn depressed @click="open2"> Multiple </v-btn>
                 </v-layout>
+            </v-col>
+
+            <v-col cols="12">
+                <BaseSelectModalServerDataTable
+                    :pageView="pageView"
+                    :setting="setting"
+                    :extraParams="extraParams"
+                    :fnResetConfig="$_setFilter"
+                />
             </v-col>
 
             <v-col cols="12">
