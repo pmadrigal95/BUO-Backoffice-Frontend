@@ -87,6 +87,7 @@ export default {
                 id: row[0].id,
             };
         },
+
         /**
          * Delete Function
          */
@@ -102,6 +103,7 @@ export default {
                     }
                 });
         },
+
         /**
          * Pantalla Editor
          */

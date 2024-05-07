@@ -12,10 +12,10 @@ import baseLocalHelper from '@/helpers/baseLocalHelper';
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 const BaseLocalDataTable = () =>
-    import('@/components/core/grids/BaseLocalDataTable.vue');
+    import('@/components/core/grids/BaseLocalDataTable');
 
 const BaseServerDataTable = () =>
-    import('@/components/core/grids/BaseServerDataTable.vue');
+    import('@/components/core/grids/BaseServerDataTable');
 
 export default {
     name: 'BaseModalServerDataTable',
@@ -90,6 +90,8 @@ export default {
             show: null,
 
             local: undefined,
+
+            key: 0,
         };
     },
 
@@ -207,6 +209,11 @@ export default {
              */
             return multiSelect;
         },
+
+        $_resetColumnConfig() {
+            this.fnResetConfig();
+            this.key++;
+        },
     },
 };
 </script>
@@ -214,7 +221,7 @@ export default {
 <template>
     <BasePopUp
         :ref="refpopUp"
-        :maxWidth="$vuetify.breakpoint.mobile ? '100%' : 'auto'"
+        :maxWidth="$vuetify.breakpoint.mobile ? '100%' : '60%'"
         :isDrawer="false"
         scrollable
     >
@@ -234,7 +241,6 @@ export default {
                 :pageView="pageView"
                 :ispageView="ispageView"
                 :setting="setting"
-                :dense="dense"
                 :rowsPerPage="rowsPerPage"
                 :footerMethod="callback"
                 :cancel="$_openModal"
