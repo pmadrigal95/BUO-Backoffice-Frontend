@@ -13,7 +13,7 @@ const endpoint = {
     rotation: 'dashboard/rotacion/detalles',
     performance: 'http://localhost:3000/dashboard/rendimiento/detalles',
     growth: 'dashboard/crecimiento/detalles',
-    recruitment: 'http://localhost:3000/dashboard/reclutamiento/detalles',
+    recruitment: 'dashboard/reclutamiento/detalles',
 };
 
 /**
