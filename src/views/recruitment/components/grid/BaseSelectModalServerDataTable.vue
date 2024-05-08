@@ -10,6 +10,8 @@ import { mapGetters } from 'vuex';
 
 import { v4 as uuidv4 } from 'uuid';
 
+import baseArrayHelper from '@/helpers/baseArrayHelper';
+
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
 
@@ -18,6 +20,16 @@ const BaseModalServerDataTable = () =>
 
 export default {
     name: 'BaseSelectModalServerDataTable',
+
+    inheritAttrs: false,
+
+    /**
+     * Comunicación de Componentes
+     */
+    model: {
+        prop: 'value',
+        event: 'input',
+    },
 
     props: {
         /**
@@ -70,8 +82,40 @@ export default {
         },
 
         value: {
-            type: Array,
+            type: [Array, Object],
             required: true,
+        },
+
+        /**
+         * Propiedad del valor a guardar
+         * Requerido
+         */
+        itemValue: {
+            type: [String, Number],
+            default: undefined,
+        },
+
+        /**
+         * Propiedad del valor a mostrar
+         * Requerido
+         */
+        itemText: {
+            type: [String, Number],
+            required: true,
+        },
+
+        /**
+         * Propiedad del valor a mostrar
+         * Requerido
+         */
+        itemDesc: {
+            type: [String, Number],
+            default: undefined,
+        },
+
+        requiresPercentage: {
+            type: Boolean,
+            default: false,
         },
     },
 
@@ -80,11 +124,23 @@ export default {
     data() {
         return {
             selected: [],
+            componentKey: 0,
         };
     },
 
     computed: {
         ...mapGetters('theme', ['app']),
+    },
+
+    watch: {
+        selected: {
+            handler(newValue, oldValue) {
+                if (newValue != oldValue) {
+                    this.$_updateValue(newValue);
+                }
+            },
+            deep: true,
+        },
     },
 
     created() {
@@ -98,6 +154,13 @@ export default {
 
     methods: {
         /**
+         * Método del Comunicación principal
+         */
+        $_updateValue(event) {
+            this.$emit('input', event);
+        },
+
+        /**
          * Abrir modal
          */
         $_openModal() {
@@ -106,8 +169,21 @@ export default {
         },
 
         callback(array) {
-            this.selected = [...this.selected, ...array];
+            const arr =
+                this.selected != undefined
+                    ? [...new Set(array.concat(this.selected))]
+                    : array;
+
+            this.selected = baseArrayHelper.removeDuplicatesByProperty(
+                arr,
+                this.itemValue ? this.itemValue : this.setting.key
+            );
+
             this.$_openModal();
+        },
+
+        closeItem(id) {
+            this.selected = this.selected.filter((x) => x.id !== id);
         },
     },
 };
@@ -118,13 +194,53 @@ export default {
         <BaseModalServerDataTable
             :ref="refpopUp"
             :setting="setting"
-            :extraParam="extraParams"
-            :pageView="pageView"
-            :ispageView="ispageView"
-            :fnResetConfig="fnResetConfig"
             :callback="callback"
+            :itemText="itemText"
+            :pageView="pageView"
+            :itemDesc="itemDesc"
+            :itemValue="itemValue"
+            :ispageView="ispageView"
+            :extraParam="extraParams"
+            :fnResetConfig="fnResetConfig"
         />
-        <v-row dense v-if="selected.length > 0"> {{ selected }}</v-row>
+        <v-card
+            v-if="selected.length > 0"
+            flat
+            :color="app ? undefined : 'grey200'"
+            class="rounded-xl mb-4"
+        >
+            <v-card-text>
+                <v-row dense :key="componentKey">
+                    <v-col
+                        cols="12"
+                        v-for="(item, index) in selected"
+                        :key="index"
+                    >
+                        <v-list-item :two-line="item.desc != undefined">
+                            <v-list-item-icon>
+                                <v-btn
+                                    @click="closeItem(item.id)"
+                                    icon
+                                    :color="app ? 'blue600' : 'black'"
+                                >
+                                    <v-icon>mdi-close-circle</v-icon>
+                                </v-btn>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title>{{
+                                    item.value
+                                }}</v-list-item-title>
+                                <v-list-item-subtitle
+                                    v-if="item.desc != undefined"
+                                    >{{ item.desc }}</v-list-item-subtitle
+                                >
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+        </v-card>
+
         <v-layout justify-start align-center>
             <BaseCustomsButtonsGrid
                 :label="label"

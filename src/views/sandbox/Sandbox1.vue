@@ -118,6 +118,12 @@ export default {
         BaseSelectModalServerDataTable,
     },
 
+    data() {
+        return {
+            arr: [],
+        };
+    },
+
     computed: {
         list() {
             return [
@@ -568,6 +574,9 @@ export default {
                     :setting="setting"
                     :extraParams="extraParams"
                     :fnResetConfig="$_setFilter"
+                    itemText="nombre"
+                    itemDesc="nombreOrganizacion"
+                    v-model="arr"
                 />
             </v-col>
 
