@@ -261,6 +261,8 @@ export default {
                             </v-list-item-content>
 
                             <v-list-item-action
+                                class="BUO-Paragraph-Medium-SemiBold"
+                                :class="[app ? 'white--text' : 'grey700--text']"
                                 v-if="requiresPercentage && item.number"
                                 >{{ item.number }}%</v-list-item-action
                             >
