@@ -169,6 +169,21 @@ export default {
         },
 
         callback(array) {
+            array = array.map((element) => {
+                return this.requiresPercentage
+                    ? {
+                          id: element.id,
+                          value: element.value,
+                          desc: element.desc,
+                          number: 60,
+                      }
+                    : {
+                          id: element.id,
+                          value: element.value,
+                          desc: element.desc,
+                      };
+            });
+
             const arr =
                 this.selected != undefined
                     ? [...new Set(array.concat(this.selected))]
@@ -226,7 +241,8 @@ export default {
                                     <v-icon>mdi-close-circle</v-icon>
                                 </v-btn>
                             </v-list-item-icon>
-                            <v-list-item-content>
+
+                            <v-list-item-content class="ml-n3">
                                 <v-list-item-title>{{
                                     item.value
                                 }}</v-list-item-title>
@@ -235,7 +251,17 @@ export default {
                                     >{{ item.desc }}</v-list-item-subtitle
                                 >
                             </v-list-item-content>
+
+                            <v-list-item-action
+                                v-if="requiresPercentage && item.number"
+                                >{{ item.number }}%</v-list-item-action
+                            >
                         </v-list-item>
+                        <v-slider
+                            class="pl-16 mt-n6"
+                            v-if="requiresPercentage && item.number"
+                            v-model="item.number"
+                        />
                     </v-col>
                 </v-row>
             </v-card-text>

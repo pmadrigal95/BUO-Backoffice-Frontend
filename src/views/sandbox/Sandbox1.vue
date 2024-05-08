@@ -121,6 +121,7 @@ export default {
     data() {
         return {
             arr: [],
+            arr2: [],
         };
     },
 
@@ -577,6 +578,19 @@ export default {
                     itemText="nombre"
                     itemDesc="nombreOrganizacion"
                     v-model="arr"
+                />
+            </v-col>
+
+            <v-col cols="12">
+                <BaseSelectModalServerDataTable
+                    :pageView="pageView"
+                    :setting="setting"
+                    :extraParams="extraParams"
+                    :fnResetConfig="$_setFilter"
+                    itemText="nombre"
+                    v-model="arr2"
+                    label="Agregar requerimiento"
+                    :requiresPercentage="true"
                 />
             </v-col>
 
