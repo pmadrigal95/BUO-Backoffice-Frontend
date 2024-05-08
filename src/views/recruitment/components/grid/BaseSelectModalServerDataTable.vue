@@ -168,7 +168,13 @@ export default {
                 this.$refs[this.refpopUp].$_openModal();
         },
 
-        callback(array) {
+        $_setSingleTarget() {
+            if (!this.setting.multiSelect || this.setting.singleSelect) {
+                this.selected = [];
+            }
+        },
+
+        $_setArrayResult(array) {
             array = array.map((element) => {
                 return this.requiresPercentage
                     ? {
@@ -184,15 +190,22 @@ export default {
                       };
             });
 
-            const arr =
-                this.selected != undefined
-                    ? [...new Set(array.concat(this.selected))]
-                    : array;
+            return this.selected != undefined
+                ? [...new Set(array.concat(this.selected))]
+                : array;
+        },
 
+        $_cleanArray(array) {
             this.selected = baseArrayHelper.removeDuplicatesByProperty(
-                arr,
+                this.$_setArrayResult(array),
                 this.itemValue ? this.itemValue : this.setting.key
             );
+        },
+
+        callback(array) {
+            this.$_setSingleTarget();
+
+            this.$_cleanArray(array);
 
             this.$_openModal();
         },

@@ -486,6 +486,7 @@ export default {
                 companyId: this.user.companyId,
                 list: this.filtersBypageView(this.pageView),
                 pageView: this.pageView,
+                // singleSelect: true,
             });
         },
     },
