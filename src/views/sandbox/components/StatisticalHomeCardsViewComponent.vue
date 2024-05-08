@@ -7,9 +7,7 @@
  */
 
 const BaseSlideCardViewComponent = () =>
-    import(
-        '@/views/dashboard/components/shared/slider/BaseSlideCardViewComponent'
-    );
+    import('@/views/sandbox/components/slider/BaseSlideCardViewComponent');
 
 export default {
     name: 'StatisticalHomeCardsViewComponent',
