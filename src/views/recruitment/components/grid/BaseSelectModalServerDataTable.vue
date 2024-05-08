@@ -243,11 +243,19 @@ export default {
                             </v-list-item-icon>
 
                             <v-list-item-content class="ml-n3">
-                                <v-list-item-title>{{
-                                    item.value
-                                }}</v-list-item-title>
+                                <v-list-item-title
+                                    class="BUO-Paragraph-Medium-SemiBold"
+                                    :class="[
+                                        app ? 'white--text' : 'grey700--text',
+                                    ]"
+                                    >{{ item.value }}</v-list-item-title
+                                >
                                 <v-list-item-subtitle
+                                    class="BUO-Label-Small"
                                     v-if="item.desc != undefined"
+                                    :class="[
+                                        app ? 'grey400--text' : 'grey600--text',
+                                    ]"
                                     >{{ item.desc }}</v-list-item-subtitle
                                 >
                             </v-list-item-content>
@@ -259,6 +267,7 @@ export default {
                         </v-list-item>
                         <v-slider
                             class="pl-16 mt-n6"
+                            :track-color="app ? 'grey700' : 'white'"
                             v-if="requiresPercentage && item.number"
                             v-model="item.number"
                         />
