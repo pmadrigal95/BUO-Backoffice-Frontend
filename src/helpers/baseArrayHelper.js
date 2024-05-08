@@ -64,4 +64,11 @@ export default {
             return typeOrder === 'desc' ? b[prop] - a[prop] : a[prop] - b[prop];
         });
     },
+
+    removeDuplicatesByProperty(arr, prop) {
+        return arr.filter(
+            (obj, index, self) =>
+                index === self.findIndex((o) => o[prop] === obj[prop])
+        );
+    },
 };

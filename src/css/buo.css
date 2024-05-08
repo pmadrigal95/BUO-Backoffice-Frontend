@@ -425,6 +425,7 @@ html {
 
 .v-slider__track-container {
     -webkit-appearance: none !important;
+    appearance: none !important;
     width: 100% !important;
     height: 10px !important;
     outline: none !important;

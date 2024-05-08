@@ -118,6 +118,13 @@ export default {
         BaseSelectModalServerDataTable,
     },
 
+    data() {
+        return {
+            arr: [],
+            arr2: [],
+        };
+    },
+
     computed: {
         list() {
             return [
@@ -479,6 +486,7 @@ export default {
                 companyId: this.user.companyId,
                 list: this.filtersBypageView(this.pageView),
                 pageView: this.pageView,
+                // singleSelect: true,
             });
         },
     },
@@ -568,6 +576,22 @@ export default {
                     :setting="setting"
                     :extraParams="extraParams"
                     :fnResetConfig="$_setFilter"
+                    itemText="nombre"
+                    itemDesc="nombreOrganizacion"
+                    v-model="arr"
+                />
+            </v-col>
+
+            <v-col cols="12">
+                <BaseSelectModalServerDataTable
+                    :pageView="pageView"
+                    :setting="setting"
+                    :extraParams="extraParams"
+                    :fnResetConfig="$_setFilter"
+                    itemText="nombre"
+                    v-model="arr2"
+                    label="Agregar requerimiento"
+                    :requiresPercentage="true"
                 />
             </v-col>
 

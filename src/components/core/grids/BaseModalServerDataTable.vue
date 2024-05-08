@@ -65,6 +65,33 @@ export default {
             type: Function,
             require: true,
         },
+
+        /**
+         * Propiedad del valor a guardar
+         * Requerido
+         */
+        itemValue: {
+            type: [String, Number],
+            default: undefined,
+        },
+
+        /**
+         * Propiedad del valor a mostrar
+         * Requerido
+         */
+        itemText: {
+            type: [String, Number],
+            required: true,
+        },
+
+        /**
+         * Propiedad del valor a mostrar
+         * Requerido
+         */
+        itemDesc: {
+            type: [String, Number],
+            default: undefined,
+        },
     },
 
     components: {
@@ -214,6 +241,26 @@ export default {
             this.fnResetConfig();
             this.key++;
         },
+
+        $_setUp_Callback(array) {
+            if (!this.callback) return;
+
+            this.callback(
+                array.map((element) => {
+                    return {
+                        id: this.itemValue
+                            ? element[this.itemValue]
+                            : element[this.setting.key],
+                        value: this.itemText
+                            ? element[this.itemText]
+                            : undefined,
+                        desc: this.itemDesc
+                            ? element[this.itemDesc]
+                            : undefined,
+                    };
+                })
+            );
+        },
     },
 };
 </script>
@@ -232,7 +279,7 @@ export default {
                 v-if="show === 'Local'"
                 v-model="local"
                 :cancel="$_openModal"
-                :footerMethod="callback"
+                :footerMethod="$_setUp_Callback"
             />
 
             <!-- @BaseServerDataTable -->
@@ -242,7 +289,7 @@ export default {
                 :ispageView="ispageView"
                 :setting="setting"
                 :rowsPerPage="rowsPerPage"
-                :footerMethod="callback"
+                :footerMethod="$_setUp_Callback"
                 :cancel="$_openModal"
                 v-if="show === 'Server'"
                 :extraParams="extraParams"
