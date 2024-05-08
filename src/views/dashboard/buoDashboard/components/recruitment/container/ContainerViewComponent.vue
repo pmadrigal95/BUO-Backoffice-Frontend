@@ -10,20 +10,25 @@ import { mapGetters } from 'vuex';
 
 import baseDisplay from '@/views/dashboard/components/shared/row-display/container-display';
 
-// const StatisticalRecruitmentCardsViewComponent = () =>
-//     import(
-//         '@/views/dashboard/buoDashboard/components/recruitment/card/StatisticalRecruitmentCardsViewComponent'
-//     );
+const OpenVacantListViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/recruitment/card/OpenVacantListViewComponent'
+    );
 
-// const HistoricalRecruitmentChartComponent = () =>
-//     import(
-//         '@/views/dashboard/buoDashboard/components/recruitment/chart/linealChart/HistoricalRecruitmentChartComponent'
-//     );
+const StatisticalRecruitmentCardsViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/recruitment/card/StatisticalRecruitmentCardsViewComponent'
+    );
 
-// const RecruitmentProgressLinearViewComponent = () =>
-//     import(
-//         '@/views/dashboard/buoDashboard/components/recruitment/chart/progressLinearChart/RecruitmentProgressLinearViewComponent'
-//     );
+const HistoricalRecruitmentChartComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/recruitment/chart/linealChart/HistoricalRecruitmentChartComponent'
+    );
+
+const RecruitmentProgressLinearViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/recruitment/chart/progressLinearChart/RecruitmentProgressLinearViewComponent'
+    );
 
 export default {
     name: 'ContainerViewComponent',
@@ -36,9 +41,10 @@ export default {
     },
 
     components: {
-        // StatisticalRecruitmentCardsViewComponent,
-        // HistoricalRecruitmentChartComponent,
-        // RecruitmentProgressLinearViewComponent,
+        OpenVacantListViewComponent,
+        StatisticalRecruitmentCardsViewComponent,
+        HistoricalRecruitmentChartComponent,
+        RecruitmentProgressLinearViewComponent,
     },
 
     computed: {
@@ -59,7 +65,7 @@ export default {
 
 <template>
     <v-row>
-        <!-- <v-col cols="12" v-if="entity.cardList && entity.cardList.length > 0">
+        <v-col cols="12" v-if="entity.cardList && entity.cardList.length > 0">
             <StatisticalRecruitmentCardsViewComponent
                 :chartData="entity.cardList"
             />
@@ -73,24 +79,31 @@ export default {
 
         <v-col
             cols="12"
-            :md="$vuetify.breakpoint.mobile ? 12 : md(entity.perks)"
-            v-if="entity.perks && entity.perks.length > 0"
+            :md="$vuetify.breakpoint.mobile ? 12 : md(entity.departmentGrowth)"
+            v-if="entity.positionGrowth && entity.perks.positionGrowth > 0"
         >
             <RecruitmentProgressLinearViewComponent
                 title="Puesto con mayor índice de rotación"
-                :chartData="entity.perks"
+                :chartData="entity.positionGrowth"
             />
         </v-col>
 
         <v-col
             cols="12"
-            :md="$vuetify.breakpoint.mobile ? 12 : md(entity.perks)"
-            v-if="entity.perks && entity.perks.length > 0"
+            :md="$vuetify.breakpoint.mobile ? 12 : md(entity.positionGrowth)"
+            v-if="entity.departmentGrowth && entity.departmentGrowth.length > 0"
         >
             <RecruitmentProgressLinearViewComponent
                 title="Departamentos con mayor índice de rotación"
-                :chartData="entity.perks"
+                :chartData="entity.departmentGrowth"
             />
-        </v-col> -->
+        </v-col>
+
+        <v-col
+            cols="12"
+            v-if="entity.openPositions && entity.openPositions.length > 0"
+        >
+            <OpenVacantListViewComponent :cardList="entity.openPositions" />
+        </v-col>
     </v-row>
 </template>

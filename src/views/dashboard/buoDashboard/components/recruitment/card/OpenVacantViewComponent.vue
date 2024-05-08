@@ -57,11 +57,11 @@ export default {
         },
 
         chartList() {
-            return this.chartData?.list.filter((x) => x.isChart);
+            return this.chartData?.list.filter((x) => x.chart);
         },
 
         rowList() {
-            return this.chartData?.list.filter((x) => !x.isChart);
+            return this.chartData?.list.filter((x) => !x.chart);
         },
     },
 
@@ -96,10 +96,8 @@ export default {
                     <ProgressCircularComponent
                         :title="item.name"
                         :value="item.value"
-                        :isPercentage="item.isPercentage"
-                        :maxValue="
-                            item.isPercentage ? 100 : chartData.maxNumber
-                        "
+                        :isPercentage="item.percentage"
+                        :maxValue="item.percentage ? 100 : chartData.maxNumber"
                     />
                 </div>
             </section>
