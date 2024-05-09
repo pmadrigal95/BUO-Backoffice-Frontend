@@ -254,7 +254,11 @@ export default {
         >
             <v-card-text>
                 <v-row dense>
-                    <Container @drop="onDrop">
+                    <Container
+                        @drop="onDrop"
+                        style="width: 100%"
+                        non-drag-area-selector=".not-draggable"
+                    >
                         <Draggable
                             v-for="(item, index) in selected"
                             :key="index"
@@ -307,7 +311,7 @@ export default {
                                     >
                                 </v-list-item>
                                 <v-slider
-                                    class="pl-16 mt-n6"
+                                    class="pl-16 mt-n6 not-draggable"
                                     :track-color="app ? 'grey700' : 'white'"
                                     v-if="requiresPercentage && item.number"
                                     v-model="item.number"
