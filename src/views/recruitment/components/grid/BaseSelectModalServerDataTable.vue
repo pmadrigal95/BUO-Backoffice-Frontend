@@ -10,7 +10,11 @@ import { mapGetters } from 'vuex';
 
 import { v4 as uuidv4 } from 'uuid';
 
+import { Container, Draggable } from 'vue-smooth-dnd';
+
 import baseArrayHelper from '@/helpers/baseArrayHelper';
+
+import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 
 const BaseCustomsButtonsGrid = () =>
     import('@/components/core/grids/BaseCustomsButtonsGrid');
@@ -119,12 +123,16 @@ export default {
         },
     },
 
-    components: { BaseModalServerDataTable, BaseCustomsButtonsGrid },
+    components: {
+        BaseModalServerDataTable,
+        BaseCustomsButtonsGrid,
+        Container,
+        Draggable,
+    },
 
     data() {
         return {
             selected: [],
-            componentKey: 0,
         };
     },
 
@@ -213,6 +221,13 @@ export default {
         closeItem(id) {
             this.selected = this.selected.filter((x) => x.id !== id);
         },
+
+        onDrop(dropResult) {
+            this.selected = baseSharedFnHelper.$_applyDrag(
+                this.selected,
+                dropResult
+            );
+        },
     },
 };
 </script>
@@ -238,55 +253,67 @@ export default {
             class="rounded-xl mb-4"
         >
             <v-card-text>
-                <v-row dense :key="componentKey">
-                    <v-col
-                        cols="12"
-                        v-for="(item, index) in selected"
-                        :key="index"
-                    >
-                        <v-list-item :two-line="item.desc != undefined">
-                            <v-list-item-icon>
-                                <v-btn
-                                    @click="closeItem(item.id)"
-                                    icon
-                                    :color="app ? 'blue600' : 'black'"
-                                >
-                                    <v-icon>mdi-close-circle</v-icon>
-                                </v-btn>
-                            </v-list-item-icon>
+                <v-row dense>
+                    <Container @drop="onDrop">
+                        <Draggable
+                            v-for="(item, index) in selected"
+                            :key="index"
+                        >
+                            <v-col cols="12">
+                                <v-list-item :two-line="item.desc != undefined">
+                                    <v-list-item-icon>
+                                        <v-btn
+                                            @click="closeItem(item.id)"
+                                            icon
+                                            :color="app ? 'blue600' : 'black'"
+                                        >
+                                            <v-icon>mdi-close-circle</v-icon>
+                                        </v-btn>
+                                    </v-list-item-icon>
 
-                            <v-list-item-content class="ml-n3">
-                                <v-list-item-title
-                                    class="BUO-Paragraph-Medium-SemiBold"
-                                    :class="[
-                                        app ? 'white--text' : 'grey700--text',
-                                    ]"
-                                    >{{ item.value }}</v-list-item-title
-                                >
-                                <v-list-item-subtitle
-                                    class="BUO-Label-Small"
-                                    v-if="item.desc != undefined"
-                                    :class="[
-                                        app ? 'grey400--text' : 'grey600--text',
-                                    ]"
-                                    >{{ item.desc }}</v-list-item-subtitle
-                                >
-                            </v-list-item-content>
+                                    <v-list-item-content class="ml-n3">
+                                        <v-list-item-title
+                                            class="BUO-Paragraph-Medium-SemiBold"
+                                            :class="[
+                                                app
+                                                    ? 'white--text'
+                                                    : 'grey700--text',
+                                            ]"
+                                            >{{ item.value }}</v-list-item-title
+                                        >
+                                        <v-list-item-subtitle
+                                            class="BUO-Label-Small"
+                                            v-if="item.desc != undefined"
+                                            :class="[
+                                                app
+                                                    ? 'grey400--text'
+                                                    : 'grey600--text',
+                                            ]"
+                                            >{{
+                                                item.desc
+                                            }}</v-list-item-subtitle
+                                        >
+                                    </v-list-item-content>
 
-                            <v-list-item-action
-                                class="BUO-Paragraph-Medium-SemiBold"
-                                :class="[app ? 'white--text' : 'grey700--text']"
-                                v-if="requiresPercentage && item.number"
-                                >{{ item.number }}%</v-list-item-action
-                            >
-                        </v-list-item>
-                        <v-slider
-                            class="pl-16 mt-n6"
-                            :track-color="app ? 'grey700' : 'white'"
-                            v-if="requiresPercentage && item.number"
-                            v-model="item.number"
-                        />
-                    </v-col>
+                                    <v-list-item-action
+                                        class="BUO-Paragraph-Medium-SemiBold"
+                                        :class="[
+                                            app
+                                                ? 'white--text'
+                                                : 'grey700--text',
+                                        ]"
+                                        v-if="requiresPercentage && item.number"
+                                        >{{ item.number }}%</v-list-item-action
+                                    >
+                                </v-list-item>
+                                <v-slider
+                                    class="pl-16 mt-n6"
+                                    :track-color="app ? 'grey700' : 'white'"
+                                    v-if="requiresPercentage && item.number"
+                                    v-model="item.number"
+                                /> </v-col
+                        ></Draggable>
+                    </Container>
                 </v-row>
             </v-card-text>
         </v-card>
