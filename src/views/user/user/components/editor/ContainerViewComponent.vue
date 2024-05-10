@@ -120,9 +120,6 @@ export default {
     },
 
     watch: {
-        /**
-         * Actualizar componente BaseForm
-         */
         tab: {
             handler() {
                 if (this.isLastTab) {
@@ -154,39 +151,6 @@ export default {
     },
 
     methods: {
-        activeAllTabs() {
-            this.tabSettings
-                .filter((element) => element.disabled === true)
-                .map((element) => {
-                    element.disabled = false;
-                });
-        },
-
-        activeCurrentTab() {
-            this.tabSettings[this.tab].disabled =
-                !this.tabSettings[this.tab].disabled;
-        },
-
-        nextTab() {
-            this.tab = this.tab + 1;
-        },
-
-        configureTabs() {
-            this.nextTab();
-            this.activeCurrentTab();
-        },
-
-        /**
-         * Function to return the UserFilterViewComponent
-         */
-        $_returnToFilter() {
-            this.entity.organizacionId = null;
-            this.entity.departamentoId = null;
-            this.entity.fechaIngreso = null;
-            this.entity.fechaTerminacion = null;
-            this.$router.back();
-        },
-
         $_Object() {
             return {
                 id: 0,
@@ -213,7 +177,46 @@ export default {
                 fechaIngresoDepartamento: undefined,
                 fechaTerminacion: undefined,
                 esRenuncia: false,
+                supervisorId: undefined,
+                puestoId: undefined,
+                esCandidato: false,
             };
+        },
+
+        activeAllTabs() {
+            this.tabSettings
+                .filter((element) => element.disabled === true)
+                .map((element) => {
+                    element.disabled = false;
+                });
+        },
+
+        activeCurrentTab() {
+            this.tabSettings[this.tab].disabled = false;
+        },
+
+        nextTab() {
+            this.tab = this.tab + 1;
+        },
+
+        configureTabs() {
+            this.nextTab();
+            this.activeCurrentTab();
+        },
+
+        cleanFieldsByWatch() {
+            this.entity.organizacionId = undefined;
+            this.entity.departamentoId = undefined;
+            this.entity.fechaIngreso = undefined;
+            this.entity.fechaTerminacion = undefined;
+        },
+
+        /**
+         * Function to return the UserFilterViewComponent
+         */
+        $_returnToFilter() {
+            this.cleanFieldsByWatch();
+            this.$router.back();
         },
 
         $_reviewQueryParams() {
@@ -285,9 +288,7 @@ export default {
         },
 
         $_sendToApi() {
-            let object = BaseArrayHelper.SetObject({}, this.entity);
-            console.log(object);
-            /*this.loading = true;
+            this.loading = true;
             this.$_setToUser();
             let object = BaseArrayHelper.SetObject({}, this.entity);
             httpService.post('user/saveUserForm', object).then((response) => {
@@ -297,7 +298,7 @@ export default {
                     //Logica JS luego de la acción exitosa!!!
                     this.$_returnToFilter();
                 }
-            });*/
+            });
         },
     },
 };
@@ -337,7 +338,7 @@ export default {
                             </v-tab>
                         </v-tabs>
 
-                        <v-tabs-items v-model="tab" class="mt-4 mb-2 pt-4 pl-2">
+                        <v-tabs-items v-model="tab" class="mt-4 mb-2 pt-4 pl-3">
                             <v-tab-item
                                 v-for="(element, index) in tabSettings"
                                 :key="index"

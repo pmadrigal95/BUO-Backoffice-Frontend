@@ -6,11 +6,18 @@
  *
  */
 
+import { mapGetters } from 'vuex';
+
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
+
 import baseDateHelper from '@/helpers/baseDateHelper';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 const BaseDatePicker = () => import('@/components/core/forms/BaseDatePicker');
+
+const BaseInputDataTable = () =>
+    import('@/components/core/forms/BaseInputDataTable.vue');
 
 export default {
     name: 'CorporateInfoViewComponent',
@@ -24,15 +31,19 @@ export default {
 
     components: {
         BaseDatePicker,
+        BaseInputDataTable,
     },
 
     data() {
         return {
+            componentKey: 0,
             componentDateKey: 0,
         };
     },
 
     computed: {
+        ...mapGetters('filters', ['filtersBypageView', 'pageViewById']),
+
         msg() {
             return 'Hemos realizado una actualización en los campos de fechas del colaborador. Por favor, tómate un momento para revisar y asegurarte de que tus fechas estén actualizadas correctamente.';
         },
@@ -43,6 +54,31 @@ export default {
 
         validateDepartmentDate() {
             return this.entity.departamentoId ? ['text'] : undefined;
+        },
+
+        jobDialogView() {
+            return this.pageViewById('securityFilter');
+        },
+
+        /**
+         * Configuracion BaseServerDataTable
+         */
+        settingJob() {
+            return baseFilterSettingsHelper.$_setJobSetting({
+                isFilter: true,
+                singleSelect: false,
+                list: this.filtersBypageView(this.jobDialogView),
+                pageView: this.jobDialogView,
+            });
+        },
+
+        /**
+         * Extra Params
+         */
+        extraParams() {
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity.organizacionId,
+            });
         },
     },
 
@@ -225,6 +261,25 @@ export default {
                 :disabled="!entity.fechaTerminacion"
                 label="Renuncia"
                 v-model="entity.esRenuncia"
+            />
+        </v-col>
+
+        <v-col cols="12">
+            <BaseSwitch label="Candidato" v-model="entity.esCandidato" />
+        </v-col>
+
+        <v-col cols="12">
+            <BaseInputDataTable
+                label="Puesto"
+                v-if="settingJob"
+                :pageView="jobDialogView"
+                :setting="settingJob"
+                :extraParams="extraParams"
+                itemText="nombre"
+                :readonly="extraParams.length == 0"
+                :editText="entity.nombrePuesto"
+                v-model="entity.puestoId"
+                :key="componentKey"
             />
         </v-col>
     </v-row>

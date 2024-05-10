@@ -45,6 +45,7 @@ const $_dialogView = () => {
         simpleAbilityDialog: 'simpleAbilitySetting',
         securityActionsDialog: 'securityActionsSetting',
         DepartureReasonTypeDialog: 'DepartureReasonTypeSetting',
+        jobDialog: 'jobSetting',
     };
 };
 

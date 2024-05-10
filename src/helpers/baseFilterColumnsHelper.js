@@ -163,6 +163,25 @@ const userColumns = (departmentId, isBuoUser, isFilter) => {
             value: 'esRenuncia',
             show: isFilter ? false : true,
         },
+        {
+            text: 'Supervisor',
+            align: 'start',
+            value: 'nombreSupervisor',
+            show: false,
+        },
+        {
+            text: 'Puesto',
+            align: 'start',
+            value: 'nombrePuesto',
+            show: false,
+        },
+        {
+            text: 'Candidato',
+            type: 'bool',
+            align: 'center',
+            value: 'esCandidato',
+            show: true,
+        },
     ];
 };
 
