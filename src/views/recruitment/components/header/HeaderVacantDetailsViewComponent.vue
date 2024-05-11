@@ -33,7 +33,7 @@ export default {
     computed: {
         color() {
             return baseColorConfig.$_setColor(
-                this.entity.coincidence ? this.entity.coincidence : 0
+                this.entity.concidence ? this.entity.concidence : 0
             );
         },
 
@@ -86,9 +86,7 @@ export default {
                         </v-card-title>
                         <v-card-subtitle class="BUO-Paragraph-Large">
                             {{
-                                entity.missingDates
-                                    ? entity.missingDates
-                                    : 'N/A'
+                                entity.missingDays ? entity.missingDays : 'N/A'
                             }}
                         </v-card-subtitle>
                     </v-card>
@@ -97,7 +95,11 @@ export default {
                         <ProgressCircularComponent
                             class="mt-4"
                             title="Coincidencia"
-                            :value="entity.coincidence ? entity.coincidence : 0"
+                            :value="
+                                entity.concidence
+                                    ? entity.concidence.toFixed(2)
+                                    : 0
+                            "
                             :color="color"
                             isLandscape
                             isPercentage

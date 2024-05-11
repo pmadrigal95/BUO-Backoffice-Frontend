@@ -67,7 +67,7 @@ export default {
         },
 
         value() {
-            return this.chartData.value ? this.chartData.value : 0;
+            return this.chartData.value ? this.chartData.value.toFixed(2) : 0;
         },
 
         color() {

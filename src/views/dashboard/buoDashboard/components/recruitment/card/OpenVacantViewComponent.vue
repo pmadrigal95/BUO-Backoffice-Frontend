@@ -66,16 +66,19 @@ export default {
     },
 
     methods: {
-        $_returnToView() {
-            alert('Hola');
+        $_returnToView(id) {
+            this.$router.push({
+                name: 'BuoRecruitmentDashboardViewComponent',
+                params: { Id: id },
+            });
         },
 
-        $_callToAction() {
+        $_callToAction(id) {
             if (this.fn) {
                 this.fn();
                 return;
             }
-            this.$_returnToView();
+            this.$_returnToView(id);
         },
     },
 };
@@ -114,7 +117,7 @@ export default {
             <section class="mt-3">
                 <v-layout justify-end align-end>
                     <a
-                        @click="$_callToAction"
+                        @click="$_callToAction(chartData.id)"
                         :class="[app ? 'blue600--text' : 'blue900--text']"
                         class="no-uppercase rounded-lg BUO-Paragraph-Small"
                     >

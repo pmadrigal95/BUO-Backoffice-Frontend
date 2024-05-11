@@ -1,16 +1,21 @@
 <script>
 /**
- * Descripción: Pantalla Dash Reclutamiento
+ * Descripción: Pantalla  RecruitmentDashboardViewComponent
  *
  * @displayName RecruitmentDashboardViewComponent
  *
  */
 
+const ContainerViewComponent = () =>
+    import('@/views/recruitment/sections/Dashboard/ContainerViewComponent');
+
 export default {
     name: 'RecruitmentDashboardViewComponent',
+
+    components: { ContainerViewComponent },
 };
 </script>
 
 <template>
-    <span>RecruitmentDashboardViewComponent</span>
+    <ContainerViewComponent />
 </template>
