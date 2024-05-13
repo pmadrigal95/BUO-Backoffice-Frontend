@@ -27,12 +27,24 @@ export default {
             type: Array,
             required: true,
         },
+
+        settings: {
+            type: Object,
+            requiered: true,
+        },
     },
 
     components: {
         BaseCustomsButtonsGrid,
         BaseBasicCardViewComponent,
         BaseSlideCardViewComponent,
+    },
+
+    methods: {
+        $_setVacancyId(id) {
+            this.settings.vacancyId = id;
+            this.settings.step = 1;
+        },
     },
 };
 </script>
@@ -53,6 +65,7 @@ export default {
                     width="360px"
                     height="100%"
                     :chartData="cardList"
+                    :callback="$_setVacancyId"
                     type="OpenVacantViewComponent"
                 />
             </v-layout>

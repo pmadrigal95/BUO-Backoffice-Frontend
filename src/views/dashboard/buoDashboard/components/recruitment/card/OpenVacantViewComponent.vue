@@ -75,7 +75,7 @@ export default {
 
         $_callToAction(id) {
             if (this.fn) {
-                this.fn();
+                this.fn(id);
                 return;
             }
             this.$_returnToView(id);

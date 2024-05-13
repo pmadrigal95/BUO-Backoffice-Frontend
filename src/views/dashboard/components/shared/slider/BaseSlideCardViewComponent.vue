@@ -39,6 +39,11 @@ export default {
             type: String,
             default: 'BaseStadisticCardViewComponent',
         },
+
+        callback: {
+            type: Function,
+            default: undefined,
+        },
     },
 
     components: { BaseStadisticCardViewComponent, OpenVacantViewComponent },
@@ -66,6 +71,7 @@ export default {
 
                 <OpenVacantViewComponent
                     :chartData="item"
+                    :fn="callback ? callback : undefined"
                     class="mx-2"
                     v-else-if="type === 'OpenVacantViewComponent'"
                 />

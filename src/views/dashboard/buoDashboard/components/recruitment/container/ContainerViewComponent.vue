@@ -6,104 +6,44 @@
  *
  */
 
-import { mapGetters } from 'vuex';
-
-import baseDisplay from '@/views/dashboard/components/shared/row-display/container-display';
-
-const OpenVacantListViewComponent = () =>
+const DisplayViewComponent = () =>
     import(
-        '@/views/dashboard/buoDashboard/components/recruitment/card/OpenVacantListViewComponent'
+        '@/views/dashboard/buoDashboard/components/recruitment/display/DisplayViewComponent'
     );
 
-const StatisticalRecruitmentCardsViewComponent = () =>
+const VacantDashboardViewComponent = () =>
     import(
-        '@/views/dashboard/buoDashboard/components/recruitment/card/StatisticalRecruitmentCardsViewComponent'
-    );
-
-const HistoricalRecruitmentChartComponent = () =>
-    import(
-        '@/views/dashboard/buoDashboard/components/recruitment/chart/linealChart/HistoricalRecruitmentChartComponent'
-    );
-
-const RecruitmentProgressLinearViewComponent = () =>
-    import(
-        '@/views/dashboard/buoDashboard/components/recruitment/chart/progressLinearChart/RecruitmentProgressLinearViewComponent'
+        '@/views/dashboard/buoDashboard/components/recruitment/display/VacantDashboardViewComponent'
     );
 
 export default {
     name: 'ContainerViewComponent',
 
     props: {
-        type: {
-            type: String,
-            default: 'recruitment',
+        settings: {
+            type: Object,
+            requiered: true,
         },
     },
 
     components: {
-        OpenVacantListViewComponent,
-        StatisticalRecruitmentCardsViewComponent,
-        HistoricalRecruitmentChartComponent,
-        RecruitmentProgressLinearViewComponent,
-    },
-
-    computed: {
-        ...mapGetters('dashboard', ['dashboardById']),
-
-        entity() {
-            return this.dashboardById(this.type);
-        },
-    },
-
-    methods: {
-        md(nextColumn) {
-            return baseDisplay.$_setLayout(nextColumn);
-        },
+        DisplayViewComponent,
+        VacantDashboardViewComponent,
     },
 };
 </script>
 
 <template>
-    <v-row>
-        <v-col cols="12" v-if="entity.cardList && entity.cardList.length > 0">
-            <StatisticalRecruitmentCardsViewComponent
-                :chartData="entity.cardList"
-            />
-        </v-col>
+    <v-window v-model="settings.step" touchless>
+        <v-window-item :value="0">
+            <DisplayViewComponent :settings="settings" />
+        </v-window-item>
 
-        <v-col cols="12" v-if="entity.historicUser">
-            <HistoricalRecruitmentChartComponent
-                :chartData="entity.historicUser"
+        <v-window-item :value="1">
+            <VacantDashboardViewComponent
+                :settings="settings"
+                v-if="settings.step === 1"
             />
-        </v-col>
-
-        <v-col
-            cols="12"
-            :md="$vuetify.breakpoint.mobile ? 12 : md(entity.departmentGrowth)"
-            v-if="entity.positionGrowth && entity.perks.positionGrowth > 0"
-        >
-            <RecruitmentProgressLinearViewComponent
-                title="Puesto con mayor índice de rotación"
-                :chartData="entity.positionGrowth"
-            />
-        </v-col>
-
-        <v-col
-            cols="12"
-            :md="$vuetify.breakpoint.mobile ? 12 : md(entity.positionGrowth)"
-            v-if="entity.departmentGrowth && entity.departmentGrowth.length > 0"
-        >
-            <RecruitmentProgressLinearViewComponent
-                title="Departamentos con mayor índice de rotación"
-                :chartData="entity.departmentGrowth"
-            />
-        </v-col>
-
-        <v-col
-            cols="12"
-            v-if="entity.openPositions && entity.openPositions.length > 0"
-        >
-            <OpenVacantListViewComponent :cardList="entity.openPositions" />
-        </v-col>
-    </v-row>
+        </v-window-item>
+    </v-window>
 </template>

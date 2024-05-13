@@ -30,6 +30,15 @@ export default {
         ContainerViewComponent,
     },
 
+    data() {
+        return {
+            settings: {
+                step: 0,
+                // vacancyId: undefined,
+            },
+        };
+    },
+
     computed: {
         ...mapGetters('theme', ['app']),
 
@@ -44,14 +53,14 @@ export default {
     <BaseTemplateViewComponent title="Reclutamiento" :type="type">
         <section slot="custom-btns">
             <v-btn
-                v-if="$vuetify.breakpoint.mobile"
+                v-if="$vuetify.breakpoint.mobile && settings.step == 0"
                 icon
                 :color="app ? 'white' : 'blue900'"
             >
                 <v-icon> mdi-plus-circle-outline </v-icon>
             </v-btn>
             <BaseCustomsButtonsGrid
-                v-else
+                v-else-if="settings.step == 0"
                 icon="mdi-plus"
                 :outlined="false"
                 :fnMethod="() => {}"
@@ -59,7 +68,7 @@ export default {
             />
         </section>
         <section slot="body">
-            <ContainerViewComponent />
+            <ContainerViewComponent :settings="settings" />
         </section>
     </BaseTemplateViewComponent>
 </template>
