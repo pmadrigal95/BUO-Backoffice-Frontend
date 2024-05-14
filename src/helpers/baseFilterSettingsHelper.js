@@ -39,12 +39,15 @@ const getCompanyId = ({ userCompanyId, companyId, filterCompanyId }) => {
  */
 const extraParams = ({
     companyId,
+    departmentId,
     userId,
     userKey = 'usuarioId',
     qualificationId,
     statusId,
     assessmentTypeId,
     assessmentId,
+    date,
+    vacancyId,
 }) => {
     let array = [];
 
@@ -52,6 +55,13 @@ const extraParams = ({
         array.push({
             name: 'organizacionId',
             value: companyId,
+        });
+    }
+
+    if (departmentId) {
+        array.push({
+            name: 'departamentoId',
+            value: departmentId,
         });
     }
 
@@ -87,6 +97,20 @@ const extraParams = ({
         array.push({
             name: 'pruebaId',
             value: assessmentId,
+        });
+    }
+
+    if (date) {
+        array.push({
+            name: 'fecha',
+            value: date,
+        });
+    }
+
+    if (vacancyId) {
+        array.push({
+            name: 'vacanteId',
+            value: vacancyId,
         });
     }
 
@@ -388,6 +412,18 @@ const promotionalCodeSetting = ({ key, singleSelect, columns }) => {
 };
 
 /**
+ * Configuracion BaseServerDataTable
+ */
+const dinamycRecruitmentVacantSetting = ({ singleSelect }) => {
+    return {
+        endpoint: 'dashboard/reclutamiento/vacante/candidatos',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+        dynamic: true,
+    };
+};
+
+/**
  * Exports
  */
 
@@ -404,21 +440,27 @@ export const baseFilterSettingsHelper = {
      */
     $_setExtraParams({
         companyId,
+        departmentId,
         userId,
         userKey,
         qualificationId,
         statusId,
         assessmentTypeId,
         assessmentId,
+        date,
+        vacancyId,
     }) {
         return extraParams({
             companyId,
+            departmentId,
             userId,
             userKey,
             qualificationId,
             statusId,
             assessmentTypeId,
             assessmentId,
+            date,
+            vacancyId,
         });
     },
 
@@ -858,6 +900,13 @@ export const baseFilterSettingsHelper = {
               });
 
         return promotionalCodeSetting({ key, singleSelect, columns });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setDinamycRecruitmentVacantSetting({ singleSelect }) {
+        return dinamycRecruitmentVacantSetting({ singleSelect });
     },
 };
 

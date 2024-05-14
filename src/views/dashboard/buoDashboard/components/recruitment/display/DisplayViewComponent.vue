@@ -85,7 +85,7 @@ export default {
         <v-col
             cols="12"
             :md="$vuetify.breakpoint.mobile ? 12 : md(entity.departmentGrowth)"
-            v-if="entity.positionGrowth && entity.perks.positionGrowth > 0"
+            v-if="entity.positionGrowth && entity.positionGrowth > 0"
         >
             <RecruitmentProgressLinearViewComponent
                 title="Puesto con mayor índice de rotación"

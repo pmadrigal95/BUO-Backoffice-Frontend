@@ -14,31 +14,40 @@ import BaseArrayHelper from '@/helpers/baseArrayHelper';
 const BaseCardViewComponent = () =>
     import('@/components/core/cards/BaseCardViewComponent');
 
-// const HeaderVacantDetailsViewComponent = () =>
-//     import(
-//         '@/views/recruitment/components/header/HeaderVacantDetailsViewComponent'
-//     );
+const HeaderVacantDetailsViewComponent = () =>
+    import(
+        '@/views/dashboard/recruitmentDashboard/components/header/HeaderVacantDetailsViewComponent'
+    );
 
-// const StatisticalRecruitmentCardsViewComponent = () =>
-//     import(
-//         '@/views/dashboard/buoDashboard/components/recruitment/card/StatisticalRecruitmentCardsViewComponent'
-//     );
+const StatisticalRecruitmentCardsViewComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/recruitment/card/StatisticalRecruitmentCardsViewComponent'
+    );
 
-// const HistoricalRecruitmentChartComponent = () =>
-//     import(
-//         '@/views/dashboard/buoDashboard/components/recruitment/chart/linealChart/HistoricalRecruitmentChartComponent'
-//     );
+const HistoricalRecruitmentChartComponent = () =>
+    import(
+        '@/views/dashboard/buoDashboard/components/recruitment/chart/linealChart/HistoricalRecruitmentChartComponent'
+    );
 
-// const CandidateInfoListCardViewComponent = () =>
-//     import(
-//         '@/views/recruitment/components/card/CandidateInfoListCardViewComponent'
-//     );
+const CandidateInfoListCardViewComponent = () =>
+    import(
+        '@/views/dashboard/recruitmentDashboard/components/card/CandidateInfoListCardViewComponent'
+    );
 
-// const ActionCardViewComponent = () =>
-//     import('@/views/recruitment/components/card/ActionCardViewComponent');
+const GridContainerViewComponent = () =>
+    import(
+        '@/views/dashboard/recruitmentDashboard/components/grid/GridContainerViewComponent'
+    );
 
-// const NotFoundCardViewComponent = () =>
-//     import('@/views/recruitment/components/card/NotFoundCardViewComponent');
+const ActionCardViewComponent = () =>
+    import(
+        '@/views/dashboard/recruitmentDashboard/components/card/ActionCardViewComponent'
+    );
+
+const NotFoundCardViewComponent = () =>
+    import(
+        '@/views/dashboard/recruitmentDashboard/components/card/NotFoundCardViewComponent'
+    );
 
 export default {
     name: 'ContainerViewComponent',
@@ -57,12 +66,13 @@ export default {
 
     components: {
         BaseCardViewComponent,
-        // HeaderVacantDetailsViewComponent,
-        // StatisticalRecruitmentCardsViewComponent,
-        // HistoricalRecruitmentChartComponent,
-        // CandidateInfoListCardViewComponent,
-        // ActionCardViewComponent,
-        // NotFoundCardViewComponent,
+        HeaderVacantDetailsViewComponent,
+        StatisticalRecruitmentCardsViewComponent,
+        HistoricalRecruitmentChartComponent,
+        CandidateInfoListCardViewComponent,
+        GridContainerViewComponent,
+        ActionCardViewComponent,
+        NotFoundCardViewComponent,
     },
 
     data() {
@@ -132,8 +142,7 @@ export default {
         :btnAction="callback"
     >
         <div slot="card-text">
-            {{ entity }}
-            <!-- <section>
+            <section>
                 <v-row>
                     <v-col cols="12" v-if="entity.header" class="mb-n4">
                         <HeaderVacantDetailsViewComponent
@@ -182,11 +191,15 @@ export default {
                         <NotFoundCardViewComponent />
                     </v-col>
 
+                    <v-col cols="12" v-if="vacancyId">
+                        <GridContainerViewComponent :vacancyId="vacancyId" />
+                    </v-col>
+
                     <v-col cols="12">
                         <ActionCardViewComponent />
                     </v-col>
                 </v-row>
-            </section> -->
+            </section>
         </div>
     </BaseCardViewComponent>
 </template>
