@@ -79,7 +79,7 @@ export default {
         /**
          * Configuracion BaseServerDataTable
          */
-        userSetting() {
+         userSetting() {
             return baseFilterSettingsHelper.$_setUserSetting({
                 companyId: this.user.companyId,
                 isFilter: true,

@@ -33,12 +33,6 @@ export default {
         },
     },
 
-    data() {
-        return {
-            componentKey: 0,
-        };
-    },
-
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 
@@ -152,7 +146,6 @@ export default {
                 :readonly="extraParams.length == 0"
                 :editText="entity.roleNames"
                 v-model="entity.perfilIds"
-                :key="componentKey"
             />
         </v-col>
 

@@ -45,6 +45,7 @@ const extraParams = ({
     statusId,
     assessmentTypeId,
     assessmentId,
+    isCandidate,
 }) => {
     let array = [];
 
@@ -87,6 +88,13 @@ const extraParams = ({
         array.push({
             name: 'pruebaId',
             value: assessmentId,
+        });
+    }
+
+    if (isCandidate) {
+        array.push({
+            name: 'esCandidato',
+            value: isCandidate,
         });
     }
 
@@ -423,6 +431,7 @@ export const baseFilterSettingsHelper = {
         statusId,
         assessmentTypeId,
         assessmentId,
+        isCandidate,
     }) {
         return extraParams({
             companyId,
@@ -432,6 +441,7 @@ export const baseFilterSettingsHelper = {
             statusId,
             assessmentTypeId,
             assessmentId,
+            isCandidate,
         });
     },
 

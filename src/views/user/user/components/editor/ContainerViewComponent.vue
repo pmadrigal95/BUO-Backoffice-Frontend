@@ -23,9 +23,14 @@ const PersonalInfoViewComponent = () =>
         '@/views/user/user/components/editor/sections/PersonalInfoViewComponent'
     );
 
-const CorporateInfoViewComponent = () =>
+const WorkInfoViewComponent = () =>
     import(
-        '@/views/user/user/components/editor/sections/CorporateInfoViewComponent'
+        '@/views/user/user/components/editor/sections/WorkInfoViewComponent'
+    );
+
+const EmployeeInfoViewComponent = () =>
+    import(
+        '@/views/user/user/components/editor/sections/EmployeeInfoViewComponent'
     );
 
 const AccountInfoViewComponent = () =>
@@ -43,9 +48,10 @@ export default {
 
     components: {
         BaseCardViewComponent,
+        WorkInfoViewComponent,
         AccountInfoViewComponent,
         PersonalInfoViewComponent,
-        CorporateInfoViewComponent,
+        EmployeeInfoViewComponent,
         AccessSettingsViewComponent,
     },
 
@@ -55,6 +61,7 @@ export default {
             entity: this.$_Object(),
             loading: false,
             componentKey: 0,
+            enabledWatcher: true,
         };
     },
 
@@ -79,9 +86,16 @@ export default {
                     disabled: true,
                 },
                 {
-                    name: 'Información corporativa',
-                    component: 'CorporateInfoViewComponent',
+                    name: 'Información del empleado',
+                    component: 'EmployeeInfoViewComponent',
                     disabled: true,
+                    enabledWatcher: this.enabledWatcher,
+                },
+                {
+                    name: 'Información laboral',
+                    component: 'WorkInfoViewComponent',
+                    disabled: true,
+                    enabledWatcher: this.enabledWatcher,
                 },
             ];
         },
@@ -204,18 +218,14 @@ export default {
             this.activeCurrentTab();
         },
 
-        cleanFieldsByWatch() {
-            this.entity.organizacionId = undefined;
-            this.entity.departamentoId = undefined;
-            this.entity.fechaIngreso = undefined;
-            this.entity.fechaTerminacion = undefined;
+        toggleWatcher() {
+            this.enabledWatcher = !this.enabledWatcher;
         },
-
         /**
          * Function to return the UserFilterViewComponent
          */
         $_returnToFilter() {
-            this.cleanFieldsByWatch();
+            this.toggleWatcher();
             this.$router.back();
         },
 
@@ -346,6 +356,7 @@ export default {
                                 <component
                                     :is="element.component"
                                     :entity="entity"
+                                    :enabledWatcher="element.enabledWatcher"
                                 />
                             </v-tab-item>
                         </v-tabs-items>
