@@ -41,8 +41,9 @@ export default {
     },
 
     methods: {
-        $_setVacancyId(id) {
-            this.settings.vacancyId = id;
+        $_setVacancyId(item) {
+            this.settings.vacancyId = item.id;
+            this.settings.vacancyName = item.title;
             this.settings.step = 1;
         },
     },

@@ -58,6 +58,11 @@ export default {
             requiered: true,
         },
 
+        vacancyName: {
+            type: String,
+            default: undefined,
+        },
+
         callback: {
             type: Function,
             default: undefined,
@@ -138,7 +143,7 @@ export default {
         v-else
         md="12"
         offset="0"
-        title="Nombre de vacante pendiente"
+        :title="vacancyName"
         :btnAction="callback"
     >
         <div slot="card-text">

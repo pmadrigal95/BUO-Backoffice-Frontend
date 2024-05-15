@@ -20,6 +20,11 @@ export default {
             requiered: true,
         },
 
+        vacancyName: {
+            type: String,
+            default: undefined,
+        },
+
         callback: {
             type: Function,
             default: undefined,
@@ -34,6 +39,7 @@ export default {
     <ContainerViewComponent
         v-if="vacancyId"
         :vacancyId="vacancyId"
+        :vacancyName="vacancyName"
         :callback="callback"
     />
 </template>

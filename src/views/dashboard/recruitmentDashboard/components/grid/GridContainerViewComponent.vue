@@ -38,47 +38,49 @@ export default {
 </script>
 
 <template>
-    <section>
-        <v-tabs
-            v-model="tab"
-            right
-            show-arrows
-            height="34"
-            class="pa-3"
-            :color="app ? 'blueProgress600' : 'blue800'"
-        >
-            <v-tabs-slider color="transparent"></v-tabs-slider>
-            <v-tab
-                class="rounded-pill no-uppercase mr-3"
-                active-class="tab-active-white"
-                ><p class="BUO-Label-Small pt-4">Candidatos</p>
-            </v-tab>
+    <v-card flat class="rounded-lg">
+        <v-card-text>
+            <v-tabs
+                v-model="tab"
+                right
+                show-arrows
+                height="34"
+                class="pa-3"
+                :color="app ? 'blueProgress600' : 'blue800'"
+            >
+                <v-tabs-slider color="transparent"></v-tabs-slider>
+                <v-tab
+                    class="rounded-pill no-uppercase mr-3"
+                    active-class="tab-active-white"
+                    ><p class="BUO-Label-Small pt-4">Candidatos</p>
+                </v-tab>
 
-            <v-tab
-                class="rounded-pill no-uppercase mr-3"
-                active-class="tab-active-white"
-                ><p class="BUO-Label-Small pt-4">Seleccionados</p>
-            </v-tab>
+                <v-tab
+                    class="rounded-pill no-uppercase mr-3"
+                    active-class="tab-active-white"
+                    ><p class="BUO-Label-Small pt-4">Seleccionados</p>
+                </v-tab>
 
-            <v-tab
-                class="rounded-pill no-uppercase mr-3"
-                active-class="tab-active-white"
-                ><p class="BUO-Label-Small pt-4">Rechazados</p>
-            </v-tab>
-        </v-tabs>
+                <v-tab
+                    class="rounded-pill no-uppercase mr-3"
+                    active-class="tab-active-white"
+                    ><p class="BUO-Label-Small pt-4">Rechazados</p>
+                </v-tab>
+            </v-tabs>
 
-        <v-tabs-items v-model="tab" class="pa-5">
-            <v-tab-item>
-                <FilterViewComponent :vacancyId="vacancyId" />
-            </v-tab-item>
+            <v-tabs-items v-model="tab" class="pa-5">
+                <v-tab-item>
+                    <FilterViewComponent :vacancyId="vacancyId" />
+                </v-tab-item>
 
-            <v-tab-item>
-                <span>2</span>
-            </v-tab-item>
+                <v-tab-item>
+                    <span>2</span>
+                </v-tab-item>
 
-            <v-tab-item>
-                <span>3</span>
-            </v-tab-item>
-        </v-tabs-items>
-    </section>
+                <v-tab-item>
+                    <span>3</span>
+                </v-tab-item>
+            </v-tabs-items>
+        </v-card-text>
+    </v-card>
 </template>

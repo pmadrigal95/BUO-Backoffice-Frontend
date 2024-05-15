@@ -73,12 +73,12 @@ export default {
             });
         },
 
-        $_callToAction(id) {
+        $_callToAction(item) {
             if (this.fn) {
-                this.fn(id);
+                this.fn(item);
                 return;
             }
-            this.$_returnToView(id);
+            this.$_returnToView(item.id);
         },
     },
 };
@@ -117,7 +117,7 @@ export default {
             <section class="mt-3">
                 <v-layout justify-end align-end>
                     <a
-                        @click="$_callToAction(chartData.id)"
+                        @click="$_callToAction(chartData)"
                         :class="[app ? 'blue600--text' : 'blue900--text']"
                         class="no-uppercase rounded-lg BUO-Paragraph-Small"
                     >

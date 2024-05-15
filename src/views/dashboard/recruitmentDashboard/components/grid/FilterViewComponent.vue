@@ -9,6 +9,10 @@ import { mapGetters } from 'vuex';
 
 import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
+import baseLocalHelper from '@/helpers/baseLocalHelper.js';
+
+import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
+
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
 
@@ -34,12 +38,6 @@ export default {
         BaseServerDataTable,
     },
 
-    data() {
-        return {
-            key: 0,
-        };
-    },
-
     computed: {
         ...mapGetters('dashboard', ['filter']),
 
@@ -62,6 +60,39 @@ export default {
                     : undefined,
                 vacancyId: this.vacancyId,
             });
+        },
+    },
+
+    methods: {
+        /**
+         * Get a registry
+         */
+        $_GetRow() {
+            return this.$refs['filter'].$data.selected;
+        },
+
+        $_compare(params) {
+            const row = params ? [params.selected] : this.$_GetRow();
+
+            switch (true) {
+                case row.length == 0:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
+                    break;
+
+                case row.length > 0 && row.length < 4:
+                    console.log(row);
+                    break;
+
+                default:
+                    baseNotificationsHelper.Message(
+                        true,
+                        'Puedes seleccionar hasta un máximo de tres candidatos.'
+                    );
+                    break;
+            }
         },
     },
 };

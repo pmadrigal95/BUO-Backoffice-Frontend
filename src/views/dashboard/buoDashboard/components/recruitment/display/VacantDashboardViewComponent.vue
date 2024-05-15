@@ -26,6 +26,7 @@ export default {
     methods: {
         $_goBack() {
             delete this.settings.vacancyId;
+            delete this.settings.vacancyName;
             this.settings.step = 0;
         },
     },
@@ -36,6 +37,7 @@ export default {
     <RecruitmentDashboardViewComponent
         v-if="settings && settings.vacancyId"
         :vacancyId="settings.vacancyId"
+        :vacancyName="settings.vacancyName"
         :callback="$_goBack"
     />
     <BaseSkeletonLoader v-else type="card" />
