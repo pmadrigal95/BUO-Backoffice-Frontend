@@ -336,19 +336,6 @@ const securitySetting = ({ key, singleSelect, columns }) => {
 /**
  * Configuracion BaseServerDataTable
  */
-const jobSetting = ({ key, singleSelect, columns }) => {
-    return {
-        endpoint: 'puesto/findBy',
-        columns: columns,
-        key: key ? key : 'id',
-        singleSelect: singleSelect,
-        multiSelect: !singleSelect,
-    };
-};
-
-/**
- * Configuracion BaseServerDataTable
- */
 const securityActionSetting = ({ key, singleSelect, columns }) => {
     return {
         endpoint: 'perfil/getAcciones',
@@ -401,6 +388,19 @@ const securityUserPerRoleSetting = ({
 const promotionalCodeSetting = ({ key, singleSelect, columns }) => {
     return {
         endpoint: 'codigoPromocion/findBy',
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
+ * Configuracion BaseServerDataTable
+ */
+const jobSetting = ({ key, singleSelect, columns }) => {
+    return {
+        endpoint: 'puesto/findBy',
         columns: columns,
         key: key ? key : 'id',
         singleSelect: singleSelect,
@@ -794,20 +794,6 @@ export const baseFilterSettingsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
-    $_setJobSetting({ key, singleSelect, isFilter, list, pageView }) {
-        const columns = list
-            ? list
-            : baseFilterColumnsHelper.$_setJobColumns({
-                  isFilter,
-                  pageView,
-              });
-
-        return jobSetting({ key, singleSelect, columns });
-    },
-
-    /**
-     * Configuracion BaseServerDataTable
-     */
     $_setSecurityActionSetting({
         key,
         singleSelect,
@@ -895,6 +881,24 @@ export const baseFilterSettingsHelper = {
               });
 
         return promotionalCodeSetting({ key, singleSelect, columns });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setJobSetting({ key, singleSelect, isFilter, list, pageView }) {
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setJobColumns({
+                  isFilter,
+                  pageView,
+              });
+
+        return jobSetting({
+            key,
+            singleSelect,
+            columns,
+        });
     },
 };
 
@@ -1061,16 +1065,6 @@ export const baseDataTableColumnsHelper = {
     /**
      * Configuracion BaseServerDataTable
      */
-    $_setJobColumns({ isFilter, pageView }) {
-        return baseFilterColumnsHelper.$_setJobColumns({
-            isFilter,
-            pageView,
-        });
-    },
-
-    /**
-     * Configuracion BaseServerDataTable
-     */
     $_setSecurityActionsColumns({ isFilter, pageView }) {
         return baseFilterColumnsHelper.$_setSecurityActionsColumns({
             isFilter,
@@ -1103,6 +1097,16 @@ export const baseDataTableColumnsHelper = {
      */
     $_setPromotionalCodeColumns({ isFilter, pageView }) {
         return baseFilterColumnsHelper.$_setPromotionalCodeColumns({
+            isFilter,
+            pageView,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setJobColumns({ isFilter, pageView }) {
+        return baseFilterColumnsHelper.$_setJobColumns({
             isFilter,
             pageView,
         });

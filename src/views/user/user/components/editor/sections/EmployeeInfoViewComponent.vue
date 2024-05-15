@@ -62,20 +62,9 @@ export default {
         },
 
         jobDialogView() {
-            return this.pageViewById('jobDialog');
+            return this.dialogViewById('jobDialog');
         },
 
-        /**
-         * Configuracion BaseServerDataTable
-         */
-        settingJob() {
-            return baseFilterSettingsHelper.$_setJobSetting({
-                isFilter: true,
-                singleSelect: false,
-                list: this.filtersBypageView(this.jobDialogView),
-                pageView: this.jobDialogView,
-            });
-        },
 
         /**
          * Configuracion BaseServerDataTable
@@ -87,6 +76,19 @@ export default {
                 singleSelect: true,
                 list: this.advfiltersBypageView(this.userDialogView),
                 pageView: this.userDialogView,
+            });
+        },
+
+        /**
+         * Configuracion BaseServerDataTable
+         */
+        jobSetting() {
+            return baseFilterSettingsHelper.$_setJobSetting({
+                companyId: this.user.companyId,
+                isFilter: true,
+                singleSelect: true,
+                list: this.advfiltersBypageView(this.jobDialogView),
+                pageView: this.jobDialogView,
             });
         },
 
@@ -107,12 +109,21 @@ export default {
          */
         'entity.supervisorId': {
             handler(newValue, oldValue) {
-                this.componentKey++;
-                console.log('newvalue ' + newValue);
-                console.log('oldvalue ' + oldValue);
-                console.log('usuario id' + this.entity.id);
-                if (newValue === this.entity.id) {
+                if ((newValue || oldValue) === this.entity.id) {
                     baseNotificationsHelper.Message(false, this.msg);
+                    this.componentKey++;
+                }
+            },
+            immediate: true,
+        },
+
+        /**
+         * Actualizar BaseInputDataTable
+         */
+        'entity.esCandidato': {
+            handler(newValue, oldValue) {
+                if (oldValue != newValue) {
+                    this.componentKey++;
                 }
             },
             immediate: true,
@@ -142,26 +153,26 @@ export default {
                 :extraParams="extraParams"
                 itemText="nombreCompleto"
                 :readonly="extraParams.length == 0"
-                :editText="entity.nombreUsuario"
+                :editText="entity.nombreSupervisor"
                 v-model="entity.supervisorId"
                 :fnResetConfig="$_setUserFilter"
                 :key="componentKey"
             />
         </v-col>
 
-        <!-- <v-col cols="12">
+        <v-col cols="12">
             <BaseInputDataTable
                 label="Puesto"
-                v-if="settingJob"
+                v-if="jobSetting"
                 :pageView="jobDialogView"
-                :setting="settingJob"
+                :setting="jobSetting"
                 :extraParams="extraParams"
                 itemText="nombre"
                 :readonly="extraParams.length == 0"
                 :editText="entity.nombrePuesto"
                 v-model="entity.puestoId"
             />
-        </v-col>-->
+        </v-col>
 
         <v-col cols="12">
             <BaseSwitch label="Candidato" v-model="entity.esCandidato" />

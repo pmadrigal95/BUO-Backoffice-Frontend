@@ -965,58 +965,6 @@ const securityColumns = (isFilter) => {
 /**
  * Configuracion BaseServerDataTable
  */
-const jobColumns = (isFilter) => {
-    return [
-        {
-            text: 'Empresa',
-            align: 'start',
-            value: 'nombreOrganizacion',
-            show: isFilter ? true : false,
-        },
-        {
-            text: 'Puesto',
-            align: 'start',
-            value: 'nombre',
-            show: true,
-        },
-        {
-            text: 'Estado',
-            align: 'center',
-            type: 'chip',
-            value: 'nombreEstado',
-            show: false,
-        },
-        {
-            text: 'Fecha Creación',
-            align: 'start',
-            value: 'fechaCreacionFormato',
-            show: false,
-        },
-        {
-            text: 'Creado Por',
-            align: 'start',
-            value: 'nombreUsuarioCrea',
-            show: false,
-        },
-
-        {
-            text: 'Modificado Por',
-            align: 'start',
-            value: 'nombreUsuarioModifica',
-            show: false,
-        },
-        {
-            text: 'Fecha Modificación',
-            align: 'start',
-            value: 'fechaModificacionFormato',
-            show: false,
-        },
-    ];
-};
-
-/**
- * Configuracion BaseServerDataTable
- */
 const securityActionsColumns = (isFilter) => {
     return [
         {
@@ -1216,6 +1164,58 @@ const promotionalCodeColumns = (isFilter) => {
 };
 
 /**
+ * Configuracion BaseServerDataTable
+ */
+const jobColumns = (isFilter) => {
+    return [
+        {
+            text: 'Empresa',
+            align: 'start',
+            value: 'nombreOrganizacion',
+            show: isFilter ? true : false,
+        },
+        {
+            text: 'Puesto',
+            align: 'start',
+            value: 'nombre',
+            show: true,
+        },
+        {
+            text: 'Estado',
+            align: 'center',
+            type: 'chip',
+            value: 'nombreEstado',
+            show: false,
+        },
+        {
+            text: 'Fecha Creación',
+            align: 'start',
+            value: 'fechaCreacionFormato',
+            show: false,
+        },
+        {
+            text: 'Creado Por',
+            align: 'start',
+            value: 'nombreUsuarioCrea',
+            show: false,
+        },
+
+        {
+            text: 'Modificado Por',
+            align: 'start',
+            value: 'nombreUsuarioModifica',
+            show: false,
+        },
+        {
+            text: 'Fecha Modificación',
+            align: 'start',
+            value: 'fechaModificacionFormato',
+            show: false,
+        },
+    ];
+};
+
+/**
  * Exports
  */
 export const baseFilterColumnsHelper = {
@@ -1345,16 +1345,6 @@ export const baseFilterColumnsHelper = {
         return columns;
     },
 
-       /**
-     * Configuracion BaseServerDataTable
-     */
-    $_setJobColumns({ isFilter, pageView }) {
-        const columns = jobColumns(isFilter);
-        setUpCache({ pageView, columns, isFilter });
-        return columns;
-    },
-
-
     /**
      * Configuracion BaseServerDataTable
      */
@@ -1387,6 +1377,15 @@ export const baseFilterColumnsHelper = {
      */
     $_setPromotionalCodeColumns({ isFilter, pageView }) {
         const columns = promotionalCodeColumns(isFilter);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setJobColumns({ isFilter, pageView }) {
+        const columns = jobColumns(isFilter);
         setUpCache({ pageView, columns, isFilter });
         return columns;
     },
