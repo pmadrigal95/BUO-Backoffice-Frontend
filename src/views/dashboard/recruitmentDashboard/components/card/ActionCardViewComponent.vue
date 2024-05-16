@@ -37,6 +37,7 @@ export default {
                 :outlined="false"
                 label="Cerrar vacante"
                 :fnMethod="() => {}"
+                disabled
             />
         </section>
     </BaseBasicCardViewComponent>

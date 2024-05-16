@@ -53,9 +53,11 @@ export default {
 <template>
     <BaseBasicCardViewComponent title="Vacantes abiertas">
         <section slot="top-actions">
+            <!--TODO: Cambiar valores-->
             <BaseCustomsButtonsGrid
+                disabled
                 icon="mdi-plus"
-                :outlined="false"
+                :outlined="true"
                 label="Abrir vacantes"
                 :fnMethod="() => {}"
             />

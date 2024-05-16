@@ -52,8 +52,8 @@ export default {
             >
                 <ProgressCircularComponent
                     :title="item.title"
-                    :value="item.value.toFixed(2)"
-                    :color="$_setColor(item.value.toFixed(2))"
+                    :value="item.value"
+                    :color="$_setColor(item.value)"
                     isLandscape
                     isPercentage
                 />

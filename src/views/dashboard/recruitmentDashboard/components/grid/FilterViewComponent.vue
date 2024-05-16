@@ -26,6 +26,11 @@ const CandidateInfoModalViewComponent = () =>
         '@/views/dashboard/recruitmentDashboard/components/modal/CandidateInfoModalViewComponent'
     );
 
+const BaseMsgConfirmActionPopUpViewComponent = () =>
+    import(
+        '@/views/dashboard/recruitmentDashboard/components/modal/BaseMsgConfirmActionPopUpViewComponent'
+    );
+
 export default {
     name: 'FilterViewComponent',
 
@@ -48,12 +53,17 @@ export default {
         BaseServerDataTable,
         BaseCustomsButtonsGrid,
         CandidateInfoModalViewComponent,
+        BaseMsgConfirmActionPopUpViewComponent,
     },
 
     computed: {
         ...mapGetters('theme', ['app']),
 
         ...mapGetters('dashboard', ['filter']),
+
+        candidates() {
+            return baseConfigHelper.$_statusCode.active;
+        },
 
         selectedCandidates() {
             return baseConfigHelper.$_statusCode.selectedCandidates;
@@ -94,6 +104,10 @@ export default {
             return this.$refs['filter'].$data.selected;
         },
 
+        $_refreshGrid() {
+            this.$refs['filter'].$_ParamsToAPI();
+        },
+
         $_compare(params) {
             const row = params ? [params.selected] : this.$_GetRow();
 
@@ -109,13 +123,30 @@ export default {
                     this.$_openCandidateInfoModalViewComponent(
                         row.map((element) => {
                             return {
-                                id: element.usuarioId,
+                                id: element.id,
                                 name: element.nombreCandidato,
                                 email: element.correo,
-                                coincidence: element.coincidence,
+                                coincidence:
+                                    element.coincidence &&
+                                    element.coincidence.length > 0
+                                        ? element.coincidence.map((item) => {
+                                              return {
+                                                  title: item.title,
+                                                  type: item.type,
+                                                  value: item.value
+                                                      ? item.value.substring(
+                                                            0,
+                                                            item.value.length -
+                                                                1
+                                                        )
+                                                      : 0,
+                                              };
+                                          })
+                                        : element.coincidence,
                                 education: element.education,
                                 workExp: element.workExp,
                                 psychometric: element.psychometric,
+                                statusCode: element.estadoId,
                             };
                         })
                     );
@@ -134,6 +165,53 @@ export default {
             this.$refs['CandidateInfoModal'].$_setData(array);
         },
 
+        $_selectCandidate(params, statusId) {
+            const row = params ? [params.selected] : this.$_GetRow();
+
+            switch (row.length) {
+                case 0:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotSelected
+                    );
+                    break;
+
+                case 1:
+                    this.$_openMsgConfirmActionPopUpViewComponent(
+                        row[0],
+                        statusId
+                    );
+                    break;
+
+                default:
+                    baseNotificationsHelper.Message(
+                        true,
+                        baseLocalHelper.$_MsgRowNotMultiSelected
+                    );
+                    break;
+            }
+        },
+
+        $_openMsgConfirmActionPopUpViewComponent(item, statusId) {
+            this.$refs['MsgConfirmActionPopUp'].$_setData({
+                title:
+                    statusId == this.rejectedCandidates
+                        ? 'Rechazar'
+                        : 'Seleccionar',
+                statusId: statusId,
+                name: item.nombreCandidato,
+                id: item.id,
+            });
+        },
+
+        $_setCandidate(params) {
+            this.$_selectCandidate(params, this.selectedCandidates);
+        },
+
+        $_rejectCandidate(params) {
+            this.$_selectCandidate(params, this.rejectedCandidates);
+        },
+
         empty() {},
     },
 };
@@ -141,7 +219,16 @@ export default {
 
 <template>
     <section>
-        <CandidateInfoModalViewComponent ref="CandidateInfoModal" />
+        <CandidateInfoModalViewComponent
+            ref="CandidateInfoModal"
+            :callback="$_refreshGrid"
+        />
+
+        <BaseMsgConfirmActionPopUpViewComponent
+            ref="MsgConfirmActionPopUp"
+            :callback="$_refreshGrid"
+        />
+
         <BaseServerDataTable
             ref="filter"
             v-if="setting"
@@ -150,11 +237,13 @@ export default {
             :fnDoubleClick="$_compare"
         >
             <div slot="btns">
+                <!--TODO: Cambiar valores-->
                 <BaseCustomsButtonsGrid
                     label="Descargar reporte"
                     :fnMethod="empty"
                     icon="mdi-download"
                     :color="app ? 'blueProgress600' : 'blue800'"
+                    disabled
                 />
 
                 <BaseCustomsButtonsGrid
@@ -165,17 +254,23 @@ export default {
                 />
 
                 <BaseCustomsButtonsGrid
-                    v-if="!statusCode || statusCode == selectedCandidates"
+                    v-if="
+                        statusCode == candidates ||
+                        statusCode == selectedCandidates
+                    "
                     label="Rechazar"
-                    :fnMethod="empty"
+                    :fnMethod="$_rejectCandidate"
                     icon="mdi-close"
                     color="redError900"
                 />
 
                 <BaseCustomsButtonsGrid
-                    v-if="!statusCode || statusCode == rejectedCandidates"
+                    v-if="
+                        statusCode == candidates ||
+                        statusCode == rejectedCandidates
+                    "
                     label="Seleccionar"
-                    :fnMethod="empty"
+                    :fnMethod="$_setCandidate"
                     icon="mdi-check"
                     color="greenB900"
                 />

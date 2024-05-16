@@ -12,7 +12,7 @@ const BaseBasicCardViewComponent = () =>
 
 const CandidateInfoCardViewComponent = () =>
     import(
-        '@/views/recruitment/components/card/CandidateInfoCardViewComponent'
+        '@/views/dashboard/recruitmentDashboard/components/card/CandidateInfoCardViewComponent'
     );
 
 export default {

@@ -101,7 +101,7 @@ export default {
             <section class="mx-n3 mb-n4">
                 <v-layout justify-space-between align-end>
                     <v-btn
-                        dark
+                        disabled
                         color="red"
                         elevation="0"
                         text
@@ -111,7 +111,7 @@ export default {
                         Rechazar
                     </v-btn>
                     <v-btn
-                        dark
+                        disabled
                         elevation="0"
                         outlined
                         depressed

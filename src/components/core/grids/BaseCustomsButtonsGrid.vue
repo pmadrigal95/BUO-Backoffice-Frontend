@@ -64,6 +64,11 @@ export default {
             type: Boolean,
             default: false,
         },
+
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     computed: {
@@ -98,6 +103,7 @@ export default {
         small
         :block="block"
         @click="$_Method"
+        :disabled="disabled"
     >
         {{ label }}
         <v-icon right>{{ icon }}</v-icon>

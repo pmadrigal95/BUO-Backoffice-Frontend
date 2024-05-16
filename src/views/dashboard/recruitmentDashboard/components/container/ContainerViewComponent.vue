@@ -154,6 +154,7 @@ export default {
                 depressed
                 outlined
                 :color="app ? 'white' : 'primary'"
+                disabled
             >
                 <span class="BUO-Paragraph-Small-SemiBold">
                     Compartir vacante

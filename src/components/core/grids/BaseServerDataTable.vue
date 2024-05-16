@@ -353,7 +353,7 @@ export default {
                     id: 'false',
                     value: 'No',
                     icon: 'mdi-close-circle',
-                    color: 'grey500',
+                    color: !this.setting.dynamic ? 'grey500' : 'redError900',
                 },
             ];
         },
@@ -1640,7 +1640,13 @@ export default {
                     <v-icon
                         v-else-if="header.type == 'bool'"
                         :key="bool"
-                        :color="item[header.value] ? 'greenA800' : 'grey500'"
+                        :color="
+                            item[header.value]
+                                ? 'greenA800'
+                                : !setting.dynamic
+                                ? 'grey500'
+                                : 'redError900'
+                        "
                     >
                         mdi-{{
                             item[header.value]

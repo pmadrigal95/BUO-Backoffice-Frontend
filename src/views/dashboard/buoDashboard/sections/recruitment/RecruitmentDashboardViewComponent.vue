@@ -56,15 +56,18 @@ export default {
                 v-if="$vuetify.breakpoint.mobile && settings.step == 0"
                 icon
                 :color="app ? 'white' : 'blue900'"
+                disabled
             >
                 <v-icon> mdi-plus-circle-outline </v-icon>
             </v-btn>
+            <!--TODO: Cambiar valores-->
             <BaseCustomsButtonsGrid
                 v-else-if="settings.step == 0"
                 icon="mdi-plus"
-                :outlined="false"
+                :outlined="true"
                 :fnMethod="() => {}"
                 label="Abrir vacantes"
+                disabled
             />
         </section>
         <section slot="body">

@@ -36,6 +36,10 @@ export default {
     computed: {
         ...mapGetters('theme', ['app']),
 
+        candidates() {
+            return baseConfigHelper.$_statusCode.active;
+        },
+
         selectedCandidates() {
             return baseConfigHelper.$_statusCode.selectedCandidates;
         },
@@ -82,6 +86,7 @@ export default {
                 <v-tab-item>
                     <FilterViewComponent
                         :vacancyId="vacancyId"
+                        :statusCode="candidates"
                         v-if="tab == 0"
                     />
                 </v-tab-item>

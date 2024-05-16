@@ -19,24 +19,6 @@ const routes = [
             module: 'BUODashboardViewComponent',
         },
     },
-
-    {
-        path: '/Recruitment/:Id',
-        name: 'RecruitmentDashboardViewComponent',
-        component: 'recruitment/RecruitmentDashboardViewComponent',
-        meta: {
-            module: 'BUODashboardViewComponent',
-        },
-    },
-
-    {
-        path: 'Buo/Dashboard/Recruitment/:Id',
-        name: 'BuoRecruitmentDashboardViewComponent',
-        component: 'recruitment/RecruitmentDashboardViewComponent',
-        meta: {
-            module: 'BUODashboardViewComponent',
-        },
-    },
 ];
 
 export default routes;
