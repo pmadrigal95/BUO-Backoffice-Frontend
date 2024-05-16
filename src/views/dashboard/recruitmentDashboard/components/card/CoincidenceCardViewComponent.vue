@@ -43,16 +43,21 @@ export default {
         title="Coincidencia"
         v-if="chartData.length > 0"
     >
-        <section slot="card-text" class="d-flex flex-wrap">
-            <div v-for="(item, i) in chartData" :key="i" class="ma-auto">
+        <v-row slot="card-text">
+            <v-col
+                cols="6"
+                v-for="(item, i) in chartData"
+                :key="i"
+                class="my-auto"
+            >
                 <ProgressCircularComponent
                     :title="item.title"
-                    :value="item.value"
-                    :color="$_setColor(item.value)"
+                    :value="item.value.toFixed(2)"
+                    :color="$_setColor(item.value.toFixed(2))"
                     isLandscape
                     isPercentage
                 />
-            </div>
-        </section>
+            </v-col>
+        </v-row>
     </BaseBasicCardViewComponent>
 </template>

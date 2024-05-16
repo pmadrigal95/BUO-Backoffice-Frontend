@@ -8,7 +8,7 @@ import baseDataVisualizationColorsHelper from '@/helpers/baseDataVisualizationCo
 
 const setColor = (percentage) => {
     switch (true) {
-        case percentage === 100:
+        case percentage == 100:
             return 'greenB900';
         case percentage >= 80 && percentage < 100:
             return 'greenA900';

@@ -17,6 +17,8 @@ const statusCode = {
     unregisteredCompany: 8, // Empresa no registrada
     fileProcessed: 9, // Archivo Procesado
     unrelatedProfessional: 10,
+    selectedCandidates: 11,
+    rejectedCandidates: 12,
 };
 
 export default {

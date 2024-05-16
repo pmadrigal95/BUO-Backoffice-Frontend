@@ -11,10 +11,20 @@ import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
 import baseLocalHelper from '@/helpers/baseLocalHelper.js';
 
+import baseConfigHelper from '@/helpers/baseConfigHelper';
+
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
 const BaseServerDataTable = () =>
     import('@/components/core/grids/BaseServerDataTable');
+
+const BaseCustomsButtonsGrid = () =>
+    import('@/components/core/grids/BaseCustomsButtonsGrid');
+
+const CandidateInfoModalViewComponent = () =>
+    import(
+        '@/views/dashboard/recruitmentDashboard/components/modal/CandidateInfoModalViewComponent'
+    );
 
 export default {
     name: 'FilterViewComponent',
@@ -23,10 +33,10 @@ export default {
         /**
          * Status code of ability
          */
-        // statusCode: {
-        //     type: Number,
-        //     required: true,
-        // },
+        statusCode: {
+            type: [Number, String],
+            default: undefined,
+        },
 
         vacancyId: {
             type: [Number, String],
@@ -36,10 +46,22 @@ export default {
 
     components: {
         BaseServerDataTable,
+        BaseCustomsButtonsGrid,
+        CandidateInfoModalViewComponent,
     },
 
     computed: {
+        ...mapGetters('theme', ['app']),
+
         ...mapGetters('dashboard', ['filter']),
+
+        selectedCandidates() {
+            return baseConfigHelper.$_statusCode.selectedCandidates;
+        },
+
+        rejectedCandidates() {
+            return baseConfigHelper.$_statusCode.rejectedCandidates;
+        },
 
         setting() {
             return baseFilterSettingsHelper.$_setDinamycRecruitmentVacantSetting(
@@ -59,6 +81,7 @@ export default {
                     ? `${this.filter?.month}-01T00:00:00`
                     : undefined,
                 vacancyId: this.vacancyId,
+                statusId: this.statusCode,
             });
         },
     },
@@ -82,28 +105,82 @@ export default {
                     );
                     break;
 
-                case row.length > 0 && row.length < 4:
-                    console.log(row);
+                case row.length > 0 && row.length < 3:
+                    this.$_openCandidateInfoModalViewComponent(
+                        row.map((element) => {
+                            return {
+                                id: element.usuarioId,
+                                name: element.nombreCandidato,
+                                email: element.correo,
+                                coincidence: element.coincidence,
+                                education: element.education,
+                                workExp: element.workExp,
+                                psychometric: element.psychometric,
+                            };
+                        })
+                    );
                     break;
 
                 default:
                     baseNotificationsHelper.Message(
                         true,
-                        'Puedes seleccionar hasta un máximo de tres candidatos.'
+                        'Puedes seleccionar hasta un máximo de dos candidatos.'
                     );
                     break;
             }
         },
+
+        $_openCandidateInfoModalViewComponent(array) {
+            this.$refs['CandidateInfoModal'].$_setData(array);
+        },
+
+        empty() {},
     },
 };
 </script>
 
 <template>
-    <BaseServerDataTable
-        ref="filter"
-        v-if="setting"
-        :setting="setting"
-        :extraParams="extraParams"
-    />
-    <BaseSkeletonLoader v-else type="table" />
+    <section>
+        <CandidateInfoModalViewComponent ref="CandidateInfoModal" />
+        <BaseServerDataTable
+            ref="filter"
+            v-if="setting"
+            :setting="setting"
+            :extraParams="extraParams"
+            :fnDoubleClick="$_compare"
+        >
+            <div slot="btns">
+                <BaseCustomsButtonsGrid
+                    label="Descargar reporte"
+                    :fnMethod="empty"
+                    icon="mdi-download"
+                    :color="app ? 'blueProgress600' : 'blue800'"
+                />
+
+                <BaseCustomsButtonsGrid
+                    label="Comparar"
+                    :fnMethod="$_compare"
+                    icon="mdi-select-compare"
+                    :color="app ? 'blueProgress600' : 'blue800'"
+                />
+
+                <BaseCustomsButtonsGrid
+                    v-if="!statusCode || statusCode == selectedCandidates"
+                    label="Rechazar"
+                    :fnMethod="empty"
+                    icon="mdi-close"
+                    color="redError900"
+                />
+
+                <BaseCustomsButtonsGrid
+                    v-if="!statusCode || statusCode == rejectedCandidates"
+                    label="Seleccionar"
+                    :fnMethod="empty"
+                    icon="mdi-check"
+                    color="greenB900"
+                />
+            </div>
+        </BaseServerDataTable>
+        <BaseSkeletonLoader v-else type="table" />
+    </section>
 </template>

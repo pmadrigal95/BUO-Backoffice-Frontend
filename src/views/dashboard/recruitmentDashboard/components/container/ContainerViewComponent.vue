@@ -146,6 +146,21 @@ export default {
         :title="vacancyName"
         :btnAction="callback"
     >
+        <section slot="top-actions">
+            <v-btn
+                class="mr-8 mt-1 no-uppercase rounded-lg BUO-Paragraph-Medium-SemiBold"
+                :class="[app ? 'grey700' : 'Buo-White-Background']"
+                elevation="0"
+                depressed
+                outlined
+                :color="app ? 'white' : 'primary'"
+            >
+                <span class="BUO-Paragraph-Small-SemiBold">
+                    Compartir vacante
+                </span>
+                <v-icon small right dark> mdi-share-variant-outline </v-icon>
+            </v-btn>
+        </section>
         <div slot="card-text">
             <section>
                 <v-row>

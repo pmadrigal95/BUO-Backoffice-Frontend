@@ -8,6 +8,8 @@
 
 import { mapGetters } from 'vuex';
 
+import baseConfigHelper from '@/helpers/baseConfigHelper';
+
 const FilterViewComponent = () =>
     import(
         '@/views/dashboard/recruitmentDashboard/components/grid/FilterViewComponent'
@@ -33,6 +35,14 @@ export default {
 
     computed: {
         ...mapGetters('theme', ['app']),
+
+        selectedCandidates() {
+            return baseConfigHelper.$_statusCode.selectedCandidates;
+        },
+
+        rejectedCandidates() {
+            return baseConfigHelper.$_statusCode.rejectedCandidates;
+        },
     },
 };
 </script>
@@ -70,15 +80,26 @@ export default {
 
             <v-tabs-items v-model="tab" class="pa-5">
                 <v-tab-item>
-                    <FilterViewComponent :vacancyId="vacancyId" />
+                    <FilterViewComponent
+                        :vacancyId="vacancyId"
+                        v-if="tab == 0"
+                    />
                 </v-tab-item>
 
                 <v-tab-item>
-                    <span>2</span>
+                    <FilterViewComponent
+                        :vacancyId="vacancyId"
+                        :statusCode="selectedCandidates"
+                        v-if="tab == 1"
+                    />
                 </v-tab-item>
 
                 <v-tab-item>
-                    <span>3</span>
+                    <FilterViewComponent
+                        :vacancyId="vacancyId"
+                        :statusCode="rejectedCandidates"
+                        v-if="tab == 2"
+                    />
                 </v-tab-item>
             </v-tabs-items>
         </v-card-text>
