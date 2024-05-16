@@ -65,7 +65,6 @@ export default {
             return this.dialogViewById('jobDialog');
         },
 
-
         /**
          * Configuracion BaseServerDataTable
          */
@@ -99,6 +98,15 @@ export default {
             return baseFilterSettingsHelper.$_setExtraParams({
                 companyId: this.entity.organizacionId,
                 isCandidate: this.entity.esCandidato,
+            });
+        },
+
+        /**
+         * Extra Params
+         */
+        extraParamsJob() {
+            return baseFilterSettingsHelper.$_setExtraParams({
+                companyId: this.entity.organizacionId,
             });
         },
     },
@@ -166,9 +174,9 @@ export default {
                 v-if="jobSetting"
                 :pageView="jobDialogView"
                 :setting="jobSetting"
-                :extraParams="extraParams"
+                :extraParams="extraParamsJob"
                 itemText="nombre"
-                :readonly="extraParams.length == 0"
+                :readonly="extraParamsJob.length == 0"
                 :editText="entity.nombrePuesto"
                 v-model="entity.puestoId"
             />

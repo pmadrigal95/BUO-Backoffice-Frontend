@@ -80,23 +80,23 @@ export default {
                     component: 'AccountInfoViewComponent',
                     disabled: true,
                 },
-                {
+                /*{
                     name: 'Configuración de acceso',
                     component: 'AccessSettingsViewComponent',
                     disabled: true,
                 },
-                {
+                /*{
                     name: 'Información del empleado',
                     component: 'EmployeeInfoViewComponent',
                     disabled: true,
                     enabledWatcher: this.enabledWatcher,
                 },
-                {
+                /*{
                     name: 'Información laboral',
                     component: 'WorkInfoViewComponent',
                     disabled: true,
                     enabledWatcher: this.enabledWatcher,
-                },
+                },*/
             ];
         },
 
@@ -206,14 +206,17 @@ export default {
         },
 
         activeCurrentTab() {
+            console.log(this.tabSettings[this.tab].disabled);
             this.tabSettings[this.tab].disabled = false;
         },
 
         nextTab() {
+            console.log(this.tab + 1);
             this.tab = this.tab + 1;
         },
 
         configureTabs() {
+            console.log('prueba');
             this.nextTab();
             this.activeCurrentTab();
         },

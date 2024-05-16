@@ -42,11 +42,15 @@ export default {
         },
 
         validateInitialDate() {
-            return this.entity.organizacionId ? ['text'] : undefined;
+            return this.entity.organizacionId && !this.esCandidato
+                ? ['text']
+                : undefined;
         },
 
         validateDepartmentDate() {
-            return this.entity.departamentoId ? ['text'] : undefined;
+            return this.entity.departamentoId && !this.esCandidato
+                ? ['text']
+                : undefined;
         },
     },
 
@@ -60,13 +64,6 @@ export default {
                 if (oldValue && this.enabledWatcher) {
                     this.entity.departamentoId = undefined;
                     this.entity.perfilIds = undefined;
-                    console.log(
-                        'entity.organizacionId:' +
-                            'newValue ' +
-                            newValue +
-                            'oldValue ' +
-                            oldValue
-                    );
                 }
             },
             immediate: true,
@@ -80,8 +77,6 @@ export default {
                 if (oldValue && this.enabledWatcher) {
                     this.$_updateDepartmentDate(newValue);
                     this.componentDateKey++;
-                    console.log('entity.departamentoId');
-                    console.log(JSON.stringify(this.entity));
                 }
             },
             immediate: true,
@@ -95,14 +90,6 @@ export default {
                 if (oldValue && this.enabledWatcher) {
                     this.$_updateInitDate(newValue);
                     this.componentDateKey++;
-                    console.log(
-                        'entity.fechaIngreso:' +
-                            'newValue ' +
-                            newValue +
-                            'oldValue ' +
-                            oldValue
-                    );
-                    console.log(JSON.stringify(this.entity));
                 }
             },
             immediate: true,
@@ -116,7 +103,6 @@ export default {
                 if (oldValue && this.enabledWatcher) {
                     this.$_updateEndDate(newValue);
                     this.componentDateKey++;
-                    console.log('entity.fechaTerminacion');
                 }
             },
             immediate: true,
@@ -213,7 +199,7 @@ export default {
                 reqCurrentMaxDate
                 :validate="validateInitialDate"
                 :key="componentDateKey"
-                :readonly="entity.esCandidato"
+                :disabled="entity.esCandidato"
             />
         </v-col>
 
