@@ -205,6 +205,7 @@ export default {
                     >
                         <CandidateInfoListCardViewComponent
                             :cardList="entity.topCandidates"
+                            :callback="$_getObject"
                         />
                     </v-col>
 
@@ -213,7 +214,10 @@ export default {
                     </v-col>
 
                     <v-col cols="12" v-if="vacancyId">
-                        <GridContainerViewComponent :vacancyId="vacancyId" />
+                        <GridContainerViewComponent
+                            :vacancyId="vacancyId"
+                            :callback="$_getObject"
+                        />
                     </v-col>
 
                     <v-col cols="12">

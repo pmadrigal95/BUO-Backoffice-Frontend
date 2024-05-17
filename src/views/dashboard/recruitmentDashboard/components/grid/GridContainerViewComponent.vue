@@ -23,6 +23,11 @@ export default {
             type: [Number, String],
             requiered: true,
         },
+
+        callback: {
+            type: Function,
+            required: true,
+        },
     },
 
     components: { FilterViewComponent },
@@ -87,6 +92,7 @@ export default {
                     <FilterViewComponent
                         :vacancyId="vacancyId"
                         :statusCode="candidates"
+                        :callback="callback"
                         v-if="tab == 0"
                     />
                 </v-tab-item>
@@ -95,6 +101,7 @@ export default {
                     <FilterViewComponent
                         :vacancyId="vacancyId"
                         :statusCode="selectedCandidates"
+                        :callback="callback"
                         v-if="tab == 1"
                     />
                 </v-tab-item>
@@ -103,6 +110,7 @@ export default {
                     <FilterViewComponent
                         :vacancyId="vacancyId"
                         :statusCode="rejectedCandidates"
+                        :callback="callback"
                         v-if="tab == 2"
                     />
                 </v-tab-item>

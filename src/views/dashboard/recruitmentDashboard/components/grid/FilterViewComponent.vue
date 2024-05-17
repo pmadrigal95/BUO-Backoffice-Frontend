@@ -47,6 +47,11 @@ export default {
             type: [Number, String],
             requiered: true,
         },
+
+        callback: {
+            type: Function,
+            required: true,
+        },
     },
 
     components: {
@@ -105,7 +110,8 @@ export default {
         },
 
         $_refreshGrid() {
-            this.$refs['filter'].$_ParamsToAPI();
+            // this.$refs['filter'].$_ParamsToAPI();
+            this.callback();
         },
 
         $_compare(params) {

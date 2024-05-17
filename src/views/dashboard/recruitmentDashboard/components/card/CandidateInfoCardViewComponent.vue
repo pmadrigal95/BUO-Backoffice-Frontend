@@ -8,6 +8,8 @@
 
 import { mapGetters } from 'vuex';
 
+import baseConfigHelper from '@/helpers/baseConfigHelper';
+
 import baseSharedFnHelper from '@/helpers/baseSharedFnHelper';
 
 import baseColorConfig from '@/views/dashboard/components/shared/row-display/color-percentage-display';
@@ -24,6 +26,11 @@ const ProgressCircularComponent = () =>
         '@/views/dashboard/components/shared/chart/progressCircularChart/ProgressCircularComponent'
     );
 
+const BaseMsgConfirmActionPopUpViewComponent = () =>
+    import(
+        '@/views/dashboard/recruitmentDashboard/components/modal/BaseMsgConfirmActionPopUpViewComponent'
+    );
+
 export default {
     name: 'CandidateInfoCardViewComponent',
 
@@ -32,12 +39,18 @@ export default {
             type: Object,
             requiered: true,
         },
+
+        callback: {
+            type: Function,
+            required: true,
+        },
     },
 
     components: {
         BaseHeaderMenu,
         ProgressCircularComponent,
         BaseCustomCardViewComponent,
+        BaseMsgConfirmActionPopUpViewComponent,
     },
 
     computed: {
@@ -73,55 +86,96 @@ export default {
         color() {
             return baseColorConfig.$_setColor(this.value);
         },
+
+        candidates() {
+            return baseConfigHelper.$_statusCode.active;
+        },
+
+        selectedCandidates() {
+            return baseConfigHelper.$_statusCode.selectedCandidates;
+        },
+
+        rejectedCandidates() {
+            return baseConfigHelper.$_statusCode.rejectedCandidates;
+        },
+    },
+
+    methods: {
+        $_setCandidate() {
+            this.$refs['MsgConfirmActionPopUp'].$_setData({
+                title: 'Seleccionar',
+                statusId: this.selectedCandidates,
+                name: this.name,
+                id: this.chartData.key,
+            });
+        },
+
+        $_rejectCandidate() {
+            this.$refs['MsgConfirmActionPopUp'].$_setData({
+                title: 'Rechazar',
+                statusId: this.rejectedCandidates,
+                name: this.name,
+                id: this.chartData.key,
+            });
+        },
     },
 };
 </script>
 
 <template>
-    <BaseCustomCardViewComponent :card="cardSetUp" v-if="chartData">
-        <section slot="container" class="pa-3">
-            <section>
-                <BaseHeaderMenu
-                    :title="name"
-                    :subtitle="email"
-                    :userAvatar="icon"
-                />
-            </section>
+    <section>
+        <BaseMsgConfirmActionPopUpViewComponent
+            ref="MsgConfirmActionPopUp"
+            :callback="callback"
+        />
 
-            <section class="ml-2 my-6">
-                <ProgressCircularComponent
-                    title="Coincidencia de perfil"
-                    :value="value"
-                    :color="color"
-                    isLandscape
-                    isPercentage
-                />
-            </section>
+        <BaseCustomCardViewComponent :card="cardSetUp" v-if="chartData">
+            <section slot="container" class="pa-3">
+                <section>
+                    <BaseHeaderMenu
+                        :title="name"
+                        :subtitle="email"
+                        :userAvatar="icon"
+                    />
+                </section>
 
-            <section class="mx-n3 mb-n4">
-                <v-layout justify-space-between align-end>
-                    <v-btn
-                        disabled
-                        color="red"
-                        elevation="0"
-                        text
-                        depressed
-                        class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                    >
-                        Rechazar
-                    </v-btn>
-                    <v-btn
-                        disabled
-                        elevation="0"
-                        outlined
-                        depressed
-                        :color="app ? 'blue500' : 'blue900'"
-                        class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
-                    >
-                        Seleccionar
-                    </v-btn>
-                </v-layout>
+                <section class="ml-2 my-6">
+                    <ProgressCircularComponent
+                        title="Coincidencia de perfil"
+                        :value="value"
+                        :color="color"
+                        isLandscape
+                        isPercentage
+                    />
+                </section>
+
+                <section class="mx-n3 mb-n4">
+                    <v-layout justify-space-between align-end>
+                        <v-btn
+                            :disabled="chartData.statusId == rejectedCandidates"
+                            @click="$_rejectCandidate"
+                            color="red"
+                            elevation="0"
+                            text
+                            depressed
+                            class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                        >
+                            Rechazar
+                        </v-btn>
+                        <v-btn
+                            :disabled="chartData.statusId == selectedCandidates"
+                            @click="$_setCandidate"
+                            elevation="0"
+                            outlined
+                            depressed
+                            :color="app ? 'blue500' : 'blue900'"
+                            class="ma-1 no-uppercase rounded-lg BUO-Paragraph-Small-SemiBold"
+                        >
+                            Seleccionar
+                        </v-btn>
+                    </v-layout>
+                </section>
             </section>
-        </section>
-    </BaseCustomCardViewComponent>
+        </BaseCustomCardViewComponent>
+    </section>
 </template>

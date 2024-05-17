@@ -33,6 +33,11 @@ export default {
             type: String,
             default: '100%',
         },
+
+        callback: {
+            type: Function,
+            required: true,
+        },
     },
 
     components: { BaseBasicCardViewComponent, CandidateInfoCardViewComponent },
@@ -57,6 +62,7 @@ export default {
                         >
                             <CandidateInfoCardViewComponent
                                 :chartData="item"
+                                :callback="callback"
                                 class="mx-2"
                             />
                         </v-card>
