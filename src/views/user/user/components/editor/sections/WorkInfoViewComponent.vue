@@ -19,11 +19,6 @@ export default {
             type: Object,
             required: true,
         },
-
-        enabledWatcher: {
-            type: Boolean,
-            requered: true,
-        },
     },
 
     components: {
@@ -61,7 +56,7 @@ export default {
         'entity.organizacionId': {
             handler(newValue, oldValue) {
                 this.componentDateKey++;
-                if (oldValue && this.enabledWatcher) {
+                if (oldValue) {
                     this.entity.departamentoId = undefined;
                     this.entity.perfilIds = undefined;
                 }
@@ -74,7 +69,7 @@ export default {
          */
         'entity.departamentoId': {
             handler(newValue, oldValue) {
-                if (oldValue && this.enabledWatcher) {
+                if (oldValue) {
                     this.$_updateDepartmentDate(newValue);
                     this.componentDateKey++;
                 }
@@ -87,7 +82,7 @@ export default {
          */
         'entity.fechaIngreso': {
             handler(newValue, oldValue) {
-                if (oldValue && this.enabledWatcher) {
+                if (oldValue) {
                     this.$_updateInitDate(newValue);
                     this.componentDateKey++;
                 }
@@ -100,7 +95,7 @@ export default {
          */
         'entity.fechaTerminacion': {
             handler(newValue, oldValue) {
-                if (oldValue && this.enabledWatcher) {
+                if (oldValue) {
                     this.$_updateEndDate(newValue);
                     this.componentDateKey++;
                 }

@@ -26,11 +26,6 @@ export default {
             type: Object,
             required: true,
         },
-
-        enabledWatcher: {
-            type: Boolean,
-            requered: true,
-        },
     },
 
     components: {
@@ -180,6 +175,10 @@ export default {
                 :editText="entity.nombrePuesto"
                 v-model="entity.puestoId"
             />
+        </v-col>
+
+        <v-col cols="12">
+            <BaseSwitch label="Supervisor" v-model="entity.esSupervisor" />
         </v-col>
 
         <v-col cols="12">

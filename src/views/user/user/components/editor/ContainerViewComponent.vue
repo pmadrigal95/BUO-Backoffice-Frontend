@@ -61,7 +61,6 @@ export default {
             entity: this.$_Object(),
             loading: false,
             componentKey: 0,
-            enabledWatcher: true,
         };
     },
 
@@ -80,23 +79,21 @@ export default {
                     component: 'AccountInfoViewComponent',
                     disabled: true,
                 },
-                /*{
+                {
                     name: 'Configuración de acceso',
                     component: 'AccessSettingsViewComponent',
                     disabled: true,
                 },
-                /*{
+                {
                     name: 'Información del empleado',
                     component: 'EmployeeInfoViewComponent',
                     disabled: true,
-                    enabledWatcher: this.enabledWatcher,
                 },
-                /*{
+                {
                     name: 'Información laboral',
                     component: 'WorkInfoViewComponent',
                     disabled: true,
-                    enabledWatcher: this.enabledWatcher,
-                },*/
+                },
             ];
         },
 
@@ -194,6 +191,10 @@ export default {
                 supervisorId: undefined,
                 puestoId: undefined,
                 esCandidato: false,
+                esSupervisor: false,
+                roleNames: undefined,
+                nombreSupervisor: undefined,
+                nombrePuesto: undefined,
             };
         },
 
@@ -216,19 +217,14 @@ export default {
         },
 
         configureTabs() {
-            console.log('prueba');
             this.nextTab();
             this.activeCurrentTab();
         },
 
-        toggleWatcher() {
-            this.enabledWatcher = !this.enabledWatcher;
-        },
         /**
          * Function to return the UserFilterViewComponent
          */
         $_returnToFilter() {
-            this.toggleWatcher();
             this.$router.back();
         },
 
@@ -340,7 +336,7 @@ export default {
                             <v-tabs-slider color="transparent"></v-tabs-slider>
                             <v-tab
                                 v-for="(element, index) in tabSettings"
-                                :key="index"
+                                :key="`btn-${index}`"
                                 :disabled="element.disabled"
                                 class="rounded-pill no-uppercase mr-3"
                                 active-class="tab-active-blue"
@@ -350,19 +346,17 @@ export default {
                                 </p>
                             </v-tab>
                         </v-tabs>
-
-                        <v-tabs-items v-model="tab" class="mt-4 mb-2 pt-4 pl-3">
-                            <v-tab-item
+                        <v-window v-model="tab" reverse class="pt-8">
+                            <v-window-item
                                 v-for="(element, index) in tabSettings"
-                                :key="index"
+                                :key="`element-${index}`"
                             >
                                 <component
                                     :is="element.component"
                                     :entity="entity"
-                                    :enabledWatcher="element.enabledWatcher"
                                 />
-                            </v-tab-item>
-                        </v-tabs-items>
+                            </v-window-item>
+                        </v-window>
                     </div>
                 </BaseForm>
             </div>
