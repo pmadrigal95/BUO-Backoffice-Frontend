@@ -46,6 +46,7 @@ const $_dialogView = () => {
         securityActionsDialog: 'securityActionsSetting',
         DepartureReasonTypeDialog: 'DepartureReasonTypeSetting',
         jobDialog: 'jobSetting',
+        workSupervisorDialog: 'workSupervisorSetting',
     };
 };
 

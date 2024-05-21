@@ -45,7 +45,6 @@ const extraParams = ({
     statusId,
     assessmentTypeId,
     assessmentId,
-    isCandidate,
 }) => {
     let array = [];
 
@@ -88,13 +87,6 @@ const extraParams = ({
         array.push({
             name: 'pruebaId',
             value: assessmentId,
-        });
-    }
-
-    if (isCandidate) {
-        array.push({
-            name: 'esCandidato',
-            value: isCandidate,
         });
     }
 
@@ -409,6 +401,19 @@ const jobSetting = ({ key, singleSelect, columns }) => {
 };
 
 /**
+ * Configuracion BaseServerDataTable
+ */
+const workSupervisorSetting = ({ key, singleSelect, columns }) => {
+    return {
+        endpoint: 'supervisor/findBy',
+        columns: columns,
+        key: key ? key : 'id',
+        singleSelect: singleSelect,
+        multiSelect: !singleSelect,
+    };
+};
+
+/**
  * Exports
  */
 
@@ -431,7 +436,6 @@ export const baseFilterSettingsHelper = {
         statusId,
         assessmentTypeId,
         assessmentId,
-        isCandidate,
     }) {
         return extraParams({
             companyId,
@@ -441,7 +445,6 @@ export const baseFilterSettingsHelper = {
             statusId,
             assessmentTypeId,
             assessmentId,
-            isCandidate,
         });
     },
 
@@ -900,6 +903,30 @@ export const baseFilterSettingsHelper = {
             columns,
         });
     },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setWorkSupervisorSetting({
+        key,
+        singleSelect,
+        isFilter,
+        list,
+        pageView,
+    }) {
+        const columns = list
+            ? list
+            : baseFilterColumnsHelper.$_setWorkSupervisorColumns({
+                  isFilter,
+                  pageView,
+              });
+
+        return workSupervisorSetting({
+            key,
+            singleSelect,
+            columns,
+        });
+    },
 };
 
 export const baseDataTableColumnsHelper = {
@@ -1107,6 +1134,16 @@ export const baseDataTableColumnsHelper = {
      */
     $_setJobColumns({ isFilter, pageView }) {
         return baseFilterColumnsHelper.$_setJobColumns({
+            isFilter,
+            pageView,
+        });
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setWorkSupervisorColumns({ isFilter, pageView }) {
+        return baseFilterColumnsHelper.$_setWorkSupervisorColumns({
             isFilter,
             pageView,
         });

@@ -1199,7 +1199,6 @@ const jobColumns = (isFilter) => {
             value: 'nombreUsuarioCrea',
             show: false,
         },
-
         {
             text: 'Modificado Por',
             align: 'start',
@@ -1211,6 +1210,31 @@ const jobColumns = (isFilter) => {
             align: 'start',
             value: 'fechaModificacionFormato',
             show: false,
+        },
+    ];
+};
+/**
+ * Configuracion BaseServerDataTable
+ */
+const workSupervisorColumns = (isFilter) => {
+    return [
+        {
+            text: 'Empresa',
+            align: 'start',
+            value: 'nombreOrganizacion',
+            show: isFilter ? true : false,
+        },
+        {
+            text: 'Supervisor',
+            align: 'start',
+            value: 'nombreCompleto',
+            show: true,
+        },
+        {
+            text: 'Correo',
+            align: 'start',
+            value: 'username',
+            show: true,
         },
     ];
 };
@@ -1386,6 +1410,15 @@ export const baseFilterColumnsHelper = {
      */
     $_setJobColumns({ isFilter, pageView }) {
         const columns = jobColumns(isFilter);
+        setUpCache({ pageView, columns, isFilter });
+        return columns;
+    },
+
+    /**
+     * Configuracion BaseServerDataTable
+     */
+    $_setWorkSupervisorColumns({ isFilter, pageView }) {
+        const columns = workSupervisorColumns(isFilter);
         setUpCache({ pageView, columns, isFilter });
         return columns;
     },

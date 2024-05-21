@@ -33,12 +33,6 @@ export default {
         },
     },
 
-    data() {
-        return {
-            nombre: undefined,
-        };
-    },
-
     computed: {
         ...mapGetters('authentication', ['user', 'buoId']),
 

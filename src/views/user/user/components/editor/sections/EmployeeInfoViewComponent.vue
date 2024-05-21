@@ -8,10 +8,7 @@
 
 import { mapGetters } from 'vuex';
 
-import {
-    baseFilterSettingsHelper,
-    baseDataTableColumnsHelper,
-} from '@/helpers/baseFilterSettingsHelper';
+import { baseFilterSettingsHelper } from '@/helpers/baseFilterSettingsHelper';
 
 import baseNotificationsHelper from '@/helpers/baseNotificationsHelper';
 
@@ -52,8 +49,8 @@ export default {
             return 'Lo siento, pero no puedes seleccionarte a ti mismo como supervisor. Por favor, elige a otra persona.';
         },
 
-        userDialogView() {
-            return this.dialogViewById('userDialog');
+        workSupervisorDialogView() {
+            return this.dialogViewById('workSupervisorDialog');
         },
 
         jobDialogView() {
@@ -63,13 +60,13 @@ export default {
         /**
          * Configuracion BaseServerDataTable
          */
-        userSetting() {
-            return baseFilterSettingsHelper.$_setUserSetting({
+        workSupervisorSetting() {
+            return baseFilterSettingsHelper.$_setWorkSupervisorSetting({
                 companyId: this.user.companyId,
                 isFilter: true,
                 singleSelect: true,
-                list: this.advfiltersBypageView(this.userDialogView),
-                pageView: this.userDialogView,
+                list: this.advfiltersBypageView(this.workSupervisorDialogView),
+                pageView: this.workSupervisorSettingDialogView,
             });
         },
 
@@ -90,16 +87,6 @@ export default {
          * Extra Params
          */
         extraParams() {
-            return baseFilterSettingsHelper.$_setExtraParams({
-                companyId: this.entity.organizacionId,
-                isCandidate: this.entity.esCandidato,
-            });
-        },
-
-        /**
-         * Extra Params
-         */
-        extraParamsJob() {
             return baseFilterSettingsHelper.$_setExtraParams({
                 companyId: this.entity.organizacionId,
             });
@@ -127,19 +114,27 @@ export default {
             handler(newValue, oldValue) {
                 if (oldValue != newValue) {
                     this.componentKey++;
+                    if (this.entity.esCandidato && this.entity.esSupervisor) {
+                        this.entity.supervisorId = undefined;
+                        this.esSupervisor = false;
+                    }
                 }
             },
             immediate: true,
         },
-    },
 
-    methods: {
-        $_setUserFilter() {
-            baseDataTableColumnsHelper.$_setUserColumns({
-                companyId: this.user.companyId,
-                isFilter: true,
-                pageView: this.userDialogView,
-            });
+        /**
+         * Actualizar BaseInputDataTable
+         */
+        'entity.esSupervisor': {
+            handler(newValue, oldValue) {
+                if (oldValue != newValue) {
+                    if (this.entity.esSupervisor && this.entity.esCandidato) {
+                        this.esCandidato = false;
+                    }
+                }
+            },
+            immediate: true,
         },
     },
 };
@@ -149,18 +144,16 @@ export default {
     <v-row dense>
         <v-col cols="12">
             <BaseInputDataTable
-                label="Supervisor"
-                v-if="userSetting"
-                :pageView="userDialogView"
-                :setting="userSetting"
-                :extraParams="extraParams"
-                itemText="nombreCompleto"
-                :readonly="extraParams.length == 0"
-                :editText="entity.nombreSupervisor"
-                v-model="entity.supervisorId"
-                :fnResetConfig="$_setUserFilter"
-                :key="componentKey"
-            />
+            label="Supervisor"
+            v-if="jobSetting"
+            :pageView="jobDialogView"
+            :setting="jobSetting"
+            :extraParams="extraParams"
+            itemText="nombre"
+            :readonly="extraParams.length == 0"
+            :editText="entity.nombrePuesto"
+            v-model="entity.puestoId"
+        />
         </v-col>
 
         <v-col cols="12">
@@ -169,19 +162,19 @@ export default {
                 v-if="jobSetting"
                 :pageView="jobDialogView"
                 :setting="jobSetting"
-                :extraParams="extraParamsJob"
+                :extraParams="extraParams"
                 itemText="nombre"
-                :readonly="extraParamsJob.length == 0"
+                :readonly="extraParams.length == 0"
                 :editText="entity.nombrePuesto"
                 v-model="entity.puestoId"
             />
         </v-col>
 
-        <v-col cols="12">
+        <v-col cols="12" class="pl-3">
             <BaseSwitch label="Supervisor" v-model="entity.esSupervisor" />
         </v-col>
 
-        <v-col cols="12">
+        <v-col cols="12" class="pl-3">
             <BaseSwitch label="Candidato" v-model="entity.esCandidato" />
         </v-col>
     </v-row>
